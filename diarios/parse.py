@@ -48,8 +48,3 @@ def extract_keywords(text, keywords):
     regex = get_keyword_regex(keywords)
     return text.str.extractall(regex)
 
-
-regexes = {
-    'number': '[0-9.]{20,30}',
-    'date': '^[0-9/]{10}'
-}
