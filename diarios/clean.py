@@ -1,11 +1,15 @@
 import pandas as pd
 import glob
 from unidecode import unidecode
+import os
 
 
 def clean_parte(partes):
     partes = clean_text(partes)
-    mp_regex = 'ministerio publico|justica publica'
+    mp_regex = (
+        'ministerio publico|'
+        'justica publica'
+    )
     partes.loc[
         partes.str.contains(mp_regex)
     ] = 'mp'
@@ -231,16 +235,16 @@ def extract_info_from_case_numbers(numbers, tp=None):
     })
     if tp:
         df['type'] = tp
-    info = map(
-        extract_info_by_case_type,
+    info = (
         df.groupby('type')
+        .apply(extract_info_by_case_type)
     )
-    return pd.concat(info, sort=True)
+    info.index = info.index.droplevel(0)
+    return info
 
 
-def extract_info_by_case_type(tp_df):
-    tp, df = tp_df
-    regex = get_number_regexes()[tp]
+def extract_info_by_case_type(df):
+    regex = get_number_regexes()[df.name]
     info = (
         df['number'].str.extract(regex['regex'])
         .apply(pd.to_numeric, errors='coerce')
@@ -260,13 +264,17 @@ def move_columns_first(df, cols):
 
 
 def get_decisao_id(decisoes):
-    ids = pd.read_csv('data/decisao.csv')
+    ids = pd.read_csv(
+        get_data_path('decisao.csv')
+    )
     mapping = dict(zip(ids.name, ids.id))    
     return decisoes.map(mapping)
 
 
 def get_tipo_parte_id(tipo_partes):
-    ids = pd.read_csv('data/tipo_parte.csv')
+    ids = pd.read_csv(
+        get_data_path('tipo_parte.csv')
+    )
     mapping = dict(zip(ids.name, ids.id))
     return tipo_partes.map(mapping)
 
@@ -280,7 +288,9 @@ def get_comarca_id(numbers):
 
 
 def get_foro_info(numbers):
-    foro = pd.read_csv('data/foro.csv')
+    foro = pd.read_csv(
+        get_data_path('foro.csv')
+    )
     foro_info = (
         extract_info_from_case_numbers(numbers, tp="cnj").reset_index()
         .merge(
@@ -312,7 +322,9 @@ def read_csv(regex):
 
 
 def get_estado_id(estado):
-    ids = pd.read_csv('data/estado.csv')
+    ids = pd.read_csv(
+        get_data_path('estado.csv')
+    )
     mapping = dict(zip(ids.name, ids.id))
     if type(estado) == pd.Series:
         return estado.map(mapping)
@@ -338,3 +350,10 @@ def clean_text_columns(df, exclude=[], keep='a-z0-9 '):
         if col not in exclude:
             df[col] = clean_text(df[col], keep=keep)            
     return df
+
+
+def get_data_path(datafile):
+    pkg_dir, _ = os.path.split(__file__)
+    return os.path.join(
+        pkg_dir, "data", datafile
+    )
