@@ -1,15 +1,35 @@
 import pandas as pd
+import re
 
-
-def get_text(infile, split_regex, nchar=None):
+def parse_diario_extract(
+        infile, nchar=None
+    ):
     with open(infile, 'r') as f:
         text = f.read()
     if nchar:
         text = text[:nchar]
-    text = pd.Series(
-        text.split(split_regex)
+    diario = re.match('.*?/', text).group(0)
+    df = (
+        pd.Series(text.split(diario))
+        .str.replace(';', '')                
+        .str.replace(r'([0-9]{4}/[0-9]{2}/[0-9]{2})/', r'\1;', n=3)
+        .str.replace(r'\.md', r';', n=1)
+        .str.replace(r'(-|:)([0-9]+)(-|:)', r'\2;', n=1)
+        .str.split(';', expand=True)
     )
-    return text
+    df.columns = ['date', 'caderno', 'line', 'text']
+    df['diario'] = diario[:-1]
+    return df.query('line.notnull()')
+
+    # text = clean_text(
+    #     text,
+    #     lower=False,
+    #     drop=None,
+    #     accents=True,
+    #     links=False,
+    #     newline=False
+    # )
+
 
 
 def extract_regexes(text, regexes):
@@ -29,7 +49,7 @@ def get_keyword_regex(
         max_name_length=100,
         last_name_length=50
     ):
-    key = "|".join(keywords)
+    key = '|'.join(keywords)
     name = '.{{0,{0}}}?(?={1})'.format(
         max_name_length, key
     )
@@ -46,5 +66,9 @@ def get_keyword_regex(
 
 def extract_keywords(text, keywords):
     regex = get_keyword_regex(keywords)
-    return text.str.extractall(regex)
+    df = text.str.extractall(regex)
+    df.index = df.index.droplevel(1)
+    return df
+
+
 

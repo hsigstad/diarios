@@ -1,7 +1,21 @@
 import pandas as pd
+import diarios.parse
 import glob
 from unidecode import unidecode
 import os
+
+
+def clean_comarca(comarca):
+    comarca = clean_text(comarca)
+    comarca = comarca.str.replace(
+        'comarca de', ''
+    ).str.strip()
+    return comarca
+
+
+def clean_vara(vara):
+    vara = clean_text(vara, drop='^a-z0-9 ')
+    return vara
 
 
 def clean_parte(partes):
@@ -32,11 +46,17 @@ def clean_valor(valores):
 
 def clean_date(dates):
     dates = dates.fillna("").astype(str)
-    dates = (
-        dates.str[-4:] + dates.str[3:5] +
-        dates.str[0:2]
-    )
+    dates = dates.str.replace('/', '')
     return pd.to_numeric(dates, errors='coerce')
+
+
+def clean_name(names):
+    names = names.str.extract('(?s)(.*) ?- ', expand=False)
+    return clean_text(names)
+
+
+def clean_line(lines):
+    return pd.to_numeric(lines, errors='coerce')
 
 
 def clean_classe(classes):
@@ -46,7 +66,9 @@ def clean_classe(classes):
         'popular': 'APop',
         'publica': 'ACP',
         'agravo de instrumento': 'AI',
-        'apelacao': 'Ap'
+        'apelacao': 'Ap',
+        'procedimento ordinario': 'ProOrd',
+        'procedimento sumario': 'ProSum'
     }
     return map_regex(classes, mapping)
 
@@ -264,17 +286,13 @@ def move_columns_first(df, cols):
 
 
 def get_decisao_id(decisoes):
-    ids = pd.read_csv(
-        get_data_path('decisao.csv')
-    )
+    ids = get_data('decisao.csv')
     mapping = dict(zip(ids.name, ids.id))    
     return decisoes.map(mapping)
 
 
 def get_tipo_parte_id(tipo_partes):
-    ids = pd.read_csv(
-        get_data_path('tipo_parte.csv')
-    )
+    ids = get_data('tipo_parte.csv')
     mapping = dict(zip(ids.name, ids.id))
     return tipo_partes.map(mapping)
 
@@ -287,10 +305,19 @@ def get_comarca_id(numbers):
     return get_foro_info(numbers).loc[:, 'comarca_id']
 
 
-def get_foro_info(numbers):
-    foro = pd.read_csv(
-        get_data_path('foro.csv')
+def get_comarca(numbers):
+    ids = (
+        get_foro_info(numbers)
+        .loc[:, 'comarca_id']
+        .to_frame()
     )
+    comarca = get_data('comarca.csv').set_index('id')
+    df = ids.join(comarca, on='comarca_id', how='left')
+    return df['name']
+
+
+def get_foro_info(numbers):
+    foro = get_data('foro.csv')
     foro_info = (
         extract_info_from_case_numbers(numbers, tp="cnj").reset_index()
         .merge(
@@ -322,9 +349,7 @@ def read_csv(regex):
 
 
 def get_estado_id(estado):
-    ids = pd.read_csv(
-        get_data_path('estado.csv')
-    )
+    ids = get_data('estado.csv')
     mapping = dict(zip(ids.name, ids.id))
     if type(estado) == pd.Series:
         return estado.map(mapping)
@@ -332,16 +357,43 @@ def get_estado_id(estado):
         return mapping[estado]
 
 
-def clean_text(text, keep='a-z '):
+def clean_text(
+        text,
+        drop='^a-z0-9 ',
+        lower=True,
+        accents=False,
+        links=False,
+        newline=False,
+        pagebreak=False
+    ):
+    text = text.fillna("").astype(str)
+    if not links:
+        text = remove_links(text)
+    if not newline:
+        text = text.str.replace('\n', ' ')
+    if not pagebreak:
+        text = text.str.replace('==>.*?<==', '')
+    if lower:
+        text = text.str.lower()
+    if not accents:
+        text = text.apply(unidecode)
+    if drop:
+        text = text.str.replace(
+            '[{}]'.format(drop), ''
+        )
+    text = (
+        text
+        .str.replace("  +", " ")
+        .str.strip()        
+    )
+    return text
+
+
+def remove_links(text):
     return (
         text
-        .fillna("")
-        .astype(str)                
-        .str.lower()
-        .apply(unidecode)
-        .str.replace('[^{}]'.format(keep), '')
-        .str.replace("  +", " ")                
-        .str.strip()        
+        .str.replace(r'\[(.*?)\]', r'\1')
+        .str.replace(r'(?s)\(http.*?\)', r'')
     )
 
 
@@ -352,8 +404,9 @@ def clean_text_columns(df, exclude=[], keep='a-z0-9 '):
     return df
 
 
-def get_data_path(datafile):
+def get_data(datafile):
     pkg_dir, _ = os.path.split(__file__)
-    return os.path.join(
+    infile = os.path.join(
         pkg_dir, "data", datafile
     )
+    return pd.read_csv(infile)
