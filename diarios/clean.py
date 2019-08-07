@@ -1,8 +1,9 @@
 import pandas as pd
-import diarios.parse
+import numpy as np
 import glob
 from unidecode import unidecode
 import os
+
 
 
 def clean_comarca(comarca):
@@ -18,7 +19,29 @@ def clean_vara(vara):
     return vara
 
 
+def clean_valor(valores):
+    return (
+        valores
+        .str.replace('.', '')
+        .str.replace(',', '.')
+    )
+
+
+def clean_date(dates):
+    return (
+        dates
+        .fillna('')
+        .astype(str)
+        .str.replace('/', '-')
+        .str.extract('([0-9]{4}-[0-9]{2}-[0-9]{2})')
+    )
+
+
 def clean_parte(partes):
+    partes = (
+        partes
+        .str.replace('[^ ]+:.*', '')
+    )
     partes = clean_text(partes)
     mp_regex = (
         'ministerio publico|'
@@ -29,30 +52,35 @@ def clean_parte(partes):
     ] = 'mp'
     partes = (
         partes
-        .str.replace('^(os?|as?|s) ', '')
-        .str[:255]
+        .str.replace('(^| )dra? ', '')
+        .str.replace('^(os?|as?|s) ', '')        
+        .str.replace(' e outro.*', '')
         .str.strip()
     )
     return partes
 
 
-def clean_valor(valores):
-    return (
-        valores
-        .str.replace('.', '')
-        .str.replace(',', '.')
+def clean_last_parte(partes):
+    partes = clean_parte(partes)
+    words = [
+        'visto', 'sentenca',
+        'despach', 'decisao',
+        'protocol', 'relat',
+        'recebo', 'isto',
+        'ante ', 'defiro',
+        'etc', 'intim',
+        'posto', 'dou ',
+        'conforme ', 'sobre ',
+        'com ', 'mainfest',
+        'tratase', 'dispoe',
+        'provimento', 'designa',
+        'tendo ', 'pelo ', 'ese '
+    ]
+    regex = ' {}.*'.format(
+        '|'.join(words)
     )
-
-
-def clean_date(dates):
-    dates = dates.fillna("").astype(str)
-    dates = dates.str.replace('/', '')
-    return pd.to_numeric(dates, errors='coerce')
-
-
-def clean_name(names):
-    names = names.str.extract('(?s)(.*) ?- ', expand=False)
-    return clean_text(names)
+    partes = partes.str.replace(regex, '')
+    return partes
 
 
 def clean_line(lines):
@@ -194,6 +222,11 @@ def clean_number(numbers):
     return numbers
 
 
+def is_cnj_number(numbers):
+    regex = get_number_regexes()['cnj']['regex']
+    return numbers.str.match(regex)    
+
+
 def clean_cnj_number(numbers, errors='coerce'):
     regex = get_number_regexes()['cnj']['regex']
     df = (
@@ -220,8 +253,8 @@ def get_number_regexes():
             ),
             'names': {
                 3: 'filingyear',
-                5: 'j',
-                6: 'tr',
+                5: 'code_j',
+                6: 'code_tr',
                 7: 'oooo'
             }
         },
@@ -239,6 +272,55 @@ def get_number_regexes():
         }
     }
 
+
+def get_tribunal(
+        series,
+        input_type='number',
+        output='tribunal'
+    ):
+    '''
+    Args:
+       input_type: 'number' or 'diario'
+       output: 'tribunal' or 'tribunal_id'
+    '''
+    if input_type == 'number':
+        tribunal = (
+            get_data('tribunal.csv')
+            .set_index(['code_j', 'code_tr'])
+        )
+        info = extract_info_from_case_numbers(
+            series, tp="cnj"
+        )
+        info = info.join(
+            tribunal,
+            on=['code_j', 'code_tr']
+        )
+        return info[output]
+    if input_type == 'diario':
+        diario = (
+            get_data('diario.csv')
+            .set_index('diario')
+        )
+        return (
+            series
+            .to_frame(name='diario')
+            .join(diario, on='diario')
+            .loc[:, (output)]
+        )
+        
+def transform(x, from_var, to_var):
+    infile = '{}.csv'.format(
+        from_var.replace('_id', '')
+    )
+    df = get_data(infile).set_index(from_var)
+    if type(x) == pd.Series:
+        return (
+            x.to_frame(name=from_var)
+            .join(df, on=from_var)[to_var]
+        )
+    else:
+        return df.loc[x, to_var]
+    
 
 def get_number_type(numbers):
     regexes = get_number_regexes()
@@ -287,13 +369,13 @@ def move_columns_first(df, cols):
 
 def get_decisao_id(decisoes):
     ids = get_data('decisao.csv')
-    mapping = dict(zip(ids.name, ids.id))    
+    mapping = dict(zip(ids.decisao, ids.id))    
     return decisoes.map(mapping)
 
 
 def get_tipo_parte_id(tipo_partes):
     ids = get_data('tipo_parte.csv')
-    mapping = dict(zip(ids.name, ids.id))
+    mapping = dict(zip(ids.tipo_parte, ids.id))
     return tipo_partes.map(mapping)
 
 
@@ -313,7 +395,7 @@ def get_comarca(numbers):
     )
     comarca = get_data('comarca.csv').set_index('id')
     df = ids.join(comarca, on='comarca_id', how='left')
-    return df['name']
+    return df['comarca']
 
 
 def get_foro_info(numbers):
@@ -322,7 +404,7 @@ def get_foro_info(numbers):
         extract_info_from_case_numbers(numbers, tp="cnj").reset_index()
         .merge(
             foro,
-            left_on=['tr', 'oooo'],
+            left_on=['code_tr', 'oooo'],
             right_on=['estado_id', 'oooo'],
             how='left'
         )
@@ -348,24 +430,27 @@ def read_csv(regex):
     )
 
 
-def get_estado_id(estado):
-    ids = get_data('estado.csv')
-    mapping = dict(zip(ids.name, ids.id))
-    if type(estado) == pd.Series:
-        return estado.map(mapping)
-    else:
-        return mapping[estado]
-
+def get_caderno_id(diario, caderno):
+    ids = (
+        get_data('caderno.csv')
+        .set_index(
+            ['diario', 'caderno']
+        )
+    )
+    df = pd.concat([diario, caderno], axis=1)
+    df2 = df.join(ids, on=['diario', 'caderno'])
+    return df2['caderno_id']
+    
 
 def clean_text(
-        text,
-        drop='^a-z0-9 ',
-        lower=True,
-        accents=False,
-        links=False,
-        newline=False,
-        pagebreak=False
-    ):
+    text,
+    drop='^a-z0-9 ',
+    lower=True,
+    accents=False,
+    links=False,
+    newline=False,
+    pagebreak=False
+):
     text = text.fillna("").astype(str)
     if not links:
         text = remove_links(text)
@@ -397,16 +482,56 @@ def remove_links(text):
     )
 
 
-def clean_text_columns(df, exclude=[], keep='a-z0-9 '):
+def clean_text_columns(df, exclude=[], drop='^a-z0-9 '):
     for col in df.select_dtypes(include="object").columns:
         if col not in exclude:
-            df[col] = clean_text(df[col], keep=keep)            
+            df[col] = clean_text(df[col], drop=drop)            
     return df
 
 
 def get_data(datafile):
+    infile = get_data_file(datafile)
+    return pd.read_csv(infile)
+
+
+def get_data_file(datafile):
     pkg_dir, _ = os.path.split(__file__)
-    infile = os.path.join(
+    return os.path.join(
         pkg_dir, "data", datafile
     )
-    return pd.read_csv(infile)
+
+
+
+def generate_id(df, suffix=None):
+    '''
+    Args:
+       df: series or df
+       suffix: Either None or a max two-digit
+               number to be appended to id
+    '''
+    if type(df) == pd.DataFrame:
+        df = df.loc[:, by].astype(str).apply(
+            lambda x: '_'.join(x), axis=1
+        )
+    ids = (
+        df
+        .astype('category')
+        .cat.codes
+    ) + 1
+    if suffix:
+        ids = ids.apply(lambda x: x*100 + suffix)
+    return ids
+
+
+# def generate_number_id(numbers, tribunals):
+#     numbers.name = 'number'
+#     tribunals.name = 'tribunal'
+#     df = pd.concat([numbers, tribunals], axis=1)
+#     df['tribunal_number'] = get_tribunal(
+#         df['number'], input_type='number'
+#     )
+#     df['id'] = np.where(
+#         df['tribunal'] == df['tribunal_number'],
+#         df['number'], df['tribunal'] + df['number']
+#     )
+#     return df['id']
