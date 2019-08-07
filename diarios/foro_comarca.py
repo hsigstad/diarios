@@ -1,7 +1,7 @@
 import pandas as pd
 import clean
-import yaml
 import os
+import misc
 import importlib
 importlib.reload(clean)
 
@@ -14,26 +14,26 @@ def main():
     foro_comarca = clean_foro_comarca(foro_comarca)
     foro = (
         foro_comarca
-        .loc[:, ('id', 'tribunal_id', 'oooo',
+        .loc[:, ('foro_id', 'tribunal_id', 'oooo',
                  'estado_id', 'comarca_id')]
     )
     comarca = (
         foro_comarca
         .loc[:, ('comarca_id', 'comarca', 'tribunal_id',
                  'estado_id', 'n_municipios')]
-        .rename(columns={"comarca_id": "id", "comarca": "name"})
-        .drop_duplicates(subset="id")
+        .drop_duplicates(subset='comarca_id')
     )
     comarca = add_comarca_info(comarca)
-    foro.to_csv("foro.csv", index=False)
-    comarca.to_csv("comarca.csv", index=False)
+    comarca = comarca.sort_values('comarca_id')
+    foro.to_csv('data/foro.csv', index=False)
+    comarca.to_csv('data/comarca.csv', index=False)
     return foro, comarca
 
 
 def get_foro_comarca():
     indir = os.path.join(
-        get_user_config("external_dropbox_directory"),
-        "comarcas"
+        misc.get_user_config('external_dropbox_directory'),
+        'comarcas'
     )
     infiles = [
         os.path.join(indir, f) for f in os.listdir(indir)
@@ -46,65 +46,65 @@ def get_foro_comarca():
 def clean_foro_comarca(foro):
     foro = foro.reset_index(drop=True)
     foro['comarca'] = clean.clean_text(foro['comarca'])
-    foro['estado_id'] = clean.get_estado_id(foro['muni_state'])
+    foro['estado_id'] = clean.transform(
+        foro['muni_state'],
+        'estado', 'estado_id'
+    )
     foro.loc[
         foro['muni_state'].isnull(), 'estado_id'
     ] = foro['state_codetj']
     foro['tribunal_id'] = foro['estado_id']
     n_municipios = (
         foro
-        .drop_duplicates(subset=["comarca", "muni_name", "estado_id"])
-        .groupby(["comarca", "estado_id"])
+        .drop_duplicates(subset=['comarca', 'muni_name', 'estado_id'])
+        .groupby(['comarca', 'estado_id'])
         .size()
-        .reset_index(name="n_municipios")
+        .reset_index(name='n_municipios')
     )
     foro = pd.merge(
         foro,
         n_municipios,
-        on=["comarca", "estado_id"],
-        how="left"
+        on=['comarca', 'estado_id'],
+        how='left'
     )
     foro = (foro
-        .rename(columns={"comarca_codetj": "oooo"})             
+        .rename(columns={'comarca_codetj': 'oooo'})             
         .loc[:, ('oooo', 'comarca', 'tribunal_id', 'estado_id', 'n_municipios')]
         .query('estado_id.notnull() & oooo.notnull()')
         .drop_duplicates(subset=['oooo', 'estado_id'])                 
-        .sort_values(["tribunal_id", "oooo"])
+        .sort_values(['tribunal_id', 'oooo'])
         .reset_index(drop=True)
     )
     foro['comarca_id'] = (
-        (foro['comarca'] + foro['estado_id'].astype('str'))
+        (foro['estado_id'].astype('str') + foro['comarca'])
         .astype('category')
         .cat.codes + 1
     )
-    foro['id'] = foro.index + 1
+    foro['foro_id'] = foro.index + 1
     return foro
  
 
 def add_comarca_info(comarca):
     info_file = os.path.join(
-        get_user_config("external_dropbox_directory"),
-        "comarcas/comarca_info.csv",
+        misc.get_user_config('external_dropbox_directory'),
+        'comarcas/comarca_info.csv',
     )
     info = pd.read_csv(
         info_file,
-        usecols= ["state", "name", "entrancia", "juizes"]
+        usecols= ['state', 'name', 'entrancia', 'juizes']
+    ).rename(columns={'name': 'comarca'})
+    info['estado_id'] = clean.transform(
+        info['state'],
+        'estado', 'estado_id'
     )
-    info['estado_id'] = clean.get_estado_id(info['state'])
-    info['name'] = clean.clean_text(info['name'])
+    info['comarca'] = clean.clean_text(info['comarca'])
     comarca = (
         comarca
-        .merge(info, on=["name", "estado_id"], how="left")
-        .drop(columns=["state"])
-        .drop_duplicates(subset="id")
+        .merge(info, on=['comarca', 'estado_id'], how='left')
+        .drop(columns=['state'])
+        .drop_duplicates(subset='comarca_id')
     )
     return comarca
-
-
-def get_user_config(key):
-    with open("user-config.yaml", 'r') as stream:
-        data = yaml.load(stream)
-    return data[key]
 
 
 foro, comarca = main()
