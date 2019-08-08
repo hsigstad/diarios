@@ -2,42 +2,72 @@ import pandas as pd
 import numpy as np
 import re
 import diarios.clean as clean
+from sqlalchemy import Column, String
+
+class DiarioVar:
+    def __init__(
+        self, name,
+        table, regex,
+        cleaner,
+        keyword=False
+    ):
+        self.name = name
+        self.table = table
+        self.regex = regex
+        self.cleaner = cleaner
+        self.keyword = keyword
+    def __repr__(self):
+       return 'DiarioVar({})'.format(name)
+
+
+number = DiarioVar(
+    name='number',
+    table='proc',
+    regex='[0-9.\-]{20,30}',
+    cleaner=clean.clean_number
+)
+
+classe = DiarioVar(
+    name='classe',
+    table='proc',
+    regex='AÇÃO.{5,50}?(?=\*|-)',
+    cleaner=clean.clean_classe
+)
+
 
 
 class Parser:
     def __init__(
         self,
-        number = '[0-9.\-]{20,30}',
-        classe = 'AÇÃO.{5,50}?(?=\*|-)',
-        keywords = ['AUTOR:', 'RÉU:'],
+        columns = [number, classe],
+        parte = 'AUTOR:|RÉU:',
         split_parte_on = ',|-',
         id_suffix=None
     ):
-        self.number = number
-        self.classe = classe
-        self.keywords = keywords
-        self.split_parte_on=split_parte_on
+        self.parte = parte        
+        self.columns = self._update_regexes(columns)
+        self.split_parte_on = split_parte_on
         self.id_suffix = id_suffix
+
 
         
     def parse(self, df):
         df['text'] = _clean_text(df['text'])
-        regex_df = self._add_regex_columns(df)
-        kw_df = self._get_keyword_df(df['text'])
-        proc = _get_proc(regex_df)
-        parte = _get_parte(regex_df, kw_df)
-        mov = _get_mov(regex_df)
+        regex_df = self._add_columns(df)
+        proc = self._get_proc(regex_df)
+        parte = self._get_parte(df['text'], regex_df)
+        mov = self._get_mov(regex_df)
         return proc, parte, mov
 
 
-    def _add_regex_columns(self, df):
+    def _add_columns(self, df):
         regexes = self._get_regexes()
         df2 = extract_regexes(
             df['text'], regexes
         )
         df2 = df2.transform({
-            'number': clean.clean_number,
-            'classe': clean.clean_classe
+            c.name: c.cleaner
+            for c in self.columns
         })
         df = (
             df
@@ -53,13 +83,15 @@ class Parser:
 
     def _get_regexes(self):
         return {
-            'number': self.number,
-            'classe': self.classe
+            c.name: c.regex
+            for c in self.columns
         }
     
 
-    def _get_keyword_df(self, text):
-        df = extract_keywords(text, self.keywords)
+    def _get_parte(self, text, regex_df):
+        df = extract_keywords(
+            text, self.parte
+        )
         df = split_col(
             df, 'name',
             split_on=self.split_parte_on
@@ -77,11 +109,87 @@ class Parser:
             df['name'] == '',
             df['lastname'], df['name']
         )
-        return (
+        df = (
             df
             .drop(columns='lastname')
             .query('name != ""')
         )
+        df = df.loc[
+            (df.name.str.len() > 10) |
+            (df.name == 'mp')
+        ]    
+        parte = (
+            df
+            .join(regex_df.loc[:, ('proc_id', 'number')])
+            .drop_duplicates()
+            .rename(columns={'name': 'parte'})
+        )
+        parte['tipo_parte'] = clean.clean_tipo_parte(
+            parte['key']
+        )
+        parte['tipo_parte_id'] = clean.transform(
+            parte['tipo_parte'],
+            'tipo_parte', 'tipo_parte_id'
+        )
+        return parte
+            
+
+    def _get_keywords(self):
+        regex = [
+            c.regex for c in self.keyword_cols
+        ]
+        if type(self.parte_regex) == str:
+            regex += [self.parte_regex]
+        else:
+            regex += self.parte_regex
+        return regex
+
+    def _get_proc(self, df):
+        cols1 = ['proc_id', 'diario']
+        cols2 = [
+            c.name for c in self.columns
+            if c.table == 'proc'
+        ]
+        proc = (
+            df.loc[:, cols1 + cols2]
+            .drop_duplicates('proc_id')
+        )
+        proc['tribunal_id'] = clean.transform(
+            proc['diario'],
+            'diario', 'tribunal_id'
+        )
+        proc['filingyear'] = clean.get_filing_year(
+            proc['number']
+        )
+        proc['comarca_id'] = clean.get_comarca_id(
+            proc['number']
+        )
+        return proc
+
+
+    def _get_mov(self, df):
+        cols1 = [
+            'diario', 'proc_id', 'date',
+            'caderno', 'line', 'text'
+        ]
+        cols2 = [
+            c.name for c in self.columns
+            if c.table == 'mov'
+        ]    
+        mov = df.loc[:, cols1 + cols2]
+        mov['caderno_id'] = clean.get_caderno_id(
+            mov['diario'], mov['caderno']
+        )
+        return mov
+    
+    def _update_regexes(self, keyword_cols):
+        any_keyword = '|'.join([
+            c.regex for c in keyword_cols
+            if c.keyword
+        ])
+        any_keyword = '{}|{}'.format(any_keyword, self.parte)
+        func = lambda x: _update(x, any_keyword)
+        return [c for c in map(func, keyword_cols)]
 
 
 def split_col(df, name_col, split_on=',|-'):
@@ -108,56 +216,6 @@ def _clean_text(text):
         newline=False
     )
     
-
-def _get_proc(df):
-    proc = (
-        df.loc[:, ('diario', 'proc_id', 'number', 'classe')]
-        .drop_duplicates('proc_id')
-    )
-    proc['tribunal_id'] = clean.transform(
-        proc['diario'],
-        'diario', 'tribunal_id'
-    )
-    proc['filingyear'] = clean.get_filing_year(
-        proc['number']
-    )
-    proc['comarca_id'] = clean.get_comarca_id(
-        proc['number']
-    )
-    return proc
-
-    
-def _get_mov(df):
-    mov = df.loc[:, (
-        'diario', 'proc_id', 'number',
-        'date', 'caderno', 'line', 'text'
-    )]
-    mov['caderno_id'] = clean.get_caderno_id(
-        mov['diario'], mov['caderno']
-    )
-    return mov
-
-    
-def _get_parte(regex_df, kw_df):
-    kw_df = kw_df.loc[
-        (kw_df.name.str.len() > 10) |
-        (kw_df.name == 'mp')
-    ]    
-    parte = (
-        kw_df
-        .join(regex_df.loc[:, ('proc_id', 'number')])
-        .drop_duplicates()
-        .rename(columns={'name': 'parte'})
-    )
-    parte['tipo_parte'] = clean.clean_tipo_parte(
-        parte['key']
-    )
-    parte['tipo_parte_id'] = clean.transform(
-        parte['tipo_parte'],
-        'tipo_parte', 'tipo_parte_id'
-    )
-    return parte
-
 
 def parse_diario_extract(
         infile, nchar=None
@@ -193,14 +251,26 @@ def extract_regexes(text, regexes):
     )
 
 
+def extract_keywords(text, keywords):
+    regex = get_keyword_regex(keywords)
+    df = text.str.extractall(regex)
+    df.index = df.index.droplevel(1)
+    return df
+        
+
 def get_keyword_regex(
-        keywords,
+        keyword,
         max_name_length=100,
         last_name_length=50
     ):
-    key = '|'.join(keywords)
+    '''
+    Args:
+       keywords: list of keywords or regex
+    '''
+    if type(keyword) == list:
+        keyword = '|'.join(keyword)
     name = '.{{0,{0}}}?(?={1})'.format(
-        max_name_length, key
+        max_name_length, keyword
     )
     last_name = '.{{{0}}}'.format(
         last_name_length
@@ -209,15 +279,18 @@ def get_keyword_regex(
     regex = (
         '(?s)(?P<key>{0})'
         '((?P<name>{1})|(?P<lastname>{2}))'
-    ).format(key, name, last_name)
+    ).format(keyword, name, last_name)
     return regex
 
+    
+def _update(col, any_keyword):
+    if col.keyword:
+        col.regex = '(?<={}).*?(?={})'.format(
+            col.regex, any_keyword
+        )
+    return col
+        
 
-def extract_keywords(text, keywords):
-    regex = get_keyword_regex(keywords)
-    df = text.str.extractall(regex)
-    df.index = df.index.droplevel(1)
-    return df
 
 
 
