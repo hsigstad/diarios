@@ -44,11 +44,10 @@ class Parser:
         split_parte_on = ',|-',
         id_suffix=None
     ):
-        self.parte = parte        
-        self.columns = self._update_regexes(columns)
+        self.parte = parte
+        self.columns = columns
         self.split_parte_on = split_parte_on
         self.id_suffix = id_suffix
-
 
         
     def parse(self, df):
@@ -182,15 +181,6 @@ class Parser:
         )
         return mov
     
-    def _update_regexes(self, keyword_cols):
-        any_keyword = '|'.join([
-            c.regex for c in keyword_cols
-            if c.keyword
-        ])
-        any_keyword = '{}|{}'.format(any_keyword, self.parte)
-        func = lambda x: _update(x, any_keyword)
-        return [c for c in map(func, keyword_cols)]
-
 
 def split_col(df, name_col, split_on=',|-'):
     df = df.reset_index()
@@ -282,13 +272,6 @@ def get_keyword_regex(
     ).format(keyword, name, last_name)
     return regex
 
-    
-def _update(col, any_keyword):
-    if col.keyword:
-        col.regex = '(?<={}).*?(?={})'.format(
-            col.regex, any_keyword
-        )
-    return col
         
 
 
