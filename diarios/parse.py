@@ -4,93 +4,110 @@ import re
 import diarios.clean as clean
 from sqlalchemy import Column, String
 
+
 class DiarioVar:
     def __init__(
-        self, name,
-        table, regex,
-        cleaner,
-        keyword=False
+        self, name, regex,
+        table='proc',
+        cleaner=clean.clean_text
     ):
         self.name = name
         self.table = table
         self.regex = regex
         self.cleaner = cleaner
-        self.keyword = keyword
+        
     def __repr__(self):
        return 'DiarioVar({})'.format(name)
 
 
-number = DiarioVar(
-    name='number',
-    table='proc',
-    regex='[0-9.\-]{20,30}',
-    cleaner=clean.clean_number
-)
-
-classe = DiarioVar(
-    name='classe',
-    table='proc',
-    regex='AÇÃO.{5,50}?(?=\*|-)',
-    cleaner=clean.clean_classe
-)
-
-
-
 class Parser:
+    '''Class to parse diarios extracts'''
+    
     def __init__(
         self,
-        columns = [number, classe],
-        parte = 'AUTOR:|RÉU:',
-        split_parte_on = ',|-',
-        id_suffix=None
+        columns=[DiarioVar('number', '[0-9.\-]{20,30}')],
+        parte='AUTOR:|RÉU:',
+        split_parte_on=',|-',
+        split_text_on=None,        
+        id_suffix=None,
+        text_cleaner=clean.clean_diario_text,
+        parte_cleaner=clean.clean_parte,
+        last_parte_cleaner=clean.clean_last_parte,
+        parte_key_cleaner=clean.clean_parte_key,
+        tipo_parte_cleaner=clean.clean_tipo_parte     
     ):
         self.parte = parte
         self.columns = columns
         self.split_parte_on = split_parte_on
+        self.split_text_on = split_text_on        
         self.id_suffix = id_suffix
-
+        self.text_cleaner = text_cleaner
+        self.parte_cleaner = parte_cleaner
+        self.last_parte_cleaner = last_parte_cleaner
+        self.parte_key_cleaner = parte_key_cleaner
+        self.tipo_parte_cleaner = tipo_parte_cleaner
         
     def parse(self, df):
-        df['text'] = _clean_text(df['text'])
-        regex_df = self._add_columns(df)
-        proc = self._get_proc(regex_df)
-        parte = self._get_parte(df['text'], regex_df)
-        mov = self._get_mov(regex_df)
+        df = self._split_text(df)        
+        df.text = self.text_cleaner(df.text)
+        df = self._add_cols(df)
+        proc = self._get_proc(df)
+        parte = self._get_parte(df)
+        mov = self._get_mov(df)
         return proc, parte, mov
-
-
-    def _add_columns(self, df):
-        regexes = self._get_regexes()
-        df2 = extract_regexes(
-            df['text'], regexes
-        )
-        df2 = df2.transform({
-            c.name: c.cleaner
-            for c in self.columns
-        })
-        df = (
-            df
-            .join(df2)
-            .query('number.notnull()')
-        )
-        df['proc_id'] = clean.generate_id(
-            df['number'],
-            suffix=self.id_suffix
-        )
+    
+    def _split_text(self, df):
+        if self.split_text_on:
+            df = split_col(
+                df, 'text',
+                split_on=self.split_text_on
+            ).reset_index()
         return df
 
+    def _add_cols(self, df):
+        df = df.join(
+            self._extract_cols(df.text)
+        )
+        df = df.query('number.notnull()')
+        df['proc_id'] = clean.generate_id(
+            df.number,
+            suffix=self.id_suffix
+        )
+        return df       
 
-    def _get_regexes(self):
-        return {
+    def _extract_cols(self, text):
+        regexes = {
             c.name: c.regex
             for c in self.columns
         }
-    
+        cleaners = {
+            c.name: c.cleaner
+            for c in self.columns
+        }
+        return extract_regexes(
+            text, regexes
+        ).transform(cleaners)
 
-    def _get_parte(self, text, regex_df):
+    def _get_parte(self, df):
+        proc_id = df['proc_id']
         df = extract_keywords(
-            text, self.parte
+            df['text'], self.parte
         )
+        df = self._split_parte(df)
+        df['parte'] = self._clean_parte_name(df)
+        df['key'] = self.parte_key_cleaner(df.key) 
+        df['tipo_parte'] = self.tipo_parte_cleaner(df.key)
+        df['tipo_parte_id'] = clean.transform(
+            df.tipo_parte, 'tipo_parte', 'tipo_parte_id'
+        )
+        df = self._drop_partes(df)
+        df = df.join(proc_id)
+        return df.loc[:, (
+            'proc_id', 'parte',
+            'key', 'tipo_parte_id'
+        )]
+
+    def _split_parte(self, df):
         df = split_col(
             df, 'name',
             split_on=self.split_parte_on
@@ -99,40 +116,26 @@ class Parser:
             df, 'lastname',
             split_on=self.split_parte_on
         )
+        return df
+    
+    def _clean_parte_name(self, df):    
         df = df.transform({
-            'name': clean.clean_parte,
-            'lastname': clean.clean_last_parte,            
-            'key': clean.clean_text
+            'name': self.parte_cleaner, 
+            'lastname': self.last_parte_cleaner
         })
-        df['name'] = np.where(
+        return np.where(
             df['name'] == '',
             df['lastname'], df['name']
         )
-        df = (
-            df
-            .drop(columns='lastname')
-            .query('name != ""')
-        )
-        df = df.loc[
-            (df.name.str.len() > 10) |
-            (df.name == 'mp')
-        ]    
-        parte = (
-            df
-            .join(regex_df.loc[:, ('proc_id', 'number')])
-            .drop_duplicates()
-            .rename(columns={'name': 'parte'})
-        )
-        parte['tipo_parte'] = clean.clean_tipo_parte(
-            parte['key']
-        )
-        parte['tipo_parte_id'] = clean.transform(
-            parte['tipo_parte'],
-            'tipo_parte', 'tipo_parte_id'
-        )
-        return parte
-            
 
+    def _drop_partes(self, df):
+        df = df.query('parte != ""')
+        df = df.loc[
+            (df.parte.str.len() > 10) |
+            (df.parte == 'mp')
+        ]
+        return df    
+    
     def _get_keywords(self):
         regex = [
             c.regex for c in self.keyword_cols
@@ -165,7 +168,6 @@ class Parser:
         )
         return proc
 
-
     def _get_mov(self, df):
         cols1 = [
             'diario', 'proc_id', 'date',
@@ -180,6 +182,19 @@ class Parser:
             mov['diario'], mov['caderno']
         )
         return mov
+
+
+number = DiarioVar(
+    name='number',
+    regex='[0-9.\-]{20,30}',
+    cleaner=clean.clean_number
+)
+
+classe = DiarioVar(
+    name='classe',
+    regex='AÇÃO.{5,50}?(?=\*|-)',
+    cleaner=clean.clean_classe
+)
     
 
 def split_col(df, name_col, split_on=',|-'):
@@ -194,18 +209,7 @@ def split_col(df, name_col, split_on=',|-'):
     names.name = name_col        
     df = df.drop(columns=name_col)
     return df.join(names).set_index('index')
-    
 
-def _clean_text(text):
-    return clean.clean_text(
-        text,
-        lower=False,
-        drop=None,
-        accents=True,
-        links=False,
-        newline=False
-    )
-    
 
 def parse_diario_extract(
         infile, nchar=None
@@ -271,9 +275,3 @@ def get_keyword_regex(
         '((?P<name>{1})|(?P<lastname>{2}))'
     ).format(keyword, name, last_name)
     return regex
-
-        
-
-
-
-

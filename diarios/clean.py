@@ -3,7 +3,10 @@ import numpy as np
 import glob
 from unidecode import unidecode
 import os
-
+import warnings
+warnings.filterwarnings(
+    'ignore', 'This pattern has match groups'
+)
 
 
 def clean_comarca(comarca):
@@ -101,6 +104,14 @@ def clean_classe(classes):
     return map_regex(classes, mapping)
 
 
+def clean_parte_key(keywords):
+    return (
+        clean_text(keywords)
+        .str.replace(' a?o?s?$', '')
+        .str.strip()
+    )
+
+    
 def clean_tipo_parte(keywords):
     mapping = {
         'interessado': 'third party',        
@@ -234,6 +245,7 @@ def clean_cnj_number(numbers, errors='coerce'):
         .fillna('')
         .str.extract(regex)
     )
+    df[0] = ('0000000' + df[0]).str[-7:]
     cleaned = (
         df[0] + '-' + df[2] + '.' + df[3] + '.' +
         df[5] + '.' + df[6] + '.' + df[7]
@@ -440,6 +452,17 @@ def get_caderno_id(diario, caderno):
     df = pd.concat([diario, caderno], axis=1)
     df2 = df.join(ids, on=['diario', 'caderno'])
     return df2['caderno_id']
+
+
+def clean_diario_text(text):
+    return clean_text(
+        text,
+        lower=False,
+        drop=None,
+        accents=True,
+        links=False,
+        newline=False
+    )
     
 
 def clean_text(
@@ -499,7 +522,6 @@ def get_data_file(datafile):
     return os.path.join(
         pkg_dir, "data", datafile
     )
-
 
 
 def generate_id(df, suffix=None):
