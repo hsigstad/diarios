@@ -3,6 +3,7 @@ import numpy as np
 import glob
 from unidecode import unidecode
 import os
+import re
 import warnings
 warnings.filterwarnings(
     'ignore', 'This pattern has match groups'
@@ -40,49 +41,29 @@ def clean_date(dates):
     )
 
 
-def clean_parte(partes):
-    partes = (
-        partes
-        .str.replace('[^ ]+:.*', '')
-    )
-    partes = clean_text(partes)
-    mp_regex = (
-        'ministerio publico|'
-        'justica publica'
-    )
-    partes.loc[
-        partes.str.contains(mp_regex)
-    ] = 'mp'
-    partes = (
-        partes
-        .str.replace('(^| )dra? ', '')
-        .str.replace('^(os?|as?|s) ', '')        
-        .str.replace(' e outro.*', '')
-        .str.strip()
-    )
-    return partes
-
-
-def clean_last_parte(partes):
-    partes = clean_parte(partes)
-    words = [
-        'visto', 'sentenca',
-        'despach', 'decisao',
-        'protocol', 'relat',
-        'recebo', 'isto',
-        'ante ', 'defiro',
-        'etc', 'intim',
-        'posto', 'dou ',
-        'conforme ', 'sobre ',
-        'com ', 'mainfest',
-        'tratase', 'dispoe',
-        'provimento', 'designa',
-        'tendo ', 'pelo ', 'ese '
-    ]
-    regex = ' {}.*'.format(
-        '|'.join(words)
-    )
-    partes = partes.str.replace(regex, '')
+def clean_parte(
+        partes,
+        remove='[^ ]+:.*',
+        remove_after=[
+            '(^| )dra? ',
+            '^(os?|as?|s) ',
+            ' e outro.*',
+            ' e$''[^ ]+:.*'
+        ],
+        mapping={
+            'ministerio publico': 'mp',
+            'justica publica': 'mp'
+        },
+        **kwargs
+    ):
+    if type(remove) == list:
+        remove = '|'.join(remove)        
+    if type(remove_after) == list:
+        remove_after = '|'.join(remove_after)
+    partes = partes.str.replace(remove, '')
+    partes = clean_text(partes, **kwargs)
+    partes = map_regex(partes, mapping)
+    partes = partes.str.replace(remove_after, '')    
     return partes
 
 
@@ -127,7 +108,54 @@ def clean_tipo_parte(keywords):
         'paciente': 'paciente'
     }
     return map_regex(keywords, mapping)
-    
+
+
+def get_procedencia(texts):
+    decision = texts.str.extract(
+        '((julgo .{0,20}procedentes?)( parcialmente )?( em parte.? )?)',
+        flags=re.IGNORECASE
+    )[0]
+    decision = clean_text(decision)
+    mapping = {
+        'julgo .{0,5}par.{0,10}procedente': 'parcialmente procedente',
+        'julgo.{0,5} procedentes? ((parcialmente)|(em parte))': 'parcialmente procedente',  
+        'julgo.{0,5} procedente': 'procedente',
+        'julgo.{0,5} improcedente': 'improcedente'
+    }
+    return map_regex(decision, mapping)    
+
+
+def get_plaintiffwins(decision, parcial=1):
+    return decision.map(
+        get_plaintiffwins_mapping(parcial=parcial)
+    )
+
+
+def get_plaintiffwins_mapping(parcial=1):
+    return {
+        "improcedente": 0,
+        "parcialmente procedente": parcial,
+        "procedente": 1,
+        "recebo inicial": 1,
+        "rejeito inicial": 0,        
+        "defiro liminar": 1,
+        "indefiro liminar": 0,
+        "defiro desbloqueio": 0,                
+        "indefiro desbloqueio": 1,
+        "defiro bloqueio": 1,
+        "indefiro bloqueio": 0,
+        "mantenho bloqueio": 1,        
+        "rejeito embargos": 1,
+        "preliminar não acholida": 1,
+        "extinto sem merito": 0,
+        "extinto punibilidade": 0,
+        "deram": 1,
+        "negar": 0,
+        "denegar": 0,
+        "rejeit": 0,
+        "nao conhecer": 0
+    }
+
 
 def clean_decision(decisions, grau='1'):
     decisions = clean_text(decisions)
@@ -166,6 +194,9 @@ def clean_decision(decisions, grau='1'):
 
 
 def map_regex(series, mapping, keep_unmatched=True):
+    if type(series) == np.ndarray:
+        series = pd.Series(series)
+    ix = series.index
     series = series.reset_index(drop=True)
     mapped = pd.Series(index=series.index)
     for key, val in mapping.items():
@@ -174,7 +205,17 @@ def map_regex(series, mapping, keep_unmatched=True):
         ] = val
     if keep_unmatched:
         mapped.loc[mapped.isnull()] = series
-    return mapped.values
+    mapped.index = ix
+    return mapped
+
+
+def remove_regexes(
+        texts, regex_list, flags='(?s)'
+    ):
+    for regex in regex_list:
+        regex = r'{}{}'.format(flags, regex)
+        texts = texts.str.replace(regex, '')
+    return texts
 
 
 def get_decision(texts, grau='1'):
@@ -450,6 +491,7 @@ def get_caderno_id(diario, caderno):
         )
     )
     df = pd.concat([diario, caderno], axis=1)
+    df.columns = ['diario', 'caderno']
     df2 = df.join(ids, on=['diario', 'caderno'])
     return df2['caderno_id']
 
@@ -461,7 +503,7 @@ def clean_diario_text(text):
         drop=None,
         accents=True,
         links=False,
-        newline=False
+        newline=True
     )
     
 
@@ -472,7 +514,9 @@ def clean_text(
     accents=False,
     links=False,
     newline=False,
-    pagebreak=False
+    pagebreak=False,
+    multiple_spaces=False,
+    strip=True
 ):
     text = text.fillna("").astype(str)
     if not links:
@@ -489,11 +533,10 @@ def clean_text(
         text = text.str.replace(
             '[{}]'.format(drop), ''
         )
-    text = (
-        text
-        .str.replace("  +", " ")
-        .str.strip()        
-    )
+    if not multiple_spaces:
+        text = text.str.replace("  +", " ")
+    if strip:
+        text = text.str.strip()
     return text
 
 

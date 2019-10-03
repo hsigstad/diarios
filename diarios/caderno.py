@@ -2,15 +2,13 @@ import pandas as pd
 import os
 import glob
 import re
-import importlib
 os.chdir('/home/henrik/Dropbox/brazil/diarios')
-import diarios
-importlib.reload(diarios)
+from diarios.misc import get_user_config
 os.chdir('/home/henrik/Dropbox/brazil/diarios/diarios')
 
 
 def main():
-    indir = diarios.get_user_config(
+    indir = get_user_config(
         'external_local_directory'
     )
     diario_names = os.listdir(

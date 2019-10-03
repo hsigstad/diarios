@@ -1,3 +1,5 @@
+import os
+os.chdir('/home/henrik/Dropbox/brazil/diarios')
 from diarios import clean
 import unittest
 import numpy as np
@@ -73,6 +75,22 @@ class TestFunctions(unittest.TestCase):
             clean.get_filing_year(numbers).sort_index()==years.sort_index()
         ))
 
+    def test_map_regex(self):
+        in_series = pd.Series(
+            ['abc', 'aab', 'xyz'],
+            index=[5,5,2]
+        )
+        mapping = {
+            'ab': 'yyy',            
+            'a': 'xxx',
+            '^xy': 'zzz'
+        }
+        out_series = clean.map_regex(in_series, mapping)
+        out_series2 = pd.Series(
+            ['yyy', 'yyy', 'zzz'],
+            index=[5,5,2]
+        )
+        self.assertTrue(all(out_series==out_series2))
 
 
 if __name__ == '__main__':

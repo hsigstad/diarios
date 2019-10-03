@@ -11,9 +11,11 @@ Base = declarative_base()
 class Proc(Base):
     __tablename__ = 'proc'
     proc_id = Column(BigInteger, primary_key=True)
+    number = Column(String(50))
     tribunal_id = Column(Integer)
     comarca_id = Column(Integer)
-    filingyear = Column(Integer)    
+    filingyear = Column(Integer)
+    classe = Column(String(255))
     def __repr__(self):
         return "Proc('%s')" % self.numero
 

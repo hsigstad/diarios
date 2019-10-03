@@ -1,529 +1,534 @@
 caderno_id,caderno,diario
-1,paginas sem caderno,DJAC
-2,jurisdicional - primeiro grau,DJAL
-3,jurisdicional e administrativo,DJAL
-4,administrativo,DJAM
-5,distribuicao e eliminacao de processos judiciais,DJAM
-6,judiciario,DJAM
-7,judiciario - interior,DJAM
-8,paginas sem caderno,DJAP
-9,caderno 1 - administrativo,DJBA
-10,caderno 2 - entrancia final - capital,DJBA
-11,caderno 3 - entrancia intermediaria,DJBA
-12,caderno 4 - entrancia inicial,DJBA
-13,administrativo,DJCE
-14,judiciario,DJCE
-15,paginas sem caderno,DJCE
-16,paginas sem caderno,DJDF
-17,edicao diaria,DJES
-18,paginas sem caderno,DJES
-19,paginas sem caderno,DJGO
-20,secao i,DJGO
-21,secao ii,DJGO
-22,secao iii,DJGO
-23,suplemento,DJGO
-24,suplemento - secao i,DJGO
-25,"suplemento - secao i, 2a parte",DJGO
-26,suplemento - secao ii,DJGO
-27,"suplemento - secao ii, 2a parte",DJGO
-28,suplemento - secao iii,DJGO
-29,"suplemento - secao iii, 2a parte",DJGO
-30,suplemento 1,DJGO
-31,suplemento 10,DJGO
-32,suplemento 2,DJGO
-33,suplemento 3,DJGO
-34,suplemento 4,DJGO
-35,suplemento 5,DJGO
-36,suplemento 6,DJGO
-37,suplemento 7,DJGO
-38,suplemento 8,DJGO
-39,suplemento 9,DJGO
-40,paginas sem caderno,DJMA
-41,suplemento,DJMA
-42,2a inst. judicial,DJMG
-43,abaete,DJMG
-44,abre-campo,DJMG
-45,acucena,DJMG
-46,administrativo,DJMG
-47,aguas formosas,DJMG
-48,aimores,DJMG
-49,aiuruoca,DJMG
-50,alem paraiba,DJMG
-51,alfenas,DJMG
-52,almenara,DJMG
-53,alpinopolis,DJMG
-54,alto rio doce,DJMG
-55,alvinopolis,DJMG
-56,andradas,DJMG
-57,andrelandia,DJMG
-58,aracuai,DJMG
-59,araguari,DJMG
-60,araxa,DJMG
-61,arcos,DJMG
-62,areado,DJMG
-63,arinos,DJMG
-64,baependi,DJMG
-65,bambui,DJMG
-66,barao de cocais,DJMG
-67,barbacena,DJMG
-68,barroso,DJMG
-69,belo horizonte,DJMG
-70,belo vale,DJMG
-71,betim,DJMG
-72,bicas,DJMG
-73,boa esperanca,DJMG
-74,bocaiuva,DJMG
-75,bom despacho,DJMG
-76,bom sucesso,DJMG
-77,bonfim,DJMG
-78,bonfinopolis de minas,DJMG
-79,borda da mata,DJMG
-80,botelhos,DJMG
-81,brasilia de minas,DJMG
-82,brasopolis,DJMG
-83,brumadinho,DJMG
-84,bueno brandao,DJMG
-85,buenopolis,DJMG
-86,buritis,DJMG
-87,cabo verde,DJMG
-88,cachoeira de minas,DJMG
-89,caete,DJMG
-90,caldas,DJMG
-91,camanducaia,DJMG
-92,cambui,DJMG
-93,cambuquira,DJMG
-94,campanha,DJMG
-95,campestre,DJMG
-96,campina verde,DJMG
-97,campo belo,DJMG
-98,campos altos,DJMG
-99,campos gerais,DJMG
-100,canapolis,DJMG
-101,candeias,DJMG
-102,capelinha,DJMG
-103,capinopolis,DJMG
-104,carandai,DJMG
-105,carangola,DJMG
-106,caratinga,DJMG
-107,carlos chagas,DJMG
-108,carmo da mata,DJMG
-109,carmo de minas,DJMG
-110,carmo do cajuru,DJMG
-111,carmo do paranaiba,DJMG
-112,carmo do rio claro,DJMG
-113,carmopolis de minas,DJMG
-114,cassia,DJMG
-115,cataguases,DJMG
-116,caxambu,DJMG
-117,claudio,DJMG
-118,conceicao das alagoas,DJMG
-119,conceicao do rio verde,DJMG
-120,conceicao mato dentro,DJMG
-121,congonhas,DJMG
-122,conquista,DJMG
-123,conselheiro lafaiete,DJMG
-124,conselheiro pena,DJMG
-125,contagem,DJMG
-126,coracao de jesus,DJMG
-127,corinto,DJMG
-128,coromandel,DJMG
-129,coronel fabriciano,DJMG
-130,cristina,DJMG
-131,cruzilia,DJMG
-132,curvelo,DJMG
-133,diamantina,DJMG
-134,divino,DJMG
-135,divinopolis,DJMG
-136,dores do indaia,DJMG
-137,editais,DJMG
-138,eloi mendes,DJMG
-139,entre rios de minas,DJMG
-140,ervalia,DJMG
-141,esmeraldas,DJMG
-142,espera feliz,DJMG
-143,espinosa,DJMG
-144,estrela do sul,DJMG
-145,eugenopolis,DJMG
-146,extrema,DJMG
-147,ferros,DJMG
-148,formiga,DJMG
-149,francisco sa,DJMG
-150,frutal,DJMG
-151,galileia,DJMG
-152,governador valadares,DJMG
-153,grao-mogol,DJMG
-154,guanhaes,DJMG
-155,guape,DJMG
-156,guaranesia,DJMG
-157,guarani,DJMG
-158,guaxupe,DJMG
-159,ibia,DJMG
-160,ibiraci,DJMG
-161,ibirite,DJMG
-162,igarape,DJMG
-163,iguatama,DJMG
-164,inhapim,DJMG
-165,ipanema,DJMG
-166,ipatinga,DJMG
-167,itabira,DJMG
-168,itabirito,DJMG
-169,itaguara,DJMG
-170,itajuba,DJMG
-171,itamarandiba,DJMG
-172,itambacuri,DJMG
-173,itamoji,DJMG
-174,itamonte,DJMG
-175,itanhandu,DJMG
-176,itanhomi,DJMG
-177,itapajipe,DJMG
-178,itapecerica,DJMG
-179,itauna,DJMG
-180,ituiutaba,DJMG
-181,itumirim,DJMG
-182,iturama,DJMG
-183,jaboticatubas,DJMG
-184,jacinto,DJMG
-185,jacui,DJMG
-186,jacutinga,DJMG
-187,janauba,DJMG
-188,januaria,DJMG
-189,jequeri,DJMG
-190,jequitinhonha,DJMG
-191,joao monlevade,DJMG
-192,joao pinheiro,DJMG
-193,juiz de fora,DJMG
-194,lagoa da prata,DJMG
-195,lagoa santa,DJMG
-196,lajinha,DJMG
-197,lambari,DJMG
-198,lavras,DJMG
-199,leopoldina,DJMG
-200,lima duarte,DJMG
-201,luz,DJMG
-202,machado,DJMG
-203,malacacheta,DJMG
-204,manga,DJMG
-205,manhuacu,DJMG
-206,manhumirim,DJMG
-207,mantena,DJMG
-208,mar de espanha,DJMG
-209,mariana,DJMG
-210,martinho campos,DJMG
-211,mateus leme,DJMG
-212,matias barbosa,DJMG
-213,matozinhos,DJMG
-214,medina,DJMG
-215,merces,DJMG
-216,mesquita,DJMG
-217,minas novas,DJMG
-218,miradouro,DJMG
-219,mirai,DJMG
-220,montalvania,DJMG
-221,monte alegre de minas,DJMG
-222,monte azul,DJMG
-223,monte belo,DJMG
-224,monte carmelo,DJMG
-225,monte santo de minas,DJMG
-226,monte siao,DJMG
-227,montes claros,DJMG
-228,morada nova de minas,DJMG
-229,muriae,DJMG
-230,mutum,DJMG
-231,muzambinho,DJMG
-232,nanuque,DJMG
-233,natercia,DJMG
-234,nepomuceno,DJMG
-235,nova era,DJMG
-236,nova lima,DJMG
-237,nova ponte,DJMG
-238,nova resende,DJMG
-239,nova serrana,DJMG
-240,novo cruzeiro,DJMG
-241,oliveira,DJMG
-242,ouro branco,DJMG
-243,ouro fino,DJMG
-244,ouro preto,DJMG
-245,palma,DJMG
-246,para de minas,DJMG
-247,paracatu,DJMG
-248,paraguacu,DJMG
-249,paraisopolis,DJMG
-250,paraopeba,DJMG
-251,passa-quatro,DJMG
-252,passa-tempo,DJMG
-253,passos,DJMG
-254,patos de minas,DJMG
-255,patrocinio,DJMG
-256,pecanha,DJMG
-257,pedra azul,DJMG
-258,pedralva,DJMG
-259,pedro leopoldo,DJMG
-260,perdizes,DJMG
-261,perdoes,DJMG
-262,piranga,DJMG
-263,pirapetinga,DJMG
-264,pirapora,DJMG
-265,pitangui,DJMG
-266,piumhi,DJMG
-267,poco fundo,DJMG
-268,pocos de caldas,DJMG
-269,pompeu,DJMG
-270,ponte nova,DJMG
-271,porteirinha,DJMG
-272,pouso alegre,DJMG
-273,prados,DJMG
-274,prata,DJMG
-275,pratapolis,DJMG
-276,presidente olegario,DJMG
-277,raul soares,DJMG
-278,resende costa,DJMG
-279,resplendor,DJMG
-280,ribeirao das neves,DJMG
-281,rio casca,DJMG
-282,rio novo,DJMG
-283,rio paranaiba,DJMG
-284,rio pardo de minas,DJMG
-285,rio piracicaba,DJMG
-286,rio pomba,DJMG
-287,rio preto,DJMG
-288,rio vermelho,DJMG
-289,sabara,DJMG
-290,sabinopolis,DJMG
-291,sacramento,DJMG
-292,salinas,DJMG
-293,santa barbara,DJMG
-294,santa luzia,DJMG
-295,santa maria do suacui,DJMG
-296,santa rita de caldas,DJMG
-297,santa rita sapucai,DJMG
-298,santa vitoria,DJMG
-299,santo antonio do monte,DJMG
-300,santos dumont,DJMG
-301,sao domingos do prata,DJMG
-302,sao francisco,DJMG
-303,sao goncalo sapucai,DJMG
-304,sao gotardo,DJMG
-305,sao joao da ponte,DJMG
-306,sao joao del rey,DJMG
-307,sao joao do paraiso,DJMG
-308,sao joao evangelista,DJMG
-309,sao joao nepomuceno,DJMG
-310,sao lourenco,DJMG
-311,sao romao,DJMG
-312,sao roque de minas,DJMG
-313,sao sebastiao paraiso,DJMG
-314,senador firmino,DJMG
-315,serro,DJMG
-316,sete lagoas,DJMG
-317,silvianopolis,DJMG
-318,taiobeiras,DJMG
-319,tarumirim,DJMG
-320,teixeiras,DJMG
-321,teofilo otoni,DJMG
-322,timoteo,DJMG
-323,tiros,DJMG
-324,tombos,DJMG
-325,tres coracoes,DJMG
-326,tres marias,DJMG
-327,tres pontas,DJMG
-328,tupaciguara,DJMG
-329,turmalina,DJMG
-330,uba,DJMG
-331,uberaba,DJMG
-332,uberlandia,DJMG
-333,unai,DJMG
-334,varginha,DJMG
-335,varzea da palma,DJMG
-336,vazante,DJMG
-337,vespasiano,DJMG
-338,vicosa,DJMG
-339,virginopolis,DJMG
-340,visconde rio branco,DJMG
-341,caderno 1 - administrativo,DJMS
-342,caderno 2 - judicial - 2a instancia,DJMS
-343,caderno 3 - judicial - 1a instancia,DJMS
-344,caderno 4 - editais,DJMS
-345,paginas sem caderno,DJMS
-346,suplemento,DJMS
-347,comarcas - 1a 2a e 3a entrancia,DJMT
-348,comarcas - 2a entrancia - agua boa a juara,DJMT
-349,comarcas - 2a entrancia - juina a vila rica,DJMT
-350,comarcas - 3a entrancia - primavera do leste,DJMT
-351,comarcas - 3a entrancia - sorriso a lucas,DJMT
-352,comarcas - entrancia especial,DJMT
-353,comarcas - entrancia especial - cuiaba,DJMT
-354,comarcas - entrancia especial - demais comarcas,DJMT
-355,comarcas - primeira entrancia,DJMT
-356,comarcas - segunda entrancia,DJMT
-357,comarcas - terceira entrancia,DJMT
-358,entrancia especial - cuiaba - demais varas,DJMT
-359,entrancia especial - cuiaba - varas civeis,DJMT
-360,entrancia especial - demais comarcas,DJMT
-361,entrancia especial - sinop e varzea grande,DJMT
-362,foro extrajudicial,DJMT
-363,paginas sem caderno,DJMT
-364,tribunal de justica,DJMT
-365,paginas sem caderno,DJPA
-366,paginas sem caderno,DJPB
-367,paginas sem caderno,DJPE
-368,paginas sem caderno,DJPI
-369,paginas sem caderno,DJPR
-370,I - Administrativo,DJRJ
-371,V - Editais e demais publicacoes,DJRJ
-372,i - administrativo,DJRJ
-373,i-administrativo,DJRJ
-374,ii - judicial - 2a instancia,DJRJ
-375,ii-judicial-2a-instancia,DJRJ
-376,iii - judicial - 1a instancia (capital),DJRJ
-377,iii-judicial-1a-instancia-capital,DJRJ
-378,iv - judicial - 1a instancia (interior),DJRJ
-379,iv-judicial-1a-instancia-interior,DJRJ
-380,v - editais e demais publicacoes,DJRJ
-381,v-editais-e-demais-publicacoes,DJRJ
-382,administrativo,DJRN
-383,judicial,DJRN
-384,paginas sem caderno,DJRO
-385,paginas sem caderno,DJRR
-386,administrativa e judicial,DJRS
-387,capital 1o grau,DJRS
-388,capital 2o grau,DJRS
-389,comarcas do interior,DJRS
-390,editais,DJRS
-391,editais 1o e 2o grau,DJRS
-392,extra,DJRS
-393,foro central e regionais,DJRS
-394,interior 1o grau,DJRS
-395,tribunal de justica,DJRS
-396,caderno administrativo do poder judiciario,DJSC
-397,caderno jurisdicional das comarcas,DJSC
-398,caderno jurisdicional das turmas de recursos e de uniformizacao,DJSC
-399,caderno jurisdicional do tribunal de justica,DJSC
-400,paginas sem caderno,DJSC
-401,edicao especial,DJSE
-402,paginas sem caderno,DJSE
-403,suplemento,DJSE
-404,paginas sem caderno,DJTO
-405,suplemento,DJTO
-406,suplemento 2,DJTO
-407,paginas sem caderno,MP-MG
-408,edicao extra,TRE-AC
-409,paginas sem caderno,TRE-AC
-410,edicao extra,TRE-AL
-411,paginas sem caderno,TRE-AL
-412,edicao extra,TRE-AM
-413,paginas sem caderno,TRE-AM
-414,edicao extra,TRE-AP
-415,paginas sem caderno,TRE-AP
-416,edicao extra,TRE-BA
-417,paginas sem caderno,TRE-BA
-418,edicao extra,TRE-CE
-419,paginas sem caderno,TRE-CE
-420,edicao extra,TRE-DF
-421,paginas sem caderno,TRE-DF
-422,edicao extra,TRE-ES
-423,paginas sem caderno,TRE-ES
-424,edicao extra,TRE-GO
-425,paginas sem caderno,TRE-GO
-426,edicao extra,TRE-MA
-427,edicao extra ii,TRE-MA
-428,paginas sem caderno,TRE-MA
-429,edicao extra,TRE-MG
-430,paginas sem caderno,TRE-MG
-431,edicao extra,TRE-MS
-432,paginas sem caderno,TRE-MS
-433,edicao extra,TRE-MT
-434,paginas sem caderno,TRE-MT
-435,paginas sem caderno,TRE-PA
-436,paginas sem caderno,TRE-PB
-437,edicao extra,TRE-PE
-438,edicao extra ii,TRE-PE
-439,paginas sem caderno,TRE-PE
-440,edicao extra,TRE-PI
-441,paginas sem caderno,TRE-PI
-442,paginas sem caderno,TRE-PR
-443,edicao extra,TRE-RJ
-444,edicao extra ii,TRE-RJ
-445,edicao extra iii,TRE-RJ
-446,paginas sem caderno,TRE-RJ
-447,edicao extra,TRE-RN
-448,paginas sem caderno,TRE-RN
-449,edicao extra,TRE-RO
-450,paginas sem caderno,TRE-RO
-451,paginas sem caderno,TRE-RR
-452,paginas sem caderno,TRE-RS
-453,edicao extra,TRE-SC
-454,paginas sem caderno,TRE-SC
-455,edicao extra,TRE-SE
-456,paginas sem caderno,TRE-SE
-457,edicao extra,TRE-SP
-458,edicao extra ii,TRE-SP
-459,paginas sem caderno,TRE-SP
-460,paginas sem caderno,TRE-TO
-461,caderno administrativo - trf1,TRF-1
-462,caderno judicial - extra - trf1,TRF-1
-463,caderno judicial - rep. - trf1,TRF-1
-464,caderno judicial - sjac,TRF-1
-465,caderno judicial - sjam,TRF-1
-466,caderno judicial - sjap,TRF-1
-467,caderno judicial - sjba,TRF-1
-468,caderno judicial - sjdf,TRF-1
-469,caderno judicial - sjgo,TRF-1
-470,caderno judicial - sjma,TRF-1
-471,caderno judicial - sjmg,TRF-1
-472,caderno judicial - sjmt,TRF-1
-473,caderno judicial - sjpa,TRF-1
-474,caderno judicial - sjpi,TRF-1
-475,caderno judicial - sjro,TRF-1
-476,caderno judicial - sjrr,TRF-1
-477,caderno judicial - sjto,TRF-1
-478,caderno judicial - trf1,TRF-1
-479,paginas sem caderno,TRF-1
-480,administrativo - jfes,TRF-2
-481,administrativo - jfrj,TRF-2
-482,administrativo - trf,TRF-2
-483,judicial - jfes,TRF-2
-484,judicial - jfrj,TRF-2
-485,judicial - trf,TRF-2
-486,administrativo,TRF-3
-487,judicial i - capital sp,TRF-3
-488,judicial i - interior sp e ms,TRF-3
-489,judicial i - jef,TRF-3
-490,judicial i - trf,TRF-3
-491,judicial ii - capital sp,TRF-3
-492,judicial ii - interior sp e ms,TRF-3
-493,judicial ii - jef,TRF-3
-494,judicial ii - trf,TRF-3
-495,administrativo,TRF-4
-496,edicao extraordinaria - administrativo,TRF-4
-497,edicao extraordinaria - judicial,TRF-4
-498,judicial,TRF-4
-499,adm1,TRF-5
-500,jud_pe2,TRF-5
-501,paginas sem caderno,TRF-5
-502,secao judiciaria da paraiba - edicao administrativa,TRF-5
-503,secao judiciaria da paraiba - edicao judicial,TRF-5
-504,secao judiciaria da paraiba - edicao judicial - 1,TRF-5
-505,secao judiciaria de alagoas - edicao administrativa,TRF-5
-506,secao judiciaria de alagoas - edicao administrativa - 1,TRF-5
-507,secao judiciaria de alagoas - edicao judicial,TRF-5
-508,secao judiciaria de alagoas - edicao judicial - 1,TRF-5
-509,secao judiciaria de alagoas - edicao judicial - 2,TRF-5
-510,secao judiciaria de alagoas - edicao judicial - 3,TRF-5
-511,secao judiciaria de pernambuco - edicao administrativa,TRF-5
-512,secao judiciaria de pernambuco - edicao administrativa - 1,TRF-5
-513,secao judiciaria de pernambuco - edicao judicial,TRF-5
-514,secao judiciaria de pernambuco - edicao judicial - 1,TRF-5
-515,secao judiciaria de sergipe - edicao administrativa,TRF-5
-516,secao judiciaria de sergipe - edicao judicial,TRF-5
-517,secao judiciaria do ceara - edicao administrativa,TRF-5
-518,secao judiciaria do ceara - edicao judicial,TRF-5
-519,secao judiciaria do rio grande do norte - edicao administrativa,TRF-5
-520,secao judiciaria do rio grande do norte - edicao administrativa - 1,TRF-5
-521,secao judiciaria do rio grande do norte - edicao judicial,TRF-5
-522,secao judiciaria do rio grande do norte - edicao judicial - 1,TRF-5
-523,secao judiciaria do rio grande do norte - edicao judicial - 2,TRF-5
-524,trf-5 - edicao administrativa,TRF-5
-525,trf-5 - edicao judicial,TRF-5
-526,edicao extra,TSE
-527,edicao extra ii,TSE
-528,paginas sem caderno,TSE
+1,paginas sem caderno,MP-MG
+2,paginas sem caderno,TJAC
+3,jurisdicional - primeiro grau,TJAL
+4,jurisdicional e administrativo,TJAL
+5,administrativo,TJAM
+6,distribuicao e eliminacao de processos judiciais,TJAM
+7,judiciario,TJAM
+8,judiciario - interior,TJAM
+9,paginas sem caderno,TJAP
+10,caderno 1 - administrativo,TJBA
+11,caderno 2 - entrancia final - capital,TJBA
+12,caderno 3 - entrancia intermediaria,TJBA
+13,caderno 4 - entrancia inicial,TJBA
+14,administrativo,TJCE
+15,judiciario,TJCE
+16,paginas sem caderno,TJCE
+17,paginas sem caderno,TJDF
+18,edicao diaria,TJES
+19,paginas sem caderno,TJES
+20,paginas sem caderno,TJGO
+21,secao i,TJGO
+22,secao ii,TJGO
+23,secao iii,TJGO
+24,suplemento,TJGO
+25,suplemento - secao i,TJGO
+26,"suplemento - secao i, 2a parte",TJGO
+27,suplemento - secao ii,TJGO
+28,"suplemento - secao ii, 2a parte",TJGO
+29,suplemento - secao iii,TJGO
+30,"suplemento - secao iii, 2a parte",TJGO
+31,suplemento 1,TJGO
+32,suplemento 10,TJGO
+33,suplemento 2,TJGO
+34,suplemento 3,TJGO
+35,suplemento 4,TJGO
+36,suplemento 5,TJGO
+37,suplemento 6,TJGO
+38,suplemento 7,TJGO
+39,suplemento 8,TJGO
+40,suplemento 9,TJGO
+41,paginas sem caderno,TJMA
+42,suplemento,TJMA
+43,2a inst. judicial,TJMG
+44,abaete,TJMG
+45,abre-campo,TJMG
+46,acucena,TJMG
+47,administrativo,TJMG
+48,aguas formosas,TJMG
+49,aimores,TJMG
+50,aiuruoca,TJMG
+51,alem paraiba,TJMG
+52,alfenas,TJMG
+53,almenara,TJMG
+54,alpinopolis,TJMG
+55,alto rio doce,TJMG
+56,alvinopolis,TJMG
+57,andradas,TJMG
+58,andrelandia,TJMG
+59,aracuai,TJMG
+60,araguari,TJMG
+61,araxa,TJMG
+62,arcos,TJMG
+63,areado,TJMG
+64,arinos,TJMG
+65,baependi,TJMG
+66,bambui,TJMG
+67,barao de cocais,TJMG
+68,barbacena,TJMG
+69,barroso,TJMG
+70,belo horizonte,TJMG
+71,belo vale,TJMG
+72,betim,TJMG
+73,bicas,TJMG
+74,boa esperanca,TJMG
+75,bocaiuva,TJMG
+76,bom despacho,TJMG
+77,bom sucesso,TJMG
+78,bonfim,TJMG
+79,bonfinopolis de minas,TJMG
+80,borda da mata,TJMG
+81,botelhos,TJMG
+82,brasilia de minas,TJMG
+83,brasopolis,TJMG
+84,brumadinho,TJMG
+85,bueno brandao,TJMG
+86,buenopolis,TJMG
+87,buritis,TJMG
+88,cabo verde,TJMG
+89,cachoeira de minas,TJMG
+90,caete,TJMG
+91,caldas,TJMG
+92,camanducaia,TJMG
+93,cambui,TJMG
+94,cambuquira,TJMG
+95,campanha,TJMG
+96,campestre,TJMG
+97,campina verde,TJMG
+98,campo belo,TJMG
+99,campos altos,TJMG
+100,campos gerais,TJMG
+101,canapolis,TJMG
+102,candeias,TJMG
+103,capelinha,TJMG
+104,capinopolis,TJMG
+105,carandai,TJMG
+106,carangola,TJMG
+107,caratinga,TJMG
+108,carlos chagas,TJMG
+109,carmo da mata,TJMG
+110,carmo de minas,TJMG
+111,carmo do cajuru,TJMG
+112,carmo do paranaiba,TJMG
+113,carmo do rio claro,TJMG
+114,carmopolis de minas,TJMG
+115,cassia,TJMG
+116,cataguases,TJMG
+117,caxambu,TJMG
+118,claudio,TJMG
+119,conceicao das alagoas,TJMG
+120,conceicao do rio verde,TJMG
+121,conceicao mato dentro,TJMG
+122,congonhas,TJMG
+123,conquista,TJMG
+124,conselheiro lafaiete,TJMG
+125,conselheiro pena,TJMG
+126,contagem,TJMG
+127,coracao de jesus,TJMG
+128,corinto,TJMG
+129,coromandel,TJMG
+130,coronel fabriciano,TJMG
+131,cristina,TJMG
+132,cruzilia,TJMG
+133,curvelo,TJMG
+134,diamantina,TJMG
+135,divino,TJMG
+136,divinopolis,TJMG
+137,dores do indaia,TJMG
+138,editais,TJMG
+139,eloi mendes,TJMG
+140,entre rios de minas,TJMG
+141,ervalia,TJMG
+142,esmeraldas,TJMG
+143,espera feliz,TJMG
+144,espinosa,TJMG
+145,estrela do sul,TJMG
+146,eugenopolis,TJMG
+147,extrema,TJMG
+148,ferros,TJMG
+149,formiga,TJMG
+150,francisco sa,TJMG
+151,frutal,TJMG
+152,galileia,TJMG
+153,governador valadares,TJMG
+154,grao-mogol,TJMG
+155,guanhaes,TJMG
+156,guape,TJMG
+157,guaranesia,TJMG
+158,guarani,TJMG
+159,guaxupe,TJMG
+160,ibia,TJMG
+161,ibiraci,TJMG
+162,ibirite,TJMG
+163,igarape,TJMG
+164,iguatama,TJMG
+165,inhapim,TJMG
+166,ipanema,TJMG
+167,ipatinga,TJMG
+168,itabira,TJMG
+169,itabirito,TJMG
+170,itaguara,TJMG
+171,itajuba,TJMG
+172,itamarandiba,TJMG
+173,itambacuri,TJMG
+174,itamoji,TJMG
+175,itamonte,TJMG
+176,itanhandu,TJMG
+177,itanhomi,TJMG
+178,itapajipe,TJMG
+179,itapecerica,TJMG
+180,itauna,TJMG
+181,ituiutaba,TJMG
+182,itumirim,TJMG
+183,iturama,TJMG
+184,jaboticatubas,TJMG
+185,jacinto,TJMG
+186,jacui,TJMG
+187,jacutinga,TJMG
+188,janauba,TJMG
+189,januaria,TJMG
+190,jequeri,TJMG
+191,jequitinhonha,TJMG
+192,joao monlevade,TJMG
+193,joao pinheiro,TJMG
+194,juiz de fora,TJMG
+195,lagoa da prata,TJMG
+196,lagoa santa,TJMG
+197,lajinha,TJMG
+198,lambari,TJMG
+199,lavras,TJMG
+200,leopoldina,TJMG
+201,lima duarte,TJMG
+202,luz,TJMG
+203,machado,TJMG
+204,malacacheta,TJMG
+205,manga,TJMG
+206,manhuacu,TJMG
+207,manhumirim,TJMG
+208,mantena,TJMG
+209,mar de espanha,TJMG
+210,mariana,TJMG
+211,martinho campos,TJMG
+212,mateus leme,TJMG
+213,matias barbosa,TJMG
+214,matozinhos,TJMG
+215,medina,TJMG
+216,merces,TJMG
+217,mesquita,TJMG
+218,minas novas,TJMG
+219,miradouro,TJMG
+220,mirai,TJMG
+221,montalvania,TJMG
+222,monte alegre de minas,TJMG
+223,monte azul,TJMG
+224,monte belo,TJMG
+225,monte carmelo,TJMG
+226,monte santo de minas,TJMG
+227,monte siao,TJMG
+228,montes claros,TJMG
+229,morada nova de minas,TJMG
+230,muriae,TJMG
+231,mutum,TJMG
+232,muzambinho,TJMG
+233,nanuque,TJMG
+234,natercia,TJMG
+235,nepomuceno,TJMG
+236,nova era,TJMG
+237,nova lima,TJMG
+238,nova ponte,TJMG
+239,nova resende,TJMG
+240,nova serrana,TJMG
+241,novo cruzeiro,TJMG
+242,oliveira,TJMG
+243,ouro branco,TJMG
+244,ouro fino,TJMG
+245,ouro preto,TJMG
+246,palma,TJMG
+247,para de minas,TJMG
+248,paracatu,TJMG
+249,paraguacu,TJMG
+250,paraisopolis,TJMG
+251,paraopeba,TJMG
+252,passa-quatro,TJMG
+253,passa-tempo,TJMG
+254,passos,TJMG
+255,patos de minas,TJMG
+256,patrocinio,TJMG
+257,pecanha,TJMG
+258,pedra azul,TJMG
+259,pedralva,TJMG
+260,pedro leopoldo,TJMG
+261,perdizes,TJMG
+262,perdoes,TJMG
+263,piranga,TJMG
+264,pirapetinga,TJMG
+265,pirapora,TJMG
+266,pitangui,TJMG
+267,piumhi,TJMG
+268,poco fundo,TJMG
+269,pocos de caldas,TJMG
+270,pompeu,TJMG
+271,ponte nova,TJMG
+272,porteirinha,TJMG
+273,pouso alegre,TJMG
+274,prados,TJMG
+275,prata,TJMG
+276,pratapolis,TJMG
+277,presidente olegario,TJMG
+278,raul soares,TJMG
+279,resende costa,TJMG
+280,resplendor,TJMG
+281,ribeirao das neves,TJMG
+282,rio casca,TJMG
+283,rio novo,TJMG
+284,rio paranaiba,TJMG
+285,rio pardo de minas,TJMG
+286,rio piracicaba,TJMG
+287,rio pomba,TJMG
+288,rio preto,TJMG
+289,rio vermelho,TJMG
+290,sabara,TJMG
+291,sabinopolis,TJMG
+292,sacramento,TJMG
+293,salinas,TJMG
+294,santa barbara,TJMG
+295,santa luzia,TJMG
+296,santa maria do suacui,TJMG
+297,santa rita de caldas,TJMG
+298,santa rita sapucai,TJMG
+299,santa vitoria,TJMG
+300,santo antonio do monte,TJMG
+301,santos dumont,TJMG
+302,sao domingos do prata,TJMG
+303,sao francisco,TJMG
+304,sao goncalo sapucai,TJMG
+305,sao gotardo,TJMG
+306,sao joao da ponte,TJMG
+307,sao joao del rey,TJMG
+308,sao joao do paraiso,TJMG
+309,sao joao evangelista,TJMG
+310,sao joao nepomuceno,TJMG
+311,sao lourenco,TJMG
+312,sao romao,TJMG
+313,sao roque de minas,TJMG
+314,sao sebastiao paraiso,TJMG
+315,senador firmino,TJMG
+316,serro,TJMG
+317,sete lagoas,TJMG
+318,silvianopolis,TJMG
+319,taiobeiras,TJMG
+320,tarumirim,TJMG
+321,teixeiras,TJMG
+322,teofilo otoni,TJMG
+323,timoteo,TJMG
+324,tiros,TJMG
+325,tombos,TJMG
+326,tres coracoes,TJMG
+327,tres marias,TJMG
+328,tres pontas,TJMG
+329,tupaciguara,TJMG
+330,turmalina,TJMG
+331,uba,TJMG
+332,uberaba,TJMG
+333,uberlandia,TJMG
+334,unai,TJMG
+335,varginha,TJMG
+336,varzea da palma,TJMG
+337,vazante,TJMG
+338,vespasiano,TJMG
+339,vicosa,TJMG
+340,virginopolis,TJMG
+341,visconde rio branco,TJMG
+342,caderno 1 - administrativo,TJMS
+343,caderno 2 - judicial - 2a instancia,TJMS
+344,caderno 3 - judicial - 1a instancia,TJMS
+345,caderno 4 - editais,TJMS
+346,paginas sem caderno,TJMS
+347,suplemento,TJMS
+348,comarcas - 1a 2a e 3a entrancia,TJMT
+349,comarcas - 2a entrancia - agua boa a juara,TJMT
+350,comarcas - 2a entrancia - juina a vila rica,TJMT
+351,comarcas - 3a entrancia - a_floresta a diamantino,TJMT
+352,comarcas - 3a entrancia - primavera do leste,TJMT
+353,comarcas - 3a entrancia - sorriso a lucas,TJMT
+354,comarcas - entrancia especial,TJMT
+355,comarcas - entrancia especial - cuiaba,TJMT
+356,comarcas - entrancia especial - demais comarcas,TJMT
+357,comarcas - primeira entrancia,TJMT
+358,comarcas - segunda entrancia,TJMT
+359,comarcas - terceira entrancia,TJMT
+360,cuiaba varas civeis - 1o a 9o vara civel,TJMT
+361,cuiaba varas civeis - demais varas civeis,TJMT
+362,entrancia especial - cuiaba - demais varas,TJMT
+363,entrancia especial - cuiaba - varas civeis,TJMT
+364,entrancia especial - demais comarcas,TJMT
+365,entrancia especial - sinop e varzea grande,TJMT
+366,foro extrajudicial,TJMT
+367,paginas sem caderno,TJMT
+368,tribunal de justica,TJMT
+369,paginas sem caderno,TJPA
+370,paginas sem caderno,TJPB
+371,paginas sem caderno,TJPE
+372,paginas sem caderno,TJPI
+373,paginas sem caderno,TJPR
+374,I - Administrativo,TJRJ
+375,V - Editais e demais publicacoes,TJRJ
+376,i - administrativo,TJRJ
+377,i-administrativo,TJRJ
+378,ii - judicial - 2a instancia,TJRJ
+379,ii-judicial-2a-instancia,TJRJ
+380,iii - judicial - 1a instancia (capital),TJRJ
+381,iii-judicial-1a-instancia-capital,TJRJ
+382,iv - judicial - 1a instancia (interior),TJRJ
+383,iv-judicial-1a-instancia-interior,TJRJ
+384,v - editais e demais publicacoes,TJRJ
+385,v-editais-e-demais-publicacoes,TJRJ
+386,administrativo,TJRN
+387,judicial,TJRN
+388,paginas sem caderno,TJRO
+389,paginas sem caderno,TJRR
+390,administrativa e judicial,TJRS
+391,capital 1o grau,TJRS
+392,capital 2o grau,TJRS
+393,comarcas do interior,TJRS
+394,editais,TJRS
+395,editais 1o e 2o grau,TJRS
+396,extra,TJRS
+397,foro central e regionais,TJRS
+398,interior 1o grau,TJRS
+399,tribunal de justica,TJRS
+400,caderno administrativo do poder judiciario,TJSC
+401,caderno jurisdicional das comarcas,TJSC
+402,caderno jurisdicional das turmas de recursos e de uniformizacao,TJSC
+403,caderno jurisdicional do tribunal de justica,TJSC
+404,paginas sem caderno,TJSC
+405,edicao especial,TJSE
+406,paginas sem caderno,TJSE
+407,suplemento,TJSE
+408,paginas sem caderno,TJTO
+409,suplemento,TJTO
+410,suplemento 2,TJTO
+411,edicao extra,TRE-AC
+412,edicao extra ii,TRE-AC
+413,paginas sem caderno,TRE-AC
+414,edicao extra,TRE-AL
+415,paginas sem caderno,TRE-AL
+416,edicao extra,TRE-AM
+417,paginas sem caderno,TRE-AM
+418,edicao extra,TRE-AP
+419,paginas sem caderno,TRE-AP
+420,edicao extra,TRE-BA
+421,paginas sem caderno,TRE-BA
+422,edicao extra,TRE-CE
+423,paginas sem caderno,TRE-CE
+424,edicao extra,TRE-DF
+425,paginas sem caderno,TRE-DF
+426,edicao extra,TRE-ES
+427,edicao extra ii,TRE-ES
+428,paginas sem caderno,TRE-ES
+429,edicao extra,TRE-GO
+430,paginas sem caderno,TRE-GO
+431,edicao extra,TRE-MA
+432,edicao extra ii,TRE-MA
+433,paginas sem caderno,TRE-MA
+434,edicao extra,TRE-MG
+435,paginas sem caderno,TRE-MG
+436,edicao extra,TRE-MS
+437,paginas sem caderno,TRE-MS
+438,edicao extra,TRE-MT
+439,paginas sem caderno,TRE-MT
+440,paginas sem caderno,TRE-PA
+441,paginas sem caderno,TRE-PB
+442,edicao extra,TRE-PE
+443,edicao extra ii,TRE-PE
+444,paginas sem caderno,TRE-PE
+445,edicao extra,TRE-PI
+446,paginas sem caderno,TRE-PI
+447,paginas sem caderno,TRE-PR
+448,edicao extra,TRE-RJ
+449,edicao extra ii,TRE-RJ
+450,edicao extra iii,TRE-RJ
+451,paginas sem caderno,TRE-RJ
+452,edicao extra,TRE-RN
+453,paginas sem caderno,TRE-RN
+454,edicao extra,TRE-RO
+455,paginas sem caderno,TRE-RO
+456,paginas sem caderno,TRE-RR
+457,paginas sem caderno,TRE-RS
+458,edicao extra,TRE-SC
+459,paginas sem caderno,TRE-SC
+460,edicao extra,TRE-SE
+461,paginas sem caderno,TRE-SE
+462,edicao extra,TRE-SP
+463,edicao extra ii,TRE-SP
+464,paginas sem caderno,TRE-SP
+465,paginas sem caderno,TRE-TO
+466,caderno administrativo - trf1,TRF1
+467,caderno judicial - extra - trf1,TRF1
+468,caderno judicial - rep. - trf1,TRF1
+469,caderno judicial - sjac,TRF1
+470,caderno judicial - sjam,TRF1
+471,caderno judicial - sjap,TRF1
+472,caderno judicial - sjba,TRF1
+473,caderno judicial - sjdf,TRF1
+474,caderno judicial - sjgo,TRF1
+475,caderno judicial - sjma,TRF1
+476,caderno judicial - sjmg,TRF1
+477,caderno judicial - sjmt,TRF1
+478,caderno judicial - sjpa,TRF1
+479,caderno judicial - sjpi,TRF1
+480,caderno judicial - sjro,TRF1
+481,caderno judicial - sjrr,TRF1
+482,caderno judicial - sjto,TRF1
+483,caderno judicial - trf1,TRF1
+484,paginas sem caderno,TRF1
+485,administrativo - jfes,TRF2
+486,administrativo - jfrj,TRF2
+487,administrativo - trf,TRF2
+488,judicial - jfes,TRF2
+489,judicial - jfrj,TRF2
+490,judicial - trf,TRF2
+491,administrativo,TRF3
+492,judicial i - capital sp,TRF3
+493,judicial i - interior sp e ms,TRF3
+494,judicial i - jef,TRF3
+495,judicial i - trf,TRF3
+496,judicial ii - capital sp,TRF3
+497,judicial ii - interior sp e ms,TRF3
+498,judicial ii - jef,TRF3
+499,judicial ii - trf,TRF3
+500,administrativo,TRF4
+501,edicao extraordinaria - administrativo,TRF4
+502,edicao extraordinaria - judicial,TRF4
+503,judicial,TRF4
+504,adm1,TRF5
+505,jud_pe2,TRF5
+506,paginas sem caderno,TRF5
+507,secao judiciaria da paraiba - edicao administrativa,TRF5
+508,secao judiciaria da paraiba - edicao judicial,TRF5
+509,secao judiciaria da paraiba - edicao judicial - 1,TRF5
+510,secao judiciaria de alagoas - edicao administrativa,TRF5
+511,secao judiciaria de alagoas - edicao administrativa - 1,TRF5
+512,secao judiciaria de alagoas - edicao judicial,TRF5
+513,secao judiciaria de alagoas - edicao judicial - 1,TRF5
+514,secao judiciaria de alagoas - edicao judicial - 2,TRF5
+515,secao judiciaria de alagoas - edicao judicial - 3,TRF5
+516,secao judiciaria de pernambuco - edicao administrativa,TRF5
+517,secao judiciaria de pernambuco - edicao administrativa - 1,TRF5
+518,secao judiciaria de pernambuco - edicao judicial,TRF5
+519,secao judiciaria de pernambuco - edicao judicial - 1,TRF5
+520,secao judiciaria de sergipe - edicao administrativa,TRF5
+521,secao judiciaria de sergipe - edicao judicial,TRF5
+522,secao judiciaria do ceara - edicao administrativa,TRF5
+523,secao judiciaria do ceara - edicao judicial,TRF5
+524,secao judiciaria do rio grande do norte - edicao administrativa,TRF5
+525,secao judiciaria do rio grande do norte - edicao administrativa - 1,TRF5
+526,secao judiciaria do rio grande do norte - edicao judicial,TRF5
+527,secao judiciaria do rio grande do norte - edicao judicial - 1,TRF5
+528,secao judiciaria do rio grande do norte - edicao judicial - 2,TRF5
+529,trf-5 - edicao administrativa,TRF5
+530,trf-5 - edicao judicial,TRF5
+531,edicao extra,TSE
+532,edicao extra ii,TSE
+533,paginas sem caderno,TSE
