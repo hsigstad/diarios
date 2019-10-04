@@ -37,7 +37,9 @@ class Parser:
         parte_key_cleaner=clean.clean_parte_key,
         tipo_parte_cleaner=clean.clean_tipo_parte,
         max_name_length=100,
-        last_name_length=50
+        last_name_length=50,
+        number_types=['cnj'],
+        drop_if_no_number=True        
     ):
         self.parte = parte
         self.columns = columns
@@ -51,6 +53,8 @@ class Parser:
         self.tipo_parte_cleaner = tipo_parte_cleaner
         self.max_name_length = max_name_length
         self.last_name_length = last_name_length
+        self.number_types = number_types
+        self.drop_if_no_number = drop_if_no_number
         
     def parse(self, df):
         df = self._add_cols_before_split(df)
@@ -83,7 +87,8 @@ class Parser:
         df = df.join(
             self._extract_cols(df.text, cond)
         )
-        df = df.query('number.notnull()')
+        if self.drop_if_no_number:
+            df = df.query('number.notnull()')
         df['proc_id'] = clean.generate_id(
             df.number,
             suffix=self.id_suffix
@@ -126,6 +131,10 @@ class Parser:
         )
         df = self._drop_partes(df)
         df = df.join(proc_id)
+        df = df.drop_duplicates([
+            'proc_id', 'parte',
+            'tipo_parte_id'
+        ])
         return df.loc[:, (
             'proc_id', 'parte',
             'key', 'tipo_parte_id'
@@ -185,12 +194,13 @@ class Parser:
             'tribunal', 'tribunal_id'
         )
         proc['filingyear'] = clean.get_filing_year(
-            proc['number']
+            proc.number,
+            types=self.number_types
         )
         proc['comarca_id'] = clean.get_comarca_id(
-            proc['number']
+            proc.number
         )
-        return proc
+        return proc.set_index('proc_id')
 
     def _get_mov(self, df):
         cols1 = [

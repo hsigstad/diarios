@@ -48,7 +48,7 @@ def clean_parte(
             '(^| )dra? ',
             '^(os?|as?|s) ',
             ' e outro.*',
-            ' e$''[^ ]+:.*'
+            ' e$'
         ],
         mapping={
             'ministerio publico': 'mp',
@@ -267,62 +267,116 @@ def extract_from_list(series, regex_list):
 def clean_number(numbers):
     numbers = (
         numbers
-        .str.extract('([0-9].*[0-9])', expand=False)
+        .str.extract(
+            '([0-9].*[0-9])',
+            expand=False
+        )
         .str.replace(' ', '')
     )
-    numbers = clean_cnj_number(numbers, errors='ignore')
+    numbers = clean_cnj_number(
+        numbers, errors='ignore'
+    )
     return numbers
 
 
 def is_cnj_number(numbers):
-    regex = get_number_regexes()['cnj']['regex']
+    regex = get_number_regex('CNJ')
     return numbers.str.match(regex)    
 
 
 def clean_cnj_number(numbers, errors='coerce'):
-    regex = get_number_regexes()['cnj']['regex']
-    df = (
-        numbers
-        .fillna('')
-        .str.extract(regex)
-    )
-    df[0] = ('0000000' + df[0]).str[-7:]
-    cleaned = (
-        df[0] + '-' + df[2] + '.' + df[3] + '.' +
-        df[5] + '.' + df[6] + '.' + df[7]
-    )
+    cleaned = numbers.fillna('').str.replace(
+        '([0-9]+)(\-|\.)?([0-9]{2})\.'
+        '((20|19)[0-9]{2})\.'
+        '([0-9])\.?'
+        '([0-9]{2})\.'
+        '([0-9]{4})',
+        r'0000000\1-\3.\4.\6.\7.\8'
+    ).str[-25:]
     if errors == 'ignore':
         cleaned.loc[cleaned.isnull()] = numbers
     return cleaned
 
 
+def get_number_regex(tp='CNJ'):
+    regexes = get_number_regexes()
+    return regexes[tp]
+
+
 def get_number_regexes():
     return {
-        'cnj': {
-            'regex': (
-                '([0-9]+)(\-|\.)?([0-9]{2})\.'
-                '((20|19)[0-9]{2})\.'
-                '([0-9])\.?([0-9]{2})\.([0-9]{4})'
-            ),
-            'names': {
-                3: 'filingyear',
-                5: 'code_j',
-                6: 'code_tr',
-                7: 'oooo'
-            }
-        },
-        'mg': {
-            'regex': '([0-9]{4})([0-9]{2})([0-9]{6}\-[0-9])',
-            'names': {1: 'filingyear'}
-        },
-        'other': {
-            'regex': '(^|[^0-9])((20[01]|19[89])[0-9])($|[^0-9])',
-            'names': {1: 'filingyear'}
-        },
-        'no_match': {
-            'regex': '()',
-            'names': {0: 'filingyear'}
-        }
+        'CNJ': (
+            '([0-9]+)(\-|\.)?([0-9]{2})\.'
+            '(?P<filingyear>(20|19)[0-9]{2})\.'
+            '(?P<code_j>[0-9])\.?'
+            '(?P<code_tr>[0-9]{2})\.'
+            '(?P<oooo>[0-9]{4})'
+        ),
+        'TJAL': (
+            '[0-9]+\.'
+            '(?P<filingyear>[0-9]{2})'
+            '\.[0-9]+-[0-9]'
+        ),
+        'TJAM': (
+            '[0-9]+\.'
+            '(?P<filingyear>[0-9]{2})'
+            '\.[0-9]+-[0-9]'
+        ),
+        'TJCE': (
+            '[0-9]+\.'
+            '(?P<filingyear>(201|200)[0-9])'
+            '\.[0-9]{4}\.[0-9]{3}'
+        ),
+        'TJGO': (
+            '(?P<filingyear>(201|200)[0-9])'
+            '[0-9]{7,10}'
+        ),
+        'TJMG': (
+            '[0-9]{4}'
+            '(?P<filingyear>[0-9]{2})'
+            '[0-9]{6}\-[0-9]'
+        ),
+        'TJMS': (
+            '[0-9]+\.'
+            '(?P<filingyear>[0-9]{2})'
+            '\.[0-9]{6}-[0-9]'
+        ),            
+        'TJPA': (
+            '[0-9]{9}'
+            '(?P<filingyear>(201|200)[0-9])'
+            '[0-9]{7}'
+        ),
+        'TJPB': (
+            '[0-9]{3}'
+            '(?P<filingyear>(201|200)[0-9])'
+            '[0-9]{6}-[0-9]'
+        ),
+        'TJPR': (
+            '[0-9]{1,6}/'
+            '(?P<filingyear>[0-9]{4})'
+        ),
+        'TJSC': (
+            '[0-9]+\.'
+            '(?P<filingyear>[0-9]{2})'
+            '\.[0-9]{6}-[0-9]'
+        ),
+        'TJSE': (
+            '(?P<filingyear>(199|200|201)[0-9])'
+            '[0-9]{7}'
+        ),
+        'TJTO': (
+            '(?P<filingyear>(199|200|201)[0-9])' 
+            '\.[0-9]{4}\.[0-9]{4}(-|–)[0-9]'
+        ),
+        'TRF4': (
+            '[0-9]{1,4}\.'
+            '(?P<filingyear>[0-9]{4})'
+            '\.[0-9]\.?[0-9]{2}\.[0-9]{4}'
+        ),
+        'TRF4_2': (
+            '(?P<filingyear>[0-9]{4})'
+            '\.[0-9]{2}\.[0-9]{2}\.[0-9]{6}'
+        )
     }
 
 
@@ -342,7 +396,7 @@ def get_tribunal(
             .set_index(['code_j', 'code_tr'])
         )
         info = extract_info_from_case_numbers(
-            series, tp="cnj"
+            series, types=["CNJ"]
         )
         info = info.join(
             tribunal,
@@ -360,7 +414,8 @@ def get_tribunal(
             .join(diario, on='diario')
             .loc[:, (output)]
         )
-        
+
+            
 def transform(x, from_var, to_var):
     infile = '{}.csv'.format(
         from_var.replace('_id', '')
@@ -375,38 +430,20 @@ def transform(x, from_var, to_var):
         return df.loc[x, to_var]
     
 
-def get_number_type(numbers):
-    regexes = get_number_regexes()
-    types = pd.Series(index=numbers.index)
-    for key, val in regexes.items():
-        types.loc[
-            types.isnull() & numbers.str.contains(val['regex'])
-        ] = key
-    return types
-
-
-def extract_info_from_case_numbers(numbers, tp=None):
-    df = pd.DataFrame({
-        'number': numbers,
-        'type': get_number_type(numbers)
-    })
-    if tp:
-        df['type'] = tp
-    info = (
-        df.groupby('type')
-        .apply(extract_info_by_case_type)
-    )
-    info.index = info.index.droplevel(0)
-    return info
-
-
-def extract_info_by_case_type(df):
-    regex = get_number_regexes()[df.name]
-    info = (
-        df['number'].str.extract(regex['regex'])
-        .apply(pd.to_numeric, errors='coerce')
-        .loc[:, regex['names'].keys()]        
-        .rename(columns=regex['names'])
+def extract_info_from_case_numbers(
+        numbers, types=['CNJ']
+    ):
+    regexes = map(get_number_regex, types)
+    info=pd.DataFrame(index=numbers.index)    
+    for regex in regexes:
+        df = numbers.str.extract(regex)
+        new_cols = (
+            set(df.columns) - set(info.columns)
+        )
+        info = info.join(df.loc[:, new_cols])
+        info[info.isnull()] = df
+    info = info.apply(
+        pd.to_numeric, errors='coerce'
     )
     return info
 
@@ -454,7 +491,9 @@ def get_comarca(numbers):
 def get_foro_info(numbers):
     foro = get_data('foro.csv')
     foro_info = (
-        extract_info_from_case_numbers(numbers, tp="cnj").reset_index()
+        extract_info_from_case_numbers(
+            numbers, types=["CNJ"]
+        ).reset_index()
         .merge(
             foro,
             left_on=['code_tr', 'oooo'],
@@ -466,12 +505,16 @@ def get_foro_info(numbers):
     return foro_info
 
 
-def get_filing_year(numbers):
+def get_filing_year(numbers, types=['CNJ']):
     filingyear = extract_info_from_case_numbers(
-        numbers
+        numbers, types
     ).loc[:, 'filingyear']
-    filingyear.loc[filingyear.between(0, 18)] = filingyear + 2000
-    filingyear.loc[filingyear.between(80, 99)] = filingyear + 1900
+    filingyear.loc[
+        filingyear.between(0, 18)
+    ] = filingyear + 2000
+    filingyear.loc[
+        filingyear.between(80, 99)
+    ] = filingyear + 1900
     return filingyear
 
 
@@ -586,17 +629,3 @@ def generate_id(df, suffix=None):
     if suffix:
         ids = ids.apply(lambda x: x*100 + suffix)
     return ids
-
-
-# def generate_number_id(numbers, tribunals):
-#     numbers.name = 'number'
-#     tribunals.name = 'tribunal'
-#     df = pd.concat([numbers, tribunals], axis=1)
-#     df['tribunal_number'] = get_tribunal(
-#         df['number'], input_type='number'
-#     )
-#     df['id'] = np.where(
-#         df['tribunal'] == df['tribunal_number'],
-#         df['number'], df['tribunal'] + df['number']
-#     )
-#     return df['id']
