@@ -11,16 +11,20 @@ importlib.reload(clean)
 
 def main():
     foro_comarca = get_foro_comarca()
-    foro_comarca = clean_foro_comarca(foro_comarca)
+    foro_comarca = clean_foro_comarca(
+        foro_comarca
+    )
     foro = (
         foro_comarca
-        .loc[:, ('foro_id', 'tribunal_id', 'oooo',
-                 'estado_id', 'comarca_id')]
+        .loc[:, ('foro_id', 'tribunal', 'oooo',
+                 'estado', 'estado_id',
+                 'comarca_id')]
     )
     comarca = (
         foro_comarca
-        .loc[:, ('comarca_id', 'comarca', 'tribunal_id',
-                 'estado_id', 'n_municipios')]
+        .loc[:, ('comarca_id', 'comarca',
+                 'tribunal', 'estado_id',
+                 'estado', 'n_municipios')]
         .drop_duplicates(subset='comarca_id')
     )
     comarca = add_comarca_info(comarca)
@@ -54,6 +58,14 @@ def clean_foro_comarca(foro):
         foro['muni_state'].isnull(), 'estado_id'
     ] = foro['state_codetj']
     foro['tribunal_id'] = foro['estado_id']
+    foro['estado'] = clean.transform(
+        foro.estado_id,
+        'estado_id', 'estado'
+    )
+    foro['tribunal'] = clean.transform(
+        foro.tribunal_id,
+        'tribunal_id', 'tribunal'
+    )
     n_municipios = (
         foro
         .drop_duplicates(subset=['comarca', 'muni_name', 'estado_id'])
@@ -69,7 +81,12 @@ def clean_foro_comarca(foro):
     )
     foro = (foro
         .rename(columns={'comarca_codetj': 'oooo'})             
-        .loc[:, ('oooo', 'comarca', 'tribunal_id', 'estado_id', 'n_municipios')]
+        .loc[:, (
+            'oooo', 'comarca',
+            'tribunal_id', 'tribunal',
+            'estado', 'estado_id',
+            'n_municipios'
+        )]
         .query('estado_id.notnull() & oooo.notnull()')
         .drop_duplicates(subset=['oooo', 'estado_id'])                 
         .sort_values(['tribunal_id', 'oooo'])

@@ -33,7 +33,7 @@ def insert(database, table, files):
     for infile in files:
         print(infile)
         data = _get_data(infile)
-        chunksize = 10000
+        chunksize = 1000
         nchunks = len(data) // chunksize + 1
         for chunk in range(0, nchunks):
             print("{} of {}".format(chunk, nchunks))

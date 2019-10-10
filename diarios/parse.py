@@ -21,8 +21,208 @@ class DiarioVar:
        return 'DiarioVar({})'.format(name)
 
 
-class Parser:
-    '''Class to parse diarios extracts'''
+# class Parser:
+#     '''Class to parse diarios extracts'''
+    
+#     def __init__(
+#         self,
+#         columns=[DiarioVar('number', '[0-9.\-]{20,30}')],
+#         parte='AUTOR:|RÉU:',
+#         split_parte_on=',|-|;',
+#         split_text_on=None,        
+#         id_suffix=None,
+#         text_cleaner=clean.clean_diario_text,
+#         parte_cleaner=clean.clean_parte,
+#         last_parte_cleaner=lambda x: x,
+#         parte_key_cleaner=clean.clean_parte_key,
+#         tipo_parte_cleaner=clean.clean_tipo_parte,
+#         max_name_length=100,
+#         last_name_length=50,
+#         number_types=['CNJ'],
+#         drop_if_no_number=True        
+#     ):
+#         self.parte = parte
+#         self.columns = columns
+#         self.split_parte_on = split_parte_on
+#         self.split_text_on = split_text_on        
+#         self.id_suffix = id_suffix
+#         self.text_cleaner = text_cleaner
+#         self.parte_cleaner = parte_cleaner
+#         self.last_parte_cleaner = last_parte_cleaner
+#         self.parte_key_cleaner = parte_key_cleaner
+#         self.tipo_parte_cleaner = tipo_parte_cleaner
+#         self.max_name_length = max_name_length
+#         self.last_name_length = last_name_length
+#         self.number_types = number_types
+#         self.drop_if_no_number = drop_if_no_number
+        
+#     def parse(self, df):
+#         df = self._add_cols_before_split(df)
+#         df = self._split_text(df)        
+#         df.text = self.text_cleaner(df.text)
+#         df = self._add_cols(df)
+#         if len(df) == 0:
+#             return
+#         proc = self._get_proc(df)
+#         parte = self._get_parte(df)
+#         mov = self._get_mov(df)
+#         return proc, parte, mov
+
+#     def _add_cols_before_split(self, df):
+#         cond = lambda x: x.before_split
+#         if len([c for c in self.columns if cond(c)]) == 0:
+#             return df
+#         cols = self._extract_cols(df.text, cond)
+#         return df.join(cols)
+                
+#     def _split_text(self, df):
+#         if self.split_text_on:
+#             df = split_col(
+#                 df, 'text',
+#                 split_on=self.split_text_on
+#             ).reset_index()
+#         return df
+
+#     def _add_cols(self, df):
+#         cond = lambda x: x.before_split == False
+#         df = df.join(
+#             self._extract_cols(df.text, cond)
+#         )
+#         if self.drop_if_no_number:
+#             df = df.query('number.notnull()')
+#         df['proc_id'] = clean.generate_id(
+#             df.number,
+#             suffix=self.id_suffix
+#         )
+#         return df       
+
+#     def _extract_cols(self, text, condition):
+#         regexes = {
+#             c.name: c.regex
+#             for c in self.columns
+#             if condition(c)
+#         }
+#         cleaners = {
+#             c.name: c.cleaner
+#             for c in self.columns
+#             if condition(c)            
+#         }
+#         return extract_regexes(
+#             text, regexes
+#         ).transform(cleaners)
+
+#     def _get_parte(self, df):
+#         proc_id = df['proc_id']
+#         df = extract_keywords(
+#             df['text'], self.parte,
+#             max_name_length=self.max_name_length,
+#             last_name_length=self.last_name_length
+#         )
+#         df['lastname'] = self.last_parte_cleaner(
+#             df.lastname
+#         )
+#         df = self._split_parte(df)
+#         df['parte'] = self._clean_parte_name(df)
+#         df['key'] = self.parte_key_cleaner(
+#             df.key
+#         ) 
+#         df['tipo_parte'] = self.tipo_parte_cleaner(df.key)
+#         df['tipo_parte_id'] = clean.transform(
+#             df.tipo_parte, 'tipo_parte', 'tipo_parte_id'
+#         )
+#         df = self._drop_partes(df)
+#         df = df.join(proc_id)
+#         df = df.drop_duplicates([
+#             'proc_id', 'parte',
+#             'tipo_parte_id'
+#         ])
+#         return df.loc[:, (
+#             'proc_id', 'parte',
+#             'key', 'tipo_parte_id'
+#         )]
+
+#     def _split_parte(self, df):
+#         df = split_col(
+#             df, 'name',
+#             split_on=self.split_parte_on
+#         )
+#         df = split_col(
+#             df, 'lastname',
+#             split_on=self.split_parte_on
+#         )
+#         return df
+    
+#     def _clean_parte_name(self, df):
+#         df = df.transform({
+#             'name': self.parte_cleaner, 
+#             'lastname': self.parte_cleaner
+#         })
+#         return np.where(
+#             df['name'] == '',
+#             df['lastname'], df['name']
+#         )
+
+#     def _drop_partes(self, df):
+#         df = df.query('parte != ""')
+#         df = df.loc[
+#             (df.parte.str.len() > 8) |
+#             (df.parte == 'mp')
+#         ]
+#         return df    
+    
+#     def _get_keywords(self):
+#         regex = [
+#             c.regex for c in self.keyword_cols
+#         ]
+#         if type(self.parte_regex) == str:
+#             regex += [self.parte_regex]
+#         else:
+#             regex += self.parte_regex
+#         return regex
+
+#     def _get_proc(self, df):
+#         cols1 = ['proc_id', 'tribunal']
+#         cols2 = [
+#             c.name for c in self.columns
+#             if c.table == 'proc'
+#         ]
+#         proc = (
+#             df.loc[:, cols1 + cols2]
+#             .drop_duplicates('proc_id')
+#         )
+#         proc['tribunal_id'] = clean.transform(
+#             proc['tribunal'],
+#             'tribunal', 'tribunal_id'
+#         )
+#         proc['filingyear'] = clean.get_filing_year(
+#             proc.number,
+#             types=self.number_types
+#         )
+#         proc['comarca_id'] = clean.get_comarca_id(
+#             proc.number
+#         )
+#         return proc.set_index('proc_id')
+
+#     def _get_mov(self, df):
+#         cols1 = [
+#             'tribunal', 'proc_id', 'number',
+#             'date', 'caderno', 'line', 'text'
+#         ]
+#         cols2 = [
+#             c.name for c in self.columns
+#             if c.table == 'mov'
+#         ]    
+#         mov = df.loc[:, cols1 + cols2]
+#         mov['caderno_id'] = clean.get_caderno_id(
+#             mov['tribunal'], mov['caderno']
+#         )
+#         return mov
+
+
+        
+
+class CaseParser:
+    '''Class to parse court cases'''
     
     def __init__(
         self,
@@ -31,14 +231,17 @@ class Parser:
         split_parte_on=',|-|;',
         split_text_on=None,        
         id_suffix=None,
-        text_cleaner=clean.clean_diario_text,
-        parte_cleaner=clean.clean_parte,
-        last_parte_cleaner=lambda x: x,
-        parte_key_cleaner=clean.clean_parte_key,
-        tipo_parte_cleaner=clean.clean_tipo_parte,
+        clean_text=clean.clean_diario_text,
+        clean_parte=clean.clean_parte,
+        clean_last_parte=lambda x: x,
+        clean_parte_key=clean.clean_parte_key,
+        clean_tipo_parte=clean.clean_tipo_parte,
         max_name_length=100,
         last_name_length=50,
-        number_types=['cnj'],
+        clean_proc=lambda x: x,
+        clean_mov=lambda x: x,
+        df_proc_cols=[],
+        df_mov_cols=[],
         drop_if_no_number=True        
     ):
         self.parte = parte
@@ -46,20 +249,23 @@ class Parser:
         self.split_parte_on = split_parte_on
         self.split_text_on = split_text_on        
         self.id_suffix = id_suffix
-        self.text_cleaner = text_cleaner
-        self.parte_cleaner = parte_cleaner
-        self.last_parte_cleaner = last_parte_cleaner
-        self.parte_key_cleaner = parte_key_cleaner
-        self.tipo_parte_cleaner = tipo_parte_cleaner
+        self.clean_text = clean_text
+        self.clean_parte = clean_parte
+        self.clean_last_parte = clean_last_parte
+        self.clean_parte_key = clean_parte_key
+        self.clean_tipo_parte = clean_tipo_parte
         self.max_name_length = max_name_length
         self.last_name_length = last_name_length
-        self.number_types = number_types
+        self.clean_proc = clean_proc
+        self.clean_mov = clean_mov
+        self.df_proc_cols = df_proc_cols
+        self.df_mov_cols = df_mov_cols       
         self.drop_if_no_number = drop_if_no_number
         
     def parse(self, df):
         df = self._add_cols_before_split(df)
         df = self._split_text(df)        
-        df.text = self.text_cleaner(df.text)
+        df.text = self.clean_text(df.text)
         df = self._add_cols(df)
         if len(df) == 0:
             return
@@ -70,9 +276,10 @@ class Parser:
 
     def _add_cols_before_split(self, df):
         cond = lambda x: x.before_split
-        return df.join(
-            self._extract_cols(df.text, cond)
-        )
+        if len([c for c in self.columns if cond(c)]) == 0:
+            return df
+        cols = self._extract_cols(df.text, cond)
+        return df.join(cols)
                 
     def _split_text(self, df):
         if self.split_text_on:
@@ -117,15 +324,15 @@ class Parser:
             max_name_length=self.max_name_length,
             last_name_length=self.last_name_length
         )
-        df['lastname'] = self.last_parte_cleaner(
+        df['lastname'] = self.clean_last_parte(
             df.lastname
         )
         df = self._split_parte(df)
         df['parte'] = self._clean_parte_name(df)
-        df['key'] = self.parte_key_cleaner(
+        df['key'] = self.clean_parte_key(
             df.key
         ) 
-        df['tipo_parte'] = self.tipo_parte_cleaner(df.key)
+        df['tipo_parte'] = self.clean_tipo_parte(df.key)
         df['tipo_parte_id'] = clean.transform(
             df.tipo_parte, 'tipo_parte', 'tipo_parte_id'
         )
@@ -153,8 +360,8 @@ class Parser:
     
     def _clean_parte_name(self, df):
         df = df.transform({
-            'name': self.parte_cleaner, 
-            'lastname': self.parte_cleaner
+            'name': self.clean_parte, 
+            'lastname': self.clean_parte
         })
         return np.where(
             df['name'] == '',
@@ -180,43 +387,62 @@ class Parser:
         return regex
 
     def _get_proc(self, df):
-        cols1 = ['proc_id', 'tribunal']
+        cols1 = ['proc_id']
         cols2 = [
             c.name for c in self.columns
             if c.table == 'proc'
         ]
         proc = (
-            df.loc[:, cols1 + cols2]
+            df.loc[:, cols1 + self.df_proc_cols + cols2]
             .drop_duplicates('proc_id')
         )
-        proc['tribunal_id'] = clean.transform(
-            proc['tribunal'],
-            'tribunal', 'tribunal_id'
-        )
-        proc['filingyear'] = clean.get_filing_year(
-            proc.number,
-            types=self.number_types
-        )
-        proc['comarca_id'] = clean.get_comarca_id(
-            proc.number
-        )
+        proc = self.clean_proc(proc)            
         return proc.set_index('proc_id')
 
     def _get_mov(self, df):
-        cols1 = [
-            'tribunal', 'proc_id', 'number',
-            'date', 'caderno', 'line', 'text'
-        ]
+        cols1 = ['proc_id', 'text']
         cols2 = [
             c.name for c in self.columns
             if c.table == 'mov'
         ]    
-        mov = df.loc[:, cols1 + cols2]
-        mov['caderno_id'] = clean.get_caderno_id(
-            mov['tribunal'], mov['caderno']
-        )
+        mov = df.loc[:, cols1 + self.df_mov_cols + cols2]
+        mov = self.clean_mov(mov)
         return mov
 
+    
+class DiarioParser(CaseParser):
+    
+    def __init__(self, number_types='CNJ', **kwargs):
+        super(CaseParser, self).__init__(
+            clean_proc=lambda x: clean_diario_proc(x, number_types),
+            clean_mov=clean_diario_mov,
+            df_mov_cols=['tribunal', 'number', 'date', 'caderno', 'line'],
+            df_proc_cols=['tribunal'],
+            **kwargs
+        )
+
+
+def clean_diario_proc(proc, number_types=['CNJ']):
+    proc['tribunal_id'] = clean.transform(
+        proc['tribunal'],
+        'tribunal', 'tribunal_id'
+    )
+    proc['filingyear'] = clean.get_filing_year(
+        proc.number,
+        types=number_types
+    )
+    proc['comarca_id'] = clean.get_comarca_id(
+        proc.number
+    )
+    return proc
+
+
+def clean_diario_mov(mov):        
+    mov['caderno_id'] = clean.get_caderno_id(
+        mov['tribunal'], mov['caderno']
+    )
+    return mov
+        
 
 number = DiarioVar(
     name='number',
@@ -318,3 +544,33 @@ def get_keyword_regex(
         '((?P<name>{1})|(?P<lastname>{2}))'
     ).format(keyword, name, last_name)
     return regex
+
+
+def inspect(
+        proc, parte, mov,
+        query='tuple()',
+        tp='parte'
+    ):
+    ex = mov.query(query).sample().iloc[0]
+    proc_id = ex.proc_id
+    print(ex['text'])
+    prt = (
+        parte
+        .query('proc_id == {}'.format(proc_id))
+        .loc[:, ('parte', 'key')]
+    )
+    prc = (
+        proc
+        .query('proc_id == {}'.format(proc_id))
+        .iloc[0]
+    )
+    if tp=='parte':
+        print(prt)                
+    if tp=='proc':
+        print(prc)
+    if tp=='mov':
+        print(ex)
+    if tp=='all':
+        print(prt)
+        print(ex)
+        print(prc)

@@ -12,7 +12,7 @@ class Proc(Base):
     __tablename__ = 'proc'
     proc_id = Column(BigInteger, primary_key=True)
     number = Column(String(50))
-    tribunal_id = Column(Integer)
+    tribunal = Column(String(6))
     comarca_id = Column(Integer)
     filingyear = Column(Integer)
     classe = Column(String(255))
