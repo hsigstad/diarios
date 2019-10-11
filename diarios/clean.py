@@ -441,7 +441,8 @@ def extract_info_from_case_numbers(
             set(df.columns) - set(info.columns)
         )
         info = info.join(df.loc[:, new_cols])
-        info[info.isnull()] = df
+        if info.isnull().any().any():
+            info[info.isnull()] = df
     info = info.apply(
         pd.to_numeric, errors='coerce'
     )
@@ -490,6 +491,9 @@ def get_comarca(numbers):
 
 def get_foro_info(numbers):
     foro = get_data('foro.csv')
+    index_name = numbers.index.name
+    if not index_name:
+        index_name = 'index'
     foro_info = (
         extract_info_from_case_numbers(
             numbers, types=["CNJ"]
@@ -501,7 +505,7 @@ def get_foro_info(numbers):
             how='left'
         )
     )
-    foro_info.index = foro_info['index']
+    foro_info.index = foro_info[index_name]
     return foro_info
 
 
