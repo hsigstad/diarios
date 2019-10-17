@@ -23,29 +23,31 @@ def get_db_engine(database, echo=True):
     return engine
 
 
-def insert(database, table, files):
+def insert(database, table, files, outdir='build/insert'):
     engine = get_db_engine(database, echo=False)
     Session = sessionmaker(bind=engine)
     session = Session()
     engine.execute('SET FOREIGN_KEY_CHECKS=0')
     _truncate_too_long_strings(engine)
-    engine.execute("TRUNCATE TABLE {}".format(table.__tablename__))    
+    engine.execute('TRUNCATE TABLE {}'.format(table.__tablename__))    
     for infile in files:
         print(infile)
         data = _get_data(infile)
         chunksize = 1000
         nchunks = len(data) // chunksize + 1
         for chunk in range(0, nchunks):
-            print("{} of {}".format(chunk, nchunks))
+            print('{} of {}'.format(chunk, nchunks))
             session.bulk_insert_mappings(
                 table,
                 data[chunk*chunksize:(chunk+1)*chunksize]
             )
     session.commit()
     engine.execute('SET FOREIGN_KEY_CHECKS=1')    
-    outfile = "build/temp/database/{}.txt".format(table.__tablename__)
-    with open(outfile, "a+") as f:
-        f.write("Table built!")
+    outfile = '{}/{}.txt'.format(
+        outdir, table.__tablename__
+    )
+    with open(outfile, 'a+') as f:
+        f.write('Table built!')
 
 
 def _truncate_too_long_strings(engine):
@@ -55,8 +57,8 @@ def _truncate_too_long_strings(engine):
 def _get_data(infile):
     data = pd.read_csv(infile)
     data = _convert_int_to_float(data)
-    if "id" in data.columns:
-        data = data.drop_duplicates(subset="id")
+    if 'id' in data.columns:
+        data = data.drop_duplicates(subset='id')
     data = data.where((pd.notnull(data)), None)
     return data.to_dict('records')
 

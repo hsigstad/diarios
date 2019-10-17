@@ -55,7 +55,7 @@ class CaseParser:
         
     def parse(self, df):
         df = self._add_cols_before_split(df)
-        df = self._split_text(df)        
+        df = self._split_text(df)
         df.text = self.clean_text(df.text)
         df = self._add_cols(df)
         df.loc[:, self.cleaners.keys()] = (
@@ -70,7 +70,7 @@ class CaseParser:
 
     def _add_cols_before_split(self, df):
         if self.regexes_before_split:
-            colsdf = extract_regexes(
+            cols = extract_regexes(
                 df.text,
                 self.regexes_before_split
             )
@@ -191,7 +191,7 @@ class DiarioParser(CaseParser):
             clean_proc=lambda x: clean_diario_proc(x, number_types),
             clean_mov=clean_diario_mov,
             df_mov_cols=['tribunal', 'number', 'date', 'caderno', 'line'],
-            df_proc_cols=['tribunal'],
+            df_proc_cols=['tribunal', 'number', 'classe'],
             **kwargs
         )
 
@@ -303,10 +303,15 @@ def get_keyword_regex(
 
 def inspect(
         proc, parte, mov,
-        query='tuple()',
         tp='parte'
     ):
-    ex = mov.query(query).sample().iloc[0]
+    mov = (
+        mov
+        .merge(proc.reset_index().loc[:, 'proc_id'], on='proc_id')
+        .merge(parte.loc[:, 'proc_id'], on='proc_id')
+        .drop_duplicates('proc_id')
+    )
+    ex = mov.sample().iloc[0]
     proc_id = ex.proc_id
     print(ex['text'])
     prt = (
