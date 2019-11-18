@@ -406,129 +406,136 @@ caderno_id,caderno,diario
 405,edicao especial,TJSE
 406,paginas sem caderno,TJSE
 407,suplemento,TJSE
-408,paginas sem caderno,TJTO
-409,suplemento,TJTO
-410,suplemento 2,TJTO
-411,edicao extra,TRE-AC
-412,edicao extra ii,TRE-AC
-413,paginas sem caderno,TRE-AC
-414,edicao extra,TRE-AL
-415,paginas sem caderno,TRE-AL
-416,edicao extra,TRE-AM
-417,paginas sem caderno,TRE-AM
-418,edicao extra,TRE-AP
-419,paginas sem caderno,TRE-AP
-420,edicao extra,TRE-BA
-421,paginas sem caderno,TRE-BA
-422,edicao extra,TRE-CE
-423,paginas sem caderno,TRE-CE
-424,edicao extra,TRE-DF
-425,paginas sem caderno,TRE-DF
-426,edicao extra,TRE-ES
-427,edicao extra ii,TRE-ES
-428,paginas sem caderno,TRE-ES
-429,edicao extra,TRE-GO
-430,paginas sem caderno,TRE-GO
-431,edicao extra,TRE-MA
-432,edicao extra ii,TRE-MA
-433,paginas sem caderno,TRE-MA
-434,edicao extra,TRE-MG
-435,paginas sem caderno,TRE-MG
-436,edicao extra,TRE-MS
-437,paginas sem caderno,TRE-MS
-438,edicao extra,TRE-MT
-439,paginas sem caderno,TRE-MT
-440,paginas sem caderno,TRE-PA
-441,paginas sem caderno,TRE-PB
-442,edicao extra,TRE-PE
-443,edicao extra ii,TRE-PE
-444,paginas sem caderno,TRE-PE
-445,edicao extra,TRE-PI
-446,paginas sem caderno,TRE-PI
-447,paginas sem caderno,TRE-PR
-448,edicao extra,TRE-RJ
-449,edicao extra ii,TRE-RJ
-450,edicao extra iii,TRE-RJ
-451,paginas sem caderno,TRE-RJ
-452,edicao extra,TRE-RN
-453,paginas sem caderno,TRE-RN
-454,edicao extra,TRE-RO
-455,paginas sem caderno,TRE-RO
-456,paginas sem caderno,TRE-RR
-457,paginas sem caderno,TRE-RS
-458,edicao extra,TRE-SC
-459,paginas sem caderno,TRE-SC
-460,edicao extra,TRE-SE
-461,paginas sem caderno,TRE-SE
-462,edicao extra,TRE-SP
-463,edicao extra ii,TRE-SP
-464,paginas sem caderno,TRE-SP
-465,paginas sem caderno,TRE-TO
-466,caderno administrativo - trf1,TRF1
-467,caderno judicial - extra - trf1,TRF1
-468,caderno judicial - rep. - trf1,TRF1
-469,caderno judicial - sjac,TRF1
-470,caderno judicial - sjam,TRF1
-471,caderno judicial - sjap,TRF1
-472,caderno judicial - sjba,TRF1
-473,caderno judicial - sjdf,TRF1
-474,caderno judicial - sjgo,TRF1
-475,caderno judicial - sjma,TRF1
-476,caderno judicial - sjmg,TRF1
-477,caderno judicial - sjmt,TRF1
-478,caderno judicial - sjpa,TRF1
-479,caderno judicial - sjpi,TRF1
-480,caderno judicial - sjro,TRF1
-481,caderno judicial - sjrr,TRF1
-482,caderno judicial - sjto,TRF1
-483,caderno judicial - trf1,TRF1
-484,paginas sem caderno,TRF1
-485,administrativo - jfes,TRF2
-486,administrativo - jfrj,TRF2
-487,administrativo - trf,TRF2
-488,judicial - jfes,TRF2
-489,judicial - jfrj,TRF2
-490,judicial - trf,TRF2
-491,administrativo,TRF3
-492,judicial i - capital sp,TRF3
-493,judicial i - interior sp e ms,TRF3
-494,judicial i - jef,TRF3
-495,judicial i - trf,TRF3
-496,judicial ii - capital sp,TRF3
-497,judicial ii - interior sp e ms,TRF3
-498,judicial ii - jef,TRF3
-499,judicial ii - trf,TRF3
-500,administrativo,TRF4
-501,edicao extraordinaria - administrativo,TRF4
-502,edicao extraordinaria - judicial,TRF4
-503,judicial,TRF4
-504,adm1,TRF5
-505,jud_pe2,TRF5
-506,paginas sem caderno,TRF5
-507,secao judiciaria da paraiba - edicao administrativa,TRF5
-508,secao judiciaria da paraiba - edicao judicial,TRF5
-509,secao judiciaria da paraiba - edicao judicial - 1,TRF5
-510,secao judiciaria de alagoas - edicao administrativa,TRF5
-511,secao judiciaria de alagoas - edicao administrativa - 1,TRF5
-512,secao judiciaria de alagoas - edicao judicial,TRF5
-513,secao judiciaria de alagoas - edicao judicial - 1,TRF5
-514,secao judiciaria de alagoas - edicao judicial - 2,TRF5
-515,secao judiciaria de alagoas - edicao judicial - 3,TRF5
-516,secao judiciaria de pernambuco - edicao administrativa,TRF5
-517,secao judiciaria de pernambuco - edicao administrativa - 1,TRF5
-518,secao judiciaria de pernambuco - edicao judicial,TRF5
-519,secao judiciaria de pernambuco - edicao judicial - 1,TRF5
-520,secao judiciaria de sergipe - edicao administrativa,TRF5
-521,secao judiciaria de sergipe - edicao judicial,TRF5
-522,secao judiciaria do ceara - edicao administrativa,TRF5
-523,secao judiciaria do ceara - edicao judicial,TRF5
-524,secao judiciaria do rio grande do norte - edicao administrativa,TRF5
-525,secao judiciaria do rio grande do norte - edicao administrativa - 1,TRF5
-526,secao judiciaria do rio grande do norte - edicao judicial,TRF5
-527,secao judiciaria do rio grande do norte - edicao judicial - 1,TRF5
-528,secao judiciaria do rio grande do norte - edicao judicial - 2,TRF5
-529,trf-5 - edicao administrativa,TRF5
-530,trf-5 - edicao judicial,TRF5
-531,edicao extra,TSE
-532,edicao extra ii,TSE
-533,paginas sem caderno,TSE
+408,administrativo,TJSP
+409,editais e leiloes,TJSP
+410,judicial - 1a instancia - capital,TJSP
+411,judicial - 1a instancia - interior - parte i,TJSP
+412,judicial - 1a instancia - interior - parte ii,TJSP
+413,judicial - 1a instancia - interior - parte iii,TJSP
+414,judicial - 2a instancia,TJSP
+415,paginas sem caderno,TJTO
+416,suplemento,TJTO
+417,suplemento 2,TJTO
+418,edicao extra,TRE-AC
+419,edicao extra ii,TRE-AC
+420,paginas sem caderno,TRE-AC
+421,edicao extra,TRE-AL
+422,paginas sem caderno,TRE-AL
+423,edicao extra,TRE-AM
+424,paginas sem caderno,TRE-AM
+425,edicao extra,TRE-AP
+426,paginas sem caderno,TRE-AP
+427,edicao extra,TRE-BA
+428,paginas sem caderno,TRE-BA
+429,edicao extra,TRE-CE
+430,paginas sem caderno,TRE-CE
+431,edicao extra,TRE-DF
+432,paginas sem caderno,TRE-DF
+433,edicao extra,TRE-ES
+434,edicao extra ii,TRE-ES
+435,paginas sem caderno,TRE-ES
+436,edicao extra,TRE-GO
+437,paginas sem caderno,TRE-GO
+438,edicao extra,TRE-MA
+439,edicao extra ii,TRE-MA
+440,paginas sem caderno,TRE-MA
+441,edicao extra,TRE-MG
+442,paginas sem caderno,TRE-MG
+443,edicao extra,TRE-MS
+444,paginas sem caderno,TRE-MS
+445,edicao extra,TRE-MT
+446,paginas sem caderno,TRE-MT
+447,paginas sem caderno,TRE-PA
+448,paginas sem caderno,TRE-PB
+449,edicao extra,TRE-PE
+450,edicao extra ii,TRE-PE
+451,paginas sem caderno,TRE-PE
+452,edicao extra,TRE-PI
+453,paginas sem caderno,TRE-PI
+454,paginas sem caderno,TRE-PR
+455,edicao extra,TRE-RJ
+456,edicao extra ii,TRE-RJ
+457,edicao extra iii,TRE-RJ
+458,paginas sem caderno,TRE-RJ
+459,edicao extra,TRE-RN
+460,paginas sem caderno,TRE-RN
+461,edicao extra,TRE-RO
+462,paginas sem caderno,TRE-RO
+463,paginas sem caderno,TRE-RR
+464,paginas sem caderno,TRE-RS
+465,edicao extra,TRE-SC
+466,paginas sem caderno,TRE-SC
+467,edicao extra,TRE-SE
+468,paginas sem caderno,TRE-SE
+469,edicao extra,TRE-SP
+470,edicao extra ii,TRE-SP
+471,paginas sem caderno,TRE-SP
+472,paginas sem caderno,TRE-TO
+473,caderno administrativo - trf1,TRF1
+474,caderno judicial - extra - trf1,TRF1
+475,caderno judicial - rep. - trf1,TRF1
+476,caderno judicial - sjac,TRF1
+477,caderno judicial - sjam,TRF1
+478,caderno judicial - sjap,TRF1
+479,caderno judicial - sjba,TRF1
+480,caderno judicial - sjdf,TRF1
+481,caderno judicial - sjgo,TRF1
+482,caderno judicial - sjma,TRF1
+483,caderno judicial - sjmg,TRF1
+484,caderno judicial - sjmt,TRF1
+485,caderno judicial - sjpa,TRF1
+486,caderno judicial - sjpi,TRF1
+487,caderno judicial - sjro,TRF1
+488,caderno judicial - sjrr,TRF1
+489,caderno judicial - sjto,TRF1
+490,caderno judicial - trf1,TRF1
+491,paginas sem caderno,TRF1
+492,administrativo - jfes,TRF2
+493,administrativo - jfrj,TRF2
+494,administrativo - trf,TRF2
+495,judicial - jfes,TRF2
+496,judicial - jfrj,TRF2
+497,judicial - trf,TRF2
+498,administrativo,TRF3
+499,judicial i - capital sp,TRF3
+500,judicial i - interior sp e ms,TRF3
+501,judicial i - jef,TRF3
+502,judicial i - trf,TRF3
+503,judicial ii - capital sp,TRF3
+504,judicial ii - interior sp e ms,TRF3
+505,judicial ii - jef,TRF3
+506,judicial ii - trf,TRF3
+507,administrativo,TRF4
+508,edicao extraordinaria - administrativo,TRF4
+509,edicao extraordinaria - judicial,TRF4
+510,judicial,TRF4
+511,adm1,TRF5
+512,jud_pe2,TRF5
+513,paginas sem caderno,TRF5
+514,secao judiciaria da paraiba - edicao administrativa,TRF5
+515,secao judiciaria da paraiba - edicao judicial,TRF5
+516,secao judiciaria da paraiba - edicao judicial - 1,TRF5
+517,secao judiciaria de alagoas - edicao administrativa,TRF5
+518,secao judiciaria de alagoas - edicao administrativa - 1,TRF5
+519,secao judiciaria de alagoas - edicao judicial,TRF5
+520,secao judiciaria de alagoas - edicao judicial - 1,TRF5
+521,secao judiciaria de alagoas - edicao judicial - 2,TRF5
+522,secao judiciaria de alagoas - edicao judicial - 3,TRF5
+523,secao judiciaria de pernambuco - edicao administrativa,TRF5
+524,secao judiciaria de pernambuco - edicao administrativa - 1,TRF5
+525,secao judiciaria de pernambuco - edicao judicial,TRF5
+526,secao judiciaria de pernambuco - edicao judicial - 1,TRF5
+527,secao judiciaria de sergipe - edicao administrativa,TRF5
+528,secao judiciaria de sergipe - edicao judicial,TRF5
+529,secao judiciaria do ceara - edicao administrativa,TRF5
+530,secao judiciaria do ceara - edicao judicial,TRF5
+531,secao judiciaria do rio grande do norte - edicao administrativa,TRF5
+532,secao judiciaria do rio grande do norte - edicao administrativa - 1,TRF5
+533,secao judiciaria do rio grande do norte - edicao judicial,TRF5
+534,secao judiciaria do rio grande do norte - edicao judicial - 1,TRF5
+535,secao judiciaria do rio grande do norte - edicao judicial - 2,TRF5
+536,trf-5 - edicao administrativa,TRF5
+537,trf-5 - edicao judicial,TRF5
+538,edicao extra,TSE
+539,edicao extra ii,TSE
+540,paginas sem caderno,TSE

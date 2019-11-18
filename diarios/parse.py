@@ -14,7 +14,7 @@ class CaseParser:
         ],
         regexes_before_split=None,
         cleaners = {
-            'number': clean.clean_number
+            'classe': clean.clean_classe
         },
         parte='AUTOR:|RÉU:',
         split_parte_on=',|-|;',
@@ -22,6 +22,7 @@ class CaseParser:
         id_suffix=None,
         clean_text=clean.clean_diario_text,
         clean_parte=clean.clean_parte,
+        clean_number=clean.clean_number,
         clean_last_parte=lambda x: x,
         clean_parte_key=clean.clean_parte_key,
         clean_tipo_parte=clean.clean_tipo_parte,
@@ -31,7 +32,8 @@ class CaseParser:
         clean_mov=lambda x: x,
         df_proc_cols=[],
         df_mov_cols=[],
-        drop_if_no_number=True        
+        drop_if_no_number=True,
+        parte_levels=['proc_id']
     ):
         self.parte = parte
         self.regexes_before_split = regexes_before_split
@@ -41,6 +43,7 @@ class CaseParser:
         self.split_text_on = split_text_on        
         self.id_suffix = id_suffix
         self.clean_text = clean_text
+        self.clean_number = clean_number
         self.clean_parte = clean_parte
         self.clean_last_parte = clean_last_parte
         self.clean_parte_key = clean_parte_key
@@ -52,6 +55,7 @@ class CaseParser:
         self.df_proc_cols = df_proc_cols
         self.df_mov_cols = df_mov_cols       
         self.drop_if_no_number = drop_if_no_number
+        self.parte_levels = parte_levels
         
     def parse(self, df):
         df = self._add_cols_before_split(df)
@@ -92,14 +96,22 @@ class CaseParser:
         df = df.join(cols)
         if self.drop_if_no_number:
             df = df.query('number.notnull()')
+        df['number'] = self.clean_number(
+            df.number
+        )
         df['proc_id'] = clean.generate_id(
             df.number,
+            suffix=self.id_suffix
+        )
+        df['mov_id'] = df.index
+        df['mov_id'] = clean.generate_id(
+            df.mov_id,
             suffix=self.id_suffix
         )
         return df       
 
     def _get_parte(self, df):
-        proc_id = df['proc_id']
+        df_id = df.loc[:, self.parte_levels]
         df = extract_keywords(
             df['text'], self.parte,
             max_name_length=self.max_name_length,
@@ -118,15 +130,15 @@ class CaseParser:
             df.tipo_parte, 'tipo_parte', 'tipo_parte_id'
         )
         df = self._drop_partes(df)
-        df = df.join(proc_id)
+        df = df.join(df_id)
         df = df.drop_duplicates([
-            'proc_id', 'parte',
+            'parte',
             'tipo_parte_id'
-        ])
-        return df.loc[:, (
-            'proc_id', 'parte',
-            'key', 'tipo_parte_id'
-        )]
+        ] + self.parte_levels)
+        return df.loc[:, [
+            'parte', 'key',
+            'tipo_parte_id'
+        ] + self.parte_levels]
 
     def _split_parte(self, df):
         df = split_col(
@@ -178,7 +190,7 @@ class CaseParser:
         return proc
 
     def _get_mov(self, df):
-        cols1 = ['proc_id', 'text']
+        cols1 = ['mov_id', 'proc_id', 'text']
         mov = df.loc[:, cols1 + self.df_mov_cols]
         mov = self.clean_mov(mov)
         return mov
@@ -186,12 +198,19 @@ class CaseParser:
     
 class DiarioParser(CaseParser):
     
-    def __init__(self, number_types='CNJ', **kwargs):
+    def __init__(
+            self,
+            number_types='CNJ',
+            df_mov_cols=['tribunal', 'number',
+                         'date', 'caderno', 'line'],
+            df_proc_cols=['tribunal', 'number', 'classe'],            
+            **kwargs
+        ):
         super(DiarioParser, self).__init__(
             clean_proc=lambda x: clean_diario_proc(x, number_types),
             clean_mov=clean_diario_mov,
-            df_mov_cols=['tribunal', 'number', 'date', 'caderno', 'line'],
-            df_proc_cols=['tribunal', 'number', 'classe'],
+            df_mov_cols=df_mov_cols,
+            df_proc_cols=df_proc_cols,
             **kwargs
         )
 

@@ -110,19 +110,27 @@ def clean_tipo_parte(keywords):
     return map_regex(keywords, mapping)
 
 
-def get_procedencia(texts):
+def get_procedencia(
+    texts,
+    regex=(
+        '(?s)((julgo\s.{0,20}procedentes?)'
+        '(\sparcialmente\s)?(\sem\sparte.?\s)?)'
+    ),
+    mapping={
+        'julg.{0,5}par.{0,10}procedente':
+        'parcialmente procedente',
+        'julg.{0,5} procedentes? ((parcialmente)|(em parte))':
+        'parcialmente procedente',  
+        'julg.{0,5} procedente': 'procedente',
+        'julg.{0,5} improcedente': 'improcedente'
+    }
+):
     decision = texts.str.extract(
-        '((julgo .{0,20}procedentes?)( parcialmente )?( em parte.? )?)',
+        regex,
         flags=re.IGNORECASE
     )[0]
     decision = clean_text(decision)
-    mapping = {
-        'julgo .{0,5}par.{0,10}procedente': 'parcialmente procedente',
-        'julgo.{0,5} procedentes? ((parcialmente)|(em parte))': 'parcialmente procedente',  
-        'julgo.{0,5} procedente': 'procedente',
-        'julgo.{0,5} improcedente': 'improcedente'
-    }
-    return map_regex(decision, mapping)    
+    return map_regex(decision, mapping)
 
 
 def get_plaintiffwins(decision, parcial=1):
@@ -374,6 +382,11 @@ def get_number_regexes():
             '(?P<filingyear>(199|200|201)[0-9])'
             '[0-9]{7}'
         ),
+        'TJSP': (
+            '[0-9]+\.[0-9]{2}\.'
+            '(?P<filingyear>(199|200|201)[0-9])'
+            '\.[0-9]{6}-[0-9]'
+        ), # 625.01.1996.002168-3            
         'TJTO': (
             '(?P<filingyear>(199|200|201)[0-9])' 
             '\.[0-9]{4}\.[0-9]{4}(-|–)[0-9]'
@@ -643,3 +656,51 @@ def generate_id(df, suffix=None):
     if suffix:
         ids = ids.apply(lambda x: x*100 + suffix)
     return ids
+
+
+def clean_reais(sr):
+    return pd.to_numeric(
+        sr
+        .str.replace(
+            ',[0-9]{2}([^0-9].*|$)',
+            ''
+        )
+        .str.replace('[^0-9]', ''),
+        errors='coerce'
+    )
+
+
+def clean_integer(sr):
+    mapping = get_integer_mapping()
+    regex = list(mapping.keys()) + ['[0-9]+']
+    regex = '({})'.format('|'.join(regex))
+    sr = sr.str.extract(regex, expand=False)
+    sr = map_regex(sr, mapping)
+    return pd.to_numeric(sr, errors='coerce')
+
+
+def get_integer_mapping():
+    return {
+        'uma?': '1',
+        'dois': '2',
+        'duas': '2',        
+        'tres': '3',
+        'quatro': '4',
+        'cinco': '5',
+        'seis': '6',
+        'sete': '7',
+        'oito': '8',
+        'nove': '9',
+        'dez': '10',
+        'vinte': '20',
+        'cinquenta': '50',
+        'cem': '100'
+    }
+
+
+def add_leads_and_lags(df, variables, ivar, tvar, leads_and_lags):
+    for l in leads_and_lags:
+        df2 = df.copy().loc[:, variables + [ivar, tvar]].drop_duplicates()
+        df2[tvar] -= l
+        df = pd.merge(df, df2, on=[ivar, tvar], suffixes=["", l], how="left")
+    return df

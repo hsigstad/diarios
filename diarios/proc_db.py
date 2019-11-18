@@ -23,7 +23,8 @@ class Proc(Base):
 class Parte(Base):
     __tablename__ = 'parte'
     parte_id = Column(Integer, primary_key=True)
-    proc_id = Column(BigInteger, ForeignKey('proc.proc_id'))
+    mov_id = Column(BigInteger, ForeignKey('mov.mov_id'))
+    proc_id = Column(BigInteger, ForeignKey('proc.proc_id'))    
     parte = Column(String(255))
     tipo_parte_id = Column(Integer)
     def __repr__(self):
@@ -32,8 +33,9 @@ class Parte(Base):
 
 class Mov(Base):
     __tablename__ = 'mov'
-    mov_id = Column(Integer, primary_key=True)
-    proc_id = Column(BigInteger, ForeignKey('proc.proc_id'))    
+    mov_id = Column(BigInteger, primary_key=True)
+    proc_id = Column(BigInteger, ForeignKey('proc.proc_id'))
+    classe = Column(String(255))    
     date = Column(Date)
     caderno_id = Column(Integer)
     line = Column(Integer)
