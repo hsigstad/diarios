@@ -683,8 +683,10 @@ def get_integer_mapping():
     return {
         'uma?': '1',
         'dois': '2',
-        'duas': '2',        
+        'duas': '2',
+        'duplo': '2',
         'tres': '3',
+        'triplo': '3',        
         'quatro': '4',
         'cinco': '5',
         'seis': '6',
@@ -693,7 +695,13 @@ def get_integer_mapping():
         'nove': '9',
         'dez': '10',
         'vinte': '20',
+        'trinta': '30',
+        'quarenta': '40',
         'cinquenta': '50',
+        'sessenta': '60',
+        'setenta': '70',
+        'oitenta': '80',
+        'noventa': '90',
         'cem': '100'
     }
 
