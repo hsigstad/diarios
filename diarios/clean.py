@@ -5,9 +5,61 @@ from unidecode import unidecode
 import os
 import re
 import warnings
+from diarios.misc import get_user_config
 warnings.filterwarnings(
     'ignore', 'This pattern has match groups'
 )
+
+
+def clean_municipio(municipio, estado):
+    municipio = clean_text(municipio)
+    df = pd.DataFrame({
+        'wrong': municipio,
+        'estado': estado,
+        'index': municipio.index        
+    })    
+    corr = get_data('municipio_correction.csv')
+    df = pd.merge(
+        df, corr,
+        on=['wrong', 'estado'],
+        validate='m:1',
+        how='left'
+    )
+    df.loc[df.correct.isnull(), 'correct'] = df.wrong
+    df.index = df['index']
+    return df.correct
+
+
+def get_municipio_id(municipio, estado):
+    df = pd.DataFrame({
+        'municipio': municipio,
+        'estado': estado,
+        'index': municipio.index        
+    })
+    infile = os.path.join(
+        get_user_config(
+            'external_dropbox_directory'
+        ),
+        'municipios',
+        'municipio.csv'
+    )
+    cols = [
+        'municipio_id',
+        'municipio',
+        'estado'
+    ]
+    ids = (
+        pd.read_csv(infile, usecols=cols)
+        .query('municipio.notnull()')
+    )
+    ids = pd.merge(
+        df, ids,
+        on=['municipio', 'estado'],
+        validate='m:1',
+        how='left'
+    )
+    ids.index = ids['index']
+    return ids.municipio_id
 
 
 def clean_comarca(comarca):
@@ -141,27 +193,27 @@ def get_plaintiffwins(decision, parcial=1):
 
 def get_plaintiffwins_mapping(parcial=1):
     return {
-        "improcedente": 0,
-        "parcialmente procedente": parcial,
-        "procedente": 1,
-        "recebo inicial": 1,
-        "rejeito inicial": 0,        
-        "defiro liminar": 1,
-        "indefiro liminar": 0,
-        "defiro desbloqueio": 0,                
-        "indefiro desbloqueio": 1,
-        "defiro bloqueio": 1,
-        "indefiro bloqueio": 0,
-        "mantenho bloqueio": 1,        
-        "rejeito embargos": 1,
-        "preliminar não acholida": 1,
-        "extinto sem merito": 0,
-        "extinto punibilidade": 0,
-        "deram": 1,
-        "negar": 0,
-        "denegar": 0,
-        "rejeit": 0,
-        "nao conhecer": 0
+        'improcedente': 0,
+        'parcialmente procedente': parcial,
+        'procedente': 1,
+        'recebo inicial': 1,
+        'rejeito inicial': 0,        
+        'defiro liminar': 1,
+        'indefiro liminar': 0,
+        'defiro desbloqueio': 0,                
+        'indefiro desbloqueio': 1,
+        'defiro bloqueio': 1,
+        'indefiro bloqueio': 0,
+        'mantenho bloqueio': 1,        
+        'rejeito embargos': 1,
+        'preliminar não acholida': 1,
+        'extinto sem merito': 0,
+        'extinto punibilidade': 0,
+        'deram': 1,
+        'negar': 0,
+        'denegar': 0,
+        'rejeit': 0,
+        'nao conhecer': 0
     }
 
 
@@ -419,7 +471,7 @@ def get_tribunal(
             .set_index(['code_j', 'code_tr'])
         )
         info = extract_info_from_case_numbers(
-            series, types=["CNJ"]
+            series, types=['CNJ']
         )
         info = info.join(
             tribunal,
@@ -519,7 +571,7 @@ def get_foro_info(numbers):
         index_name = 'index'
     foro_info = (
         extract_info_from_case_numbers(
-            numbers, types=["CNJ"]
+            numbers, types=['CNJ']
         ).reset_index()
         .merge(
             foro,
@@ -588,7 +640,7 @@ def clean_text(
     multiple_spaces=False,
     strip=True
 ):
-    text = text.fillna("").astype(str)
+    text = text.fillna('').astype(str)
     if not links:
         text = remove_links(text)
     if not newline:
@@ -604,7 +656,7 @@ def clean_text(
             '[{}]'.format(drop), ''
         )
     if not multiple_spaces:
-        text = text.str.replace("  +", " ")
+        text = text.str.replace('  +', ' ')
     if strip:
         text = text.str.strip()
     return text
@@ -619,7 +671,7 @@ def remove_links(text):
 
 
 def clean_text_columns(df, exclude=[], drop='^a-z0-9 '):
-    for col in df.select_dtypes(include="object").columns:
+    for col in df.select_dtypes(include='object').columns:
         if col not in exclude:
             df[col] = clean_text(df[col], drop=drop)            
     return df
@@ -633,7 +685,7 @@ def get_data(datafile):
 def get_data_file(datafile):
     pkg_dir, _ = os.path.split(__file__)
     return os.path.join(
-        pkg_dir, "data", datafile
+        pkg_dir, 'data', datafile
     )
 
 
@@ -710,5 +762,5 @@ def add_leads_and_lags(df, variables, ivar, tvar, leads_and_lags):
     for l in leads_and_lags:
         df2 = df.copy().loc[:, variables + [ivar, tvar]].drop_duplicates()
         df2[tvar] -= l
-        df = pd.merge(df, df2, on=[ivar, tvar], suffixes=["", l], how="left")
+        df = pd.merge(df, df2, on=[ivar, tvar], suffixes=['', l], how='left')
     return df
