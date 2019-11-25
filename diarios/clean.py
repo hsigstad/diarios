@@ -11,6 +11,22 @@ warnings.filterwarnings(
 )
 
 
+def title(sr):
+    sr = sr.str.title()
+    tolower = {
+        'De': 'de',
+        'Da': 'da',
+        'Do': 'do',
+        'E': 'e'
+    }
+    for key, val in tolower.items():
+        sr = sr.str.replace(
+            r'\b{}\b'.format(key),
+            val
+        )
+    return sr
+    
+
 def clean_municipio(municipio, estado):
     municipio = clean_text(municipio)
     df = pd.DataFrame({
