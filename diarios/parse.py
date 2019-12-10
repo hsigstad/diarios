@@ -273,9 +273,10 @@ def parse_diario_extract(
     return df.query('line.notnull()')
 
 
-def extract_regexes(text, regexes):
+def extract_regexes(text, regexes, flags=0):
+    func = lambda x: text.str.extract(x, flags=flags)
     return pd.concat(
-        map(text.str.extract, regexes),
+        map(func, regexes),
         axis=1
     )
 

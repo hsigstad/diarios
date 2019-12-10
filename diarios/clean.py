@@ -17,6 +17,8 @@ def title(sr):
         'De': 'de',
         'Da': 'da',
         'Do': 'do',
+        'Das': 'das',
+        'Dos': 'dos',
         'E': 'e'
     }
     for key, val in tolower.items():
@@ -27,6 +29,53 @@ def title(sr):
     return sr
     
 
+def clean_estado(estado):
+    estado = clean_text(estado)
+    mapping = get_estado_mapping()
+    ufs = mapping.values()
+    lower_ufs = [
+        uf.lower()
+        for uf in ufs
+    ]
+    uf_mapping = dict(
+        zip(lower_ufs, ufs)
+    )
+    mapping = {**mapping, **uf_mapping}
+    return estado.map(mapping)
+
+
+def get_estado_mapping():
+    return {
+        'acre': 'AC',
+        'alagoas': 'AL',
+        'amapa': 'AP',
+        'amazonas': 'AM',
+        'bahia': 'BA',
+        'ceara': 'CE',
+        'distrito federal': 'DF',
+        'espirito santo': 'ES',
+        'goias': 'GO',
+        'maranhao': 'MA',
+        'mato grosso': 'MT',
+        'mato grosso do sul': 'MS',
+        'minas gerais': 'MG',
+        'para': 'PA',
+        'paraiba': 'PB',
+        'parana': 'PR',
+        'pernambuco': 'PE',
+        'piaui': 'PI',
+        'rio de janeiro': 'RJ',
+        'rio grande do norte': 'RN',
+        'rio grande do sul': 'RS',
+        'rondonia': 'RO',
+        'roraima': 'RR',
+        'sao paolo': 'SP',
+        'santa catarina': 'SC',
+        'sergipe': 'SE',
+        'tocantins': 'TO'
+    }
+
+        
 def clean_municipio(municipio, estado):
     municipio = clean_text(municipio)
     df = pd.DataFrame({
@@ -52,22 +101,7 @@ def get_municipio_id(municipio, estado):
         'estado': estado,
         'index': municipio.index        
     })
-    infile = os.path.join(
-        get_user_config(
-            'external_dropbox_directory'
-        ),
-        'municipios',
-        'municipio.csv'
-    )
-    cols = [
-        'municipio_id',
-        'municipio',
-        'estado'
-    ]
-    ids = (
-        pd.read_csv(infile, usecols=cols)
-        .query('municipio.notnull()')
-    )
+    ids = get_data('municipio_id.csv').dropna()
     ids = pd.merge(
         df, ids,
         on=['municipio', 'estado'],
@@ -565,8 +599,38 @@ def get_foro_id(numbers):
     return get_foro_info(numbers).loc[:, 'id']
 
 
-def get_comarca_id(numbers):
-    return get_foro_info(numbers).loc[:, 'comarca_id']
+def get_comarca_id(
+        number=None,
+        comarca=None,
+        tribunal=None
+    ):
+    if number is not None:
+        comarca_id = (
+            get_foro_info(number)
+            .loc[:, 'comarca_id']
+        )
+    elif (comarca is not None and
+          tribunal is not None):
+        df = pd.DataFrame({
+            'comarca': comarca,
+            'tribunal': tribunal,
+            'index': comarca.index
+        })
+        comarca = get_data('comarca.csv')
+        df = df.merge(
+            comarca,
+            on=['tribunal','comarca'],
+            how='left',
+            validate='m:1'
+        )
+        df.index = df['index']
+        comarca_id = df['comarca_id']
+    else:
+        raise Exception(
+            'Either number or comarca and'
+            ' tribunal must be specified'
+        )
+    return comarca_id
 
 
 def get_comarca(numbers):
@@ -628,8 +692,10 @@ def get_caderno_id(diario, caderno):
             ['diario', 'caderno']
         )
     )
-    df = pd.concat([diario, caderno], axis=1)
-    df.columns = ['diario', 'caderno']
+    df = pd.DataFrame({
+        'diario': diario,
+        'caderno': caderno
+    }, index=caderno.index)
     df2 = df.join(ids, on=['diario', 'caderno'])
     return df2['caderno_id']
 
@@ -713,7 +779,7 @@ def generate_id(df, suffix=None):
                number to be appended to id
     '''
     if type(df) == pd.DataFrame:
-        df = df.loc[:, by].astype(str).apply(
+        df = df.astype(str).apply(
             lambda x: '_'.join(x), axis=1
         )
     ids = (
