@@ -83,7 +83,12 @@ def clean_municipio(municipio, estado):
         'estado': estado,
         'index': municipio.index        
     })    
-    corr = get_data('municipio_correction.csv')
+    corr1 = get_data('municipio_correction_tse.csv')
+    corr2 = get_data('municipio_correction_manual.csv')
+    corr = pd.concat(
+        [corr1, corr2],
+        sort=True
+    ).drop_duplicates()
     df = pd.merge(
         df, corr,
         on=['wrong', 'estado'],

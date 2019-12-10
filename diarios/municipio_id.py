@@ -26,7 +26,7 @@ def clean_municipio():
         index=False
     )
     corr.to_csv(
-        'data/municipio_correction.csv',
+        'data/municipio_correction_tse.csv',
         index=False
     )    
     return mun, corr
@@ -151,13 +151,6 @@ def get_corrections(mun):
         ('estado', 'municipio', 'correct')
     ].dropna()
     corr.columns = ['estado', 'wrong', 'correct']
-    manual = pd.read_csv(
-        'municipio_manual_correction.csv'
-    )
-    corr = pd.concat(
-        [corr, manual],
-        sort=True
-    )
     return corr.drop_duplicates()
 
 

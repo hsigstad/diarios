@@ -131,6 +131,14 @@ def add_subsecao_id(municipio):
     )    
 
 
+def get_subsecao():
+    infile = os.path.join(
+        get_user_config('external_dropbox_directory'),
+        'subsecoes',
+        'Organização Justiça Federal.xlsx'
+    )
+    return pd.read_excel(infile)
+
 
 def clean_subsecao(df):
     cols = {
@@ -144,6 +152,9 @@ def clean_subsecao(df):
         df.rename(columns=cols)
         .loc[:, cols.values()]
     )
+    df['sede'] = df.sede.str.replace(
+        'Altamira\( exceto.*', 'Altamira'
+    )
     sede = df.drop(columns='municipio').drop_duplicates()
     sede['municipio'] = sede.sede
     df = pd.concat([df, sede])
@@ -153,18 +164,10 @@ def clean_subsecao(df):
     df['municipio'] = clean_municipio(df.municipio, df.estado)
     df['municipio_id'] = get_municipio_id(df.municipio, df.estado)
     df = df.loc[df.subsecao_id.notnull()]
+    df = df.drop_duplicates()
     df = df.drop_duplicates('municipio_id') #NB!!!
     return df.loc[:, ('municipio_id', 'subsecao_id')]
 
 
-def get_subsecao():
-    infile = os.path.join(
-        get_user_config('external_dropbox_directory'),
-        'subsecoes',
-        'Organização Justiça Federal.xlsx'
-    )
-    return pd.read_excel(infile)
-
 mun = main()
-
 print(mun.sample(5).iloc[0])
