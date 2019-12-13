@@ -1,9 +1,12 @@
 import pandas as pd
-import clean
+import sys
+sys.path.append('/home/henrik/Dropbox/brazil/diarios')
+from diarios.clean import clean_text
+from diarios.clean import transform
+from diarios.clean import clean_municipio
+from diarios.clean import get_municipio_id
+from diarios.misc import get_user_config
 import os
-import misc
-import importlib
-importlib.reload(clean)
 
 # This is the code to generate data/foro.csv and data/comarca.csv
 # Should not be used, unless we want to regenerate those files
@@ -36,7 +39,7 @@ def main():
 
 def get_foro_comarca():
     indir = os.path.join(
-        misc.get_user_config('external_dropbox_directory'),
+        get_user_config('external_dropbox_directory'),
         'comarcas'
     )
     infiles = [
@@ -46,11 +49,16 @@ def get_foro_comarca():
         map(pd.read_csv, infiles), sort=True
     )
 
+clean_text
+transform
 
 def clean_foro_comarca(foro):
     foro = foro.reset_index(drop=True)
-    foro['comarca'] = clean.clean_text(foro['comarca'])
-    foro['estado_id'] = clean.transform(
+    foro['comarca'] = clean_municipio(
+        foro.comarca,
+        foro.muni_state
+    )    
+    foro['estado_id'] = transform(
         foro['muni_state'],
         'estado', 'estado_id'
     )
@@ -58,11 +66,11 @@ def clean_foro_comarca(foro):
         foro['muni_state'].isnull(), 'estado_id'
     ] = foro['state_codetj']
     foro['tribunal_id'] = foro['estado_id']
-    foro['estado'] = clean.transform(
+    foro['estado'] = transform(
         foro.estado_id,
         'estado_id', 'estado'
     )
-    foro['tribunal'] = clean.transform(
+    foro['tribunal'] = transform(
         foro.tribunal_id,
         'tribunal_id', 'tribunal'
     )
@@ -92,29 +100,35 @@ def clean_foro_comarca(foro):
         .sort_values(['tribunal_id', 'oooo'])
         .reset_index(drop=True)
     )
-    foro['comarca_id'] = (
-        (foro['estado_id'].astype('str') + foro['comarca'])
-        .astype('category')
-        .cat.codes + 1
+    foro['comarca_id'] = get_municipio_id(
+        foro.comarca,        
+        foro.estado
     )
+    miss = foro.query('comarca_id.isnull()')
+    if len(miss) > 0:
+        print(miss)
+        raise Exception(
+            'Unknown municipalities',
+            miss[['estado','comarca']]
+        )
     foro['foro_id'] = foro.index + 1
     return foro
  
 
 def add_comarca_info(comarca):
     info_file = os.path.join(
-        misc.get_user_config('external_dropbox_directory'),
+        get_user_config('external_dropbox_directory'),
         'comarcas/comarca_info.csv',
     )
     info = pd.read_csv(
         info_file,
         usecols= ['state', 'name', 'entrancia', 'juizes']
     ).rename(columns={'name': 'comarca'})
-    info['estado_id'] = clean.transform(
+    info['estado_id'] = transform(
         info['state'],
         'estado', 'estado_id'
     )
-    info['comarca'] = clean.clean_text(info['comarca'])
+    info['comarca'] = clean_text(info['comarca'])
     comarca = (
         comarca
         .merge(info, on=['comarca', 'estado_id'], how='left')

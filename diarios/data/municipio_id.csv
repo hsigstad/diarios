@@ -1,9 +1,9 @@
 estado,municipio,municipio_id
 ,,-3.0
 ,,-1.0
-RO,guajaramirim,19.0
+RO,guajara-mirim,19.0
 RO,porto velho,35.0
-RO,jiparana,51.0
+RO,ji-parana,51.0
 RO,ariquemes,78.0
 RO,cacoal,94.0
 RO,pimenta bueno,116.0
@@ -207,9 +207,9 @@ PA,faro,4596.0
 PA,nova ipixuna,4600.0
 PA,gurupa,4618.0
 PA,placas,4626.0
-PA,igarapeacu,4634.0
+PA,igarape-acu,4634.0
 PA,marituba,4642.0
-PA,igarapemiri,4650.0
+PA,igarape-miri,4650.0
 PA,tracuateua,4669.0
 PA,inhangapi,4677.0
 PA,quatipuru,4685.0
@@ -243,7 +243,7 @@ PA,oeiras do para,5037.0
 PA,oriximina,5053.0
 PA,ourem,5070.0
 PA,paragominas,5096.0
-PA,peixeboi,5118.0
+PA,peixe-boi,5118.0
 PA,ponta de pedras,5134.0
 PA,portel,5150.0
 PA,porto de moz,5177.0
@@ -267,7 +267,7 @@ PA,sao miguel do guama,5517.0
 PA,sao sebastiao da boa vista,5533.0
 PA,senador jose porfirio,5550.0
 PA,soure,5576.0
-PA,tomeacu,5592.0
+PA,tome-acu,5592.0
 PA,tucurui,5614.0
 PA,vigia,5630.0
 PA,viseu,5657.0
@@ -310,7 +310,7 @@ MA,alto alegre do maranhao,7021.0
 MA,alcantara,7030.0
 MA,alto alegre do pindare,7048.0
 MA,aldeias altas,7056.0
-MA,apicumacu,7064.0
+MA,apicum-acu,7064.0
 MA,altamira do maranhao,7072.0
 MA,amapa do maranhao,7080.0
 MA,alto parnaiba,7099.0
@@ -354,7 +354,7 @@ MA,centro novo do maranhao,7463.0
 MA,cajari,7471.0
 MA,cidelandia,7480.0
 MA,candido mendes,7498.0
-MA,conceicao do lagoacu,7501.0
+MA,conceicao do lago-acu,7501.0
 MA,cantanhede,7510.0
 MA,feira nova do maranhao,7528.0
 MA,carolina,7536.0
@@ -468,7 +468,7 @@ MA,pedreiras,8613.0
 MA,vila nova dos martirios,8621.0
 MA,penalva,8630.0
 MA,peri mirim,8656.0
-MA,pindaremirim,8672.0
+MA,pindare-mirim,8672.0
 MA,pinheiro,8699.0
 MA,pio xii,8710.0
 MA,pirapemas,8737.0
@@ -971,7 +971,7 @@ RN,fernando pedroza,16144.0
 RN,angicos,16152.0
 RN,major sales,16160.0
 RN,antonio martins,16179.0
-RN,venhaver,16187.0
+RN,venha-ver,16187.0
 RN,apodi,16195.0
 RN,serrinha dos pintos,16209.0
 RN,areia branca,16217.0
@@ -994,7 +994,7 @@ RN,canguaretama,16438.0
 RN,caraubas,16454.0
 RN,carnauba dos dantas,16470.0
 RN,carnaubais,16497.0
-RN,cearamirim,16519.0
+RN,ceara-mirim,16519.0
 RN,cerro cora,16535.0
 RN,coronel ezequiel,16551.0
 RN,coronel joao pessoa,16578.0
@@ -1010,7 +1010,7 @@ RN,florania,16756.0
 RN,francisco dantas,16772.0
 RN,galinhos,16799.0
 RN,goianinha,16810.0
-RN,governador dixsept rosado,16837.0
+RN,governador dix-sept rosado,16837.0
 RN,grossos,16853.0
 RN,guamare,16870.0
 RN,ielmo marinho,16896.0
@@ -1644,18 +1644,18 @@ ZZ,hungria,29238.0
 ZZ,haiti,29246.0
 ZZ,abidja,29254.0
 ZZ,abu dhabi,29262.0
-ZZ,accragana,29270.0
+ZZ,accra-gana,29270.0
 ZZ,ama,29289.0
 ZZ,ancara,29297.0
-ZZ,argelargl,29300.0
+ZZ,argel-argl,29300.0
 ZZ,artigas,29319.0
 ZZ,assuncao,29327.0
 ZZ,atenas,29335.0
 ZZ,bangkok,29343.0
 ZZ,barcelona,29351.0
-ZZ,beirutelban,29360.0
-ZZ,belgradoserv,29378.0
-ZZ,berlimrfa,29386.0
+ZZ,beirute-lban,29360.0
+ZZ,belgrado-serv,29378.0
+ZZ,berlim-rfa,29386.0
 ZZ,bissau,29394.0
 ZZ,bogota,29408.0
 ZZ,boston,29416.0
@@ -1667,52 +1667,52 @@ ZZ,buenos aires,29467.0
 ZZ,caiena,29475.0
 ZZ,cairo,29483.0
 ZZ,camberra,29491.0
-ZZ,caracasvene,29505.0
+ZZ,caracas-vene,29505.0
 ZZ,chicago,29513.0
 ZZ,chuy,29521.0
 ZZ,cidade do cabo,29530.0
-ZZ,cingapuracing,29548.0
+ZZ,cingapura-cing,29548.0
 ZZ,ciudad del este,29556.0
 ZZ,ciudad guayana,29564.0
-ZZ,cochabambaboli,29572.0
+ZZ,cochabamba-boli,29572.0
 ZZ,concepcion,29580.0
-ZZ,copenhaguedina,29599.0
+ZZ,copenhague-dina,29599.0
 ZZ,cordoba,29602.0
 ZZ,dacar,29610.0
 ZZ,damasco,29637.0
 ZZ,dili,29645.0
-ZZ,dohacata,29653.0
+ZZ,doha-cata,29653.0
 ZZ,dublin,29661.0
 ZZ,encarnacion,29670.0
 ZZ,estocolmo,29688.0
 ZZ,frankfurt,29696.0
 ZZ,genebra,29700.0
 ZZ,georgetown,29718.0
-ZZ,guatemalaguat,29726.0
+ZZ,guatemala-guat,29726.0
 ZZ,hamamatsu,29742.0
 ZZ,hanoi,29750.0
 ZZ,harare,29769.0
 ZZ,havana,29777.0
 ZZ,helsinque,29785.0
-ZZ,hong konghong,29793.0
+ZZ,hong kong-hong,29793.0
 ZZ,houston,29807.0
 ZZ,iaunde,29815.0
 ZZ,iquitos,29823.0
 ZZ,islamabade,29831.0
-ZZ,jacartaindo,29840.0
+ZZ,jacarta-indo,29840.0
 ZZ,kiev,29858.0
-ZZ,kingstonjama,29866.0
+ZZ,kingston-jama,29866.0
 ZZ,kinshasa,29874.0
 ZZ,kuaite,29882.0
 ZZ,kuala lumpur,29890.0
-ZZ,la pazboli,29904.0
+ZZ,la paz-boli,29904.0
 ZZ,lagos,29912.0
 ZZ,libreville,29939.0
 ZZ,lima,29947.0
 ZZ,lisboa,29955.0
 ZZ,lome,29963.0
 ZZ,londres,29971.0
-ZZ,los angeleseua,29980.0
+ZZ,los angeles-eua,29980.0
 ZZ,luanda,29998.0
 BA,luis eduardo magalhaes,30007.0
 PE,fernando de noronha,30015.0
@@ -1722,27 +1722,27 @@ ZZ,madri,30066.0
 ZZ,managua,30074.0
 ZZ,manila,30082.0
 ZZ,maputo,30090.0
-ZZ,mexicomexi,30104.0
-ZZ,miamieua,30112.0
+ZZ,mexico-mexi,30104.0
+ZZ,miami-eua,30112.0
 ZZ,milao,30120.0
-ZZ,mitsukaidojapa,30139.0
+ZZ,mitsukaido-japa,30139.0
 ZZ,montevideu,30147.0
 ZZ,montreal,30155.0
 ZZ,moscou,30163.0
 ZZ,mumbai,30171.0
-ZZ,muniquerfa,30180.0
-ZZ,nagoyajapa,30198.0
-ZZ,nairobiquen,30201.0
+ZZ,munique-rfa,30180.0
+ZZ,nagoya-japa,30198.0
+ZZ,nairobi-quen,30201.0
 ZZ,nova delhi,30210.0
 ZZ,nova york,30228.0
-ZZ,oizumijapa,30236.0
+ZZ,oizumi-japa,30236.0
 ZZ,oslo,30244.0
 ZZ,ottawa,30252.0
-ZZ,panamapan,30260.0
+ZZ,panama-pan,30260.0
 ZZ,paramaribo,30279.0
 ZZ,paris,30287.0
 ZZ,paso los libres,30295.0
-ZZ,pedro caballeroparg,30309.0
+ZZ,pedro caballero-parg,30309.0
 ZZ,pequim,30317.0
 ZZ,port of spain,30325.0
 ZZ,porto principe,30333.0
@@ -1751,31 +1751,31 @@ ZZ,praga,30350.0
 ZZ,praia,30368.0
 ZZ,pretoria,30376.0
 ZZ,quito,30392.0
-ZZ,rabatmarr,30406.0
-ZZ,ramallahpale,30414.0
+ZZ,rabat-marr,30406.0
+ZZ,ramallah-pale,30414.0
 ZZ,riade,30422.0
 ZZ,rio branco,30430.0
 ZZ,roma,30449.0
-ZZ,roterdahola,30457.0
+ZZ,roterda-hola,30457.0
 ZZ,salto del guaira,30465.0
-ZZ,sta c la sierraboli,30473.0
-ZZ,santiagochil,30481.0
+ZZ,sta c la sierra-boli,30473.0
+ZZ,santiago-chil,30481.0
 ZZ,sao domingos,30490.0
 ZZ,sao francisco,30503.0
 ZZ,sao jose,30511.0
 ZZ,sao salvador,30520.0
 ZZ,seul,30538.0
 ZZ,sofia,30546.0
-ZZ,suzukajapa,30554.0
+ZZ,suzuka-japa,30554.0
 ZZ,sydney,30562.0
 ZZ,taipe,30570.0
-ZZ,takaokajapa,30589.0
+ZZ,takaoka-japa,30589.0
 ZZ,teera,30597.0
 ZZ,tegucigalpa,30600.0
 ZZ,tel aviv,30619.0
-ZZ,toquiojapa,30627.0
-ZZ,torontocana,30635.0
-ZZ,toyohashijapa,30643.0
+ZZ,toquio-japa,30627.0
+ZZ,toronto-cana,30635.0
+ZZ,toyohashi-japa,30643.0
 ZZ,cantao,30651.0
 BA,iuiu,30660.0
 ZZ,gaborone,30669.0
@@ -1784,7 +1784,7 @@ ZZ,tripoli,30686.0
 BA,jussari,30694.0
 ZZ,tunis,30708.0
 BA,america dourada,30716.0
-ZZ,uedajapa,30724.0
+ZZ,ueda-japa,30724.0
 BA,arataca,30732.0
 ZZ,varsovia,30740.0
 BA,barro alto,30759.0
@@ -1800,9 +1800,9 @@ ZZ,xangai,30848.0
 BA,canudos,30856.0
 ZZ,zurique,30864.0
 BA,dias d avila,30872.0
-ZZ,dongguanchin,30880.0
+ZZ,dongguan-chin,30880.0
 BA,fatima,30899.0
-ZZ,hartfordeua,30902.0
+ZZ,hartford-eua,30902.0
 BA,filadelfia,30910.0
 ZZ,colombo,30929.0
 BA,gaviao,30937.0
@@ -2224,9 +2224,9 @@ BA,saubara,38946.0
 BA,saude,38954.0
 ZZ,dar es salaam,38962.0
 BA,seabra,38970.0
-ZZ,ierevanarme,38989.0
+ZZ,ierevan-arme,38989.0
 BA,sebastiao laranjeiras,38997.0
-ZZ,mendonzaargt,39004.0
+ZZ,mendonza-argt,39004.0
 BA,senhor do bonfim,39012.0
 ZZ,zagreb,39020.0
 BA,sento se,39039.0
@@ -2280,7 +2280,7 @@ BA,vereda,39640.0
 BA,vitoria da conquista,39659.0
 BA,wagner,39675.0
 BA,wenceslau guimaraes,39691.0
-BA,xiquexique,39713.0
+BA,xique-xique,39713.0
 BA,lapao,39730.0
 BA,madre de deus,39748.0
 BA,maetinga,39756.0
@@ -2717,7 +2717,7 @@ MG,guaraciaba,45632.0
 MG,guaranesia,45659.0
 MG,guarani,45675.0
 MG,guarara,45691.0
-MG,guardamor,45713.0
+MG,guarda-mor,45713.0
 MG,guaxupe,45730.0
 MG,guidoval,45756.0
 MG,guimarania,45772.0
@@ -3085,7 +3085,7 @@ MG,sao tiago,52990.0
 MG,sao tomas de aquino,53015.0
 MG,sao thome das letras,53031.0
 MG,sao vicente de minas,53058.0
-MG,sapucaimirim,53074.0
+MG,sapucai-mirim,53074.0
 MG,sardoa,53090.0
 MG,senador cortes,53112.0
 MG,senador firmino,53139.0
@@ -3248,7 +3248,7 @@ RJ,belford roxo,58041.0
 RJ,barra do pirai,58050.0
 RJ,cardoso moreira,58068.0
 RJ,barra mansa,58076.0
-RJ,varresai,58084.0
+RJ,varre-sai,58084.0
 RJ,bom jardim,58092.0
 RJ,guapimirim,58106.0
 RJ,bom jesus do itabapoana,58114.0
@@ -3438,7 +3438,7 @@ SP,lourdes,62022.0
 SP,bariri,62030.0
 SP,torre de pedra,62049.0
 SP,barra bonita,62057.0
-SP,arcoiris,62065.0
+SP,arco-iris,62065.0
 SP,barra do turvo,62073.0
 SP,brejo alegre,62081.0
 SP,barretos,62090.0
@@ -3555,7 +3555,7 @@ SP,echapora,63959.0
 SP,eldorado,63975.0
 SP,elias fausto,63991.0
 SP,embu das artes,64017.0
-SP,embuguacu,64033.0
+SP,embu-guacu,64033.0
 SP,estrela d oeste,64050.0
 SP,estrela do norte,64076.0
 SP,fartura,64092.0
@@ -3766,7 +3766,7 @@ SP,paranapanema,68179.0
 SP,paranapua,68195.0
 SP,parapua,68217.0
 SP,pardinho,68233.0
-SP,pariqueraacu,68250.0
+SP,pariquera-acu,68250.0
 SP,patrocinio paulista,68276.0
 SP,pauliceia,68292.0
 SP,paulinia,68314.0
@@ -4545,7 +4545,7 @@ SC,garuva,81159.0
 SC,ermo,81167.0
 SC,gaspar,81175.0
 SC,sao pedro de alcantara,81183.0
-SC,graopara,81191.0
+SC,grao-para,81191.0
 SC,santiago do sul,81205.0
 SC,gravatal,81213.0
 SC,bela vista do toldo,81221.0
@@ -4769,7 +4769,7 @@ RS,brochier,85065.0
 RS,alegrete,85073.0
 RS,erebango,85081.0
 RS,alpestre,85090.0
-RS,entreijuis,85103.0
+RS,entre-ijuis,85103.0
 RS,alvorada,85111.0
 RS,nova esperanca do sul,85120.0
 RS,anta gorda,85138.0
@@ -5012,7 +5012,7 @@ RS,mostardas,87513.0
 RS,quevedos,87521.0
 RS,mucum,87530.0
 RS,rio dos indios,87548.0
-RS,naometoque,87556.0
+RS,nao-me-toque,87556.0
 RS,sagrada familia,87564.0
 RS,nonoai,87572.0
 RS,salvador das missoes,87580.0
@@ -5071,7 +5071,7 @@ RS,vila nova do sul,88102.0
 RS,redentora,88110.0
 RS,vitoria das missoes,88129.0
 RS,restinga seca,88137.0
-RS,xangrila,88145.0
+RS,xangri-la,88145.0
 RS,rio grande,88153.0
 RS,boa vista do sul,88161.0
 RS,rio pardo,88170.0
@@ -5828,7 +5828,7 @@ ZZ,bamako,99350.0
 ZZ,yangon,99376.0
 ZZ,freetown,99406.0
 ZZ,lethem,99422.0
-ZZ,kingstonjamaica,99430.0
+ZZ,kingston-jamaica,99430.0
 VT,sao paulo,99901.0
 VT,belo horizonte,99902.0
 VT,rio de janeiro,99903.0

@@ -39,7 +39,9 @@ def main():
     mun = add_subsecao_id(mun)
     mun = (
         mun.loc[:, (
-            'municipio_id', 'municipio', 'ibge7',
+            'municipio_id', 'municipio',
+            'municipio_accents',
+            'ibge7',
             'ibge6', 'estado',
             'estado_id', 'comarca_id',
             'subsecao_id'
@@ -85,7 +87,10 @@ def get_municipio_comarca():
 
 
 def clean_municipio_comarca(municipio):
-    municipio['comarca'] = clean_text(municipio['comarca'])
+    municipio['comarca'] = clean_text(
+        municipio['comarca'],
+        drop='^a-z\- '        
+    )
     municipio['ibge6'] = municipio['muni_code']//10
     municipio['estado_id'] = transform(
         municipio.muni_state,
@@ -94,11 +99,12 @@ def clean_municipio_comarca(municipio):
     municipio = add_comarca_id(municipio)  
     municipio = (
         municipio
-        .loc[:, ('estado_id',
+        .loc[:, ('estado_id', 'muni_name',
                  'muni_code', 'ibge6',
                  'comarca_id')]        
         .rename(columns={
-            'muni_code': 'ibge7'
+            'muni_code': 'ibge7',
+            'muni_name': 'municipio_accents'
         })     
         .drop_duplicates()
         .sort_values(['estado_id'])
@@ -170,4 +176,4 @@ def clean_subsecao(df):
 
 
 mun = main()
-print(mun.sample(5).iloc[0])
+print(mun.sample().iloc[0])

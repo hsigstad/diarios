@@ -32,7 +32,7 @@ BA,palmas do monte alto,palmas de monte alto
 TO,bandeirante do tocantins,bandeirantes do tocantins
 BA,agua quente,erico cardoso
 TO,pindorama de goias,pindorama do tocantins
-RN,venha ver,venhaver
+RN,venha ver,venha-ver
 MT,quatro marcos,sao jose dos quatro marcos
 SP,florinia,florinea
 CE,dep irapuan pinheiro,deputado irapuan pinheiro
@@ -70,10 +70,10 @@ MS,juty,juti
 TO,monte santo,monte santo do tocantins
 CE,tejussuoca,tejucuoca
 TO,lageado,lajeado
-MA,itapecurumirim,itapecuru mirim
-MA,apicum acu,apicumacu
+MA,itapecuru-mirim,itapecuru mirim
+MA,apicum acu,apicum-acu
 MA,sao raimundo da doca bezerra,sao raimundo do doca bezerra
-MG,sempeixe,sem peixe
+MG,sem-peixe,sem peixe
 RS,trindade,trindade do sul
 MG,brasopolis,brazopolis
 PR,luisiania,luiziana
@@ -85,7 +85,7 @@ GO,cesarina,cezarina
 MG,santa rita do ibitipoca,santa rita de ibitipoca
 RN,olho d agua do borges,olho dagua do borges
 ES,sao domingos,sao domingos do norte
-RN,cerrocora,cerro cora
+RN,cerro-cora,cerro cora
 AM,boa vista de ramos,boa vista do ramos
 PR,munhoz de mello,munhoz de melo
 GO,bom jesus,bom jesus de goias
@@ -95,8 +95,8 @@ SC,balneario de barra do sul,balneario barra do sul
 GO,alto paraiso,alto paraiso de goias
 MA,luis domingues do maranhao,luis domingues
 PA,eldorado do carajas,eldorado dos carajas
-SC,grao para,graopara
-MG,sapucai mirim,sapucaimirim
+SC,grao para,grao-para
+MG,sapucai mirim,sapucai-mirim
 MA,agua doce,agua doce do maranhao
 RN,sao jose de campestre,sao jose do campestre
 MG,sao tome das letras,sao thome das letras
@@ -113,7 +113,7 @@ MS,bataguacu,bataguassu
 MA,bela vista,bela vista do maranhao
 GO,mundo novo de goias,mundo novo
 PB,sao domingos,sao domingos de pombal
-SP,arco iris,arcoiris
+SP,arco iris,arco-iris
 RS,chiapeta,chiapetta
 PA,almerim,almeirim
 PR,santa cruz do monte castelo,santa cruz de monte castelo
@@ -121,14 +121,14 @@ BA,quijingue,quinjingue
 RO,espigao doeste,espigao do oeste
 MS,bataipora,bataypora
 AC,manuel urbano,manoel urbano
-MA,conceicao do lago acu,conceicao do lagoacu
+MA,conceicao do lago acu,conceicao do lago-acu
 PR,moreira salles,moreira sales
 GO,sao luis dos montes belos,sao luis de montes belos
 AM,novo ayrao,novo airao
 MA,governador edson lobao,governador edison lobao
 RN,lagoa danta,lagoa d anta
 PB,campo de santana,tacima
-RN,ceara mirim,cearamirim
+RN,ceara mirim,ceara-mirim
 SP,brodosqui,brodowski
 AL,olho dagua grande,olho d agua grande
 PE,sao caetano,sao caitano
@@ -143,14 +143,14 @@ SC,picarras,balneario picarras
 AL,olho dagua do casado,olho d agua do casado
 AP,amapari,pedra branca do amapari
 PB,mae dagua,mae d agua
-PA,tome acu,tomeacu
+PA,tome acu,tome-acu
 BA,governador lomanto junior,barro preto
-RO,guajara mirim,guajaramirim
+RO,guajara mirim,guajara-mirim
 SP,salmorao,salmourao
 RO,nova brasilandia,nova brasilandia do oeste
-PA,igarape acu,igarapeacu
+PA,igarape acu,igarape-acu
 ES,santa maria do jetiba,santa maria de jetiba
-BA,xique xique,xiquexique
+BA,xique xique,xique-xique
 PA,pau d arco,pau darco
 AL,tanque darca,tanque d arca
 PB,olho dagua,olho d agua
@@ -161,20 +161,20 @@ CE,itapaje,itapage
 RR,sao luiz do anaua,sao luiz
 SP,luisiania,luiziania
 SE,itaporanga dajuda,itaporanga d ajuda
-RJ,varre e sai,varresai
+RJ,varre e sai,varre-sai
 SP,bernadino de campos,bernardino de campos
-MA,pindare mirim,pindaremirim
+MA,pindare mirim,pindare-mirim
 RO,sao felipe d oeste,sao felipe do oeste
 AL,olho d agua das flores,olho dagua das flores
-RS,nao me toque,naometoque
+RS,nao me toque,nao-me-toque
 PE,iguaracy,iguaraci
 PE,belem do sao francisco,belem de sao francisco
-RS,entre ijuis,entreijuis
+RS,entre ijuis,entre-ijuis
 SC,luiz alves,luis alves
-SP,mojimirim,mogi mirim
+SP,moji-mirim,mogi mirim
 GO,aguas lindas,aguas lindas de goias
 GO,sitio dabadia,sitio d abadia
-SP,mojiguacu,mogi guacu
+SP,moji-guacu,mogi guacu
 PR,diamante d oeste,diamante doeste
 PR,rancho alegre d oeste,rancho alegre doeste
 PR,itapejara d oeste,itapejara doeste
@@ -192,7 +192,7 @@ SP,valparaizo,valparaiso
 PR,sao jorge doeste,sao jorge d oeste
 SP,bady bassit,bady bassitt
 SP,ipaucu,ipaussu
-RO,ji parana,jiparana
+RO,ji parana,ji-parana
 RJ,parati,paraty
 RJ,armacao de buzios,armacao dos buzios
 RJ,pati do alferes,paty do alferes
@@ -202,7 +202,7 @@ MG,pingo d agua,pingo dagua
 BA,dias davila,dias d avila
 PE,cabo,cabo de santo agostinho
 SP,moji mirim,mogi mirim
-SP,embu guacu,embuguacu
+SP,embu guacu,embu-guacu
 SP,moji guacu,mogi guacu
 RJ,trajano de moraes,trajano de morais
 SP,guarani doeste,guarani d oeste

@@ -77,7 +77,10 @@ def get_estado_mapping():
 
         
 def clean_municipio(municipio, estado):
-    municipio = clean_text(municipio)
+    municipio = clean_text(
+        municipio,
+        drop='^a-z\- '        
+    )
     df = pd.DataFrame({
         'wrong': municipio,
         'estado': estado,
@@ -851,3 +854,5 @@ def add_leads_and_lags(df, variables, ivar, tvar, leads_and_lags):
         df2[tvar] -= l
         df = pd.merge(df, df2, on=[ivar, tvar], suffixes=['', l], how='left')
     return df
+
+name_regex = "[a-zA-Z' áéíóàâêôãõÁÉÍÓÀÃÕ]+"

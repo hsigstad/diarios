@@ -37,23 +37,22 @@ def get_mun():
         get_user_config('external_dropbox_directory'),
         'elections'
     )
+    infiles1 = glob.glob(
+        '{}/*/*/votacao_candidato_munzona*'
+        .format(indir)
+    )    
     mun1 = pd.concat(
-        map(
-            get_municipio_id,
-            glob.glob(
-                '{}/*/*/votacao_candidato_munzona*'
-                .format(indir)
-            )
-        ),
+        map(get_municipio_id,
+            infiles1),
         sort=True
     )
+    infiles2 = glob.glob(
+        '{}/*/*/consulta_cand*'
+        .format(indir)
+    )    
     mun2 = pd.concat(
-        map(
-            get_municipio_nasc_id,
-            glob.glob(
-                '{}/*/*/consulta_cand*'
-                .format(indir))
-        ),
+        map(get_municipio_nasc_id,
+            infiles2),
         sort=True
     )
     mun = pd.concat(
@@ -64,7 +63,8 @@ def get_mun():
         mun.municipio_id, errors='coerce'
     )
     mun['municipio'] = clean_text(
-        mun.municipio
+        mun.municipio,
+        drop='^a-z\- '
     )
     cols = [
         'estado',
