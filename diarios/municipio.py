@@ -171,9 +171,44 @@ def clean_subsecao(df):
     df['municipio_id'] = get_municipio_id(df.municipio, df.estado)
     df = df.loc[df.subsecao_id.notnull()]
     df = df.drop_duplicates()
+    for row in get_wrong_rows():
+        df = df.loc[~(
+            (df.estado == row[0]) &
+            (df.municipio == row[1]) &
+            (df.subsecao == row[2])
+        )]
     df = df.drop_duplicates('municipio_id') #NB!!!
     return df.loc[:, ('municipio_id', 'subsecao_id')]
+    
 
+def get_wrong_rows():
+    return [
+        ['AC', 'cruzeiro do sul', 'rio branco'],
+        ['ES', 'fundao', 'vitoria'],
+        ['ES', 'serra', 'vitoria'],
+        # §1º. As Varas Federais Criminais da sede (art. 36) alcançam também os municípios de
+        # Serra e Fundão no âmbito de suas competências em razão da matéria.
+        # §2º. As Varas Federais de Execução Fiscal da sede (art. 35) alcançam também os
+        # municípios de Serra e Fundão no âmbito de sua competência em razão da matéria.
+        # §3º. As Varas Federais Cíveis da sede com competência para conhecer matéria
+        # tributária (art. 34, inciso I) alcançam também os municípios de Serra e Fundão, no
+        # âmbito de sua competência.
+        # Art. 15. A Subseção de Serra, composta por uma Vara Federal de competência cível,
+        # incluindo Juizado Especial Federal Adjunto, alcança a extensão territorial dos
+        # municípios de Serra e Fundão, observado o disposto no artigo anterior. 
+        ['RJ', 'belford roxo', 'sao joao de meriti'],
+        ['RJ', 'duque de caxias', 'sao joao de meriti'],
+        ['RJ', 'japeri' ,'sao joao de meriti'],
+        ['RJ', 'queimados', 'sao joao de meriti'],
+        # Municípios de Belfort Roxo, Queimados, Japeri e Duque de
+        # Caxias: A subseção de Duque de Caxias alcança esses
+        # municípios, sendo competente para o processamento e
+        # julgamento das causas afetas às Varas Federais e aos
+        # Juizados Especiais Federais, com exceção das causas
+        # criminais, cuja competência é atribuída às 3ª e 4ª Varas
+        # Federais de São João de Meriti.
+        ['MG', 'santa vitoria', 'uberlandia']
+    ]
 
 mun = main()
 print(mun.sample().iloc[0])

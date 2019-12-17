@@ -273,12 +273,31 @@ def parse_diario_extract(
     return df.query('line.notnull()')
 
 
-def extract_regexes(text, regexes, flags=0):
-    func = lambda x: text.str.extract(x, flags=flags)
-    return pd.concat(
+def extract_regexes(text, regexes, flags=0, extractall=False, axis=1):
+    if extractall:
+        func = (
+            lambda x: text
+            .str.extractall(x, flags=flags)
+        )
+    else:
+        func = (
+            lambda x: text
+            .str.extract(x, flags=flags)
+        )
+    df = pd.concat(
         map(func, regexes),
-        axis=1
+        axis=axis,
+        sort=True
     )
+    drop_cols = [
+        c for c in df.columns
+        if isinstance(c, int)
+    ]
+    df = df.drop(columns=drop_cols)
+    if extractall:
+        df = df.droplevel('match')
+    return df
+        
 
 
 def extract_keywords(

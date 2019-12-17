@@ -60,7 +60,7 @@ municipio_id,municipio,municipio_accents,ibge7,ibge6,estado,estado_id,comarca_id
 1040.0,marechal thaumaturgo,marechal thaumaturgo,1200351.0,120035.0,AC,1.0,1040.0,1074.0
 1058.0,brasileia,brasiléia,1200104.0,120010.0,AC,1.0,1058.0,1392.0
 1066.0,porto walter,,,,,,,1074.0
-1074.0,cruzeiro do sul,cruzeiro do sul,1200203.0,120020.0,AC,1.0,1074.0,1392.0
+1074.0,cruzeiro do sul,cruzeiro do sul,1200203.0,120020.0,AC,1.0,1074.0,1074.0
 1082.0,rodrigues alves,rodrigues alves,1200427.0,120042.0,AC,1.0,1082.0,1074.0
 1090.0,mancio lima,mâncio lima,1200336.0,120033.0,AC,1.0,1090.0,1074.0
 1104.0,jordao,jordão,1200328.0,120032.0,AC,1.0,1104.0,1074.0
@@ -2320,7 +2320,7 @@ municipio_id,municipio,municipio_accents,ibge7,ibge6,estado,estado_id,comarca_id
 40150.0,aguanil,aguanil,3100807.0,310080.0,MG,13.0,42234.0,47635.0
 40169.0,durande,durandé,3123528.0,312352.0,MG,13.0,47899.0,47872.0
 40177.0,aguas formosas,águas formosas,3100906.0,310090.0,MG,13.0,40177.0,53716.0
-40185.0,entre folhas,entre folhas,3123858.0,312385.0,MG,13.0,42676.0,
+40185.0,entre folhas,entre folhas,3123858.0,312385.0,MG,13.0,42676.0,46256.0
 40193.0,aguas vermelhas,águas vermelhas,3101003.0,310100.0,MG,13.0,49735.0,53716.0
 40207.0,fervedouro,fervedouro,3125952.0,312595.0,MG,13.0,42650.0,48771.0
 40215.0,aimores,aimorés,3101102.0,310110.0,MG,13.0,40215.0,45535.0
@@ -2909,7 +2909,7 @@ municipio_id,municipio,municipio_accents,ibge7,ibge6,estado,estado_id,comarca_id
 49492.0,passabem,passabém,3147501.0,314750.0,MG,13.0,,41238.0
 49514.0,passa quatro,passa quatro,3147600.0,314760.0,MG,13.0,,50490.0
 49530.0,passa tempo,passa tempo,3147709.0,314770.0,MG,13.0,,44458.0
-49557.0,passa vinte,passa-vinte,3147808.0,314780.0,MG,13.0,40231.0,
+49557.0,passa vinte,passa-vinte,3147808.0,314780.0,MG,13.0,40231.0,54135.0
 49573.0,passos,passos,3147907.0,314790.0,MG,13.0,49573.0,49573.0
 49590.0,patos de minas,patos de minas,3148004.0,314800.0,MG,13.0,49590.0,49590.0
 49611.0,patrocinio,patrocínio,3148103.0,314810.0,MG,13.0,49611.0,49590.0
@@ -3196,7 +3196,7 @@ municipio_id,municipio,municipio_accents,ibge7,ibge6,estado,estado_id,comarca_id
 56375.0,domingos martins,domingos martins,3201902.0,320190.0,ES,8.0,56375.0,57053.0
 56391.0,dores do rio preto,dores do rio preto,3202009.0,320200.0,ES,8.0,56391.0,56235.0
 56413.0,ecoporanga,ecoporanga,3202108.0,320210.0,ES,8.0,56413.0,56294.0
-56430.0,fundao,fundão,3202207.0,320220.0,ES,8.0,56430.0,57053.0
+56430.0,fundao,fundão,3202207.0,320220.0,ES,8.0,56430.0,56995.0
 56456.0,guacui,guaçuí,3202306.0,320230.0,ES,8.0,56456.0,56235.0
 56472.0,guarapari,guarapari,3202405.0,320240.0,ES,8.0,56472.0,57053.0
 56499.0,ibiracu,ibiraçu,3202504.0,320250.0,ES,8.0,56499.0,56634.0
@@ -3226,7 +3226,7 @@ municipio_id,municipio,municipio_accents,ibge7,ibge6,estado,estado_id,comarca_id
 56936.0,sao gabriel da palha,são gabriel da palha,3204708.0,320470.0,ES,8.0,56936.0,56294.0
 56952.0,sao jose do calcado,são josé do calçado,3204807.0,320480.0,ES,8.0,56952.0,56235.0
 56979.0,sao mateus,são mateus,3204906.0,320490.0,ES,8.0,56979.0,56979.0
-56995.0,serra,serra,3205002.0,320500.0,ES,8.0,56995.0,57053.0
+56995.0,serra,serra,3205002.0,320500.0,ES,8.0,56995.0,56995.0
 57010.0,viana,viana,3205101.0,320510.0,ES,8.0,57010.0,57053.0
 57037.0,vila velha,vila velha,3205200.0,320520.0,ES,8.0,57037.0,57053.0
 57053.0,vitoria,vitória,3205309.0,320530.0,ES,8.0,57053.0,57053.0
@@ -3244,7 +3244,7 @@ municipio_id,municipio,municipio_accents,ibge7,ibge6,estado,estado_id,comarca_id
 58017.0,angra dos reis,angra dos reis,3300100.0,330010.0,RJ,19.0,58017.0,58017.0
 58025.0,quatis,quatis,3304128.0,330412.0,RJ,19.0,58076.0,58831.0
 58033.0,araruama,araruama,3300209.0,330020.0,RJ,19.0,58033.0,59030.0
-58041.0,belford roxo,belford roxo,3300456.0,330045.0,RJ,19.0,58041.0,59013.0
+58041.0,belford roxo,belford roxo,3300456.0,330045.0,RJ,19.0,58041.0,58335.0
 58050.0,barra do pirai,barra do piraí,3300308.0,330030.0,RJ,19.0,58050.0,58050.0
 58068.0,cardoso moreira,cardoso moreira,3301157.0,330115.0,RJ,19.0,,58190.0
 58076.0,barra mansa,barra mansa,3300407.0,330040.0,RJ,19.0,58076.0,59250.0
@@ -3252,9 +3252,9 @@ municipio_id,municipio,municipio_accents,ibge7,ibge6,estado,estado_id,comarca_id
 58092.0,bom jardim,bom jardim,3300506.0,330050.0,RJ,19.0,58092.0,58670.0
 58106.0,guapimirim,guapimirim,3301850.0,330185.0,RJ,19.0,58491.0,58491.0
 58114.0,bom jesus do itabapoana,bom jesus do itabapoana,3300605.0,330060.0,RJ,19.0,58114.0,58432.0
-58122.0,queimados,queimados,3304144.0,330414.0,RJ,19.0,58696.0,59013.0
+58122.0,queimados,queimados,3304144.0,330414.0,RJ,19.0,58696.0,58696.0
 58130.0,cabo frio,cabo frio,3300704.0,330070.0,RJ,19.0,58130.0,59030.0
-58149.0,japeri,japeri,3302270.0,330227.0,RJ,19.0,58696.0,59013.0
+58149.0,japeri,japeri,3302270.0,330227.0,RJ,19.0,58696.0,58696.0
 58157.0,cachoeiras de macacu,cachoeiras de macacu,3300803.0,330080.0,RJ,19.0,58157.0,58378.0
 58165.0,comendador levy gasparian,comendador levy gasparian,3300951.0,330095.0,RJ,19.0,59196.0,59196.0
 58173.0,cambuci,cambuci,3300902.0,330090.0,RJ,19.0,58173.0,58190.0
@@ -3273,23 +3273,23 @@ municipio_id,municipio,municipio_accents,ibge7,ibge6,estado,estado_id,comarca_id
 58300.0,carapebus,carapebus,3300936.0,330093.0,RJ,19.0,58300.0,58475.0
 58319.0,duas barras,duas barras,3301603.0,330160.0,RJ,19.0,58319.0,58670.0
 58327.0,porto real,porto real,3304110.0,330411.0,RJ,19.0,58831.0,58831.0
-58335.0,duque de caxias,duque de caxias,3301702.0,330170.0,RJ,19.0,58335.0,59013.0
+58335.0,duque de caxias,duque de caxias,3301702.0,330170.0,RJ,19.0,58335.0,58335.0
 58343.0,sao jose de uba,são josé de ubá,3305133.0,330513.0,RJ,19.0,58173.0,58432.0
 58351.0,engenheiro paulo de frontin,engenheiro paulo de frontin,3301801.0,330180.0,RJ,19.0,58351.0,58696.0
 58360.0,tangua,tanguá,3305752.0,330575.0,RJ,19.0,58378.0,58378.0
 58378.0,itaborai,itaboraí,3301900.0,330190.0,RJ,19.0,58378.0,58378.0
 58386.0,macuco,macuco,3302452.0,330245.0,RJ,19.0,58297.0,58670.0
-58394.0,itaguai,itaguaí,3302007.0,330200.0,RJ,19.0,58394.0,
+58394.0,itaguai,itaguaí,3302007.0,330200.0,RJ,19.0,58394.0,60011.0
 58408.0,armacao dos buzios,armação dos búzios,3300233.0,330023.0,RJ,19.0,58130.0,59030.0
 58416.0,itaocara,itaocara,3302106.0,330210.0,RJ,19.0,58416.0,58190.0
-58424.0,seropedica,seropédica,3305554.0,330555.0,RJ,19.0,58394.0,
+58424.0,seropedica,seropédica,3305554.0,330555.0,RJ,19.0,58394.0,60011.0
 58432.0,itaperuna,itaperuna,3302205.0,330220.0,RJ,19.0,58432.0,58432.0
 58440.0,itatiaia,itatiaia,3302254.0,330225.0,RJ,19.0,58831.0,58831.0
 58459.0,laje do muriae,laje do muriaé,3302304.0,330230.0,RJ,19.0,58459.0,58432.0
 58467.0,mesquita,mesquita,3302858.0,330285.0,RJ,19.0,58696.0,59013.0
 58475.0,macae,macaé,3302403.0,330240.0,RJ,19.0,58475.0,58475.0
 58491.0,mage,magé,3302502.0,330250.0,RJ,19.0,58491.0,58491.0
-58513.0,mangaratiba,mangaratiba,3302601.0,330260.0,RJ,19.0,58513.0,
+58513.0,mangaratiba,mangaratiba,3302601.0,330260.0,RJ,19.0,58513.0,60011.0
 58530.0,marica,maricá,3302700.0,330270.0,RJ,19.0,58530.0,58653.0
 58556.0,mendes,mendes,3302809.0,330280.0,RJ,19.0,58556.0,58050.0
 58572.0,miguel pereira,miguel pereira,3302908.0,330290.0,RJ,19.0,58572.0,58696.0
@@ -3331,7 +3331,7 @@ municipio_id,municipio,municipio_accents,ibge7,ibge6,estado,estado_id,comarca_id
 59293.0,italva,italva,3302056.0,330205.0,RJ,19.0,,58432.0
 59315.0,paty do alferes,paty do alferes,3303856.0,330385.0,RJ,19.0,59234.0,59196.0
 59331.0,sao jose do vale do rio preto,são josé do vale do rio preto,3305158.0,330515.0,RJ,19.0,58777.0,58777.0
-60011.0,rio de janeiro,rio de janeiro,3304557.0,330455.0,RJ,19.0,60011.0,
+60011.0,rio de janeiro,rio de janeiro,3304557.0,330455.0,RJ,19.0,60011.0,60011.0
 61000.0,euclides da cunha paulista,euclides da cunha paulista,3515350.0,351535.0,SP,26.0,71870.0,69299.0
 61018.0,adamantina,adamantina,3500105.0,350010.0,SP,26.0,61018.0,72010.0
 61026.0,borebi,borebi,3507456.0,350745.0,SP,26.0,66370.0,62197.0
@@ -3555,7 +3555,7 @@ municipio_id,municipio,municipio_accents,ibge7,ibge6,estado,estado_id,comarca_id
 63975.0,eldorado,eldorado,3514809.0,351480.0,SP,26.0,63975.0,69531.0
 63991.0,elias fausto,elias fausto,3514908.0,351490.0,SP,26.0,67377.0,62910.0
 64017.0,embu das artes,embu das artes,3515004.0,351500.0,SP,26.0,71072.0,67890.0
-64033.0,embu-guacu,embu-guaçu,3515103.0,351510.0,SP,26.0,71072.0,
+64033.0,embu-guacu,embu-guaçu,3515103.0,351510.0,SP,26.0,71072.0,71072.0
 64050.0,estrela d oeste,estrela d'oeste,3515202.0,351520.0,SP,26.0,,65978.0
 64076.0,estrela do norte,estrela do norte,3515301.0,351530.0,SP,26.0,68853.0,69299.0
 64092.0,fartura,fartura,3515400.0,351540.0,SP,26.0,64092.0,67954.0
@@ -3678,7 +3678,7 @@ municipio_id,municipio,municipio_accents,ibge7,ibge6,estado,estado_id,comarca_id
 66435.0,lins,lins,3527108.0,352710.0,SP,26.0,66435.0,66435.0
 66451.0,lorena,lorena,3527207.0,352720.0,SP,26.0,66451.0,64696.0
 66478.0,louveira,louveira,3527306.0,352730.0,SP,26.0,66478.0,66192.0
-66494.0,lucelia,lucélia,3527405.0,352740.0,SP,26.0,66494.0,69299.0
+66494.0,lucelia,lucélia,3527405.0,352740.0,SP,26.0,66494.0,72010.0
 66516.0,lucianopolis,lucianópolis,3527504.0,352750.0,SP,26.0,63916.0,62197.0
 66532.0,luis antonio,luís antônio,3527603.0,352760.0,SP,26.0,71196.0,69698.0
 66559.0,luiziania,luiziânia,3527702.0,352770.0,SP,26.0,68470.0,61557.0
@@ -3712,7 +3712,7 @@ municipio_id,municipio,municipio_accents,ibge7,ibge6,estado,estado_id,comarca_id
 67113.0,mococa,mococa,3530508.0,353050.0,SP,26.0,67113.0,70831.0
 67130.0,mogi das cruzes,mogi das cruzes,3530607.0,353060.0,SP,26.0,67130.0,67130.0
 67156.0,mogi guacu,mogi guaçu,3530706.0,353070.0,SP,26.0,,66397.0
-67172.0,mogi mirim,moji mirim,3530805.0,353080.0,SP,26.0,,
+67172.0,mogi mirim,moji mirim,3530805.0,353080.0,SP,26.0,,70831.0
 67199.0,mombuca,mombuca,3530904.0,353090.0,SP,26.0,63096.0,62910.0
 67210.0,moncoes,monções,3531001.0,353100.0,SP,26.0,67539.0,61557.0
 67237.0,mongagua,mongaguá,3531100.0,353110.0,SP,26.0,67237.0,71218.0
@@ -4077,7 +4077,7 @@ municipio_id,municipio,municipio_accents,ibge7,ibge6,estado,estado_id,comarca_id
 74365.0,honorio serpa,honório serpa,4109658.0,410965.0,PR,16.0,75272.0,77518.0
 74373.0,assai,assaí,4101903.0,410190.0,PR,16.0,74373.0,76678.0
 74381.0,iguatu,iguatu,4110052.0,411005.0,PR,16.0,75230.0,74934.0
-74390.0,astorga,astorga,4102109.0,410210.0,PR,16.0,74390.0,76910.0
+74390.0,astorga,astorga,4102109.0,410210.0,PR,16.0,74390.0,76678.0
 74403.0,iracema do oeste,iracema do oeste,4110656.0,411065.0,PR,16.0,,79278.0
 74411.0,atalaia,atalaia,4102208.0,410220.0,PR,16.0,77216.0,76910.0
 74420.0,novo itacolomi,novo itacolomi,4117297.0,411729.0,PR,16.0,74250.0,74250.0
@@ -4220,7 +4220,7 @@ municipio_id,municipio,municipio_accents,ibge7,ibge6,estado,estado_id,comarca_id
 75833.0,guarapuava,guarapuava,4109401.0,410940.0,PR,16.0,75833.0,75833.0
 75850.0,guaraquecaba,guaraqueçaba,4109500.0,410950.0,PR,16.0,74217.0,77453.0
 75876.0,guaratuba,guaratuba,4109609.0,410960.0,PR,16.0,75876.0,77453.0
-75892.0,ibaiti,ibaiti,4109708.0,410970.0,PR,16.0,75892.0,79154.0
+75892.0,ibaiti,ibaiti,4109708.0,410970.0,PR,16.0,75892.0,76295.0
 75914.0,ibipora,ibiporã,4109807.0,410980.0,PR,16.0,75914.0,76678.0
 75930.0,icaraima,icaraíma,4109906.0,410990.0,PR,16.0,75930.0,79359.0
 75957.0,iguaracu,iguaraçu,4110003.0,411000.0,PR,16.0,74390.0,76910.0
@@ -4311,7 +4311,7 @@ municipio_id,municipio,municipio_accents,ibge7,ibge6,estado,estado_id,comarca_id
 77658.0,pinhao,pinhão,4119301.0,411930.0,PR,16.0,77658.0,75833.0
 77674.0,pirai do sul,piraí do sul,4119400.0,411940.0,PR,16.0,77674.0,77771.0
 77690.0,piraquara,piraquara,4119509.0,411950.0,PR,16.0,,75353.0
-77712.0,pitanga,pitanga,4119608.0,411960.0,PR,16.0,77712.0,77712.0
+77712.0,pitanga,pitanga,4119608.0,411960.0,PR,16.0,77712.0,74250.0
 77739.0,planaltina do parana,planaltina do paraná,4119707.0,411970.0,PR,16.0,78492.0,77496.0
 77755.0,planalto,planalto,4119806.0,411980.0,PR,16.0,74870.0,75655.0
 77771.0,ponta grossa,ponta grossa,4119905.0,411990.0,PR,16.0,77771.0,77771.0
