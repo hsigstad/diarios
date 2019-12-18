@@ -210,5 +210,5 @@ def get_wrong_rows():
         ['MG', 'santa vitoria', 'uberlandia']
     ]
 
-mun = main()
-print(mun.sample().iloc[0])
+df = main()
+print(df.sample().iloc[0])
