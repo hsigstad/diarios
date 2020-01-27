@@ -11,6 +11,42 @@ warnings.filterwarnings(
 )
 
 
+class TRF:
+
+    def __init__(self, n):
+        if re.match('TRF', n):
+            n = n[3]
+        self.n = n
+        self.name = 'TRF{}'.format(n)
+        self.estados = get_trf_estados(
+            self.name
+        )
+
+
+def get_trf_estados(trf):
+    mapping = get_trf_estados_mapping()
+    return mapping[trf]
+
+
+def get_trf_estados_mapping():    
+    return {
+        'TRF1': [
+            'AC', 'AM', 'AP', 'BA',
+            'DF', 'GO', 'MA', 'MG',
+            'MT', 'PA', 'PI', 'RO',
+            'RR', 'TO'
+        ],
+        'TRF2': ['ES', 'RJ'],
+        'TRF3': ['MS', 'SP'],
+        'TRF4': ['PR', 'RS', 'SC'],
+        'TRF5': [
+            'AL', 'CE',
+            'PB', 'PE',
+            'RN', 'SE'
+        ]
+    }
+    
+
 def title(sr):
     sr = sr.str.title()
     tolower = {
@@ -212,9 +248,11 @@ def clean_tipo_parte(keywords):
         'promotor': 'plaintiff',
         'adv|dr|repr': 'lawyer', # has to be before defendant!
         'reu|^res?$|parte re|do$|da$': 'defendant',
+        'requerid': 'defendant',
+        'requerent': 'plaintiff',
         'reqd|exectd': 'defendant',
         '^x$': 'defendant',
-        'passiv|lit pas': 'defendant',
+        'passiv|lit pa?s|litispa': 'defendant',
         'paciente': 'paciente'
     }
     return map_regex(keywords, mapping)
@@ -855,4 +893,7 @@ def add_leads_and_lags(df, variables, ivar, tvar, leads_and_lags):
         df = pd.merge(df, df2, on=[ivar, tvar], suffixes=['', l], how='left')
     return df
 
-name_regex = "[a-zA-Z' áéíóàâêôãõÁÉÍÓÀÃÕ]+"
+
+letter = "[a-zA-Z' çúáéíóàâêôãõÇÁÉÍÓÀÃÕ]"
+
+

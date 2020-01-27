@@ -234,6 +234,10 @@ def clean_diario_mov(mov):
     mov['caderno_id'] = clean.get_caderno_id(
         mov['tribunal'], mov['caderno']
     )
+    mov['line_end'] = (
+        pd.to_numeric(mov['line']) +
+        mov.text.str.count('\n')
+    )
     return mov
         
 
@@ -273,7 +277,13 @@ def parse_diario_extract(
     return df.query('line.notnull()')
 
 
-def extract_regexes(text, regexes, flags=0, extractall=False, axis=1):
+def extract_regexes(
+        text, regexes,
+        flags=0,
+        extractall=False,
+        axis=1,
+        match_index=False
+    ):
     if extractall:
         func = (
             lambda x: text
@@ -296,6 +306,15 @@ def extract_regexes(text, regexes, flags=0, extractall=False, axis=1):
     df = df.drop(columns=drop_cols)
     if extractall:
         df = df.droplevel('match')
+        if match_index:
+            df['match'] = (
+                df.groupby(df.index)
+                .cumcount()
+            )
+            df.set_index(
+                'match', append=True,
+                inplace=True
+            )        
     return df
         
 

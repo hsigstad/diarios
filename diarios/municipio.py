@@ -32,6 +32,10 @@ def main():
         on='ibge6',
         how='left'
     )
+    # NB: 277 where comarca_id and
+    # comarca_id2 disagree.
+    # Using comarca_id for those cases.
+    mun = impute_comarca_id(mun)
     mun['estado'] = transform(
         mun.estado_id,
         'estado_id', 'estado'
@@ -64,12 +68,32 @@ def get_mun_ibge():
     infile = os.path.join(
         get_user_config('external_dropbox_directory'),
         'municipios',
-        'codes_tse_ibge.csv'        
+        'clean',
+        'municipios_all_codes.csv'        
     )
-    return (
-        pd.read_csv(infile)
-        .rename(columns={'tse': 'municipio_id'})
+    cols = {
+        'id_TSE': 'municipio_id',
+        'id_munic_6': 'ibge6',
+        'id_munic_7': 'ibge7',        
+        'id_judicial_district': 'comarca7'
+    }
+    df = pd.read_csv(
+        infile,
+        usecols=cols.keys()
+    ).rename(columns=cols)
+    cid = (
+        df.loc[:, ('ibge7', 'municipio_id')]
+        .rename(columns={
+            'municipio_id': 'comarca_id2',
+            'ibge7': 'comarca7'
+        })
     )
+    df = df.merge(
+        cid, on='comarca7',
+        how='left'
+    )
+    df = df.drop(['comarca7', 'ibge7'], 1)
+    return df
 
     
 def get_municipio_comarca():
@@ -124,6 +148,15 @@ def add_comarca_id(municipio):
         on=['comarca', 'estado_id'],
         how='left'
     )
+
+
+def impute_comarca_id(mun):    
+    mun.loc[
+        mun.comarca_id.isnull(),
+        'comarca_id'
+    ] = mun.comarca_id2
+    mun = mun.drop('comarca_id2', 1)
+    return mun
 
 
 def add_subsecao_id(municipio):

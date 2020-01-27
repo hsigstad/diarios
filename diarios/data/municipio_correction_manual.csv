@@ -1,23 +1,14 @@
 estado,wrong,correct
-PE,lagoa do itaenga,lagoa de itaenga
-SP,mogi mirim,moji mirim
-RJ,parati,paraty
-BA,santa terezinha,santa teresinha
-MG,brasopolis,brazopolis
-GO,goias velho,goias
-CE,itapage,itapaje
-RO,alta floresta doeste,alta floresta do oeste
-RO,alvorada doeste,alvorada do oeste
-RO,santa luzia doeste,santa luzia do oeste
-RO,nova brasilandia doeste,nova brasilandia do oeste
-RO,machadinho doeste,machadinho do oeste
-RO,sao felipe doeste,sao felipe do oeste
 AL,arapicara,arapiraca
 AL,limoeiro do anadia,limoeiro de anadia
 AL,minerador do negrao,minador do negrao
 AL,sao jose da lage,sao jose da laje
+AL,são luiz do quitunde,sao luis do quitunde
+AL,sao luiz do quitunde,sao luis do quitunde
+BA,santa terezinha,santa teresinha
 BA,gongoji,gongogi
 BA,rio do pires santana,rio do pires
+CE,itapage,itapaje
 CE,acapui,icapui
 CE,aiuba,aiuaba
 CE,atonina do norte,antonina do norte
@@ -32,9 +23,16 @@ ES,casatelo,castelo
 ES,coporanga,ecoporanga
 ES,muniz freira,muniz freire
 ES,vial vilerio,vila valerio
+GO,goias velho,goias
 MA,pindare mirim,pindare-mirim
+MA,são luis,sao luis
 MG,entre-folhas,entre folhas
 MG,passa-vinte,passa vinte
+MG,brasopolis,brazopolis
+PA,santa izabel do pará,santa isabel do para
+PA,santa izabel do para,santa isabel do para
+PA,peixe - boi,peixe-boi
+PA,jacaréacanga,jacareacanga
 PB,bernardinho batista,bernardino batista
 PB,bom sucesso do sul,bom sucesso
 PB,cauite,cuite
@@ -46,9 +44,13 @@ PB,mogueiro,mogeiro
 PB,puxinama,puxinana
 PB,serido,sao vicente do serido
 PB,souza,sousa
+PE,lagoa do itaenga,lagoa de itaenga
 PE,belem do sao francisco,belem de sao francisco
 PE,sao caetano,sao caitano
+PE,vitória santo antão,vitoria de santo antao
+PE,vitoria santo antao,vitoria de santo antao
 PR,alto paraiso antiga vila alta,alto paraiso
+RJ,parati,paraty
 RJ,araruma,araruama
 RJ,barra do parai,barra do pirai
 RJ,casemiro de abreu,casimiro de abreu
@@ -59,12 +61,21 @@ RJ,rio de janeiro capital,rio de janeiro
 RJ,sao francisco do itabapoana,sao francisco de itabapoana
 RJ,sao joao de mereti,sao joao de meriti
 RJ,trajano de moraes,trajano de morais
+RJ,armação de búzios,armação dos búzios
 RN,augusto severo,campo grande
 RN,olho dagua dos borges,olho dagua do borges
 RS,santa teresa,santa tereza
 RS,sao valetim do sul,sao valentim do sul
 RS,victor graef,victor graeff
+RO,alta floresta doeste,alta floresta do oeste
+RO,alvorada doeste,alvorada do oeste
+RO,santa luzia doeste,santa luzia do oeste
+RO,nova brasilandia doeste,nova brasilandia do oeste
+RO,machadinho doeste,machadinho do oeste
+RO,sao felipe doeste,sao felipe do oeste
 SE,gracho cardoso,graccho cardoso
+SP,mogi mirim,moji mirim
+SP,monte-mor,monte mor
 SP,araina,aramina
 SP,ataoca,itaoca
 SP,barueiri,barueri

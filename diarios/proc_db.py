@@ -39,6 +39,7 @@ class Mov(Base):
     date = Column(Date)
     caderno_id = Column(Integer)
     line = Column(Integer)
+    line_end = Column(Integer)    
     text = Column(MEDIUMTEXT)
     def __repr__(self):
         return "Parte(%s,%s)" % (self.number, self.date)        
