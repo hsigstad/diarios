@@ -1,0 +1,571 @@
+classe_id,classe,classe_accents,classe_sigla
+1,acao anulatoria de clausulas convencionais,Ação Anulatória de Cláusulas Convencionais,AACC
+7,acao de alimentos,Ação de Alimentos,AAlim
+63,apelacao civel,Apelação Cível,AC
+2,acao cautelar,Ação Cautelar,AC
+3,acao civil coletiva,Ação Civil Coletiva,ACC
+4,acao civil de improbidade administrativa,Ação Civil de Improbidade Administrativa,ACIA
+5,acao civil originaria,Ação Civil Originária,ACO
+6,acao civil publica,Ação Civil Pública,ACP
+64,apelacao criminal,Apelação Criminal,ACr
+8,acao de cumprimento,Ação de Cumprimento,ACum
+13,acao declaratoria de constitucionalidade,Ação Declaratória de Constitucionalidade,ADC
+156,declaratoria de constitucionalidade,Declaratória de Constitucionalidade,ADC
+69,apreensao e deposito de coisa vendida com reserva de dominio,Apreensão e Depósito de Coisa Vendida com Reserva de Domínio,ADCVRD
+14,acao direta de inconstitucionalidade,Ação Direta de Inconstitucionalidade,ADI
+170,direta de inconstitucionalidade,Direta de Inconstitucionalidade,ADI
+73,arguicao de descumprimento de preceito fundamental,Arguição de Descumprimento de Preceito Fundamental,ADPF
+160,deposito da lei 8 86694,Depósito da Lei 8. 866/94,ADepos
+70,apuracao de eleicao,Apuração de Eleição,AE
+44,agravo de instrumento em recurso extraordinario,Agravo de Instrumento em Recurso Extraordinário,AG/RE
+40,agravo de instrumento em recurso de habeas corpus,Agravo de Instrumento em Recurso de Habeas Corpus,AG/RHC
+41,agravo de instrumento em recurso de mandado de seguranca,Agravo de Instrumento em Recurso de Mandado de Segurança,AG/RMS
+38,agravo de instrumento,Agravo de Instrumento,AI
+10,acao de improbidade administrativa,Ação de Improbidade Administrativa,AIA
+71,apuracao de infracao administrativa as normas de protecao a crianca ou adolescente,Apuração de Infração Administrativa às Normas de Proteção à Criança ou Adolescente,AIANPCA
+39,agravo de instrumento em agravo de peticao,Agravo de Instrumento em Agravo de Petição,AIAP
+72,apuracao de irregularidades em entidades de atendimento,Apuração de Irregularidades em Entidades de Atendimento,AIEA
+12,acao de investigacao judicial eleitoral,Ação de Investigação Judicial Eleitoral,AIJE
+11,acao de impugnacao de mandato eletivo,Ação de Impugnação de Mandato Eletivo,AIME
+43,agravo de instrumento em recurso especial,Agravo de Instrumento em Recurso Especial,AIRE
+45,agravo de instrumento em recurso ordinario,Agravo de Instrumento em Recurso Ordinário,AIRO
+46,agravo de instrumento em recurso ordinario para o stf,Agravo de Instrumento em Recurso Ordinário para o STF,AIROSTF
+42,agravo de instrumento em recurso de revista,Agravo de Instrumento em Recurso de Revista,AIRR
+16,acao originaria,Ação Originária,AO
+17,acao originaria especial,Ação Originária Especial,AOE
+15,acao ordinaria regressiva,Ação Ordinária Regressiva,AOR
+47,agravo de peticao,Agravo de Petição,AP
+20,acao penal eleitoral,Ação Penal Eleitoral,AP
+18,acao penal,Ação Penal,APN
+22,acao penal procedimento ordinario,Ação Penal - Procedimento Ordinário,APN
+25,acao popular,Ação Popular,APop
+89,auto de prisao,Auto de Prisão,APri
+27,acao rescisoria,Ação Rescisória,AR
+0,abertura registro e cumprimento de testamento,"Abertura, Registro e Cumprimento de Testamento",ARCT
+474,recurso extraordinario com agravo,Recurso Extraordinário com Agravo,ARE
+461,recurso de revista com agravo,Recurso de Revista com Agravo,ARR
+49,agravo em recurso especial,Agravo em Recurso Especial,AResp
+26,acao regressiva,Ação Regressiva,ARg
+74,arguicao de relevancia,Arguição de Relevância,ARv
+75,arguicao de suspeicao,Arguição de Suspeição,AS
+61,anulacao e substituicao de titulos ao portador,Anulação e Substituição de Títulos ao Portador,ASTP
+34,adocao cc destituicao do poder familiar,Adoção c/c Destituição do Poder Familiar,AdoDPF
+33,adocao,Adoção,Adocao
+35,advertencia,Advertência ,Advert
+36,agravo,Agravo,Ag
+50,agravo interno,Agravo Interno,Ag
+48,agravo em execucao de medidas socioeducativas,Agravo em Execução de Medidas Sócio-Educativas,AgExMSe
+37,agravo de execucao penal,Agravo de Execução Penal,AgExPe
+51,agravo regimental,Agravo Regimental,AgR
+55,alimentos lei especial no 547868,Alimentos - Lei Especial Nº 5.478/68,AlEsp
+54,alienacao judicial de bens,Alienação Judicial de Bens,AlJuBe
+57,alteracao do regime de bens,Alteração do Regime de Bens,AlReBe
+56,alimentos provisionais,Alimentos - Provisionais,AliPro
+53,alienacao de bens do acusado,Alienação de Bens do Acusado,AlienBAc
+59,alvara judicial lei 685880,Alvará Judicial - Lei 6858/80,AlvJud
+58,alvara judicial,Alvará Judicial,Alvará
+60,anistia,Anistia,Anisti
+62,apelacao,Apelação,Ap
+65,apelacao em mandado de seguranca,Apelação em Mandado de Segurança,ApMS
+21,acao penal militar procedimento ordinario,Ação Penal Militar - Procedimento Ordinário,Apn
+67,apreensao de embarcacoes,Apreensão de Embarcações,AprEmb
+68,apreensao de titulos,Apreensão de  Títulos,AprTit
+77,arrecadacao das coisas vagas,Arrecadação das Coisas Vagas,ArCoVa
+265,incidente de arguicao de inconstitucionalidade,Incidente De Arguição de Inconstitucionalidade,ArgInc
+82,arrolamento de bens,Arrolamento de Bens,ArrBen
+81,arrolamento comum,Arrolamento Comum,ArrCom
+80,arribadas forcadas,Arribadas Forçadas,ArrFor
+83,arrolamento sumario,Arrolamento Sumário,ArrSum
+78,arresto,Arresto ,Arrest
+84,assistencia judiciaria,Assistência Judiciária,AssJud
+85,atentado,Atentado,Atent
+86,ato normativo,Ato Normativo,Ato
+88,auto de apreensao em flagrante,Auto de Apreensão em Flagrante,AuApFl
+90,auto de prisao em flagrante,Auto de Prisão em Flagrante,AuPrFl
+92,avaliacao para atestar dependencia de drogas,Avaliação para atestar dependência de drogas,AvalDep
+93,avarias,Avarias,Avaria
+94,averiguacao de paternidade,Averiguação de Paternidade,AvePat
+95,avocatoria,Avocatória,Avocat
+98,busca e apreensao em alienacao fiduciaria,Busca e Apreensão em Alienação Fiduciária,BAAF
+96,boletim de ocorrencia circunstanciada,Boletim de Ocorrência Circunstanciada,BoOcCi
+97,busca e apreensao,Busca e Apreensão,BusApr
+125,conflito de atribuicao,Conflito de atribuição,CA
+126,conflito de atribuicoes,Conflito de Atribuições,CA
+101,carta arbitral,Carta Arbitral,CARTARB
+127,conflito de competencia,Conflito de competência,CC
+120,cobranca de cedula de credito industrial,Cobrança de Cédula de Crédito Industrial,CCCI
+148,crimes de calunia injuria e difamacao de competencia do juiz singular,"Crimes de Calúnia, Injúria e Difamação de Competência do Juiz Singular",CCIDCJS
+145,crimes contra a propriedade imaterial,Crimes Contra a Propriedade Imaterial,CCPI
+146,crimes contra a propriedade industrial,Crimes Contra a Propriedade Industrial,CCPI
+147,crimes contra a propriedade intelectual,Crimes Contra a Propriedade Intelectual,CCPI
+128,conflito de jurisdicao,Conflito de Jurisdição,CJ
+133,contestacao em foro diverso,Contestação em Foro Diverso,CONTFORODIV
+134,contraprotesto judicial,Contraprotesto Judicial,CProt
+111,carta rogatoria,Carta Rogatória,CR
+150,crimes de responsabilidade dos funcionarios publicos,Crimes de Responsabilidade dos Funcionários Públicos,CRFP
+100,cancelamento de registro de partido politico,Cancelamento de Registro de Partido Político,CRPP
+137,conversao de separacao judicial em divorcio,Conversão de Separação Judicial em Divórcio,CSJD
+114,carta testemunhavel,Carta Testemunhável,CT
+143,criacao de zona eleitoral ou remanejamento,Criação de Zona Eleitoral ou Remanejamento,CZER
+99,cancelamento de naturalizacao,Cancelamento de Naturalização,CanNat
+105,carta de ordem infracional,Carta de Ordem Infracional,CartOrd
+103,carta de ordem criminal,Carta de Ordem Criminal,CartOrd
+104,carta de ordem infancia e juventude,Carta de Ordem Infância e Juventude,CartOrd
+102,carta de ordem civel,Carta de Ordem Cível,CartOrd
+109,carta precatoria infancia e juventude,Carta Precatória Infância e Juventude,CartPrec
+110,carta precatoria infracional,Carta Precatória Infracional,CartPrec
+106,carta precatoria civel,Carta Precatória Cível,CartPrec
+107,carta precatoria criminal,Carta Precatória Criminal,CartPrec
+113,carta rogatoria criminal,Carta Rogatória Criminal,CartRog
+115,cartas,Cartas,Cartas
+117,cautelar fiscal,Cautelar Fiscal,CauFis
+118,cautelar inominada,Cautelar Inominada,CauIno
+119,cautelar inominada criminal,Cautelar Inominada Criminal,CauInomCrim
+116,caucao,Caução,Cauçao
+122,comunicacao,Comunicação,Cm
+209,excecao de coisa julgada,Exceção de Coisa Julgada,CoiJul
+121,compromisso arbitral,Compromisso Arbitral,ComArb
+123,comutacao de pena,Comutação de Pena,ComPen
+387,procedimento de competencia de comissao,Procedimento de Competência de Comissão,Comissão
+131,consignatoria de alugueis,Consignatória de Aluguéis,ConAlu
+130,consignacao em pagamento,Consignação em Pagamento,ConPag
+124,confirmacao de testamento,Confirmação de Testamento,ConTes
+132,consulta,Consulta,Cons
+136,conversao de pena,Conversão de Pena,Conver
+138,correicao,Correição,Cor
+139,correicao extraordinaria,Correição Extraordinária,CorExt
+140,correicao ordinaria,Correição Ordinária,CorOrd
+142,correicao parcial ou reclamacao correicional,Correição Parcial ou Reclamação Correicional,CorPar
+141,correicao parcial,Correição Parcial,CorPar
+144,crimes ambientais,Crimes Ambientais,CriAmb
+149,crimes de imprensa,Crimes de Imprensa,CriImp
+154,cumprimento provisorio de sentenca,Cumprimento Provisório de Sentença,CuPrSe
+151,cumprimento de sentenca,Cumprimento de sentença,CumSen
+31,acompanhamento de cumprimento de decisao,Acompanhamento de Cumprimento de Decisão,Cumprdec
+172,dissidio coletivo,Dissídio Coletivo,DC
+173,dissidio coletivo de greve,Dissídio Coletivo de Greve,DCG
+169,despejo por falta de pagamento cumulado com cobranca,Despejo por Falta de Pagamento Cumulado Com Cobrança,DFPCC
+163,desapropriacao imovel rural por interesse social,Desapropriação Imóvel Rural por Interesse Social,DIRIS
+168,despejo por falta de pagamento,Despejo por Falta de Pagamento,DeFaPa
+155,declaracao de ausencia,Declaração de Ausência,DecAus
+157,demarcacao divisao,Demarcação / Divisão,DemDiv
+158,denuncia,Denúncia,Den
+159,deposito,Depósito,Deposi
+161,desaforamento de julgamento,Desaforamento de Julgamento,DesJul
+162,desapropriacao,Desapropriação,Desapr
+167,despejo,Despejo,Despej
+174,dissolucao e liquidacao de sociedade,Dissolução e Liquidação de Sociedade,DiLiSo
+171,discriminatoria,Discriminatória,Discri
+175,dissolucao parcial de sociedade,Dissolução Parcial de Sociedade,DissParcSocied
+176,divorcio consensual,Divórcio Consensual,DivCon
+177,divorcio litigioso,Divórcio Litigioso,DivLit
+178,duvida,Dúvida,Duvida
+181,embargos,Embargos,E
+202,embargos infringentes em apelacao civel,Embargos Infringentes em Apelação Cível,EAC
+201,embargos infringentes em acao rescisoria,Embargos Infringentes em Ação Rescisória,EAR
+191,embargos de divergencia em agravo em recurso especial,Embargos de Divergência em Agravo em Recurso Especial,EARESP
+182,embargos a adjudicacao,Embargos à Adjudicação,EAdj
+198,embargos em agravo de instrumento,Embargos em Agravo de Instrumento,EAg
+183,embargos a arrematacao,Embargos à Arrematação,EArr
+425,processo de execucao trabalhista,Processo de Execução Trabalhista,ECFP
+218,execucao contra a fazenda publica,Execução Contra a Fazenda Pública,ECFP
+189,embargos de declaracao,Embargos de Declaração,ED
+190,embargos de divergencia,Embargos de Divergência,EDv
+184,embargos a execucao,Embargos à Execução,EE
+188,embargos a execucao fiscal,Embargos à Execução Fiscal,EEFis
+199,embargos infringentes,Embargos Infringentes,EI
+203,embargos infringentes na execucao fiscal,Embargos Infringentes na Execução Fiscal,EIfEFis
+200,embargos infringentes e de nulidade,Embargos Infringentes e de Nulidade,EIfNu
+205,embargos remetidos,Embargos Remetidos,ER
+192,embargos de divergencia em recurso de mandado de seguranca,Embargos de Divergência em Recurso de Mandado de Segurança,ERMS
+193,embargos de divergencia em recurso especial,Embargos de Divergência em Recurso Especial,EResp
+179,efeito suspensivo,Efeito Suspensivo,ES
+195,embargos de terceiro,Embargos de Terceiro,ET
+208,excecao da verdade,Exceção da Verdade,EV
+194,embargos de retencao por benfeitorias,Embargos de Retenção por Benfeitorias,EmReBe
+180,emancipacao,Emancipação,Emanci
+196,embargos do acusado,Embargos do Acusado,EmbAc
+186,embargos a execucao em mandado de seguranca,Embargos à Execução em Mandado de Segurança,EmbExeMS
+185,embargos a execucao em acao recisoria,Embargos à Execução em Ação Recisoria,EmbExeXAr
+187,embargos a execucao em medida cautelar,Embargos à Execução em Medida Cautelar,EmbExecMC
+204,embargos parciais a acao monitoria,Embargos Parciais à Ação Monitória,EmbParcMonit
+206,especializacao de hipoteca legal,Especialização de Hipoteca Legal,EsHiLe
+231,execucao em acao rescisoria,Execução em Ação Rescisória,ExAR
+222,execucao de certidao de credito judicial,Execução de Certidão de Crédito Judicial,ExCCJ
+227,execucao de termo de conciliacao de ccp,Execução de Termo de Conciliação de CCP,ExCCP
+220,execucao da pena,Execução da Pena,ExCr
+241,exibicao de documento ou coisa,Exibição de Documento ou Coisa,ExDoCo
+236,execucao fiscal,Execução Fiscal,ExFis
+237,execucao hipotecaria do sistema financeiro da habitacao,Execução Hipotecária do Sistema Financeiro da Habitação,ExHipSFH
+224,execucao de medidas socioeducativas,Execução de Medidas Sócio-Educativas,ExMeSo
+239,execucao provisoria em autos suplementares,Execução Provisória em Autos Suplementares,ExProvAS
+226,execucao de termo de ajuste de conduta,Execução de Termo de Ajuste de Conduta,ExTAC
+229,execucao de titulo extrajudicial,Execução de Título Extrajudicial,ExTiEx
+230,execucao de titulo judicial,Execução de Título Judicial,ExTiJu
+217,excesso ou desvio,Excesso ou Desvio,ExcDes
+212,excecao de incompetencia,Exceção de Incompetência,ExcInc
+216,excecoes,Exceções,Exceco
+221,execucao de alimentos,Execução de Alimentos,ExeAli
+219,execucao criminal,Execução Criminal,ExeCri
+233,execucao em medida cautelar,Execução em Medida Cautelar,ExeMC
+232,execucao em mandado de seguranca,Execução em Mandado de Segurança,ExeMS
+225,execucao de multa,Execução de Multa,ExeMul
+234,execucao em sentenca estrangeira,Execução em Sentença Estrangeira,ExeSE
+235,execucao em sentenca estrangeira contestada,Execução em Sentença Estrangeira Contestada,ExeSEC
+240,exibicao,Exibição,Exibic
+242,expropriacao da lei 825791,Expropriação da Lei 8.257/91,Exprop
+363,pedido de prisao liberdade vigiada para fins de expulsao,Pedido de Prisão/ Liberdade Vigiada para Fins de Expulsão,Expuls
+244,extradicao,Extradição,Extrad
+246,falencia de empresarios sociedades empresariais microempresas e empresas de pequeno porte,"Falência de Empresários, Sociedades Empresáriais, Microempresas e Empresas de Pequeno Porte",FESEMEPP
+269,incidente de falsidade,Incidente de Falsidade,Falsid
+247,guarda,Guarda,Guarda
+248,habeas corpus,Habeas Corpus,HC
+249,habeas data,Habeas Data,HD
+253,habilitacao para casamento,Habilitação para Casamento,HabCas
+251,habilitacao de credito,Habilitação de Crédito,HabCre
+250,habilitacao,Habilitação,Habili
+254,heranca jacente,Herança Jacente,HerJac
+79,arresto hipoteca legal,Arresto / Hipoteca Legal,HipLeg
+255,homologacao de transacao extrajudicial,Homologação de Transação Extrajudicial,HoTrEx
+256,homologacao do penhor legal,Homologação do Penhor Legal,HomPen
+281,inquerito administrativo,Inquérito Administrativo,IA
+266,incidente de assuncao de competencia,Incidente de Assunção de Competência,IAC
+284,inquerito para apuracao de falta grave,Inquérito para Apuração de Falta Grave,IAFG
+268,incidente de deslocamento de competencia,Incidente de Deslocamento de Competência ,IDC
+267,incidente de desconsideracao de personalidade juridica,Incidente de Desconsideração de Personalidade Jurídica,IDPJ
+307,intervencao federal,Intervenção Federal,IF
+304,interpelacao judicial,Interpelação Judicial,IJ
+285,inquerito policial,Inquérito Policial,IP
+261,impugnacao ao pedido de assistencia litisconsorcial ou simples,Impugnação ao Pedido de Assistência Litisconsorcial ou Simples,IPALS
+286,inquerito policial especial,Inquérito Policial Especial,IPE
+287,inquerito policial militar,Inquérito Policial Militar,IPM
+290,insolvencia requerida pelo credor,Insolvência Requerida pelo Credor,IRPC
+291,insolvencia requerida pelo devedor ou pelo espolio,Insolvência Requerida pelo Devedor ou pelo Espólio,IRPDPE
+276,incidente de uniformizacao de jurisprudencia,Incidente de Uniformização de Jurisprudência,IUJ
+262,impugnacao ao valor da causa,Impugnação ao Valor da Causa,IVC
+210,excecao de ilegitimidade de parte,Exceção de Ilegitimidade de Parte,IlePar
+260,impugnacao ao cumprimento de sentenca,Impugnação ao Cumprimento de Sentença,ImCuSe
+258,imissao na posse,Imissão na Posse,ImiPos
+264,impugnacao de credito,Impugnação de Crédito,ImpCre
+211,excecao de impedimento,Exceção de Impedimento,Impedi
+302,internacao sem atividades externas,Internação sem Atividades Externas,InAtEx
+300,internacao com atividades externas,Internação com Atividades Externas,InAtEx
+213,excecao de incompetencia de juizo,Exceção de Incompetência de Juízo,IncJui
+272,incidente de julgamento de recurso de revista e de embargos repetitivos,Incidente de Julgamento de Recurso de Revista e de Embargos Repetitivos,IncJulgRREmbRep
+273,incidente de resolucao de demandas repetitivas,Incidente de Resolução de Demandas Repetitivas,IncResDemRept
+278,incidentes trabalhistas,Incidentes Trabalhistas,IncTra
+277,incidentes,Incidentes,Inced
+279,indulto,Indulto,Indult
+280,inquerito,Inquérito,Inq
+283,inquerito extrajudicial,Inquérito Extrajudicial,InqExt
+410,procedimentos investigatorios,Procedimentos Investigatórios,Inquer
+289,insolvencia civil,Insolvência Civil,InsCiv
+294,instrucao de rescisoria,Instrução de Rescisória,InsRes
+288,insanidade mental do acusado,Insanidade Mental do Acusado,InsanAc
+292,inspecao,Inspeção,Insp
+293,instrucao,Instrução,Inst
+295,instrucao provisoria de desercao,Instrução Provisória de Deserção,InstProvDes
+296,instrucao provisoria de insubmissao,Instrução Provisória de Insubmissão,InstProvIns
+303,interpelacao,Interpelação,Int
+306,intervencao em municipio,Intervenção em Município,IntMun
+298,interdicao,Interdição,Interd
+299,interdito proibitorio,Interdito Proibitório,Interdito
+305,interpelacoes,Interpelações,Interp
+309,inventario,Inventário,Invent
+313,justificacao de dinheiro a risco,Justificação de Dinheiro a Risco,JuDiRi
+19,acao penal de competencia do juri,Ação Penal de Competência do Júri,Juri
+312,justificacao criminal,Justificação Criminal,JustCrim
+311,justificacao,Justificação,Justif
+317,liquidacao de sentenca,Liquidação de Sentença,LS
+322,lista triplice,Lista Tríplice,LT
+320,liquidacao provisoria de sentenca pelo procedimento comum,Liquidação Provisória de Sentença pelo Procedimento Comum,LiPrAr
+321,liquidacao provisoria por arbitramento,Liquidação Provisória por Arbitramento,LiPrAr
+315,liberdade assistida,Liberdade Assistida,LibAss
+314,liberdade,Liberdade,Liberd
+319,liquidacao por arbitramento,Liquidação por Arbitramento,LiqArb
+318,liquidacao de sentenca pelo procedimento comum,Liquidação de Sentença pelo Procedimento Comum,LiqArt
+214,excecao de litispendencia,Exceção de Litispendência,Litisp
+323,livramento condicional,Livramento Condicional,LivCond
+327,medida cautelar,Medida Cautelar,MC
+324,mandado de injuncao,Mandado de Injunção,MI
+332,medidas investigatorias sobre organizacoes criminosas,Medidas Investigatórias Sobre Organizações Criminosas,MISOC
+390,procedimento de cumprimento de sentencadecisao,Procedimento de Cumprimento de Sentença/Decisão,MPCA
+330,medidas de protecao a crianca e adolescente,Medidas de Proteção à Criança e Adolescente,MPCA
+334,medidas protetivas de urgencia lei maria da penha,Medidas Protetivas de urgência (Lei Maria da Penha),MPUMP
+325,mandado de seguranca,Mandado de Segurança,MS
+326,mandado de seguranca coletivo,Mandado de Segurança Coletivo,MSCol
+328,medidas assecuratorias,Medidas Assecuratórias,MedAss
+329,medidas cautelares,Medidas Cautelares,MedCau
+331,medidas garantidoras,Medidas Garantidoras,MedGar
+333,medidas preparatorias,Medidas Preparatórias,MedPre
+336,monitoria,Monitória,Monito
+339,nota tecnica,Nota Técnica,NTec
+337,naturalizacao,Naturalização,Natura
+344,notificacao para explicacoes lei de imprensa,Notificação para Explicações (Lei de Imprensa),NoImpr
+342,notificacao,Notificação,Not
+343,notificacao para explicacoes,Notificação para Explicações,NotExp
+341,noticiacrime,Notícia-Crime,Notici
+345,nunciacao de obra nova,Nunciação de Obra Nova,NunciObr
+351,outros incidentes de execucao iniciados de oficio,Outros Incidentes de Execução Iniciados de Ofício,OIncExInOf
+353,outros procedimentos de jurisdicao voluntaria,Outros procedimentos de jurisdição voluntária,OPJV
+346,obrigacao de reparar o dano,Obrigação de Reparar o Dano,ObReDa
+347,opcao de nacionalidade,Opção de Nacionalidade,OpcNac
+348,oposicao,Oposição,Oposic
+349,organizacao e fiscalizacao de fundacao,Organização e Fiscalização de Fundação,OrFiFu
+350,outras medidas provisionais,Outras medidas provisionais,OuMePr
+352,outros procedimentos,Outros Procedimentos,OutPro
+414,processo administrativo,Processo Administrativo,PA
+415,processo administrativo disciplinar em face de magistrado,Processo Administrativo Disciplinar em face de Magistrado,PADMag
+416,processo administrativo disciplinar em face de servidor,Processo Administrativo Disciplinar em face de Servidor,PADServ
+354,parecer de merito sobre anteprojeto de lei,Parecer de Mérito sobre Anteprojeto de Lei,PAM
+434,producao antecipada da prova,Produção Antecipada da Prova,PAP
+355,pedido de arquivamento em representacao criminal,Pedido de Arquivamento em Representação Criminal,PARC
+356,pedido de avocacao,Pedido de Avocação,PAv
+357,pedido de busca e apreensao criminal,Pedido de Busca e Apreensão Criminal,PBAC
+375,prestacao de contas,Prestação de Contas,PC
+419,processo crime,Processo Crime,PC
+389,procedimento de controle administrativo,Procedimento de Controle Administrativo,PCA
+386,procedimento conciliatorio,Procedimento Conciliatório,PCON
+358,pedido de desaforamento,Pedido de Desaforamento,PD
+396,procedimento especial dos crimes de abuso de autoridade,Procedimento Especial dos Crimes de Abuso de Autoridade,PECAA
+429,processo especial do codigo de processo penal,Processo Especial do Código de Processo Penal,PECPP
+409,procedimentos especiais de jurisdicao voluntaria,Procedimentos Especiais de Jurisdição Voluntária,PEJV
+428,processo especial de leis esparsas,Processo Especial de Leis Esparsas,PELE
+430,processo judicial,Processo Judicial,PJ
+393,procedimento do juizado especial civel,Procedimento do Juizado Especial Cível,PJEC
+360,pedido de mediacao preprocessual,Pedido de Mediação Pré-Processual,PMPP
+366,pedido de providencias,Pedido de Providências,PP
+436,propaganda partidaria,Propaganda Partidária,PP
+378,prisao preventiva para extradicao,Prisão Preventiva para Extradição,PPE
+411,procedimentos regidos por outros codigos leis esparsas e regimentos,"Procedimentos Regidos por Outros Códigos, Leis Esparsas e Regimentos",PROCLER
+420,processo criminal,PROCESSO CRIMINAL,PROCRI
+368,pedido de resposta ou retificacao da lei de imprensa,Pedido de Resposta ou Retificação da Lei de Imprensa,PRRI
+369,pedido de revisao do valor da causa,Pedido de Revisão do Valor da Causa,PRVC
+370,pedido de uniformizacao de interpretacao de lei,Pedido de Uniformização de Interpretação de Lei,PUIL
+364,pedido de prisao preventiva,Pedido de Prisão Preventiva,PePrPr
+365,pedido de prisao temporaria,Pedido de Prisão Temporária,PePrTe
+362,pedido de prisao,Pedido de Prisão,PedPri
+372,peticao,Petição,Pet
+373,posse em nome do nascituro,Posse em Nome do Nascituro,PoNoNa
+371,perda ou suspensao do poder familiar,Perda ou Suspensão do Poder Familiar,PodFam
+422,processo de apuracao de ato infracional,Processo de Apuração de Ato Infracional,PrApIn
+9,acao de exigir contas,Ação de Exigir Contas,PrCoEx
+376,prestacao de contas oferecidas,Prestação de Contas - Oferecidas,PrCoOf
+395,procedimento especial da lei antitoxicos,Procedimento Especial da Lei Antitóxicos,PrEsAn
+438,protesto formado a bordo,Protesto Formado a Bordo,PrFoBo
+439,protesto por novo juri,Protesto por Novo Júri,PrNoJu
+377,prestacao de servicos a comunidade,Prestação de Serviços a Comunidade,PrSeCo
+431,processo sumario detencao,Processo Sumário (Detenção),PrSuD
+374,precatorio,Precatório,Prc
+432,processos cautelares,Processos Cautelares,ProCau
+423,processo de conhecimento,Processo de Conhecimento,ProCon
+407,procedimentos especiais,Procedimentos Especiais,ProEsp
+427,processo especial,Processo Especial,ProEsp
+424,processo de execucao,Processo de Execução,ProExe
+316,liberdade provisoria com ou sem fianca,Liberdade Provisória com ou sem fiança,ProFia
+440,providencia,Providência ,ProJui
+392,procedimento de liquidacao,Procedimento de Liquidação,ProLiq
+385,procedimento comum,Procedimento Comum,ProOrd
+401,procedimento sumario,Procedimento Sumário,ProSum
+394,procedimento do juizado especial criminal sumariissimo,Procedimento do Juizado Especial Criminal - Sumariíssimo,ProSum
+421,processo de aplicacao de medida de seguranca por fato nao criminoso,Processo de Aplicação de Medida de Segurança Por Fato Não Criminoso,ProcApMSeg
+435,progressao de regime,Progressão de Regime,ProgRem
+437,protesto,Protesto,Protes
+441,queixa crime,Queixa Crime,QC
+442,questao de ordem,Questão de Ordem,QO
+443,questoes e processos incidentes,Questões e Processos Incidentes,QuPrIn
+367,pedido de quebra de sigilo de dados eou telefonico,Pedido de Quebra de Sigilo de Dados e/ou Telefônico,QuebSig
+456,recurso de apreensao de livro,Recurso de Apreensão de Livro,RAL
+455,recurso criminal,Recurso Criminal,RC
+517,restituicao de coisa ou dinheiro na falencia do devedor empresario,Restituição de Coisa ou Dinheiro na Falência do Devedor Empresário,RCDFDE
+454,recurso contra expedicao de diploma,Recurso contra Expedição de Diploma,RCED
+486,registro de comite financeiro,Registro de Comitê Financeiro,RCF
+484,registro de candidatura,Registro de Candidatura,RCand
+463,recurso eleitoral,Recurso Eleitoral,RE
+473,recurso extraordinario,Recurso Extraordinário,RE
+511,representacao por excesso de prazo,Representação por Excesso de Prazo,REP
+471,recurso especial,Recurso Especial,REsp
+472,recurso especial eleitoral,Recurso Especial Eleitoral,REspe
+449,reclamacao para garantia das decisoes,Reclamação para Garantia das Decisões,RGD
+464,recurso em habeas corpus,Recurso em Habeas Corpus,RHC
+465,recurso em habeas data,Recurso em Habeas Data,RHD
+526,revisao judicial de decisao do conselho tutelar,Revisão Judicial de Decisão do Conselho Tutelar,RJDCT
+457,recurso de liquidacao de sentenca,Recurso de Liquidação de Sentença,RLS
+459,recurso de multa,Recurso de Multa,RM
+466,recurso em mandado de injuncao,Recurso em Mandado de Injunção,RMI
+478,recurso ordinario em mandado de seguranca,Recurso Ordinário em Mandado de Segurança,RMS
+467,recurso em mandado de seguranca,Recurso em Mandado de Segurança,RMS
+520,retificacao de nome estrangeiro,Retificação de Nome Estrangeiro,RNE
+476,recurso ordinario,Recurso Ordinário,RO
+477,recurso ordinario em habeas corpus,Recurso Ordinário em Habeas Corpus,ROHC
+487,registro de orgao de partido politico em formacao,Registro de Órgão de Partido Político em Formação,ROPPF
+504,renovacao de permanencia em estabelecimento penal federal,Renovação de Permanência em Estabelecimento Penal Federal,RPEPF
+488,registro de partido politico,Registro de Partido Político,RPP
+514,requisicao de pequeno valor,Requisição de Pequeno Valor,RPV
+529,roteiro de pena,Roteiro de Pena,RPen
+460,recurso de revista,Recurso de Revista,RR
+462,recurso de sentenca criminal,Recurso de Sentença Criminal,RSCr
+469,recurso em sentido estrito,Recurso em Sentido Estrito,RSE
+29,acao trabalhista rito sumario alcada,Ação Trabalhista - Rito Sumário (Alçada),RTAlç
+28,acao trabalhista rito ordinario,Ação Trabalhista - Rito Ordinário,RTOrd
+30,acao trabalhista rito sumarissimo,Ação Trabalhista - Rito Sumaríssimo,RTSum
+445,reclamacao,Reclamação,Rcl
+447,reclamacao disciplinar,Reclamação Disciplinar,RclDisc
+450,reclamacao preprocessual,Reclamação Pré-processual,RclPP
+485,registro de casamento nuncupativo,Registro de Casamento Nuncupativo,ReCaNu
+518,restituicao de coisas apreendidas,Restituição de Coisas Apreendidas,ReCoAp
+519,restituicao de coisas apreendidas infracional,Restituição de Coisas Apreendidas - Infracional,ReCoApInf
+501,remicao do imovel hipotecado,Remição do Imóvel Hipotecado,ReImHi
+458,recurso de medida cautelar,Recurso de Medida Cautelar,ReMeCa
+444,reabilitacao,Reabilitação,Reabil
+453,recurso administrativo,Recurso Administrativo,RecAdm
+451,recuperacao extrajudicial,Recuperação Extrajudicial,RecExt
+475,recurso inominado,Recurso Inominado,RecIno
+452,recuperacao judicial,Recuperação Judicial,RecJud
+446,reclamacao criminal,Reclamação Criminal,ReclCrim
+482,reexame necessario,Reexame Necessário,ReeNec
+498,remessa necessaria,Remessa Necessária,ReeNec
+483,reexame necessario recurso ordinario,Reexame Necessário / Recurso Ordinário,Reenec/RO
+491,regulacao de avaria grossa,Regulação de Avaria Grossa,RegAvaG
+493,regularizacao de registro civil,Regularização de Registro Civil,RegRegCiv
+490,regressao de regime,Regressão de Regime,RegRem
+489,registro torrens,Registro Torrens,RegTor
+492,regulamentacao de visitas,Regulamentação de Visitas,RegVis
+496,relatorio falimentar,Relatório Falimentar,RelFal
+495,relatorio de investigacoes,Relatório de Investigações,RelInv
+497,relaxamento de prisao,Relaxamento de Prisão,RelPri
+499,remicao,Remição,Rem
+502,remocao de inventariante,Remoção de Inventariante,RemInv
+500,remicao de pena,Remição de Pena,RemPena
+505,renovatoria de locacao,Renovatória de Locação,RenLoc
+512,requerimento de apreensao de veiculo,Requerimento de Apreensão de Veículo,ReqAV
+513,requerimento de reintegracao de posse,Requerimento de Reintegração de Posse,ReqRP
+516,restauracao de autos,Restauração de Autos,ResAut
+515,restabelecimento do poder familiar,Restabelecimento do Poder Familiar,ResFam
+527,revisional de aluguel,Revisional de Aluguel,RevAlu
+525,revisao disciplinar,Revisão Disciplinar,RevDis
+112,carta rogatoria civel,Carta Rogatória Cível,Rogato
+506,representacao,Representação,Rp
+508,representacao criminalnoticia de crime,Representação Criminal/Notícia de Crime,RpCr
+507,representacao criminal,Representação Criminal,RpCr
+494,reintegracao manutencao de posse,Reintegração / Manutenção de Posse,RtPosse
+523,revisao criminal,Revisão Criminal,RvC
+524,revisao de eleitorado,Revisão de Eleitorado,RvE
+534,sentenca arbitral,Sentença Arbitral,SA
+548,suspensao de direitos,Suspensão de Direitos,SD
+541,sindicancia,Sindicância,SD
+535,sentenca estrangeira,Sentença Estrangeira,SE
+536,sentenca estrangeira contestada,Sentença Estrangeira Contestada,SEC
+546,suprimento de capacidade ou de consentimento para casar,Suprimento de Capacidade ou de Consentimento para Casar,SICMPPC
+547,suprimento de idade eou consentimento,Suprimento de Idade e/ou Consentimento,SIEC
+555,suspensao em incidente de resolucao de demandas repetitivas,Suspensão em Incidente de Resolução de Demandas Repetitivas,SIRDR
+556,suspensao nacional do incidente de resolucao de demandas repetitivas,Suspensão Nacional do Incidente de Resolução de Demandas Repetitivas,SIRDR
+550,suspensao de liminar,Suspensão de Liminar,SL
+552,suspensao de liminar ou antecipacao de tutela,Suspensão de Liminar ou Antecipação de Tutela,SLAT
+551,suspensao de liminar e de sentenca,Suspensão de Liminar e de Sentença,SLS
+553,suspensao de seguranca,Suspensão de Segurança,SS
+554,suspensao de tutela provisoria,Suspensão de Tutela Provisória,STP
+531,secao civel,Seção Cível,SecCiv
+532,secao infracional,Seção Infracional,SecInf
+533,semiliberdade,Semiliberdade,Semili
+537,separacao consensual,Separação Consensual,SepCon
+538,separacao de corpos,Separação de Corpos,SepCor
+539,separacao litigiosa,Separação Litigiosa,SepLit
+540,sequestro,Seqüestro,Seques
+543,sobrepartilha,Sobrepartilha,Sobrep
+544,sonegados,Sonegados,Sonega
+545,superveniencia de doenca mental,Superveniência de doença mental,SuDoMe
+549,suspensao de execucao de sentenca,Suspensão de Execução de Sentença,SuExSe
+215,excecao de suspeicao,Exceção de Suspeição,Suspei
+564,tutela e curatela remocao e dispensa,Tutela e Curatela - Remoção e Dispensa,TCRD
+562,tutela cc destituicao do poder familiar,Tutela c/c Destituição do Poder Familiar,TDPF
+558,transferencia entre estabelecimentos penais,Transferência entre estabelecimentos penais,TEEP
+566,tutela provisoria antecedente,Tutela Provisória Antecedente,TPA
+567,tutela provisoria incidental,Tutela Provisória Incidental,TPI
+557,termo circunstanciado,Termo Circunstanciado,TerCir
+563,tutela e curatela nomeacao,Tutela e Curatela -  Nomeação,TuCuNo
+560,tutela antecipada antecedente,Tutela Antecipada Antecedente,TutAntAnt
+561,tutela cautelar antecedente,Tutela Cautelar Antecedente,TutCautAnt
+565,tutela provisoria,Tutela Provisória,TutPro
+559,tutela,Tutela,Tutela
+568,unificacao de penas,Unificação de penas,UniPen
+569,usucapiao,Usucapião,Usucap
+32,administrativo do mp areameio,ADMINISTRATIVO DO MP (ÁREA-MEIO),
+52,agravos,Agravos,
+66,apelacao remessa necesaria,Apelação / Remessa Necesária,
+76,arguicao de suspeicao e de impedimento,Arguição de Suspeição e de Impedimento,
+87,atos e expedientes,Atos e expedientes,
+91,autorizacao judicial,Autorização judicial,
+24,acao penal procedimento sumarissimo,Ação Penal - Procedimento Sumaríssimo,
+23,acao penal procedimento sumario,Ação Penal - Procedimento Sumário,
+108,carta precatoria do ministerio publico,Carta Precatória do Ministério Público,
+129,conselho de justificacao,Conselho de Justificação ,
+135,controle e fiscalizacao,Controle e Fiscalização,
+153,cumprimento provisorio de decisao,Cumprimento Provisório de Decisão,
+152,cumprimento de sentenca contra a fazenda publica,Cumprimento de Sentença contra a Fazenda Pública,
+164,desercao,Deserção,
+165,desercao de oficial,Deserção de Oficial,
+166,desercao de praca,Deserção de Praça,
+245,extrajudiciais,EXTRAJUDICIAIS,
+197,embargos em acao penal militar,Embargos em Ação Penal Militar,
+207,estagio probatorio,Estágio Probatório,
+238,execucao provisoria,Execução Provisória,
+223,execucao de medida de seguranca,Execução de Medida de Segurança,
+228,execucao de titulo extajudicial contra a fazenda publica,Execução de Título Extajudicial contra a Fazenda Pública,
+243,extincao das obrigacoes do falido,Extinção das obrigações do falido,
+252,habilitacao para adocao,Habilitação para Adoção,
+257,homologacao em acordo de colaboracao premiada,Homologação em Acordo de Colaboração Premiada,
+259,impugnacao ao cumprimento de decisao,Impugnação ao Cumprimento  de Decisão,
+263,impugnacao de assistencia judiciaria,Impugnação de Assistência Judiciária,
+270,incidente de impedimento,Incidente de Impedimento,
+271,incidente de inconstitucionalidade,Incidente de Inconstitucionalidade,
+274,incidente de sanidade mental,Incidente de Sanidade Mental,
+275,incidente de suspeicao,Incidente de Suspeição,
+282,inquerito civil,Inquérito Civil,
+297,insubmissao,Insubmissão,
+301,internacao provisoria,Internação Provisória,
+308,inutilizacao de documentos,Inutilização de Documentos,
+310,investigacao contra magistrado,Investigação contra magistrado,
+335,medidas protetivas estatuto do idoso,Medidas Protetivas - Estatuto do Idoso ,
+338,nomeacao de advogado,Nomeação de Advogado,
+340,noticia de fato,Notícia de Fato,
+402,procedimentos administrativos,PROCEDIMENTOS ADMINISTRATIVOS,
+406,procedimentos do mp,PROCEDIMENTOS DO MP,
+418,processo civel e do trabalho,PROCESSO CÍVEL E DO TRABALHO,
+426,processo eleitoral,PROCESSO ELEITORAL,
+359,pedido de desinternacaoreavaliacaosubstituicaosuspensao da medida,Pedido De Desinternação/Reavaliação/Substituição/Suspensão da Medida,
+361,pedido de medida de protecao,Pedido de Medida de Proteção,
+379,procedimento administrativo,Procedimento Administrativo,
+380,procedimento administrativo de acompanhamento de instituicoes,Procedimento Administrativo de acompanhamento de Instituições,
+381,procedimento administrativo de acompanhamento de politicas publicas,Procedimento Administrativo de acompanhamento de Políticas Públicas,
+382,procedimento administrativo de acompanhamento de tac,Procedimento Administrativo de acompanhamento de TAC,
+383,procedimento administrativo de outras atividades nao sujeitas a inquerito civil,Procedimento Administrativo de outras atividades não sujeitas a inquérito civil,
+384,procedimento administrativo de tutela de interesses individuais indisponiveis,Procedimento Administrativo de tutela de interesses individuais indisponíveis,
+397,procedimento investigatorio criminal picmp,Procedimento Investigatório Criminal (PIC-MP) ,
+399,procedimento preparatorio,Procedimento Preparatório,
+400,procedimento preparatorio eleitoral,Procedimento Preparatório Eleitoral,
+388,procedimento de conhecimento,Procedimento de Conhecimento,
+391,procedimento de gestao administrativa,Procedimento de Gestão Administrativa,
+398,procedimento ordinario,Procedimento ordinário,
+403,procedimentos administrativos da justica eleitoral,Procedimentos Administrativos da Justiça Eleitoral,
+404,procedimentos cautelares,Procedimentos Cautelares,
+405,procedimentos correicionais,Procedimentos Correicionais,
+408,procedimentos especiais de jurisdicao contenciosa,Procedimentos Especiais de Jurisdição Contenciosa,
+412,procedimentos relativos a partidos politicos,Procedimentos Relativos a Partidos Políticos,
+413,procedimentos relativos a realizacao de eleicao,Procedimentos Relativos a Realização de Eleição,
+417,processo administrativo disciplinar pad,Processo Administrativo Disciplinar (PAD),
+433,processos civeiseleitorais,Processos Cíveis-Eleitorais,
+448,reclamacao disciplinar rd,Reclamação Disciplinar (RD),
+468,recurso em processo administrativo disciplinar em face de servidor,Recurso em Processo Administrativo Disciplinar em face de Servidor,
+470,recurso em sentido estritorecurso ex officio,Recurso em sentido estrito/Recurso ex officio,
+479,recursos,Recursos,
+480,recursos eleitorais,Recursos Eleitorais,
+481,recursos trabalhistas,Recursos Trabalhistas,
+503,remocao modificacao e dispensa de tutor ou curador,"Remoção, modificação  e dispensa de tutor ou curador",
+509,representacao p declaracao de indignidadeincompatibilidade,Representação p/ Declaração de Indignidade/Incompatibilidade ,
+510,representacao p perda da graduacao,Representação p/ Perda da Graduação ,
+521,retificacao de registro de imovel,Retificação de Registro de Imóvel,
+522,retificacao ou suprimento ou restauracao de registro civil,Retificação ou Suprimento ou Restauração de Registro Civil,
+528,revogacao de prisao,Revogação de Prisão,
+530,saida temporaria,Saída Temporária,
+542,sindicancia inquerito administrativo,Sindicância / Inquérito Administrativo,

@@ -1,0 +1,2556 @@
+classe_id,natureza,dispositivo_legal,artigo,polo_ativo,polo_passivo,justica
+0,Jurisdição Voluntária,CPC,1125,Requerente,,just_es_1grau
+33,,L. 8069/90,31 e 39,Requerente,Requerido,just_es_1grau
+34,,L. 8069/90,39 e 155,Requerente,Requerido,just_es_1grau
+35,,ECA,Art.115,Requerente,Adolescente,just_es_1grau
+37,Recurso,7210/84,197,Agravante,Agravado,just_es_1grau
+48,Recursal,Lei 12.594/2012 e LEP,Art. 39 (Lei 12.594/2012) e art. 197 (LEP),Agravante,Agravado,just_es_1grau
+54,Jurisdição Voluntária,CPC,1113,Requerente,Interessado,just_es_1grau
+53,,Lei 11343/06,"62, § 6º",,,just_es_1grau
+55,Especial,L.E.,L.5.478/68,Autor,Réu,just_es_1grau
+56,Cautelar,CPC,852,Requerente,Requerido,just_es_1grau
+57,Jurisdição Voluntária,CC,1.639 § 2º ,Interessado,Interessado,just_es_1grau
+58,,CPC,,,,just_es_1grau
+59,Especial,L.E,L 6.858/80,Requerente,Interessado,just_es_1grau
+60,Incidente,Lei 7210/84 - LEP; CPPM,187; 650,Requerente,,just_es_1grau
+61,Especial,CPC,907,Autor,Réu,just_es_1grau
+68,Cautelar,CPC,885,Requerente,Requerido,just_es_1grau
+67,Especial,L.E.,DL.1.608/39 - 757,Requerente,Requerido,just_es_1grau
+69,Especial,CPC,1071,Autor,Réu,just_es_1grau
+71,,L. 8069/90,194-197,Requerente,Requerido,just_es_1grau
+72,,L. 8069/90,191-193,Requerente,Requerido,just_es_1grau
+77,Jurisdição Voluntária,CPC,1170,Requerente,,just_es_1grau
+78,Cautelar,CPC,813,Requerente,Requerido,just_es_1grau
+79,Incidente,CPP; CPPM,"134, 135 e 136; 206, 215 a 219",Requerente,Acusado,just_es_1grau
+80,Especial,L.E.,DL.1.608/39 - 772,Requerente,Requerido,just_es_1grau
+81,,CPC,1036,Requerente,Requerido,just_es_1grau
+83,Especial,CPC,1.031 a 1.035,Requerente,Requerido,just_es_1grau
+82,Cautelar,CPC,855,Requerente,Requerido,just_es_1grau
+84,,CPC 2015,99,,,just_es_1grau
+84,,Lei 1.060/50,6º,,,just_es_1grau
+85,Cautelar,CPC,879,Requerente,Requerido,just_es_1grau
+88,,ECA,"Art. 173, § 1º",Autoridade,Adolescente,just_es_1grau
+89,Investigatória,CPP,289-A e 290,Autoridade,Acusado,just_es_1grau
+90,Inquérito,CF; CPP; CPPM,"5º, LXII; 304; 230, al. ""a"" ",Autoridade,Flagranteado,just_es_1grau
+91,,L. 8069/90,83,,,just_es_1grau
+92,Incidente,Lei nº 11.343/06,art. 56 § 2º,,,just_es_1grau
+93,Especial,L.E.,DL.1.608/39 - 765,Requerente,Requerido,just_es_1grau
+94,Especial,L.8.560/92,2º,Requerente,Requerido,just_es_1grau
+3,Especial,L.E.,L.8.078/90 - 91,Autor,Réu,just_es_1grau
+6,Especial,L.E.,L 7.347/85;  L.10.741/03 (art. 74 e 81); L.8.069/90 (art. 210);  L. 8.078/90 (art. 81 e 82).,Autor,Réu,just_es_1grau
+6,,L. 8069/90,"148, IV",Autor,Réu,just_es_1grau
+4,Especial,Lei 8.429/92  ,,Autor,Réu,just_es_1grau
+22,Comum,CPP,24 e 394 ,Autor,Réu,just_es_1grau
+24,Comum,CPP,"394, § 1º, III; Lei 11.719/2008",Autor,Réu,just_es_1grau
+23,Comum,CP,"394, § 1º, II; Lei 11.719/2008",Autor,Réu,just_es_1grau
+19,Comum,CPP,406,Autor,Réu,just_es_1grau
+25,Especial,L.E.,L.4.717/65 - 1º e 7º,Autor,Réu,just_es_1grau
+7,,L. 8069/90,"148 § ú""g""",Requerente,Requerido,just_es_1grau
+9,Especial,CPC,"914, II",Autor,Réu,just_es_1grau
+96,Inquérito,ECA,"art. 173, § único",Autoridade,Autor do Fato,just_es_1grau
+97,,CPC,art. 839,Requerente,Requerido,just_es_1grau
+97,Cautelar,CPC,839,Requerente,Requerido,just_es_1grau
+97,,,,,,just_es_1grau
+98,Especial,L.E.,DL.911/69 - 3º,Autor,Réu,just_es_1grau
+101,,CPC,"237, IV,",Requerente,Requerido,just_es_1grau
+107,,CPP; CPPM,353-356;359,Deprecante,Deprecado,just_es_1grau
+106,,CPC,202,Deprecante,Deprecado,just_es_1grau
+110,,CPC,arts. 201 e 202,Deprecante,Deprecado,just_es_1grau
+109,,CPC,arts. 201 e 202,Deprecante,Deprecado,just_es_1grau
+103,,CPC - aplicação analógica,201,Ordenante,Ordenado,just_es_1grau
+102,,CPC,202,Ordenante,Ordenado,just_es_1grau
+105,,CPC,arts. 201 e 202,Ordenante,Ordenado,just_es_1grau
+104,,CPC,arts. 201 e 202,Ordenante,Ordenado,just_es_1grau
+117,Cautelar,L 8.397/92,2º e 5º,Requerente,Requerido,just_es_1grau
+118,Cautelar,CPC,798,Requerente,Requerido,just_es_1grau
+118,,CPC,art. 798,Requerente,Requerido,just_es_1grau
+119,Cautelar,,,Requerente,Requerido,just_es_1grau
+116,Cautelar,CPC,826,Requerente,Requerido,just_es_1grau
+120,Especial,L.E.,DL.413/69 - 41,Autor,Réu,just_es_1grau
+121,Especial,L.E.,"L.9.307/96 - 7º e 16, § 2º",Autor,Réu,just_es_1grau
+123,Incidente,Lei 7210/84 - LEP; CPPM; Decreto Presidencial,"70, I; 643 e ss",Requerente,,just_es_1grau
+124,Jurisdição Voluntária,CPC,1125,Requerente,,just_es_1grau
+131,Especial,L.E.,L.8.245/91 - 67,Autor,Réu,just_es_1grau
+130,Especial,CPC,890,Autor,Réu,just_es_1grau
+133,Incidente,CPC 2015,"340, §1º",Requerente,Requerido,just_es_1grau
+134,,CPC,871,Requerente,Requerido,just_es_1grau
+136,Incidente,CP; Lei 7210/84 - LEP,"43, 44, §§ 4º e 5º;180, 183",Requerente,Requerido,just_es_1grau
+137,Especial,L.E.,L.6.515/77 - 35,Requerente,Requerido ,just_es_1grau
+144,Especial,L.E,L.9.605/98,Autor,Réu,just_es_1grau
+145,Especial,CPP,524,Autor,Réu,just_es_1grau
+146,Especial,L.9.279/96,"199, 200",Autor,Réu,just_es_1grau
+147,Especial,L.9.609/98,"13,14",Autor,Réu,just_es_1grau
+148,Especial,CPP,519,Autor,Réu,just_es_1grau
+149,Comum,L.E,L.5.250/67 - 43 e L.9.099/95 - 66,Querelante,Querelado,just_es_1grau
+150,Especial,CPP e L.E,513 e DL.201/67 - 2º,Autor,Réu,just_es_1grau
+153,Execução,CPC,"475-I, § 1º e 475-O",Exequente,Executado,just_es_1grau
+154,Execução,CPC,"475-I, § 1º e 475-O",Exequente,Executado,just_es_1grau
+152,,,,,,just_es_1grau
+151,Execução,CPC,"Art. 475-I, 475-J e 475-N",Exequente,Executado,just_es_1grau
+155,Jurisdição Voluntária,CPC,1159,Requerente,Interessado,just_es_1grau
+157,Especial,CPC,"947, 950 e 967",Autor,Réu,just_es_1grau
+159,Especial,CPC,901,Autor,Réu,just_es_1grau
+160,Especial,L.E.,L.8.866/94,Autor,Réu,just_es_1grau
+162,Especial,L.E.,L.3.365/41 - 11,Autor,Réu,just_es_1grau
+167,Especial,L.E.,L.8.245/91 - 59,Autor,Réu,just_es_1grau
+168,Especial,L.E,L.8.245/91 - 62,Autor,Réu,just_es_1grau
+169,Especial,L.E,L.8.245/91 - 62 I e VI,Autor,Réu,just_es_1grau
+171,Especial,L.E.,L.6.383/76 - 19,Autor,Réu,just_es_1grau
+175,especial,CPC 2015,599,autor,réu,just_es_1grau
+174,,L.E.; CPC,DL.1.608/39 - 655; CPC 1.218 VII,Autor,Réu,just_es_1grau
+172,,CF e CLT,"artigos 856/CLT e 114, § 2º, CF",Suscitante,Suscitado,just_es_1grau
+176,Jurisdição Voluntária,CF; L.6.515/77,"226, § 6º;  40, §2º",Requerente,Requerente,just_es_1grau
+177,Especial,CF; L.6.515/77,"226, § 6º;  40, § 3º",Requerente,Requerido,just_es_1grau
+178,Especial,L.E.,L.6.015/73 - 198,Requerente,Interessado,just_es_1grau
+180,,L. 8069/90,"148 , parágrafo único, ""e""",Requerente,,just_es_1grau
+203,Recurso,Lei Nº. 6.830/80,34,Embargante,Embargado,just_es_1grau
+204,Incidente,CPC2015,"702, §7º",Embargante,Embargado,just_es_1grau
+189,Recurso,CPP; CPPM,619; 538,Embargante,Embargado,just_es_1grau
+189,Recurso,CPC,535,Embargante,Embargado,just_es_1grau
+194,Incidente,CPC,"745, IV e §§ 1º e 2º",Embargante,Embargado,just_es_1grau
+195,,CPC,art. 1046,,,just_es_1grau
+195,Incidente,CPP; CPPM,"130, II; 203, II",Embargante,Embargado,just_es_1grau
+195,Especial,CPC,1046,Embargante,Embargado,just_es_1grau
+196,Processo incidente,CPP; CPPM,"130, I; 203, I",Embargante,Embargado,just_es_1grau
+182,Incidente,CPC,746,Embargante,Embargado,just_es_1grau
+183,Incidente,CPC,746,Embargante,Embargado,just_es_1grau
+184,Incidente,CPC,"736, 741 e 745",Embargante,Embargado,just_es_1grau
+188,,L. 6830/80,16,Exequente,Executado,just_es_1grau
+206,Jurisdição Voluntária,CPC,1205,Requerente,Interessado,just_es_1grau
+217,Incidente,Lei 7210/84,185,Requerente,Requerido,just_es_1grau
+208,Incidente,CPP; CPM,"523; 214, § 2.º, 215, parágrafo único",Excipiente,Excepto,just_es_1grau
+209,Incidente,CPP; CPPM,110; 154 e 407/408,Excipiente,Excepto,just_es_1grau
+210,Incidente,CPP,110,Excipiente,Excepto,just_es_1grau
+211,Incidente,CPP; CPPM,"112; 128, ""a"", e ss.",Excipiente,Excepto,just_es_1grau
+211,,CPC,"134, 304, 312 e ss. ",Excipiente,Excepto,just_es_1grau
+211,,CPC,"134, 304, 312 e ss. ",,,just_es_1grau
+212,,CPC,112;304,Excepto,Excipiente,just_es_1grau
+212,,CPC,"112, 304  e 307 e ss. ",,,just_es_1grau
+213,Incidente,CPP; CPPM,108; 143,Excipiente,Excepto,just_es_1grau
+214,Incidente,CPP; CPPM,110; 148 ess.,Excipiente,Excepto,just_es_1grau
+215,Incidente,CPP; CPPM,"96; 128, \""a\""",Excipiente,Excepto,just_es_1grau
+215,,CPC,135; 304 e ss.,Excepto,Excipiente,just_es_1grau
+215,,CPC,"135, 304 e 312 e ss",excipiente,excepto,just_es_1grau
+218,EXECUÇÃO,CPC,730,Exequente,Executado,just_es_1grau
+236,Especial,L. 6830/80,,Exequente,Executado,just_es_1grau
+237,Execução,L. 5741/71,2º,Exequente,Executado,just_es_1grau
+238,,Lei 7210/84 - LEP,"art. 2º, parágrafo único. ",,,just_es_1grau
+220,,Lei 7210/84 - LEP; CPPM,"65; 6º, 588 e ss",,,just_es_1grau
+221,Execução,CPC,733,Exequente,Executado,just_es_1grau
+221,,L. 8069/90 e CPC,"L. 8069/90, art. 201, III; CPC, art. 733",Exequente,Executado,just_es_1grau
+223,,7.210/84 (LEP),171 e ss,,,just_es_1grau
+224,,8.069/90 (ECA),,Requerente,Adolescente,just_es_1grau
+225,,ECA,"art. 214, § 1º",Exequente,Executado,just_es_1grau
+228,,,,,,just_es_1grau
+229,Execução,L.E.,"621, 632, 642, 730, 754, 759; L.9.099/95 - 53 e L.5.741/71 - 1º",Exequente,Executado,just_es_1grau
+229,Execução,L. E.,"621, 632, 642, 730, 754, 759, L. 9.099/85",Exequente,Executado,just_es_1grau
+230,,,,,,just_es_1grau
+240,Cautelar,CPC,844,Requerente,Requerido,just_es_1grau
+241,Incidente,CPC,360 e ss.,Autor,Réu,just_es_1grau
+241,Incidente,CPC,360 e ss,Autor,Réu,just_es_1grau
+241,Incidente,CPC,360 e ss,Requerente,Requerido,just_es_1grau
+243,,11.101/05,159,,,just_es_1grau
+246,Especial,L.E.,L.11.101/2005,Autor,Réu,just_es_1grau
+247,,L. 8069/90,33,,,just_es_1grau
+248,,CF; CPP; CPPM,"5º, LXVIII; 647 a 667; 466",Impetrante,Impetrado,just_es_1grau
+249,Especial,L.E.,L.9.507/97,Impetrante,Impetrado,just_es_1grau
+250,Especial,CPC,1055 a 1062,Requerente,Requerido,just_es_1grau
+251,Especial,L.E.,"L.11.101/05 - 10, §5 e 13 a 15; CPC 1.017, § 1º",Requerente,Requerido,just_es_1grau
+252,,Lei 8069/90,50,,,just_es_1grau
+253,Administrativo,L.E.,L.6.015/73 - 67,Requerente,,just_es_1grau
+254,Jurisdição Voluntária,CPC,1142,Requerente,,just_es_1grau
+255,Especial,L.E.; CPC,"L 9099/95 - 57; 475, N, V",Requerentes,Requerentes,just_es_1grau
+256,Cautelar,CPC,874,Requerente,Requerido,just_es_1grau
+257,,12.850/13,7,,,just_es_1grau
+258,Especial,L.E.,DL.1.075/70,Autor,Autor,just_es_1grau
+259,Incidente,CPC,"475, J, § 1º, L, M",Impugnante,Impugnado,just_es_1grau
+260,Incidente,CPC,"475, J, § 1º, L, M",,,just_es_1grau
+261,Incidente,CPC,51,Impugnante,Impugnado,just_es_1grau
+262,,,,,,just_es_1grau
+262,Incidente,CPC,261,Impugnante,Impugnado,just_es_1grau
+262,Incidente,CPC,261,Impugnante,Impugnado,just_es_1grau
+263,,Lei 1060/50,"4º, § 2º e 7º, parágrafo único",,,just_es_1grau
+263,Incidente,Lei 1.060/50,"4º, § 2º e art. 7º, parágrafo único",,,just_es_1grau
+264,Especial,L.E.,L.11.101/05 - 8º e 13 a 15,Impugnante,Impugnado,just_es_1grau
+267,Incidente,CPC 2015,133 a 137,Suscitante,Suscitado,just_es_1grau
+269,Comum,CPC,390,Autor,Réu ,just_es_1grau
+269,Incidente,CPP; CPPM,145; 163,Suscitante,Suscitado,just_es_1grau
+269,,,,,,just_es_1grau
+270,,,,,,just_es_1grau
+274,,ECA,"112, § 3º",,,just_es_1grau
+275,,CPC2015,146,,,just_es_1grau
+277,,,,,,just_es_1grau
+277,,,,,,just_es_1grau
+277,Incidental,CPC 2015 ,Diversos,Requerente,Requerido,just_es_1grau
+279,Incidente,Lei 7210/84 - LEP; CPPM,188; 643 e ss.,Requerente,,just_es_1grau
+283,Especial,L.E.,L 6.024/74 - 44,Requerente,Requerido,just_es_1grau
+285,Inquérito,CPP,4º ,Autor,Investigado,just_es_1grau
+288,Incidente,CPP; CPPM,153; 156,Requerente,Acusado,just_es_1grau
+289,Execução,CPC,754,Autor,Réu,just_es_1grau
+290,Execução,CPC,754 ss,Exequente,Executado,just_es_1grau
+291,Execução,CPC,759,Exequente,Executado,just_es_1grau
+294,Ato,CPC,492,Autor,Réu,just_es_1grau
+299,,CPC,932,,,just_es_1grau
+298,Jurisdição Voluntária,CPC,1177,Requerente,Requerido,just_es_1grau
+301,,,,,,just_es_1grau
+300,,ECA,Art. 121,Requerente,Adolescente,just_es_1grau
+302,,ECA,Art. 121 - § 1o ,Requerente,Adolescente,just_es_1grau
+303,,CPC,867 a 873,,,just_es_1grau
+309,Especial,CPC,982,Requerente,Inventariado,just_es_1grau
+311,Cautelar,CPC,861,Requerente,Requerido,just_es_1grau
+312,Cautelar,,,Requerente,Requerido,just_es_1grau
+313,,CPC/1939,754,Requerente ,Requerido ,just_es_1grau
+315,,ECA,Art.118,Requerente,Adolescente,just_es_1grau
+316,Prisão/Liberdade,"CPP, CPPM",321 e 322 ; 270,Requerente,Requerido,just_es_1grau
+320,Incidente,CPC,"475-A, § 2º",Requerente,Requerido,just_es_1grau
+320,incidente,CPC 2015, inc. II do art. 509,autor,réu,just_es_1grau
+321,Incidente,CPC,"475-A, § 2º",Requerente,Requerido,just_es_1grau
+318,Incidente,CPC,"475-A, 475-E e 475-F",Autor,Réu,just_es_1grau
+319,Incidente,CPC,"475-A, 475-C e 475-D. ",Autor,Réu,just_es_1grau
+323,Incidental,Resolução CNJ 113/2010,4º,Autoridade,Executado,just_es_1grau
+324,Especial,CF,5º LXXI ,Impetrante,Impetrado,just_es_1grau
+325,,L. 8069/90,"201, IX",,,just_es_1grau
+325,,CF; Lei 1533/51,"5º, LXIX; 1º",Impetrante,Impetrado,just_es_1grau
+325,Especial,CF; Lei 12016/2009,"5º, LXIX; 1º",Impetrante,Impetrado,just_es_1grau
+326,Especial,CF; Lei 8437/92; Lei 12016/2009,"5º, LXX; 2º; 21 a 23",Impetrante,Impetrado,just_es_1grau
+332,Especial,Lei 9034/95,"2.º, II e III",Autoridade,Investigado,just_es_1grau
+335,,Lei 10741/2003 (Estatuto do Idoso),45,,,just_es_1grau
+334,,Lei 11340/06 (Maria da Penha),18 e ss,Requerente,Requerido,just_es_1grau
+330,,L. 8069/90,art. 98,Requerente,Requerido,just_es_1grau
+336,Especial,CPC,1.102A ,Autor,Réu,just_es_1grau
+337,Especial,L.E.,L.818/49 - 15,Requerente,Interessado,just_es_1grau
+338,,Lei 1060/50,"5º, § 3º",,,just_es_1grau
+342,,CPC,867 a 873,,,just_es_1grau
+343,Especial,CP; CPM,144; 221,Notificante,Notificado,just_es_1grau
+344,Especial,Lei Esparsa,L.5.250/67 - 25,Notificante,Notificado,just_es_1grau
+341,Inquérito,CPP,"40,67 CPP/RISTJ",Noticiante,Noticiado,just_es_1grau
+345,Especial,CPC,934,Nunciante,Nunciado,just_es_1grau
+346,,ECA,Art.116,Requerente,Adolescente,just_es_1grau
+348,Incidente,CPC,56,Opoente,Oposto,just_es_1grau
+349,Jurisdição Voluntária,CPC,1199,Requerente,Interessado,just_es_1grau
+350,,CPC,888,,,just_es_1grau
+351,Incidental,Resolução CNJ 113/2010,4º,Autoridade,Executado,just_es_1grau
+353,,CPC,1103 E 1112,Requerente,Requerido,just_es_1grau
+359,,,,,,just_es_1grau
+355,Inquérito,CPP,46 § 1º ,Representante,Representado,just_es_1grau
+357,Cautelar,CPP; CPPM,240; 170 e ss,Requerente,Acusado,just_es_1grau
+360,Pré-Processual,"Lei 13.140/2015, CLT, Resolução CNJ 125/2010 e RITST","Art. 1º (Lei 13.140/2015), art. 764 (CLT), art. 4º (Resolução CNJ 125/2010) e art. 36, IV (RITST)",Requerente,Requerido,just_es_1grau
+361,,8.069/1990,98,,,just_es_1grau
+364,Prisão/Liberdade,CPP; CPPM,311; 254 e ss,Requerente,Acusado,just_es_1grau
+365,Prisão/Liberdade,Lei 7960/89,1º e ss.,Requerente,Acusado,just_es_1grau
+366,,"Leis de org. jud., regimentos e normas internas dos tribunais.",,,,just_es_1grau
+367,Cautelar,Lei 9296/96,1º e ss.,Requerente,Acusado,just_es_1grau
+368,Especial,L.E.,L.5.250/67 - 32,Autor,Réu,just_es_1grau
+371,,L. 8069/90,155,Requerente,Requerido,just_es_1grau
+372,,,,Requerente,Requerido,just_es_1grau
+372,,,,Requerente,Requerido,just_es_1grau
+372,,,,Requerente,Requerido,just_es_1grau
+372,Ato,,RI e Resolução do CJF,Requerente,Requerido,just_es_1grau
+373,Cautelar,CPC,877,Requerente,Requerido,just_es_1grau
+375,,CPC,194,Requerente,Requerido,just_es_1grau
+376,Especial,CPC,"914, I",Autor,Réu,just_es_1grau
+377,,ECA,Art.117,Requerente,Adolescente,just_es_1grau
+385,Comum,CPC,272 e 274,Autor,Réu,just_es_1grau
+386,Incidente,"(art. 125, IV, do CPC e Res. 125/CNJ)",,REQUERENTE,REQUERIDO,just_es_1grau
+395,Especial,11.343,48,Autor,Réu,just_es_1grau
+396,Especial,L.E,L.4.898/65 - 12,Autor,Réu,just_es_1grau
+397,,CPP,28; 41,,,just_es_1grau
+401,,CPC,275,Autor ,Réu,just_es_1grau
+390,,,,,,just_es_1grau
+398,,CPC,arts. 272 e 274,,,just_es_1grau
+404,,,,,,just_es_1grau
+410,,ECA,,Autoridade,Adolescente,just_es_1grau
+414,,"Lei 9.784/99, outras normas federais e normas estaduais.",,,,just_es_1grau
+416,,"Lei 8.112/90 e outras leis federais, leis de organização judiciária, leis estaduais, regimentos internos e outras normas dos tribunais.",,Processante,Processado,just_es_1grau
+431,Especial,CPP,531 e L.1.508/51,Autor,Réu,just_es_1grau
+421,Especial,CP,"549, 550",Requerente,Requerido,just_es_1grau
+422,,ECA,Art. 184,Autor,Adolescente,just_es_1grau
+434,Cautelar,CPC 2015,381,Requerente,Requerido,just_es_1grau
+435,Incidental,Resolução CNJ 113/2010,4º,Autoridade,Executado,just_es_1grau
+437,Cautelar,CPC,867 A 873,Requerente,Requerido,just_es_1grau
+438,Especial,CPC/39,DL.1.608/39 - 725,Requerente,Requerido,just_es_1grau
+439,Recurso,CPP,607,Recorrente,Recorrido,just_es_1grau
+440,,ECA,art. 153,Requerente,Requerido,just_es_1grau
+444,Penal,CP; CPPM,93 a 95; 651,,,just_es_1grau
+447,,"leis de org. jud., regimentos internos e outras normas dos tribunais.",,Reclamente,Reclamado,just_es_1grau
+450,Pré-processual,Resolução CNJ nº 125,,Reclamante,Reclamado,just_es_1grau
+451,Especial,L.E.,L 11.101/95 - 161,Requerente,,just_es_1grau
+452,Especial,L.E.,L.11.101/95 - 51,Autor,Réu,just_es_1grau
+469,Recurso,CPP; CPPM,581 e 582; 516,Recorrente,Recorrido,just_es_1grau
+470,Recurso,CPP,581 a 583,Recorrente,Recorrido,just_es_1grau
+489,Especial,L.E.,L.6.015/73 - 282,Requerente,,just_es_1grau
+485,Administrativo,CCB e L. 6015/73,1540 e 1541,Autor,Réu,just_es_1grau
+490,Incidental,Resolução CNJ 113/2010,4º,Autoridade,Executado,just_es_1grau
+492,Especial,CPC,"888, VII",Requerente,Requerido,just_es_1grau
+493,,L. 8069/90,102,Requerente,Requerido,just_es_1grau
+491,Especial,CPC,707 a 711,Requerente,Requerido,just_es_1grau
+494,,CPC,926 a 931,,,just_es_1grau
+496,Especial,L.E.,"L 11.101/95 - 22, III, e cc 186",Relatante,,just_es_1grau
+495,Inquérito,L. 8069/90,177,Autoridade,Adolescente,just_es_1grau
+497,,CPP; CPPM,"310; 224, 247, § 2.º",Acusado,Autoridade,just_es_1grau
+499,Incidental,Resolução CNJ 113/2010,4º,Autoridade,Execução,just_es_1grau
+500,Incidente,Lei 7.210 - LEP,126 e ss,Requerente,Requerido,just_es_1grau
+501,Especial,LE,L.6.015/73 - 266,Autor,Réu,just_es_1grau
+502,Incidente,CPC,995,Requerente,Requerido,just_es_1grau
+503,,L. 8069/90,"arts. 148, parágrafo único, f, 164, 184, §2º, 201, III.",,,just_es_1grau
+505,Especial,CPC,L.8.245/91 - 71,Autor,Réu,just_es_1grau
+508,Inquérito,CPP; CPPM,39; 33,Representante/Noticiante,Representado,just_es_1grau
+512,Especial,DL 911/1969,"3º, § 12",Requerente,Requerido,just_es_1grau
+513,Especial,DL 911/1969,"3º, § 12",Requerente,Requerido,just_es_1grau
+515,,L. 8069/90,155,Requerente,Requerido,just_es_1grau
+516,Especial,CPC,1063,Autor,Réu,just_es_1grau
+516,Especial,CPP; CPPM,541; arts. 481 e ss,Autor,Réu,just_es_1grau
+517,Especial,L.E.,L.11.101/2005 - 85,Requerente,Requerido,just_es_1grau
+518,Incidente,CPP; CPPM,120; 190,Requerente,Requerido,just_es_1grau
+519,Incidente,,,Requerente,Requerido,just_es_1grau
+521,,L. 6015/73,212,,,just_es_1grau
+522,,6015/73,109,,,just_es_1grau
+527,Especial,L.E.,L 8.245/91 - 68,Autor,Réu,just_es_1grau
+526,,L. 8069/90,137,Requerente,Requerido,just_es_1grau
+529,Incidental,Resolução CNJ 113/2010,4º,Autoridade,Executado,just_es_1grau
+533,,ECA,Art. 120,Requerente,Adolescente,just_es_1grau
+537,Jurisdição Voluntária,CPC,1120 SS,Requerentes,,just_es_1grau
+539,Comum,L 6515/77,34 a 39,Autor,Réu,just_es_1grau
+538,Cautelar,CPC,"798 E 888, VI",Requerente,Requerido,just_es_1grau
+540,Incidente,CPP; CPPM,125; 199,Requerente,Acusado,just_es_1grau
+540,Cautelar,CPC,822,Requerente,Requerido,just_es_1grau
+541,,"art. 143 e ss. da Lei 8.112/90, leis de org. judiciária, leis estaduais, regimentos e normas internas dos tribunais.",,Sindicante,Sindicado,just_es_1grau
+543,Especial,CPC,1040,Requerente,Requerido,just_es_1grau
+544,Especial,CC,1994,Autor,Réu,just_es_1grau
+545,Incidente,7.210/84 - LEP,183,Requerente,Requerido,just_es_1grau
+546,,L. 8069/90,"148, parágrafo único, ""c""",Requerente,Requerido,just_es_1grau
+547,Especial,CC,1519 E 1520,Autor,Réu,just_es_1grau
+557,,Lei Esparsa,L.9.099/95 - 69,Autoridade,Autor do Fato,just_es_1grau
+558,Incidente,Lei 7210/84,86,Requerente,Requerido,just_es_1grau
+559,,L. 8069/90,"36, L. 5869/73-1187",Requerente,Requerido,just_es_1grau
+560,,,,requerente,requerido,just_es_1grau
+560,Tutela Provisória,CPC 2015,303 e 304,Requerente,Requerido,just_es_1grau
+561,,,,requerente,requerido,just_es_1grau
+561,Tutela Provisória,CPC 2015,305 a 310,Requerente,Requerido,just_es_1grau
+565,Tutela Provisória,CPC 2015,294 a 299,Requerente,Requerido,just_es_1grau
+562,,L. 8069/90,"art. 36, parágrafo único",Requerente,Requerido,just_es_1grau
+563,Jurisdição Voluntária,CPC,1187,Requerente,Interessado,just_es_1grau
+564,,CPC,1194,Requerente,Requerido,just_es_1grau
+568,Incidente,CP; Lei 7210/84 - LEP; CPM,"71, 75; 68, III, ""a""; 80, 81",Requerente,,just_es_1grau
+569,Especial,"CPC, art. 941 e L.6.969/81 - 5º",,Autor,Réu,just_es_1grau
+50,,CPC,1.021,Agravante,Agravado,just_es_2grau
+51,,Regimentos Internos,,Agravante,Agravado,just_es_2grau
+51,Recurso,CPC 2015,1.070,Agravante,Agravado,just_es_2grau
+37,Recurso,7210/84,197,Agravante,Agravado,just_es_2grau
+38,Recurso,CPC,522,Agravante,Agravado,just_es_2grau
+43,,CPC - aplicação analógica,544,,,just_es_2grau
+44,,CPC - aplicação analógica,544,,,just_es_2grau
+44,Recurso,CPC,544,Agravante,Agravado,just_es_2grau
+60,Incidente,Lei 7210/84 - LEP; CPPM,187; 650,Requerente,,just_es_2grau
+62,Recurso,CPC,513,Apelante,Apelado,just_es_2grau
+62,Recurso,CPP; Lei 8.069/90; CPPM,"593;198, I; 526",Apelante,Apelado,just_es_2grau
+66,Recurso,CPC 2015," 1.009, c/c art. 496",Apelante,Apelado,just_es_2grau
+65,Recurso,Lei Esparsa e CPC,L.1.533/51 - 12 e 17,Apelante,Apelado,just_es_2grau
+78,Cautelar,CPC,813,Requerente,Requerido,just_es_2grau
+79,Incidente,CPP; CPPM,"134, 135 e 136; 206, 215 a 219",Requerente,Acusado,just_es_2grau
+82,Cautelar,CPC,855,Requerente,Requerido,just_es_2grau
+84,,CPC 2015,99,,,just_es_2grau
+84,,Lei 1.060/50,6º,,,just_es_2grau
+85,Cautelar,CPC,879,Requerente,Requerido,just_es_2grau
+89,Investigatória,CPP,289-A e 290,Autoridade,Acusado,just_es_2grau
+90,Inquérito,CF; CPP; CPPM,"5º, LXII; 304; 230, al. ""a"" ",Autoridade,Flagranteado,just_es_2grau
+92,Incidente,Lei nº 11.343/06,art. 56 § 2º,,,just_es_2grau
+95,Administrativo,CPC; Regimentos Internos,"475, § 1º",Suscitante,Suscitado,just_es_2grau
+6,Especial,L.E.,L 7.347/85;  L.10.741/03 (art. 74 e 81); L.8.069/90 (art. 210);  L. 8.078/90 (art. 81 e 82).,Autor,Réu,just_es_2grau
+4,Especial,Lei 8.429/92  ,,Autor,Réu,just_es_2grau
+22,Comum,CPP,24 e 394 ,Autor,Réu,just_es_2grau
+24,Comum,CPP,"394, § 1º, III; Lei 11.719/2008",Autor,Réu,just_es_2grau
+23,Comum,CP,"394, § 1º, II; Lei 11.719/2008",Autor,Réu,just_es_2grau
+19,Comum,CPP,406,Autor,Réu,just_es_2grau
+25,Especial,L.E.,L.4.717/65 - 1º e 7º,Autor,Réu,just_es_2grau
+27,Especial,CPC,485,Autor,Réu,just_es_2grau
+97,Cautelar,CPC,839,Requerente,Requerido,just_es_2grau
+97,,,,,,just_es_2grau
+101,,CPC,"237, IV,",Requerente,Requerido,just_es_2grau
+107,,CPP; CPPM,353-356;359,Deprecante,Deprecado,just_es_2grau
+106,,CPC,202,Deprecante,Deprecado,just_es_2grau
+114,Recurso,CPP,639,Requerente,Requerido,just_es_2grau
+103,,CPC - aplicação analógica,201,Ordenante,Ordenado,just_es_2grau
+102,,CPC,202,Ordenante,Ordenado,just_es_2grau
+118,Cautelar,CPC,798,Requerente,Requerido,just_es_2grau
+119,Cautelar,,,Requerente,Requerido,just_es_2grau
+116,Cautelar,CPC,826,Requerente,Requerido,just_es_2grau
+122,Ato,RI,RI,Comunicante,Comunicado,just_es_2grau
+123,Incidente,Lei 7210/84 - LEP; CPPM; Decreto Presidencial,"70, I; 643 e ss",Requerente,,just_es_2grau
+127,,CPC,115 a 124,Suscitante,Suscitado,just_es_2grau
+128,Incidente,CPP; CPPM,114; 112,Suscitante,Suscitado,just_es_2grau
+125,,CF,"105, I, g",,,just_es_2grau
+127,,CPC,115 a 124,Suscitante,Suscitado,just_es_2grau
+130,Especial,CPC,890,Autor,Réu,just_es_2grau
+134,,CPC,871,Requerente,Requerido,just_es_2grau
+136,Incidente,CP; Lei 7210/84 - LEP,"43, 44, §§ 4º e 5º;180, 183",Requerente,Requerido,just_es_2grau
+139,,"leis de organização judiciária, regimentos e normas internas dos tribunais.",,Corrigente,Corrigido,just_es_2grau
+140,,"Leis de organização judiciária, regimentos e normas internas dos tribunais.",,Corrigente,Corrigido,just_es_2grau
+141,,"Lei 5.010/66, Norma Estadual e Regimentos Internos.",,,,just_es_2grau
+141,Recurso,Lei Esparsa,L.5.010/66 - 6º,Corrigente,Corrigido,just_es_2grau
+142,Especial,"L.E. ou norma estadual; L 5.010/66 -  6º; CLT, art. 709, II e regimentos internos. ",,Corrigente,Corrigido,just_es_2grau
+144,Especial,L.E,L.9.605/98,Autor,Réu,just_es_2grau
+145,Especial,CPP,524,Autor,Réu,just_es_2grau
+146,Especial,L.9.279/96,"199, 200",Autor,Réu,just_es_2grau
+147,Especial,L.9.609/98,"13,14",Autor,Réu,just_es_2grau
+148,Especial,CPP,519,Autor,Réu,just_es_2grau
+149,Comum,L.E,L.5.250/67 - 43 e L.9.099/95 - 66,Querelante,Querelado,just_es_2grau
+150,Especial,CPP e L.E,513 e DL.201/67 - 2º,Autor,Réu,just_es_2grau
+153,Execução,CPC,"475-I, § 1º e 475-O",Exequente,Executado,just_es_2grau
+154,Execução,CPC,"475-I, § 1º e 475-O",Exequente,Executado,just_es_2grau
+152,,,,,,just_es_2grau
+151,Execução,CPC,"Art. 475-I, 475-J e 475-N",Exequente,Executado,just_es_2grau
+156,,CF,"102, I a); 103 e L.9.868/99",Requerente,Requerido,just_es_2grau
+161,Incidente,CPP; CPPM,424; 109,Autor,Réu,just_es_2grau
+170,Especial,CF,"102, I a); 103 e L.9.868/99",Autor,,just_es_2grau
+175,especial,CPC 2015,599,autor,réu,just_es_2grau
+172,,CF e CLT,"artigos 856/CLT e 114, § 2º, CF",Suscitante,Suscitado,just_es_2grau
+173,,CF e Lei 7783/89,"art. 114, § 3º, da CF",Suscitante,Suscitado,just_es_2grau
+199,Recurso,CPC,530 ,Embargante,Embargado,just_es_2grau
+200,Recurso,CPP; CPPM,609 e § único; 538 e 541,Embargante,Embargado,just_es_2grau
+189,Recurso,CPP; CPPM,619; 538,Embargante,Embargado,just_es_2grau
+189,Recurso,CPC,535,Embargante,Embargado,just_es_2grau
+195,Incidente,CPP; CPPM,"130, II; 203, II",Embargante,Embargado,just_es_2grau
+195,Especial,CPC,1046,Embargante,Embargado,just_es_2grau
+182,Incidente,CPC,746,Embargante,Embargado,just_es_2grau
+183,Incidente,CPC,746,Embargante,Embargado,just_es_2grau
+184,Incidente,CPC,"736, 741 e 745",Embargante,Embargado,just_es_2grau
+217,Incidente,Lei 7210/84,185,Requerente,Requerido,just_es_2grau
+208,Incidente,CPP; CPM,"523; 214, § 2.º, 215, parágrafo único",Excipiente,Excepto,just_es_2grau
+209,Incidente,CPP; CPPM,110; 154 e 407/408,Excipiente,Excepto,just_es_2grau
+210,Incidente,CPP,110,Excipiente,Excepto,just_es_2grau
+211,Incidente,CPP; CPPM,"112; 128, ""a"", e ss.",Excipiente,Excepto,just_es_2grau
+211,,CPC,"134, 304, 312 e ss. ",Excipiente,Excepto,just_es_2grau
+211,,CPC,"134, 304, 312 e ss. ",,,just_es_2grau
+212,,CPC,112;304,Excepto,Excipiente,just_es_2grau
+212,,CPC,"112, 304  e 307 e ss. ",,,just_es_2grau
+213,Incidente,CPP; CPPM,108; 143,Excipiente,Excepto,just_es_2grau
+214,Incidente,CPP; CPPM,110; 148 ess.,Excipiente,Excepto,just_es_2grau
+215,Incidente,CPP; CPPM,"96; 128, \""a\""",Excipiente,Excepto,just_es_2grau
+215,,CPC,135; 304 e ss.,Excepto,Excipiente,just_es_2grau
+215,,CPC,"135, 304 e 312 e ss",excipiente,excepto,just_es_2grau
+218,EXECUÇÃO,CPC,730,Exequente,Executado,just_es_2grau
+238,,Lei 7210/84 - LEP,"art. 2º, parágrafo único. ",,,just_es_2grau
+220,,Lei 7210/84 - LEP; CPPM,"65; 6º, 588 e ss",,,just_es_2grau
+223,,7.210/84 (LEP),171 e ss,,,just_es_2grau
+228,,,,,,just_es_2grau
+230,,,,,,just_es_2grau
+240,Cautelar,CPC,844,Requerente,Requerido,just_es_2grau
+241,Incidente,CPC,360 e ss.,Autor,Réu,just_es_2grau
+241,Incidente,CPC,360 e ss,Autor,Réu,just_es_2grau
+241,Incidente,CPC,360 e ss,Requerente,Requerido,just_es_2grau
+248,Cível,"CF e Livro III, Título II, Capítulo X do Código de Processo Penal","5º, LXVIII da CF 647 a 667 do Código de Processo Penal",,,just_es_2grau
+248,,CF; CPP; CPPM,"5º, LXVIII; 647 a 667; 466",Impetrante,Impetrado,just_es_2grau
+249,Especial,L.E.,L.9.507/97,Impetrante,Impetrado,just_es_2grau
+250,Especial,CPC,1055 a 1062,Requerente,Requerido,just_es_2grau
+257,,12.850/13,7,,,just_es_2grau
+259,Incidente,CPC,"475, J, § 1º, L, M",Impugnante,Impugnado,just_es_2grau
+260,Incidente,CPC,"475, J, § 1º, L, M",,,just_es_2grau
+261,Incidente,CPC,51,Impugnante,Impugnado,just_es_2grau
+262,,,,,,just_es_2grau
+262,Incidente,CPC,261,Impugnante,Impugnado,just_es_2grau
+262,Incidente,CPC,261,Impugnante,Impugnado,just_es_2grau
+263,,Lei 1060/50,"4º, § 2º e 7º, parágrafo único",,,just_es_2grau
+263,Incidente,Lei 1.060/50,"4º, § 2º e art. 7º, parágrafo único",,,just_es_2grau
+265,,CPC,948,Arguinte,Arguído,just_es_2grau
+265,,CPC,948,,,just_es_2grau
+266,Incidente,CPC 2015,947,suscitante,suscitado,just_es_2grau
+267,Incidente,CPC 2015,133 a 137,Suscitante,Suscitado,just_es_2grau
+269,Comum,CPC,390,Autor,Réu ,just_es_2grau
+269,Incidente,CPP; CPPM,145; 163,Suscitante,Suscitado,just_es_2grau
+269,,,,,,just_es_2grau
+270,,,,,,just_es_2grau
+273,incidente,CPC 2015,976 a 987,Suscitante,Suscitado,just_es_2grau
+275,,CPC2015,146,,,just_es_2grau
+276,Incidente,CPC; 10.259/01; RI,476 e 479; 14,Parte Autora,Parte Ré,just_es_2grau
+276,Incidente,CPC,476 e 479 e L.10.259/01 - 14,Suscitante,,just_es_2grau
+277,,,,,,just_es_2grau
+277,,,,,,just_es_2grau
+277,Incidental,CPC 2015 ,Diversos,Requerente,Requerido,just_es_2grau
+279,Incidente,Lei 7210/84 - LEP; CPPM,188; 643 e ss.,Requerente,,just_es_2grau
+285,Inquérito,CPP,4º ,Autor,Investigado,just_es_2grau
+288,Incidente,CPP; CPPM,153; 156,Requerente,Acusado,just_es_2grau
+292,,"art. 13, IV, da Lei 5.010/66; leis de org. jud., regimentos e normas internas dos tribunais.",,,,just_es_2grau
+301,,,,,,just_es_2grau
+303,,CPC,867 a 873,,,just_es_2grau
+306,,"CF, 35 e Norma estadual",,Requerente,Requerido,just_es_2grau
+310,,LC 35 (LOMAN),"33, PARÁGRAFO ÚNICO",,,just_es_2grau
+311,Cautelar,CPC,861,Requerente,Requerido,just_es_2grau
+312,Cautelar,,,Requerente,Requerido,just_es_2grau
+316,Prisão/Liberdade,"CPP, CPPM",321 e 322 ; 270,Requerente,Requerido,just_es_2grau
+320,Incidente,CPC,"475-A, § 2º",Requerente,Requerido,just_es_2grau
+320,incidente,CPC 2015, inc. II do art. 509,autor,réu,just_es_2grau
+321,Incidente,CPC,"475-A, § 2º",Requerente,Requerido,just_es_2grau
+318,Incidente,CPC,"475-A, 475-E e 475-F",Autor,Réu,just_es_2grau
+319,Incidente,CPC,"475-A, 475-C e 475-D. ",Autor,Réu,just_es_2grau
+324,Especial,CF,5º LXXI ,Impetrante,Impetrado,just_es_2grau
+325,,L. 8069/90,"201, IX",,,just_es_2grau
+325,,CF; Lei 1533/51,"5º, LXIX; 1º",Impetrante,Impetrado,just_es_2grau
+325,Especial,CF; Lei 12016/2009,"5º, LXIX; 1º",Impetrante,Impetrado,just_es_2grau
+326,Especial,CF; Lei 8437/92; Lei 12016/2009,"5º, LXX; 2º; 21 a 23",Impetrante,Impetrado,just_es_2grau
+332,Especial,Lei 9034/95,"2.º, II e III",Autoridade,Investigado,just_es_2grau
+335,,Lei 10741/2003 (Estatuto do Idoso),45,,,just_es_2grau
+334,,Lei 11340/06 (Maria da Penha),18 e ss,Requerente,Requerido,just_es_2grau
+342,,CPC,867 a 873,,,just_es_2grau
+343,Especial,CP; CPM,144; 221,Notificante,Notificado,just_es_2grau
+344,Especial,Lei Esparsa,L.5.250/67 - 25,Notificante,Notificado,just_es_2grau
+341,Inquérito,CPP,"40,67 CPP/RISTJ",Noticiante,Noticiado,just_es_2grau
+348,Incidente,CPC,56,Opoente,Oposto,just_es_2grau
+350,,CPC,888,,,just_es_2grau
+359,,,,,,just_es_2grau
+355,Inquérito,CPP,46 § 1º ,Representante,Representado,just_es_2grau
+357,Cautelar,CPP; CPPM,240; 170 e ss,Requerente,Acusado,just_es_2grau
+360,Pré-Processual,"Lei 13.140/2015, CLT, Resolução CNJ 125/2010 e RITST","Art. 1º (Lei 13.140/2015), art. 764 (CLT), art. 4º (Resolução CNJ 125/2010) e art. 36, IV (RITST)",Requerente,Requerido,just_es_2grau
+361,,8.069/1990,98,,,just_es_2grau
+364,Prisão/Liberdade,CPP; CPPM,311; 254 e ss,Requerente,Acusado,just_es_2grau
+365,Prisão/Liberdade,Lei 7960/89,1º e ss.,Requerente,Acusado,just_es_2grau
+366,,"Leis de org. jud., regimentos e normas internas dos tribunais.",,,,just_es_2grau
+367,Cautelar,Lei 9296/96,1º e ss.,Requerente,Acusado,just_es_2grau
+372,,,,Requerente,Requerido,just_es_2grau
+372,,,,Requerente,Requerido,just_es_2grau
+372,,,,Requerente,Requerido,just_es_2grau
+372,Ato,,RI e Resolução do CJF,Requerente,Requerido,just_es_2grau
+374,,"art. 100 da CF, Constituições Estaduais, leis de org. judiciárias, regimentos e normas internas dos tribunais.",,Requerente,Requerido,just_es_2grau
+385,Comum,CPC,272 e 274,Autor,Réu,just_es_2grau
+386,Incidente,"(art. 125, IV, do CPC e Res. 125/CNJ)",,REQUERENTE,REQUERIDO,just_es_2grau
+395,Especial,11.343,48,Autor,Réu,just_es_2grau
+396,Especial,L.E,L.4.898/65 - 12,Autor,Réu,just_es_2grau
+397,,CPP,28; 41,,,just_es_2grau
+404,,,,,,just_es_2grau
+414,,"Lei 9.784/99, outras normas federais e normas estaduais.",,,,just_es_2grau
+415,,"art. 27 da LC 35/79 (LOMAN), Resolução 30 do CNJ, leis de organização judiciária, regimentos internos e outras normas dos tribunais.",,Processante,Processado,just_es_2grau
+416,,"Lei 8.112/90 e outras leis federais, leis de organização judiciária, leis estaduais, regimentos internos e outras normas dos tribunais.",,Processante,Processado,just_es_2grau
+431,Especial,CPP,531 e L.1.508/51,Autor,Réu,just_es_2grau
+434,Cautelar,CPC 2015,381,Requerente,Requerido,just_es_2grau
+437,Cautelar,CPC,867 A 873,Requerente,Requerido,just_es_2grau
+444,Penal,CP; CPPM,93 a 95; 651,,,just_es_2grau
+445,,"RI STJ, STF, TJs, TRFs",RI ,Reclamante,Reclamado,just_es_2grau
+446,Especial,Regimentos Internos,,Reclamante,Reclamação,just_es_2grau
+447,,"leis de org. jud., regimentos internos e outras normas dos tribunais.",,Reclamente,Reclamado,just_es_2grau
+453,,normas dos tribunais,,Recorrente,Recorrido,just_es_2grau
+468,,Resolução 30 do CNJ e normas dos tribunais.,RPADServ,Recorrente,Recorrido,just_es_2grau
+469,Recurso,CPP; CPPM,581 e 582; 516,Recorrente,Recorrido,just_es_2grau
+470,Recurso,CPP,581 a 583,Recorrente,Recorrido,just_es_2grau
+497,,CPP; CPPM,"310; 224, 247, § 2.º",Acusado,Autoridade,just_es_2grau
+498,Recurso,CPC 2015,496,Juízo Recorrente,Recorrido,just_es_2grau
+498,Recurso,CPP; 12.016/2009; CPPM,"574; 14, § 1.º; 106, § 1.º, 154, 654",Juízo Recorrente,Recorrido,just_es_2grau
+500,Incidente,Lei 7.210 - LEP,126 e ss,Requerente,Requerido,just_es_2grau
+508,Inquérito,CPP; CPPM,39; 33,Representante/Noticiante,Representado,just_es_2grau
+511,Administrativo,CPC,198,Representante,Representado,just_es_2grau
+514,,"art. 100, § 3o, da CF, ADCT, Constituições Estaduais, leis e normas dos tribunais.",,Requerente,Requerido,just_es_2grau
+515,,L. 8069/90,155,Requerente,Requerido,just_es_2grau
+516,Especial,CPC,1063,Autor,Réu,just_es_2grau
+516,Especial,CPP; CPPM,541; arts. 481 e ss,Autor,Réu,just_es_2grau
+518,Incidente,CPP; CPPM,120; 190,Requerente,Requerido,just_es_2grau
+519,Incidente,,,Requerente,Requerido,just_es_2grau
+523,Recurso,CPP; CPPM,621; 550,Requerente,Requerido,just_es_2grau
+538,Cautelar,CPC,"798 E 888, VI",Requerente,Requerido,just_es_2grau
+540,Incidente,CPP; CPPM,125; 199,Requerente,Acusado,just_es_2grau
+540,Cautelar,CPC,822,Requerente,Requerido,just_es_2grau
+541,,"art. 143 e ss. da Lei 8.112/90, leis de org. judiciária, leis estaduais, regimentos e normas internas dos tribunais.",,Sindicante,Sindicado,just_es_2grau
+545,Incidente,7.210/84 - LEP,183,Requerente,Requerido,just_es_2grau
+549,Incidente,LL 4.348/64 e 8.437/92 e 9.494/97 e 1.533/51,4º; e 4º§1º; e 1º; e 13,Autor,Réu,just_es_2grau
+552,,LL 4.348/64 e 8.437/92 e 9.494/97 e 1.533/51,4º; e 4º§1º; e 1º,Autor,Réu,just_es_2grau
+557,,Lei Esparsa,L.9.099/95 - 69,Autoridade,Autor do Fato,just_es_2grau
+558,Incidente,Lei 7210/84,86,Requerente,Requerido,just_es_2grau
+560,,,,requerente,requerido,just_es_2grau
+560,Tutela Provisória,CPC 2015,303 e 304,Requerente,Requerido,just_es_2grau
+561,,,,requerente,requerido,just_es_2grau
+561,Tutela Provisória,CPC 2015,305 a 310,Requerente,Requerido,just_es_2grau
+565,Tutela Provisória,CPC 2015,294 a 299,Requerente,Requerido,just_es_2grau
+568,Incidente,CP; Lei 7210/84 - LEP; CPM,"71, 75; 68, III, ""a""; 80, 81",Requerente,,just_es_2grau
+59,Especial,L.E,L 6.858/80,Requerente,Interessado,just_es_juizado_es
+84,,CPC 2015,99,,,just_es_juizado_es
+84,,Lei 1.060/50,6º,,,just_es_juizado_es
+89,Investigatória,CPP,289-A e 290,Autoridade,Acusado,just_es_juizado_es
+90,Inquérito,CF; CPP; CPPM,"5º, LXII; 304; 230, al. ""a"" ",Autoridade,Flagranteado,just_es_juizado_es
+92,Incidente,Lei nº 11.343/06,art. 56 § 2º,,,just_es_juizado_es
+24,Comum,CPP,"394, § 1º, III; Lei 11.719/2008",Autor,Réu,just_es_juizado_es
+107,,CPP; CPPM,353-356;359,Deprecante,Deprecado,just_es_juizado_es
+106,,CPC,202,Deprecante,Deprecado,just_es_juizado_es
+103,,CPC - aplicação analógica,201,Ordenante,Ordenado,just_es_juizado_es
+102,,CPC,202,Ordenante,Ordenado,just_es_juizado_es
+119,Cautelar,,,Requerente,Requerido,just_es_juizado_es
+144,Especial,L.E,L.9.605/98,Autor,Réu,just_es_juizado_es
+145,Especial,CPP,524,Autor,Réu,just_es_juizado_es
+146,Especial,L.9.279/96,"199, 200",Autor,Réu,just_es_juizado_es
+147,Especial,L.9.609/98,"13,14",Autor,Réu,just_es_juizado_es
+148,Especial,CPP,519,Autor,Réu,just_es_juizado_es
+149,Comum,L.E,L.5.250/67 - 43 e L.9.099/95 - 66,Querelante,Querelado,just_es_juizado_es
+150,Especial,CPP e L.E,513 e DL.201/67 - 2º,Autor,Réu,just_es_juizado_es
+154,Execução,CPC,"475-I, § 1º e 475-O",Exequente,Executado,just_es_juizado_es
+151,Execução,CPC,"Art. 475-I, 475-J e 475-N",Exequente,Executado,just_es_juizado_es
+167,Especial,L.E.,L.8.245/91 - 59,Autor,Réu,just_es_juizado_es
+168,Especial,L.E,L.8.245/91 - 62,Autor,Réu,just_es_juizado_es
+169,Especial,L.E,L.8.245/91 - 62 I e VI,Autor,Réu,just_es_juizado_es
+189,Recurso,CPP; CPPM,619; 538,Embargante,Embargado,just_es_juizado_es
+189,Recurso,CPC,535,Embargante,Embargado,just_es_juizado_es
+194,Incidente,CPC,"745, IV e §§ 1º e 2º",Embargante,Embargado,just_es_juizado_es
+195,Incidente,CPP; CPPM,"130, II; 203, II",Embargante,Embargado,just_es_juizado_es
+195,Especial,CPC,1046,Embargante,Embargado,just_es_juizado_es
+208,Incidente,CPP; CPM,"523; 214, § 2.º, 215, parágrafo único",Excipiente,Excepto,just_es_juizado_es
+209,Incidente,CPP; CPPM,110; 154 e 407/408,Excipiente,Excepto,just_es_juizado_es
+210,Incidente,CPP,110,Excipiente,Excepto,just_es_juizado_es
+211,Incidente,CPP; CPPM,"112; 128, ""a"", e ss.",Excipiente,Excepto,just_es_juizado_es
+211,,CPC,"134, 304, 312 e ss. ",,,just_es_juizado_es
+212,,CPC,"112, 304  e 307 e ss. ",,,just_es_juizado_es
+213,Incidente,CPP; CPPM,108; 143,Excipiente,Excepto,just_es_juizado_es
+214,Incidente,CPP; CPPM,110; 148 ess.,Excipiente,Excepto,just_es_juizado_es
+215,Incidente,CPP; CPPM,"96; 128, \""a\""",Excipiente,Excepto,just_es_juizado_es
+215,,CPC,"135, 304 e 312 e ss",excipiente,excepto,just_es_juizado_es
+220,,Lei 7210/84 - LEP; CPPM,"65; 6º, 588 e ss",,,just_es_juizado_es
+229,Execução,L.E.,"621, 632, 642, 730, 754, 759; L.9.099/95 - 53 e L.5.741/71 - 1º",Exequente,Executado,just_es_juizado_es
+229,Execução,L. E.,"621, 632, 642, 730, 754, 759, L. 9.099/85",Exequente,Executado,just_es_juizado_es
+230,,,,,,just_es_juizado_es
+248,,CF; CPP; CPPM,"5º, LXVIII; 647 a 667; 466",Impetrante,Impetrado,just_es_juizado_es
+255,Especial,L.E.; CPC,"L 9099/95 - 57; 475, N, V",Requerentes,Requerentes,just_es_juizado_es
+267,Incidente,CPC 2015,133 a 137,Suscitante,Suscitado,just_es_juizado_es
+277,Incidental,CPC 2015 ,Diversos,Requerente,Requerido,just_es_juizado_es
+285,Inquérito,CPP,4º ,Autor,Investigado,just_es_juizado_es
+299,,CPC,932,,,just_es_juizado_es
+311,Cautelar,CPC,861,Requerente,Requerido,just_es_juizado_es
+316,Prisão/Liberdade,"CPP, CPPM",321 e 322 ; 270,Requerente,Requerido,just_es_juizado_es
+335,,Lei 10741/2003 (Estatuto do Idoso),45,,,just_es_juizado_es
+338,,Lei 1060/50,"5º, § 3º",,,just_es_juizado_es
+343,Especial,CP; CPM,144; 221,Notificante,Notificado,just_es_juizado_es
+341,Inquérito,CPP,"40,67 CPP/RISTJ",Noticiante,Noticiado,just_es_juizado_es
+355,Inquérito,CPP,46 § 1º ,Representante,Representado,just_es_juizado_es
+357,Cautelar,CPP; CPPM,240; 170 e ss,Requerente,Acusado,just_es_juizado_es
+360,Pré-Processual,"Lei 13.140/2015, CLT, Resolução CNJ 125/2010 e RITST","Art. 1º (Lei 13.140/2015), art. 764 (CLT), art. 4º (Resolução CNJ 125/2010) e art. 36, IV (RITST)",Requerente,Requerido,just_es_juizado_es
+364,Prisão/Liberdade,CPP; CPPM,311; 254 e ss,Requerente,Acusado,just_es_juizado_es
+367,Cautelar,Lei 9296/96,1º e ss.,Requerente,Acusado,just_es_juizado_es
+372,,,,Requerente,Requerido,just_es_juizado_es
+372,Ato,,RI e Resolução do CJF,Requerente,Requerido,just_es_juizado_es
+395,Especial,11.343,48,Autor,Réu,just_es_juizado_es
+396,Especial,L.E,L.4.898/65 - 12,Autor,Réu,just_es_juizado_es
+397,,CPP,28; 41,,,just_es_juizado_es
+394,,L.E.,9.099/95 - 77,Autor,Réu,just_es_juizado_es
+393,,Leis 9099/95 e 10259/01,,Autor,Réu,just_es_juizado_es
+450,Pré-processual,Resolução CNJ nº 125,,Reclamante,Reclamado,just_es_juizado_es
+494,,CPC,926 a 931,,,just_es_juizado_es
+497,,CPP; CPPM,"310; 224, 247, § 2.º",Acusado,Autoridade,just_es_juizado_es
+508,Inquérito,CPP; CPPM,39; 33,Representante/Noticiante,Representado,just_es_juizado_es
+516,Especial,CPC,1063,Autor,Réu,just_es_juizado_es
+516,Especial,CPP; CPPM,541; arts. 481 e ss,Autor,Réu,just_es_juizado_es
+518,Incidente,CPP; CPPM,120; 190,Requerente,Requerido,just_es_juizado_es
+557,,Lei Esparsa,L.9.099/95 - 69,Autoridade,Autor do Fato,just_es_juizado_es
+560,Tutela Provisória,CPC 2015,303 e 304,Requerente,Requerido,just_es_juizado_es
+561,Tutela Provisória,CPC 2015,305 a 310,Requerente,Requerido,just_es_juizado_es
+565,Tutela Provisória,CPC 2015,294 a 299,Requerente,Requerido,just_es_juizado_es
+38,Recurso,CPC,522,Agravante,Agravado,just_es_turmas
+44,,CPC - aplicação analógica,544,,,just_es_turmas
+44,Recurso,CPC,544,Agravante,Agravado,just_es_turmas
+62,Recurso,CPP; Lei 8.069/90; CPPM,"593;198, I; 526",Apelante,Apelado,just_es_turmas
+84,,CPC 2015,99,,,just_es_turmas
+84,,Lei 1.060/50,6º,,,just_es_turmas
+107,,CPP; CPPM,353-356;359,Deprecante,Deprecado,just_es_turmas
+106,,CPC,202,Deprecante,Deprecado,just_es_turmas
+114,Recurso,CPP,639,Requerente,Requerido,just_es_turmas
+103,,CPC - aplicação analógica,201,Ordenante,Ordenado,just_es_turmas
+102,,CPC,202,Ordenante,Ordenado,just_es_turmas
+118,Cautelar,CPC,798,Requerente,Requerido,just_es_turmas
+119,Cautelar,,,Requerente,Requerido,just_es_turmas
+128,Incidente,CPP; CPPM,114; 112,Suscitante,Suscitado,just_es_turmas
+127,,CPC,115 a 124,Suscitante,Suscitado,just_es_turmas
+141,,"Lei 5.010/66, Norma Estadual e Regimentos Internos.",,,,just_es_turmas
+141,Recurso,Lei Esparsa,L.5.010/66 - 6º,Corrigente,Corrigido,just_es_turmas
+189,Recurso,CPP; CPPM,619; 538,Embargante,Embargado,just_es_turmas
+189,Recurso,CPC,535,Embargante,Embargado,just_es_turmas
+208,Incidente,CPP; CPM,"523; 214, § 2.º, 215, parágrafo único",Excipiente,Excepto,just_es_turmas
+209,Incidente,CPP; CPPM,110; 154 e 407/408,Excipiente,Excepto,just_es_turmas
+210,Incidente,CPP,110,Excipiente,Excepto,just_es_turmas
+211,Incidente,CPP; CPPM,"112; 128, ""a"", e ss.",Excipiente,Excepto,just_es_turmas
+211,,CPC,"134, 304, 312 e ss. ",,,just_es_turmas
+213,Incidente,CPP; CPPM,108; 143,Excipiente,Excepto,just_es_turmas
+214,Incidente,CPP; CPPM,110; 148 ess.,Excipiente,Excepto,just_es_turmas
+215,Incidente,CPP; CPPM,"96; 128, \""a\""",Excipiente,Excepto,just_es_turmas
+215,,CPC,"135, 304 e 312 e ss",excipiente,excepto,just_es_turmas
+230,,,,,,just_es_turmas
+248,Cível,"CF e Livro III, Título II, Capítulo X do Código de Processo Penal","5º, LXVIII da CF 647 a 667 do Código de Processo Penal",,,just_es_turmas
+248,,CF; CPP; CPPM,"5º, LXVIII; 647 a 667; 466",Impetrante,Impetrado,just_es_turmas
+267,Incidente,CPC 2015,133 a 137,Suscitante,Suscitado,just_es_turmas
+277,Incidental,CPC 2015 ,Diversos,Requerente,Requerido,just_es_turmas
+325,,CF; Lei 1533/51,"5º, LXIX; 1º",Impetrante,Impetrado,just_es_turmas
+325,Especial,CF; Lei 12016/2009,"5º, LXIX; 1º",Impetrante,Impetrado,just_es_turmas
+372,,,,Requerente,Requerido,just_es_turmas
+372,Ato,,RI e Resolução do CJF,Requerente,Requerido,just_es_turmas
+388,,,,,,just_es_turmas
+423,,,,,,just_es_turmas
+445,,"RI STJ, STF, TJs, TRFs",RI ,Reclamante,Reclamado,just_es_turmas
+446,Especial,Regimentos Internos,,Reclamante,Reclamação,just_es_turmas
+475,Recurso,L.E.,L 9099/95 - 42,Recorrente,Recorrido,just_es_turmas
+458,Recurso,L.E,L.10.259/01 - 5º,Recorrente,Recorrido,just_es_turmas
+458,,L. 10259/01; Lei 11.153/2009,"4º, 5º; 3º, 4º",Recorrente,Recorrido,just_es_turmas
+462,Recurso,Lei Esparsa,L.10.259/01 - 5º,Recorrente,Recorrido,just_es_turmas
+470,Recurso,CPP,581 a 583,Recorrente,Recorrido,just_es_turmas
+498,Recurso,CPP; 12.016/2009; CPPM,"574; 14, § 1.º; 106, § 1.º, 154, 654",Juízo Recorrente,Recorrido,just_es_turmas
+516,Especial,CPC,1063,Autor,Réu,just_es_turmas
+516,Especial,CPP; CPPM,541; arts. 481 e ss,Autor,Réu,just_es_turmas
+518,Incidente,CPP; CPPM,120; 190,Requerente,Requerido,just_es_turmas
+523,Recurso,CPP; CPPM,621; 550,Requerente,Requerido,just_es_turmas
+560,Tutela Provisória,CPC 2015,303 e 304,Requerente,Requerido,just_es_turmas
+561,Tutela Provisória,CPC 2015,305 a 310,Requerente,Requerido,just_es_turmas
+565,Tutela Provisória,CPC 2015,294 a 299,Requerente,Requerido,just_es_turmas
+37,Recurso,7210/84,197,Agravante,Agravado,just_es_1grau_mil
+54,Jurisdição Voluntária,CPC,1113,Requerente,Interessado,just_es_1grau_mil
+53,,Lei 11343/06,"62, § 6º",,,just_es_1grau_mil
+60,Incidente,Lei 7210/84 - LEP; CPPM,187; 650,Requerente,,just_es_1grau_mil
+78,Cautelar,CPC,813,Requerente,Requerido,just_es_1grau_mil
+79,Incidente,CPP; CPPM,"134, 135 e 136; 206, 215 a 219",Requerente,Acusado,just_es_1grau_mil
+84,,CPC 2015,99,,,just_es_1grau_mil
+84,,Lei 1.060/50,6º,,,just_es_1grau_mil
+89,Investigatória,CPP,289-A e 290,Autoridade,Acusado,just_es_1grau_mil
+90,Inquérito,CF; CPP; CPPM,"5º, LXII; 304; 230, al. ""a"" ",Autoridade,Flagranteado,just_es_1grau_mil
+4,Especial,Lei 8.429/92  ,,Autor,Réu,just_es_1grau_mil
+21,,CPM; CPPM,"121; 29, 31, 34, 384 a 450, 489",Autor,Réu,just_es_1grau_mil
+97,Cautelar,CPC,839,Requerente,Requerido,just_es_1grau_mil
+107,,CPP; CPPM,353-356;359,Deprecante,Deprecado,just_es_1grau_mil
+106,,CPC,202,Deprecante,Deprecado,just_es_1grau_mil
+112,,CF,"109, X",Rogante,Rogado,just_es_1grau_mil
+114,Recurso,CPP,639,Requerente,Requerido,just_es_1grau_mil
+103,,CPC - aplicação analógica,201,Ordenante,Ordenado,just_es_1grau_mil
+102,,CPC,202,Ordenante,Ordenado,just_es_1grau_mil
+118,Cautelar,CPC,798,Requerente,Requerido,just_es_1grau_mil
+123,Incidente,Lei 7210/84 - LEP; CPPM; Decreto Presidencial,"70, I; 643 e ss",Requerente,,just_es_1grau_mil
+130,Especial,CPC,890,Autor,Réu,just_es_1grau_mil
+132,,Regimentos e normas internas dos Tribunais,,Consulente,Consultado,just_es_1grau_mil
+133,Incidente,CPC 2015,"340, §1º",Requerente,Requerido,just_es_1grau_mil
+134,,CPC,871,Requerente,Requerido,just_es_1grau_mil
+136,Incidente,CP; Lei 7210/84 - LEP,"43, 44, §§ 4º e 5º;180, 183",Requerente,Requerido,just_es_1grau_mil
+142,Especial,"L.E. ou norma estadual; L 5.010/66 -  6º; CLT, art. 709, II e regimentos internos. ",,Corrigente,Corrigido,just_es_1grau_mil
+153,Execução,CPC,"475-I, § 1º e 475-O",Exequente,Executado,just_es_1grau_mil
+154,Execução,CPC,"475-I, § 1º e 475-O",Exequente,Executado,just_es_1grau_mil
+151,Execução,CPC,"Art. 475-I, 475-J e 475-N",Exequente,Executado,just_es_1grau_mil
+165,,CPPM,451 a 454,,,just_es_1grau_mil
+166,,CPPM,"451 a 453, 456",,,just_es_1grau_mil
+189,Recurso,CPP; CPPM,619; 538,Embargante,Embargado,just_es_1grau_mil
+189,Recurso,CPC,535,Embargante,Embargado,just_es_1grau_mil
+195,Incidente,CPP; CPPM,"130, II; 203, II",Embargante,Embargado,just_es_1grau_mil
+195,Especial,CPC,1046,Embargante,Embargado,just_es_1grau_mil
+196,Processo incidente,CPP; CPPM,"130, I; 203, I",Embargante,Embargado,just_es_1grau_mil
+184,Incidente,CPC,"736, 741 e 745",Embargante,Embargado,just_es_1grau_mil
+217,Incidente,Lei 7210/84,185,Requerente,Requerido,just_es_1grau_mil
+208,Incidente,CPP; CPM,"523; 214, § 2.º, 215, parágrafo único",Excipiente,Excepto,just_es_1grau_mil
+209,Incidente,CPP; CPPM,110; 154 e 407/408,Excipiente,Excepto,just_es_1grau_mil
+211,Incidente,CPP; CPPM,"112; 128, ""a"", e ss.",Excipiente,Excepto,just_es_1grau_mil
+211,,CPC,"134, 304, 312 e ss. ",,,just_es_1grau_mil
+212,,CPC,"112, 304  e 307 e ss. ",,,just_es_1grau_mil
+213,Incidente,CPP; CPPM,108; 143,Excipiente,Excepto,just_es_1grau_mil
+214,Incidente,CPP; CPPM,110; 148 ess.,Excipiente,Excepto,just_es_1grau_mil
+215,Incidente,CPP; CPPM,"96; 128, \""a\""",Excipiente,Excepto,just_es_1grau_mil
+215,,CPC,"135, 304 e 312 e ss",excipiente,excepto,just_es_1grau_mil
+218,EXECUÇÃO,CPC,730,Exequente,Executado,just_es_1grau_mil
+238,,Lei 7210/84 - LEP,"art. 2º, parágrafo único. ",,,just_es_1grau_mil
+220,,Lei 7210/84 - LEP; CPPM,"65; 6º, 588 e ss",,,just_es_1grau_mil
+223,,7.210/84 (LEP),171 e ss,,,just_es_1grau_mil
+240,Cautelar,CPC,844,Requerente,Requerido,just_es_1grau_mil
+241,Incidente,CPC,360 e ss,Autor,Réu,just_es_1grau_mil
+241,Incidente,CPC,360 e ss,Requerente,Requerido,just_es_1grau_mil
+248,Cível,"CF e Livro III, Título II, Capítulo X do Código de Processo Penal","5º, LXVIII da CF 647 a 667 do Código de Processo Penal",,,just_es_1grau_mil
+248,,CF; CPP; CPPM,"5º, LXVIII; 647 a 667; 466",Impetrante,Impetrado,just_es_1grau_mil
+249,Especial,L.E.,L.9.507/97,Impetrante,Impetrado,just_es_1grau_mil
+250,Especial,CPC,1055 a 1062,Requerente,Requerido,just_es_1grau_mil
+259,Incidente,CPC,"475, J, § 1º, L, M",Impugnante,Impugnado,just_es_1grau_mil
+260,Incidente,CPC,"475, J, § 1º, L, M",,,just_es_1grau_mil
+261,Incidente,CPC,51,Impugnante,Impugnado,just_es_1grau_mil
+262,Incidente,CPC,261,Impugnante,Impugnado,just_es_1grau_mil
+262,Incidente,CPC,261,Impugnante,Impugnado,just_es_1grau_mil
+263,,Lei 1060/50,"4º, § 2º e 7º, parágrafo único",,,just_es_1grau_mil
+263,Incidente,Lei 1.060/50,"4º, § 2º e art. 7º, parágrafo único",,,just_es_1grau_mil
+269,Comum,CPC,390,Autor,Réu ,just_es_1grau_mil
+269,Incidente,CPP; CPPM,145; 163,Suscitante,Suscitado,just_es_1grau_mil
+277,Incidental,CPC 2015 ,Diversos,Requerente,Requerido,just_es_1grau_mil
+279,Incidente,Lei 7210/84 - LEP; CPPM,188; 643 e ss.,Requerente,,just_es_1grau_mil
+287,Inquérito,CPPM,9 a 28,Autor,Investigado,just_es_1grau_mil
+288,Incidente,CPP; CPPM,153; 156,Requerente,Acusado,just_es_1grau_mil
+295,,,,,,just_es_1grau_mil
+295,,CPPM,451 e seguintes,Requerente,Requerido,just_es_1grau_mil
+296,,CPPM,463 e ss,Requerente,Requerido,just_es_1grau_mil
+294,Ato,CPC,492,Autor,Réu,just_es_1grau_mil
+303,,CPC,867 a 873,,,just_es_1grau_mil
+311,Cautelar,CPC,861,Requerente,Requerido,just_es_1grau_mil
+312,Cautelar,,,Requerente,Requerido,just_es_1grau_mil
+316,Prisão/Liberdade,"CPP, CPPM",321 e 322 ; 270,Requerente,Requerido,just_es_1grau_mil
+320,Incidente,CPC,"475-A, § 2º",Requerente,Requerido,just_es_1grau_mil
+321,Incidente,CPC,"475-A, § 2º",Requerente,Requerido,just_es_1grau_mil
+318,Incidente,CPC,"475-A, 475-E e 475-F",Autor,Réu,just_es_1grau_mil
+319,Incidente,CPC,"475-A, 475-C e 475-D. ",Autor,Réu,just_es_1grau_mil
+323,Incidental,Resolução CNJ 113/2010,4º,Autoridade,Executado,just_es_1grau_mil
+325,,CF; Lei 1533/51,"5º, LXIX; 1º",Impetrante,Impetrado,just_es_1grau_mil
+325,Especial,CF; Lei 12016/2009,"5º, LXIX; 1º",Impetrante,Impetrado,just_es_1grau_mil
+332,Especial,Lei 9034/95,"2.º, II e III",Autoridade,Investigado,just_es_1grau_mil
+334,,Lei 11340/06 (Maria da Penha),18 e ss,Requerente,Requerido,just_es_1grau_mil
+338,,Lei 1060/50,"5º, § 3º",,,just_es_1grau_mil
+342,,CPC,867 a 873,,,just_es_1grau_mil
+343,Especial,CP; CPM,144; 221,Notificante,Notificado,just_es_1grau_mil
+351,Incidental,Resolução CNJ 113/2010,4º,Autoridade,Executado,just_es_1grau_mil
+357,Cautelar,CPP; CPPM,240; 170 e ss,Requerente,Acusado,just_es_1grau_mil
+360,Pré-Processual,"Lei 13.140/2015, CLT, Resolução CNJ 125/2010 e RITST","Art. 1º (Lei 13.140/2015), art. 764 (CLT), art. 4º (Resolução CNJ 125/2010) e art. 36, IV (RITST)",Requerente,Requerido,just_es_1grau_mil
+364,Prisão/Liberdade,CPP; CPPM,311; 254 e ss,Requerente,Acusado,just_es_1grau_mil
+365,Prisão/Liberdade,Lei 7960/89,1º e ss.,Requerente,Acusado,just_es_1grau_mil
+366,,"Leis de org. jud., regimentos e normas internas dos tribunais.",,,,just_es_1grau_mil
+367,Cautelar,Lei 9296/96,1º e ss.,Requerente,Acusado,just_es_1grau_mil
+372,,,,Requerente,Requerido,just_es_1grau_mil
+372,Ato,,RI e Resolução do CJF,Requerente,Requerido,just_es_1grau_mil
+385,Comum,CPC,272 e 274,Autor,Réu,just_es_1grau_mil
+397,,CPP,28; 41,,,just_es_1grau_mil
+401,,CPC,275,Autor ,Réu,just_es_1grau_mil
+414,,"Lei 9.784/99, outras normas federais e normas estaduais.",,,,just_es_1grau_mil
+416,,"Lei 8.112/90 e outras leis federais, leis de organização judiciária, leis estaduais, regimentos internos e outras normas dos tribunais.",,Processante,Processado,just_es_1grau_mil
+434,Cautelar,CPC 2015,381,Requerente,Requerido,just_es_1grau_mil
+437,Cautelar,CPC,867 A 873,Requerente,Requerido,just_es_1grau_mil
+444,Penal,CP; CPPM,93 a 95; 651,,,just_es_1grau_mil
+447,,"leis de org. jud., regimentos internos e outras normas dos tribunais.",,Reclamente,Reclamado,just_es_1grau_mil
+490,Incidental,Resolução CNJ 113/2010,4º,Autoridade,Executado,just_es_1grau_mil
+497,,CPP; CPPM,"310; 224, 247, § 2.º",Acusado,Autoridade,just_es_1grau_mil
+499,Incidental,Resolução CNJ 113/2010,4º,Autoridade,Execução,just_es_1grau_mil
+508,Inquérito,CPP; CPPM,39; 33,Representante/Noticiante,Representado,just_es_1grau_mil
+516,Especial,CPC,1063,Autor,Réu,just_es_1grau_mil
+516,Especial,CPP; CPPM,541; arts. 481 e ss,Autor,Réu,just_es_1grau_mil
+518,Incidente,CPP; CPPM,120; 190,Requerente,Requerido,just_es_1grau_mil
+529,Incidental,Resolução CNJ 113/2010,4º,Autoridade,Executado,just_es_1grau_mil
+540,Incidente,CPP; CPPM,125; 199,Requerente,Acusado,just_es_1grau_mil
+540,Cautelar,CPC,822,Requerente,Requerido,just_es_1grau_mil
+541,,"art. 143 e ss. da Lei 8.112/90, leis de org. judiciária, leis estaduais, regimentos e normas internas dos tribunais.",,Sindicante,Sindicado,just_es_1grau_mil
+545,Incidente,7.210/84 - LEP,183,Requerente,Requerido,just_es_1grau_mil
+557,,Lei Esparsa,L.9.099/95 - 69,Autoridade,Autor do Fato,just_es_1grau_mil
+558,Incidente,Lei 7210/84,86,Requerente,Requerido,just_es_1grau_mil
+560,Tutela Provisória,CPC 2015,303 e 304,Requerente,Requerido,just_es_1grau_mil
+561,Tutela Provisória,CPC 2015,305 a 310,Requerente,Requerido,just_es_1grau_mil
+565,Tutela Provisória,CPC 2015,294 a 299,Requerente,Requerido,just_es_1grau_mil
+568,Incidente,CP; Lei 7210/84 - LEP; CPM,"71, 75; 68, III, ""a""; 80, 81",Requerente,,just_es_1grau_mil
+50,,CPC,1.021,Agravante,Agravado,just_es_2grau_mil
+51,,Regimentos Internos,,Agravante,Agravado,just_es_2grau_mil
+51,Recurso,CPC 2015,1.070,Agravante,Agravado,just_es_2grau_mil
+37,Recurso,7210/84,197,Agravante,Agravado,just_es_2grau_mil
+38,Recurso,CPC,522,Agravante,Agravado,just_es_2grau_mil
+43,,CPC - aplicação analógica,544,,,just_es_2grau_mil
+44,,CPC - aplicação analógica,544,,,just_es_2grau_mil
+44,Recurso,CPC,544,Agravante,Agravado,just_es_2grau_mil
+53,,Lei 11343/06,"62, § 6º",,,just_es_2grau_mil
+60,Incidente,Lei 7210/84 - LEP; CPPM,187; 650,Requerente,,just_es_2grau_mil
+62,Recurso,CPC,513,Apelante,Apelado,just_es_2grau_mil
+62,Recurso,CPP; Lei 8.069/90; CPPM,"593;198, I; 526",Apelante,Apelado,just_es_2grau_mil
+66,Recurso,CPC 2015," 1.009, c/c art. 496",Apelante,Apelado,just_es_2grau_mil
+78,Cautelar,CPC,813,Requerente,Requerido,just_es_2grau_mil
+79,Incidente,CPP; CPPM,"134, 135 e 136; 206, 215 a 219",Requerente,Acusado,just_es_2grau_mil
+84,,CPC 2015,99,,,just_es_2grau_mil
+84,,Lei 1.060/50,6º,,,just_es_2grau_mil
+89,Investigatória,CPP,289-A e 290,Autoridade,Acusado,just_es_2grau_mil
+90,Inquérito,CF; CPP; CPPM,"5º, LXII; 304; 230, al. ""a"" ",Autoridade,Flagranteado,just_es_2grau_mil
+95,Administrativo,CPC; Regimentos Internos,"475, § 1º",Suscitante,Suscitado,just_es_2grau_mil
+4,Especial,Lei 8.429/92  ,,Autor,Réu,just_es_2grau_mil
+21,,CPM; CPPM,"121; 29, 31, 34, 384 a 450, 489",Autor,Réu,just_es_2grau_mil
+27,Especial,CPC,485,Autor,Réu,just_es_2grau_mil
+97,Cautelar,CPC,839,Requerente,Requerido,just_es_2grau_mil
+107,,CPP; CPPM,353-356;359,Deprecante,Deprecado,just_es_2grau_mil
+106,,CPC,202,Deprecante,Deprecado,just_es_2grau_mil
+112,,CF,"109, X",Rogante,Rogado,just_es_2grau_mil
+114,Recurso,CPP,639,Requerente,Requerido,just_es_2grau_mil
+103,,CPC - aplicação analógica,201,Ordenante,Ordenado,just_es_2grau_mil
+102,,CPC,202,Ordenante,Ordenado,just_es_2grau_mil
+118,Cautelar,CPC,798,Requerente,Requerido,just_es_2grau_mil
+123,Incidente,Lei 7210/84 - LEP; CPPM; Decreto Presidencial,"70, I; 643 e ss",Requerente,,just_es_2grau_mil
+128,Incidente,CPP; CPPM,114; 112,Suscitante,Suscitado,just_es_2grau_mil
+127,,CPC,115 a 124,Suscitante,Suscitado,just_es_2grau_mil
+129,,CF; Lei 5.836/72,"art. 125, § 4º; Lei 5.836/72",,,just_es_2grau_mil
+130,Especial,CPC,890,Autor,Réu,just_es_2grau_mil
+132,,Regimentos e normas internas dos Tribunais,,Consulente,Consultado,just_es_2grau_mil
+134,,CPC,871,Requerente,Requerido,just_es_2grau_mil
+136,Incidente,CP; Lei 7210/84 - LEP,"43, 44, §§ 4º e 5º;180, 183",Requerente,Requerido,just_es_2grau_mil
+139,,"leis de organização judiciária, regimentos e normas internas dos tribunais.",,Corrigente,Corrigido,just_es_2grau_mil
+140,,"Leis de organização judiciária, regimentos e normas internas dos tribunais.",,Corrigente,Corrigido,just_es_2grau_mil
+141,,"Lei 5.010/66, Norma Estadual e Regimentos Internos.",,,,just_es_2grau_mil
+141,,CPPM,"498, ""a"" e ""b""",Corrigente,Corrigido,just_es_2grau_mil
+142,Especial,"L.E. ou norma estadual; L 5.010/66 -  6º; CLT, art. 709, II e regimentos internos. ",,Corrigente,Corrigido,just_es_2grau_mil
+153,Execução,CPC,"475-I, § 1º e 475-O",Exequente,Executado,just_es_2grau_mil
+154,Execução,CPC,"475-I, § 1º e 475-O",Exequente,Executado,just_es_2grau_mil
+151,Execução,CPC,"Art. 475-I, 475-J e 475-N",Exequente,Executado,just_es_2grau_mil
+161,Incidente,CPP; CPPM,424; 109,Autor,Réu,just_es_2grau_mil
+165,,CPPM,451 a 454,,,just_es_2grau_mil
+199,Recurso,CPC,530 ,Embargante,Embargado,just_es_2grau_mil
+200,Recurso,CPP; CPPM,609 e § único; 538 e 541,Embargante,Embargado,just_es_2grau_mil
+189,Recurso,CPP; CPPM,619; 538,Embargante,Embargado,just_es_2grau_mil
+189,Recurso,CPC,535,Embargante,Embargado,just_es_2grau_mil
+195,Incidente,CPP; CPPM,"130, II; 203, II",Embargante,Embargado,just_es_2grau_mil
+195,Especial,CPC,1046,Embargante,Embargado,just_es_2grau_mil
+196,Processo incidente,CPP; CPPM,"130, I; 203, I",Embargante,Embargado,just_es_2grau_mil
+197,,CPPM,,,,just_es_2grau_mil
+184,Incidente,CPC,"736, 741 e 745",Embargante,Embargado,just_es_2grau_mil
+217,Incidente,Lei 7210/84,185,Requerente,Requerido,just_es_2grau_mil
+208,Incidente,CPP; CPM,"523; 214, § 2.º, 215, parágrafo único",Excipiente,Excepto,just_es_2grau_mil
+209,Incidente,CPP; CPPM,110; 154 e 407/408,Excipiente,Excepto,just_es_2grau_mil
+211,Incidente,CPP; CPPM,"112; 128, ""a"", e ss.",Excipiente,Excepto,just_es_2grau_mil
+211,,CPC,"134, 304, 312 e ss. ",,,just_es_2grau_mil
+212,,CPC,"112, 304  e 307 e ss. ",,,just_es_2grau_mil
+213,Incidente,CPP; CPPM,108; 143,Excipiente,Excepto,just_es_2grau_mil
+214,Incidente,CPP; CPPM,110; 148 ess.,Excipiente,Excepto,just_es_2grau_mil
+215,Incidente,CPP; CPPM,"96; 128, \""a\""",Excipiente,Excepto,just_es_2grau_mil
+215,,CPC,"135, 304 e 312 e ss",excipiente,excepto,just_es_2grau_mil
+218,EXECUÇÃO,CPC,730,Exequente,Executado,just_es_2grau_mil
+238,,Lei 7210/84 - LEP,"art. 2º, parágrafo único. ",,,just_es_2grau_mil
+220,,Lei 7210/84 - LEP; CPPM,"65; 6º, 588 e ss",,,just_es_2grau_mil
+240,Cautelar,CPC,844,Requerente,Requerido,just_es_2grau_mil
+241,Incidente,CPC,360 e ss,Autor,Réu,just_es_2grau_mil
+241,Incidente,CPC,360 e ss,Requerente,Requerido,just_es_2grau_mil
+248,Cível,"CF e Livro III, Título II, Capítulo X do Código de Processo Penal","5º, LXVIII da CF 647 a 667 do Código de Processo Penal",,,just_es_2grau_mil
+248,,CF; CPP; CPPM,"5º, LXVIII; 647 a 667; 466",Impetrante,Impetrado,just_es_2grau_mil
+249,Especial,L.E.,L.9.507/97,Impetrante,Impetrado,just_es_2grau_mil
+250,Especial,CPC,1055 a 1062,Requerente,Requerido,just_es_2grau_mil
+259,Incidente,CPC,"475, J, § 1º, L, M",Impugnante,Impugnado,just_es_2grau_mil
+260,Incidente,CPC,"475, J, § 1º, L, M",,,just_es_2grau_mil
+261,Incidente,CPC,51,Impugnante,Impugnado,just_es_2grau_mil
+262,Incidente,CPC,261,Impugnante,Impugnado,just_es_2grau_mil
+262,Incidente,CPC,261,Impugnante,Impugnado,just_es_2grau_mil
+263,,Lei 1060/50,"4º, § 2º e 7º, parágrafo único",,,just_es_2grau_mil
+263,Incidente,Lei 1.060/50,"4º, § 2º e art. 7º, parágrafo único",,,just_es_2grau_mil
+265,,CPC,948,,,just_es_2grau_mil
+266,Incidente,CPC 2015,947,suscitante,suscitado,just_es_2grau_mil
+269,Comum,CPC,390,Autor,Réu ,just_es_2grau_mil
+269,Incidente,CPP; CPPM,145; 163,Suscitante,Suscitado,just_es_2grau_mil
+273,incidente,CPC 2015,976 a 987,Suscitante,Suscitado,just_es_2grau_mil
+276,Incidente,CPC; 10.259/01; RI,476 e 479; 14,Parte Autora,Parte Ré,just_es_2grau_mil
+276,Incidente,CPC,476 e 479 e L.10.259/01 - 14,Suscitante,,just_es_2grau_mil
+277,Incidental,CPC 2015 ,Diversos,Requerente,Requerido,just_es_2grau_mil
+279,Incidente,Lei 7210/84 - LEP; CPPM,188; 643 e ss.,Requerente,,just_es_2grau_mil
+287,Inquérito,CPPM,9 a 28,Autor,Investigado,just_es_2grau_mil
+288,Incidente,CPP; CPPM,153; 156,Requerente,Acusado,just_es_2grau_mil
+292,,"art. 13, IV, da Lei 5.010/66; leis de org. jud., regimentos e normas internas dos tribunais.",,,,just_es_2grau_mil
+295,,,,,,just_es_2grau_mil
+294,Ato,CPC,492,Autor,Réu,just_es_2grau_mil
+303,,CPC,867 a 873,,,just_es_2grau_mil
+311,Cautelar,CPC,861,Requerente,Requerido,just_es_2grau_mil
+312,Cautelar,,,Requerente,Requerido,just_es_2grau_mil
+316,Prisão/Liberdade,"CPP, CPPM",321 e 322 ; 270,Requerente,Requerido,just_es_2grau_mil
+320,Incidente,CPC,"475-A, § 2º",Requerente,Requerido,just_es_2grau_mil
+321,Incidente,CPC,"475-A, § 2º",Requerente,Requerido,just_es_2grau_mil
+318,Incidente,CPC,"475-A, 475-E e 475-F",Autor,Réu,just_es_2grau_mil
+319,Incidente,CPC,"475-A, 475-C e 475-D. ",Autor,Réu,just_es_2grau_mil
+324,Especial,CF,5º LXXI ,Impetrante,Impetrado,just_es_2grau_mil
+325,,CF; Lei 1533/51,"5º, LXIX; 1º",Impetrante,Impetrado,just_es_2grau_mil
+325,Especial,CF; Lei 12016/2009,"5º, LXIX; 1º",Impetrante,Impetrado,just_es_2grau_mil
+332,Especial,Lei 9034/95,"2.º, II e III",Autoridade,Investigado,just_es_2grau_mil
+342,,CPC,867 a 873,,,just_es_2grau_mil
+343,Especial,CP; CPM,144; 221,Notificante,Notificado,just_es_2grau_mil
+357,Cautelar,CPP; CPPM,240; 170 e ss,Requerente,Acusado,just_es_2grau_mil
+360,Pré-Processual,"Lei 13.140/2015, CLT, Resolução CNJ 125/2010 e RITST","Art. 1º (Lei 13.140/2015), art. 764 (CLT), art. 4º (Resolução CNJ 125/2010) e art. 36, IV (RITST)",Requerente,Requerido,just_es_2grau_mil
+364,Prisão/Liberdade,CPP; CPPM,311; 254 e ss,Requerente,Acusado,just_es_2grau_mil
+365,Prisão/Liberdade,Lei 7960/89,1º e ss.,Requerente,Acusado,just_es_2grau_mil
+366,,"Leis de org. jud., regimentos e normas internas dos tribunais.",,,,just_es_2grau_mil
+367,Cautelar,Lei 9296/96,1º e ss.,Requerente,Acusado,just_es_2grau_mil
+372,,,,Requerente,Requerido,just_es_2grau_mil
+372,Ato,,RI e Resolução do CJF,Requerente,Requerido,just_es_2grau_mil
+374,,"art. 100 da CF, Constituições Estaduais, leis de org. judiciárias, regimentos e normas internas dos tribunais.",,Requerente,Requerido,just_es_2grau_mil
+397,,CPP,28; 41,,,just_es_2grau_mil
+414,,"Lei 9.784/99, outras normas federais e normas estaduais.",,,,just_es_2grau_mil
+415,,"art. 27 da LC 35/79 (LOMAN), Resolução 30 do CNJ, leis de organização judiciária, regimentos internos e outras normas dos tribunais.",,Processante,Processado,just_es_2grau_mil
+416,,"Lei 8.112/90 e outras leis federais, leis de organização judiciária, leis estaduais, regimentos internos e outras normas dos tribunais.",,Processante,Processado,just_es_2grau_mil
+434,Cautelar,CPC 2015,381,Requerente,Requerido,just_es_2grau_mil
+437,Cautelar,CPC,867 A 873,Requerente,Requerido,just_es_2grau_mil
+444,Penal,CP; CPPM,93 a 95; 651,,,just_es_2grau_mil
+445,,"RI STJ, STF, TJs, TRFs",RI ,Reclamante,Reclamado,just_es_2grau_mil
+445,,CPPM,584,,,just_es_2grau_mil
+446,Especial,Regimentos Internos,,Reclamante,Reclamação,just_es_2grau_mil
+447,,"leis de org. jud., regimentos internos e outras normas dos tribunais.",,Reclamente,Reclamado,just_es_2grau_mil
+453,,normas dos tribunais,,Recorrente,Recorrido,just_es_2grau_mil
+475,,CPPM,"65 §§ 1 a 3, 145, 146, 192, 193, \""b\"", 194 § ún., 203 § 1.º, 210 § 1.º, 219",,,just_es_2grau_mil
+468,,Resolução 30 do CNJ e normas dos tribunais.,RPADServ,Recorrente,Recorrido,just_es_2grau_mil
+469,Recurso,CPP; CPPM,581 e 582; 516,Recorrente,Recorrido,just_es_2grau_mil
+470,Recurso,CPP,581 a 583,Recorrente,Recorrido,just_es_2grau_mil
+497,,CPP; CPPM,"310; 224, 247, § 2.º",Acusado,Autoridade,just_es_2grau_mil
+498,Recurso,CPC 2015,496,Juízo Recorrente,Recorrido,just_es_2grau_mil
+498,Recurso,CPP; 12.016/2009; CPPM,"574; 14, § 1.º; 106, § 1.º, 154, 654",Juízo Recorrente,Recorrido,just_es_2grau_mil
+508,Inquérito,CPP; CPPM,39; 33,Representante/Noticiante,Representado,just_es_2grau_mil
+509,,CF,"art. 125, § 4º",,,just_es_2grau_mil
+510,,CF ;CPM,"art. 125, § 4º; art. 102 ",,,just_es_2grau_mil
+511,Administrativo,CPC,198,Representante,Representado,just_es_2grau_mil
+514,,"art. 100, § 3o, da CF, ADCT, Constituições Estaduais, leis e normas dos tribunais.",,Requerente,Requerido,just_es_2grau_mil
+516,Especial,CPC,1063,Autor,Réu,just_es_2grau_mil
+516,Especial,CPP; CPPM,541; arts. 481 e ss,Autor,Réu,just_es_2grau_mil
+518,Incidente,CPP; CPPM,120; 190,Requerente,Requerido,just_es_2grau_mil
+523,Recurso,CPP; CPPM,621; 550,Requerente,Requerido,just_es_2grau_mil
+540,Incidente,CPP; CPPM,125; 199,Requerente,Acusado,just_es_2grau_mil
+540,Cautelar,CPC,822,Requerente,Requerido,just_es_2grau_mil
+541,,"art. 143 e ss. da Lei 8.112/90, leis de org. judiciária, leis estaduais, regimentos e normas internas dos tribunais.",,Sindicante,Sindicado,just_es_2grau_mil
+545,Incidente,7.210/84 - LEP,183,Requerente,Requerido,just_es_2grau_mil
+549,Incidente,LL 4.348/64 e 8.437/92 e 9.494/97 e 1.533/51,4º; e 4º§1º; e 1º; e 13,Autor,Réu,just_es_2grau_mil
+552,,LL 4.348/64 e 8.437/92 e 9.494/97 e 1.533/51,4º; e 4º§1º; e 1º,Autor,Réu,just_es_2grau_mil
+557,,Lei Esparsa,L.9.099/95 - 69,Autoridade,Autor do Fato,just_es_2grau_mil
+558,Incidente,Lei 7210/84,86,Requerente,Requerido,just_es_2grau_mil
+560,Tutela Provisória,CPC 2015,303 e 304,Requerente,Requerido,just_es_2grau_mil
+561,Tutela Provisória,CPC 2015,305 a 310,Requerente,Requerido,just_es_2grau_mil
+565,Tutela Provisória,CPC 2015,294 a 299,Requerente,Requerido,just_es_2grau_mil
+568,Incidente,CP; Lei 7210/84 - LEP; CPM,"71, 75; 68, III, ""a""; 80, 81",Requerente,,just_es_2grau_mil
+106,,CPC,202,Deprecante,Deprecado,just_es_juizado_es_fp
+102,,CPC,202,Ordenante,Ordenado,just_es_juizado_es_fp
+189,Recurso,CPC,535,Embargante,Embargado,just_es_juizado_es_fp
+211,,CPC,"134, 304, 312 e ss. ",,,just_es_juizado_es_fp
+212,,CPC,"112, 304  e 307 e ss. ",,,just_es_juizado_es_fp
+215,,CPC,"135, 304 e 312 e ss",excipiente,excepto,just_es_juizado_es_fp
+218,EXECUÇÃO,CPC,730,Exequente,Executado,just_es_juizado_es_fp
+230,,,,,,just_es_juizado_es_fp
+267,Incidente,CPC 2015,133 a 137,Suscitante,Suscitado,just_es_juizado_es_fp
+277,Incidental,CPC 2015 ,Diversos,Requerente,Requerido,just_es_juizado_es_fp
+338,,Lei 1060/50,"5º, § 3º",,,just_es_juizado_es_fp
+372,Ato,,RI e Resolução do CJF,Requerente,Requerido,just_es_juizado_es_fp
+393,,Leis 9099/95 e 10259/01,,Autor,Réu,just_es_juizado_es_fp
+450,Pré-processual,Resolução CNJ nº 125,,Reclamante,Reclamado,just_es_juizado_es_fp
+560,Tutela Provisória,CPC 2015,303 e 304,Requerente,Requerido,just_es_juizado_es_fp
+561,Tutela Provisória,CPC 2015,305 a 310,Requerente,Requerido,just_es_juizado_es_fp
+565,Tutela Provisória,CPC 2015,294 a 299,Requerente,Requerido,just_es_juizado_es_fp
+189,Recurso,CPC,535,Embargante,Embargado,just_tu_es_un
+277,Incidental,CPC 2015 ,Diversos,Requerente,Requerido,just_tu_es_un
+370,Incidente,Lei 10.259/01; Lei 12.153/2009,14; 18,,,just_tu_es_un
+370,Incidente,Lei 10.259/01; Lei 12153/2009,14; ,Parte Autora,Parte Ré,just_tu_es_un
+560,Tutela Provisória,CPC 2015,303 e 304,Requerente,Requerido,just_tu_es_un
+561,Tutela Provisória,CPC 2015,305 a 310,Requerente,Requerido,just_tu_es_un
+565,Tutela Provisória,CPC 2015,294 a 299,Requerente,Requerido,just_tu_es_un
+37,Recurso,7210/84,197,Agravante,Agravado,just_fed_1grau
+54,Jurisdição Voluntária,CPC,1113,Requerente,Interessado,just_fed_1grau
+53,,Lei 11343/06,"62, § 6º",,,just_fed_1grau
+55,Especial,L.E.,L.5.478/68,Autor,Réu,just_fed_1grau
+56,Cautelar,CPC,852,Requerente,Requerido,just_fed_1grau
+58,,CPC,,,,just_fed_1grau
+60,Incidente,Lei 7210/84 - LEP; CPPM,187; 650,Requerente,,just_fed_1grau
+61,Especial,CPC,907,Autor,Réu,just_fed_1grau
+68,Cautelar,CPC,885,Requerente,Requerido,just_fed_1grau
+67,Especial,L.E.,DL.1.608/39 - 757,Requerente,Requerido,just_fed_1grau
+69,Especial,CPC,1071,Autor,Réu,just_fed_1grau
+78,Cautelar,CPC,813,Requerente,Requerido,just_fed_1grau
+79,Incidente,CPP; CPPM,"134, 135 e 136; 206, 215 a 219",Requerente,Acusado,just_fed_1grau
+80,Especial,L.E.,DL.1.608/39 - 772,Requerente,Requerido,just_fed_1grau
+82,Cautelar,CPC,855,Requerente,Requerido,just_fed_1grau
+84,,CPC 2015,99,,,just_fed_1grau
+84,,Lei 1.060/50,6º,,,just_fed_1grau
+85,Cautelar,CPC,879,Requerente,Requerido,just_fed_1grau
+89,Investigatória,CPP,289-A e 290,Autoridade,Acusado,just_fed_1grau
+90,Inquérito,CF; CPP; CPPM,"5º, LXII; 304; 230, al. ""a"" ",Autoridade,Flagranteado,just_fed_1grau
+92,Incidente,Lei nº 11.343/06,art. 56 § 2º,,,just_fed_1grau
+93,Especial,L.E.,DL.1.608/39 - 765,Requerente,Requerido,just_fed_1grau
+3,Especial,L.E.,L.8.078/90 - 91,Autor,Réu,just_fed_1grau
+6,Especial,L.E.,L 7.347/85;  L.10.741/03 (art. 74 e 81); L.8.069/90 (art. 210);  L. 8.078/90 (art. 81 e 82).,Autor,Réu,just_fed_1grau
+4,Especial,Lei 8.429/92  ,,Autor,Réu,just_fed_1grau
+22,Comum,CPP,24 e 394 ,Autor,Réu,just_fed_1grau
+24,Comum,CPP,"394, § 1º, III; Lei 11.719/2008",Autor,Réu,just_fed_1grau
+23,Comum,CP,"394, § 1º, II; Lei 11.719/2008",Autor,Réu,just_fed_1grau
+19,Comum,CPP,406,Autor,Réu,just_fed_1grau
+25,Especial,L.E.,L.4.717/65 - 1º e 7º,Autor,Réu,just_fed_1grau
+9,Especial,CPC,"914, II",Autor,Réu,just_fed_1grau
+97,Cautelar,CPC,839,Requerente,Requerido,just_fed_1grau
+97,,,,,,just_fed_1grau
+98,Especial,L.E.,DL.911/69 - 3º,Autor,Réu,just_fed_1grau
+99,Especial,L.E.,L.818/49 - 26,Autor,Denunciado,just_fed_1grau
+101,,CPC,"237, IV,",Requerente,Requerido,just_fed_1grau
+107,,CPP; CPPM,353-356;359,Deprecante,Deprecado,just_fed_1grau
+106,,CPC,202,Deprecante,Deprecado,just_fed_1grau
+113,,CPP,783-786,Rogante,Rogado,just_fed_1grau
+112,,CF,"109, X",Rogante,Rogado,just_fed_1grau
+114,Recurso,CPP,639,Requerente,Requerido,just_fed_1grau
+103,,CPC - aplicação analógica,201,Ordenante,Ordenado,just_fed_1grau
+102,,CPC,202,Ordenante,Ordenado,just_fed_1grau
+117,Cautelar,L 8.397/92,2º e 5º,Requerente,Requerido,just_fed_1grau
+118,Cautelar,CPC,798,Requerente,Requerido,just_fed_1grau
+119,Cautelar,,,Requerente,Requerido,just_fed_1grau
+116,Cautelar,CPC,826,Requerente,Requerido,just_fed_1grau
+120,Especial,L.E.,DL.413/69 - 41,Autor,Réu,just_fed_1grau
+121,Especial,L.E.,"L.9.307/96 - 7º e 16, § 2º",Autor,Réu,just_fed_1grau
+123,Incidente,Lei 7210/84 - LEP; CPPM; Decreto Presidencial,"70, I; 643 e ss",Requerente,,just_fed_1grau
+131,Especial,L.E.,L.8.245/91 - 67,Autor,Réu,just_fed_1grau
+130,Especial,CPC,890,Autor,Réu,just_fed_1grau
+133,Incidente,CPC 2015,"340, §1º",Requerente,Requerido,just_fed_1grau
+134,,CPC,871,Requerente,Requerido,just_fed_1grau
+136,Incidente,CP; Lei 7210/84 - LEP,"43, 44, §§ 4º e 5º;180, 183",Requerente,Requerido,just_fed_1grau
+144,Especial,L.E,L.9.605/98,Autor,Réu,just_fed_1grau
+145,Especial,CPP,524,Autor,Réu,just_fed_1grau
+148,Especial,CPP,519,Autor,Réu,just_fed_1grau
+149,Comum,L.E,L.5.250/67 - 43 e L.9.099/95 - 66,Querelante,Querelado,just_fed_1grau
+150,Especial,CPP e L.E,513 e DL.201/67 - 2º,Autor,Réu,just_fed_1grau
+153,Execução,CPC,"475-I, § 1º e 475-O",Exequente,Executado,just_fed_1grau
+154,Execução,CPC,"475-I, § 1º e 475-O",Exequente,Executado,just_fed_1grau
+152,,,,,,just_fed_1grau
+151,Execução,CPC,"Art. 475-I, 475-J e 475-N",Exequente,Executado,just_fed_1grau
+155,Jurisdição Voluntária,CPC,1159,Requerente,Interessado,just_fed_1grau
+157,Especial,CPC,"947, 950 e 967",Autor,Réu,just_fed_1grau
+159,Especial,CPC,901,Autor,Réu,just_fed_1grau
+160,Especial,L.E.,L.8.866/94,Autor,Réu,just_fed_1grau
+162,Especial,L.E.,L.3.365/41 - 11,Autor,Réu,just_fed_1grau
+163,Especial,L.E.,LC 76/93,Autor,Réu,just_fed_1grau
+167,Especial,L.E.,L.8.245/91 - 59,Autor,Réu,just_fed_1grau
+168,Especial,L.E,L.8.245/91 - 62,Autor,Réu,just_fed_1grau
+169,Especial,L.E,L.8.245/91 - 62 I e VI,Autor,Réu,just_fed_1grau
+171,Especial,L.E.,L.6.383/76 - 19,Autor,Réu,just_fed_1grau
+175,especial,CPC 2015,599,autor,réu,just_fed_1grau
+174,,L.E.; CPC,DL.1.608/39 - 655; CPC 1.218 VII,Autor,Réu,just_fed_1grau
+178,Especial,L.E.,L.6.015/73 - 198,Requerente,Interessado,just_fed_1grau
+203,Recurso,Lei Nº. 6.830/80,34,Embargante,Embargado,just_fed_1grau
+204,Incidente,CPC2015,"702, §7º",Embargante,Embargado,just_fed_1grau
+189,Recurso,CPC,535,Embargante,Embargado,just_fed_1grau
+194,Incidente,CPC,"745, IV e §§ 1º e 2º",Embargante,Embargado,just_fed_1grau
+195,Incidente,CPP; CPPM,"130, II; 203, II",Embargante,Embargado,just_fed_1grau
+195,Especial,CPC,1046,Embargante,Embargado,just_fed_1grau
+196,Processo incidente,CPP; CPPM,"130, I; 203, I",Embargante,Embargado,just_fed_1grau
+182,Incidente,CPC,746,Embargante,Embargado,just_fed_1grau
+183,Incidente,CPC,746,Embargante,Embargado,just_fed_1grau
+184,Incidente,CPC,"736, 741 e 745",Embargante,Embargado,just_fed_1grau
+188,,L. 6830/80,16,Exequente,Executado,just_fed_1grau
+206,Jurisdição Voluntária,CPC,1205,Requerente,Interessado,just_fed_1grau
+217,Incidente,Lei 7210/84,185,Requerente,Requerido,just_fed_1grau
+208,Incidente,CPP; CPM,"523; 214, § 2.º, 215, parágrafo único",Excipiente,Excepto,just_fed_1grau
+209,Incidente,CPP; CPPM,110; 154 e 407/408,Excipiente,Excepto,just_fed_1grau
+210,Incidente,CPP,110,Excipiente,Excepto,just_fed_1grau
+211,Incidente,CPP; CPPM,"112; 128, ""a"", e ss.",Excipiente,Excepto,just_fed_1grau
+211,,CPC,"134, 304, 312 e ss. ",,,just_fed_1grau
+212,,CPC,"112, 304  e 307 e ss. ",,,just_fed_1grau
+213,Incidente,CPP; CPPM,108; 143,Excipiente,Excepto,just_fed_1grau
+214,Incidente,CPP; CPPM,110; 148 ess.,Excipiente,Excepto,just_fed_1grau
+215,Incidente,CPP; CPPM,"96; 128, \""a\""",Excipiente,Excepto,just_fed_1grau
+215,,CPC,"135, 304 e 312 e ss",excipiente,excepto,just_fed_1grau
+218,EXECUÇÃO,CPC,730,Exequente,Executado,just_fed_1grau
+236,Especial,L. 6830/80,,Exequente,Executado,just_fed_1grau
+237,Execução,L. 5741/71,2º,Exequente,Executado,just_fed_1grau
+238,,Lei 7210/84 - LEP,"art. 2º, parágrafo único. ",,,just_fed_1grau
+220,,Lei 7210/84 - LEP; CPPM,"65; 6º, 588 e ss",,,just_fed_1grau
+223,,7.210/84 (LEP),171 e ss,,,just_fed_1grau
+228,,,,,,just_fed_1grau
+229,Execução,L.E.,"621, 632, 642, 730, 754, 759; L.9.099/95 - 53 e L.5.741/71 - 1º",Exequente,Executado,just_fed_1grau
+229,Execução,L. E.,"621, 632, 642, 730, 754, 759, L. 9.099/85",Exequente,Executado,just_fed_1grau
+230,,,,,,just_fed_1grau
+240,Cautelar,CPC,844,Requerente,Requerido,just_fed_1grau
+241,Incidente,CPC,360 e ss,Autor,Réu,just_fed_1grau
+241,Incidente,CPC,360 e ss,Requerente,Requerido,just_fed_1grau
+242,Especial,L.E.,L.8.257/91,Expropriante,Expropriado,just_fed_1grau
+248,,CF; CPP; CPPM,"5º, LXVIII; 647 a 667; 466",Impetrante,Impetrado,just_fed_1grau
+249,Especial,L.E.,L.9.507/97,Impetrante,Impetrado,just_fed_1grau
+250,Especial,CPC,1055 a 1062,Requerente,Requerido,just_fed_1grau
+255,Especial,L.E.; CPC,"L 9099/95 - 57; 475, N, V",Requerentes,Requerentes,just_fed_1grau
+256,Cautelar,CPC,874,Requerente,Requerido,just_fed_1grau
+257,,12.850/13,7,,,just_fed_1grau
+258,Especial,L.E.,DL.1.075/70,Autor,Autor,just_fed_1grau
+259,Incidente,CPC,"475, J, § 1º, L, M",Impugnante,Impugnado,just_fed_1grau
+260,Incidente,CPC,"475, J, § 1º, L, M",,,just_fed_1grau
+261,Incidente,CPC,51,Impugnante,Impugnado,just_fed_1grau
+262,Incidente,CPC,261,Impugnante,Impugnado,just_fed_1grau
+262,Incidente,CPC,261,Impugnante,Impugnado,just_fed_1grau
+263,,Lei 1060/50,"4º, § 2º e 7º, parágrafo único",,,just_fed_1grau
+263,Incidente,Lei 1.060/50,"4º, § 2º e art. 7º, parágrafo único",,,just_fed_1grau
+267,Incidente,CPC 2015,133 a 137,Suscitante,Suscitado,just_fed_1grau
+269,Comum,CPC,390,Autor,Réu ,just_fed_1grau
+269,Incidente,CPP; CPPM,145; 163,Suscitante,Suscitado,just_fed_1grau
+270,,,,,,just_fed_1grau
+275,,CPC2015,146,,,just_fed_1grau
+277,,,,,,just_fed_1grau
+277,Incidental,CPC 2015 ,Diversos,Requerente,Requerido,just_fed_1grau
+279,Incidente,Lei 7210/84 - LEP; CPPM,188; 643 e ss.,Requerente,,just_fed_1grau
+285,Inquérito,CPP,4º ,Autor,Investigado,just_fed_1grau
+288,Incidente,CPP; CPPM,153; 156,Requerente,Acusado,just_fed_1grau
+299,,CPC,932,,,just_fed_1grau
+301,,,,,,just_fed_1grau
+303,,CPC,867 a 873,,,just_fed_1grau
+311,Cautelar,CPC,861,Requerente,Requerido,just_fed_1grau
+312,Cautelar,,,Requerente,Requerido,just_fed_1grau
+313,,CPC/1939,754,Requerente ,Requerido ,just_fed_1grau
+316,Prisão/Liberdade,"CPP, CPPM",321 e 322 ; 270,Requerente,Requerido,just_fed_1grau
+320,Incidente,CPC,"475-A, § 2º",Requerente,Requerido,just_fed_1grau
+320,incidente,CPC 2015, inc. II do art. 509,autor,réu,just_fed_1grau
+321,Incidente,CPC,"475-A, § 2º",Requerente,Requerido,just_fed_1grau
+318,Incidente,CPC,"475-A, 475-E e 475-F",Autor,Réu,just_fed_1grau
+319,Incidente,CPC,"475-A, 475-C e 475-D. ",Autor,Réu,just_fed_1grau
+323,Incidental,Resolução CNJ 113/2010,4º,Autoridade,Executado,just_fed_1grau
+325,,CF; Lei 1533/51,"5º, LXIX; 1º",Impetrante,Impetrado,just_fed_1grau
+325,Especial,CF; Lei 12016/2009,"5º, LXIX; 1º",Impetrante,Impetrado,just_fed_1grau
+326,Especial,CF; Lei 8437/92; Lei 12016/2009,"5º, LXX; 2º; 21 a 23",Impetrante,Impetrado,just_fed_1grau
+328,,,,,,just_fed_1grau
+332,Especial,Lei 9034/95,"2.º, II e III",Autoridade,Investigado,just_fed_1grau
+336,Especial,CPC,1.102A ,Autor,Réu,just_fed_1grau
+337,Especial,L.E.,L.818/49 - 15,Requerente,Interessado,just_fed_1grau
+338,,Lei 1060/50,"5º, § 3º",,,just_fed_1grau
+342,,CPC,867 a 873,,,just_fed_1grau
+343,Especial,CP; CPM,144; 221,Notificante,Notificado,just_fed_1grau
+344,Especial,Lei Esparsa,L.5.250/67 - 25,Notificante,Notificado,just_fed_1grau
+341,Inquérito,CPP,"40,67 CPP/RISTJ",Noticiante,Noticiado,just_fed_1grau
+345,Especial,CPC,934,Nunciante,Nunciado,just_fed_1grau
+348,Incidente,CPC,56,Opoente,Oposto,just_fed_1grau
+347,Especial,L.E.,L.818/49 - 3º,Requerente,Não Consta,just_fed_1grau
+349,Jurisdição Voluntária,CPC,1199,Requerente,Interessado,just_fed_1grau
+350,,CPC,888,,,just_fed_1grau
+351,Incidental,Resolução CNJ 113/2010,4º,Autoridade,Executado,just_fed_1grau
+353,,CPC,1103 E 1112,Requerente,Requerido,just_fed_1grau
+359,,,,,,just_fed_1grau
+355,Inquérito,CPP,46 § 1º ,Representante,Representado,just_fed_1grau
+357,Cautelar,CPP; CPPM,240; 170 e ss,Requerente,Acusado,just_fed_1grau
+360,Pré-Processual,"Lei 13.140/2015, CLT, Resolução CNJ 125/2010 e RITST","Art. 1º (Lei 13.140/2015), art. 764 (CLT), art. 4º (Resolução CNJ 125/2010) e art. 36, IV (RITST)",Requerente,Requerido,just_fed_1grau
+361,,8.069/1990,98,,,just_fed_1grau
+364,Prisão/Liberdade,CPP; CPPM,311; 254 e ss,Requerente,Acusado,just_fed_1grau
+365,Prisão/Liberdade,Lei 7960/89,1º e ss.,Requerente,Acusado,just_fed_1grau
+363,Prisão/Liberdade,L.E,L.6.815/80 - 69 e 73,Requerente,Acusado,just_fed_1grau
+366,,"Leis de org. jud., regimentos e normas internas dos tribunais.",,,,just_fed_1grau
+367,Cautelar,Lei 9296/96,1º e ss.,Requerente,Acusado,just_fed_1grau
+368,Especial,L.E.,L.5.250/67 - 32,Autor,Réu,just_fed_1grau
+372,,,,Requerente,Requerido,just_fed_1grau
+372,Ato,,RI e Resolução do CJF,Requerente,Requerido,just_fed_1grau
+373,Cautelar,CPC,877,Requerente,Requerido,just_fed_1grau
+376,Especial,CPC,"914, I",Autor,Réu,just_fed_1grau
+385,Comum,CPC,272 e 274,Autor,Réu,just_fed_1grau
+386,Incidente,"(art. 125, IV, do CPC e Res. 125/CNJ)",,REQUERENTE,REQUERIDO,just_fed_1grau
+395,Especial,11.343,48,Autor,Réu,just_fed_1grau
+397,,CPP,28; 41,,,just_fed_1grau
+401,,CPC,275,Autor ,Réu,just_fed_1grau
+404,,,,,,just_fed_1grau
+414,,"Lei 9.784/99, outras normas federais e normas estaduais.",,,,just_fed_1grau
+416,,"Lei 8.112/90 e outras leis federais, leis de organização judiciária, leis estaduais, regimentos internos e outras normas dos tribunais.",,Processante,Processado,just_fed_1grau
+431,Especial,CPP,531 e L.1.508/51,Autor,Réu,just_fed_1grau
+421,Especial,CP,"549, 550",Requerente,Requerido,just_fed_1grau
+434,Cautelar,CPC 2015,381,Requerente,Requerido,just_fed_1grau
+435,Incidental,Resolução CNJ 113/2010,4º,Autoridade,Executado,just_fed_1grau
+437,Cautelar,CPC,867 A 873,Requerente,Requerido,just_fed_1grau
+438,Especial,CPC/39,DL.1.608/39 - 725,Requerente,Requerido,just_fed_1grau
+444,Penal,CP; CPPM,93 a 95; 651,,,just_fed_1grau
+447,,"leis de org. jud., regimentos internos e outras normas dos tribunais.",,Reclamente,Reclamado,just_fed_1grau
+450,Pré-processual,Resolução CNJ nº 125,,Reclamante,Reclamado,just_fed_1grau
+469,Recurso,CPP; CPPM,581 e 582; 516,Recorrente,Recorrido,just_fed_1grau
+470,Recurso,CPP,581 a 583,Recorrente,Recorrido,just_fed_1grau
+490,Incidental,Resolução CNJ 113/2010,4º,Autoridade,Executado,just_fed_1grau
+491,Especial,CPC,707 a 711,Requerente,Requerido,just_fed_1grau
+494,,CPC,926 a 931,,,just_fed_1grau
+499,Incidental,Resolução CNJ 113/2010,4º,Autoridade,Execução,just_fed_1grau
+500,Incidente,Lei 7.210 - LEP,126 e ss,Requerente,Requerido,just_fed_1grau
+501,Especial,LE,L.6.015/73 - 266,Autor,Réu,just_fed_1grau
+505,Especial,CPC,L.8.245/91 - 71,Autor,Réu,just_fed_1grau
+504,incidente,Lei 7.210/1984,86,Requerente,Requerido,just_fed_1grau
+508,Inquérito,CPP; CPPM,39; 33,Representante/Noticiante,Representado,just_fed_1grau
+515,,L. 8069/90,155,Requerente,Requerido,just_fed_1grau
+516,Especial,CPC,1063,Autor,Réu,just_fed_1grau
+516,Especial,CPP; CPPM,541; arts. 481 e ss,Autor,Réu,just_fed_1grau
+518,Incidente,CPP; CPPM,120; 190,Requerente,Requerido,just_fed_1grau
+521,,L. 6015/73,212,,,just_fed_1grau
+527,Especial,L.E.,L 8.245/91 - 68,Autor,Réu,just_fed_1grau
+529,Incidental,Resolução CNJ 113/2010,4º,Autoridade,Executado,just_fed_1grau
+540,Incidente,CPP; CPPM,125; 199,Requerente,Acusado,just_fed_1grau
+540,Cautelar,CPC,822,Requerente,Requerido,just_fed_1grau
+541,,"art. 143 e ss. da Lei 8.112/90, leis de org. judiciária, leis estaduais, regimentos e normas internas dos tribunais.",,Sindicante,Sindicado,just_fed_1grau
+545,Incidente,7.210/84 - LEP,183,Requerente,Requerido,just_fed_1grau
+558,Incidente,Lei 7210/84,86,Requerente,Requerido,just_fed_1grau
+560,,,,requerente,requerido,just_fed_1grau
+560,Tutela Provisória,CPC 2015,303 e 304,Requerente,Requerido,just_fed_1grau
+561,,,,requerente,requerido,just_fed_1grau
+561,Tutela Provisória,CPC 2015,305 a 310,Requerente,Requerido,just_fed_1grau
+565,Tutela Provisória,CPC 2015,294 a 299,Requerente,Requerido,just_fed_1grau
+568,Incidente,CP; Lei 7210/84 - LEP; CPM,"71, 75; 68, III, ""a""; 80, 81",Requerente,,just_fed_1grau
+569,Especial,"CPC, art. 941 e L.6.969/81 - 5º",,Autor,Réu,just_fed_1grau
+50,,CPC,1.021,Agravante,Agravado,just_fed_2grau
+51,,Regimentos Internos,,Agravante,Agravado,just_fed_2grau
+51,Recurso,CPC 2015,1.070,Agravante,Agravado,just_fed_2grau
+37,Recurso,7210/84,197,Agravante,Agravado,just_fed_2grau
+38,Recurso,CPC,522,Agravante,Agravado,just_fed_2grau
+39,,CLT,"art. 897, ""b"" e § 2º",Agravante,Agravado,just_fed_2grau
+43,,CPC - aplicação analógica,544,,,just_fed_2grau
+44,,CPC - aplicação analógica,544,,,just_fed_2grau
+44,Recurso,CPC,544,Agravante,Agravado,just_fed_2grau
+47,,CLT,"art. 897, \""a\"" e § 1",Agravante,Agravado,just_fed_2grau
+56,Cautelar,CPC,852,Requerente,Requerido,just_fed_2grau
+60,Incidente,Lei 7210/84 - LEP; CPPM,187; 650,Requerente,,just_fed_2grau
+62,Recurso,CPC,513,Apelante,Apelado,just_fed_2grau
+62,Recurso,CPP; Lei 8.069/90; CPPM,"593;198, I; 526",Apelante,Apelado,just_fed_2grau
+66,Recurso,CPC 2015," 1.009, c/c art. 496",Apelante,Apelado,just_fed_2grau
+65,Recurso,Lei Esparsa e CPC,L.1.533/51 - 12 e 17,Apelante,Apelado,just_fed_2grau
+78,Cautelar,CPC,813,Requerente,Requerido,just_fed_2grau
+79,Incidente,CPP; CPPM,"134, 135 e 136; 206, 215 a 219",Requerente,Acusado,just_fed_2grau
+84,,CPC 2015,99,,,just_fed_2grau
+84,,Lei 1.060/50,6º,,,just_fed_2grau
+85,Cautelar,CPC,879,Requerente,Requerido,just_fed_2grau
+89,Investigatória,CPP,289-A e 290,Autoridade,Acusado,just_fed_2grau
+90,Inquérito,CF; CPP; CPPM,"5º, LXII; 304; 230, al. ""a"" ",Autoridade,Flagranteado,just_fed_2grau
+92,Incidente,Lei nº 11.343/06,art. 56 § 2º,,,just_fed_2grau
+95,Administrativo,CPC; Regimentos Internos,"475, § 1º",Suscitante,Suscitado,just_fed_2grau
+3,Especial,L.E.,L.8.078/90 - 91,Autor,Réu,just_fed_2grau
+4,Especial,Lei 8.429/92  ,,Autor,Réu,just_fed_2grau
+22,Comum,CPP,24 e 394 ,Autor,Réu,just_fed_2grau
+24,Comum,CPP,"394, § 1º, III; Lei 11.719/2008",Autor,Réu,just_fed_2grau
+23,Comum,CP,"394, § 1º, II; Lei 11.719/2008",Autor,Réu,just_fed_2grau
+25,Especial,L.E.,L.4.717/65 - 1º e 7º,Autor,Réu,just_fed_2grau
+27,Especial,CPC,485,Autor,Réu,just_fed_2grau
+97,Cautelar,CPC,839,Requerente,Requerido,just_fed_2grau
+97,,,,,,just_fed_2grau
+101,,CPC,"237, IV,",Requerente,Requerido,just_fed_2grau
+107,,CPP; CPPM,353-356;359,Deprecante,Deprecado,just_fed_2grau
+106,,CPC,202,Deprecante,Deprecado,just_fed_2grau
+114,Recurso,CPP,639,Requerente,Requerido,just_fed_2grau
+103,,CPC - aplicação analógica,201,Ordenante,Ordenado,just_fed_2grau
+102,,CPC,202,Ordenante,Ordenado,just_fed_2grau
+118,Cautelar,CPC,798,Requerente,Requerido,just_fed_2grau
+119,Cautelar,,,Requerente,Requerido,just_fed_2grau
+122,Ato,RI,RI,Comunicante,Comunicado,just_fed_2grau
+123,Incidente,Lei 7210/84 - LEP; CPPM; Decreto Presidencial,"70, I; 643 e ss",Requerente,,just_fed_2grau
+128,Incidente,CPP; CPPM,114; 112,Suscitante,Suscitado,just_fed_2grau
+127,,CPC,115 a 124,Suscitante,Suscitado,just_fed_2grau
+134,,CPC,871,Requerente,Requerido,just_fed_2grau
+136,Incidente,CP; Lei 7210/84 - LEP,"43, 44, §§ 4º e 5º;180, 183",Requerente,Requerido,just_fed_2grau
+139,,"leis de organização judiciária, regimentos e normas internas dos tribunais.",,Corrigente,Corrigido,just_fed_2grau
+140,,"Leis de organização judiciária, regimentos e normas internas dos tribunais.",,Corrigente,Corrigido,just_fed_2grau
+141,,"Lei 5.010/66, Norma Estadual e Regimentos Internos.",,,,just_fed_2grau
+141,Recurso,Lei Esparsa,L.5.010/66 - 6º,Corrigente,Corrigido,just_fed_2grau
+142,Especial,"L.E. ou norma estadual; L 5.010/66 -  6º; CLT, art. 709, II e regimentos internos. ",,Corrigente,Corrigido,just_fed_2grau
+144,Especial,L.E,L.9.605/98,Autor,Réu,just_fed_2grau
+153,Execução,CPC,"475-I, § 1º e 475-O",Exequente,Executado,just_fed_2grau
+154,Execução,CPC,"475-I, § 1º e 475-O",Exequente,Executado,just_fed_2grau
+152,,,,,,just_fed_2grau
+151,Execução,CPC,"Art. 475-I, 475-J e 475-N",Exequente,Executado,just_fed_2grau
+161,Incidente,CPP; CPPM,424; 109,Autor,Réu,just_fed_2grau
+175,especial,CPC 2015,599,autor,réu,just_fed_2grau
+173,,CF e Lei 7783/89,"art. 114, § 3º, da CF",Suscitante,Suscitado,just_fed_2grau
+199,Recurso,CPC,530 ,Embargante,Embargado,just_fed_2grau
+200,Recurso,CPP; CPPM,609 e § único; 538 e 541,Embargante,Embargado,just_fed_2grau
+189,Recurso,CPC,535,Embargante,Embargado,just_fed_2grau
+195,Incidente,CPP; CPPM,"130, II; 203, II",Embargante,Embargado,just_fed_2grau
+195,Especial,CPC,1046,Embargante,Embargado,just_fed_2grau
+182,Incidente,CPC,746,Embargante,Embargado,just_fed_2grau
+183,Incidente,CPC,746,Embargante,Embargado,just_fed_2grau
+184,Incidente,CPC,"736, 741 e 745",Embargante,Embargado,just_fed_2grau
+217,Incidente,Lei 7210/84,185,Requerente,Requerido,just_fed_2grau
+208,Incidente,CPP; CPM,"523; 214, § 2.º, 215, parágrafo único",Excipiente,Excepto,just_fed_2grau
+209,Incidente,CPP; CPPM,110; 154 e 407/408,Excipiente,Excepto,just_fed_2grau
+210,Incidente,CPP,110,Excipiente,Excepto,just_fed_2grau
+211,Incidente,CPP; CPPM,"112; 128, ""a"", e ss.",Excipiente,Excepto,just_fed_2grau
+211,,CPC,"134, 304, 312 e ss. ",,,just_fed_2grau
+212,,CPC,"112, 304  e 307 e ss. ",,,just_fed_2grau
+213,Incidente,CPP; CPPM,108; 143,Excipiente,Excepto,just_fed_2grau
+214,Incidente,CPP; CPPM,110; 148 ess.,Excipiente,Excepto,just_fed_2grau
+215,Incidente,CPP; CPPM,"96; 128, \""a\""",Excipiente,Excepto,just_fed_2grau
+215,,CPC,"135, 304 e 312 e ss",excipiente,excepto,just_fed_2grau
+218,EXECUÇÃO,CPC,730,Exequente,Executado,just_fed_2grau
+238,,Lei 7210/84 - LEP,"art. 2º, parágrafo único. ",,,just_fed_2grau
+220,,Lei 7210/84 - LEP; CPPM,"65; 6º, 588 e ss",,,just_fed_2grau
+223,,7.210/84 (LEP),171 e ss,,,just_fed_2grau
+228,,,,,,just_fed_2grau
+230,,,,,,just_fed_2grau
+240,Cautelar,CPC,844,Requerente,Requerido,just_fed_2grau
+241,Incidente,CPC,360 e ss,Autor,Réu,just_fed_2grau
+241,Incidente,CPC,360 e ss,Requerente,Requerido,just_fed_2grau
+248,Cível,"CF e Livro III, Título II, Capítulo X do Código de Processo Penal","5º, LXVIII da CF 647 a 667 do Código de Processo Penal",,,just_fed_2grau
+248,,CF; CPP; CPPM,"5º, LXVIII; 647 a 667; 466",Impetrante,Impetrado,just_fed_2grau
+249,Especial,L.E.,L.9.507/97,Impetrante,Impetrado,just_fed_2grau
+250,Especial,CPC,1055 a 1062,Requerente,Requerido,just_fed_2grau
+257,,12.850/13,7,,,just_fed_2grau
+259,Incidente,CPC,"475, J, § 1º, L, M",Impugnante,Impugnado,just_fed_2grau
+260,Incidente,CPC,"475, J, § 1º, L, M",,,just_fed_2grau
+261,Incidente,CPC,51,Impugnante,Impugnado,just_fed_2grau
+262,Incidente,CPC,261,Impugnante,Impugnado,just_fed_2grau
+262,Incidente,CPC,261,Impugnante,Impugnado,just_fed_2grau
+263,,Lei 1060/50,"4º, § 2º e 7º, parágrafo único",,,just_fed_2grau
+263,Incidente,Lei 1.060/50,"4º, § 2º e art. 7º, parágrafo único",,,just_fed_2grau
+265,,CPC,948,Arguinte,Arguído,just_fed_2grau
+265,,CPC,948,,,just_fed_2grau
+266,Incidente,CPC 2015,947,suscitante,suscitado,just_fed_2grau
+267,Incidente,CPC 2015,133 a 137,Suscitante,Suscitado,just_fed_2grau
+269,Comum,CPC,390,Autor,Réu ,just_fed_2grau
+269,Incidente,CPP; CPPM,145; 163,Suscitante,Suscitado,just_fed_2grau
+270,,,,,,just_fed_2grau
+273,incidente,CPC 2015,976 a 987,Suscitante,Suscitado,just_fed_2grau
+275,,CPC2015,146,,,just_fed_2grau
+276,Incidente,CPC; 10.259/01; RI,476 e 479; 14,Parte Autora,Parte Ré,just_fed_2grau
+276,Incidente,CPC,476 e 479 e L.10.259/01 - 14,Suscitante,,just_fed_2grau
+277,Incidental,CPC 2015 ,Diversos,Requerente,Requerido,just_fed_2grau
+279,Incidente,Lei 7210/84 - LEP; CPPM,188; 643 e ss.,Requerente,,just_fed_2grau
+285,Inquérito,CPP,4º ,Autor,Investigado,just_fed_2grau
+288,Incidente,CPP; CPPM,153; 156,Requerente,Acusado,just_fed_2grau
+292,,"art. 13, IV, da Lei 5.010/66; leis de org. jud., regimentos e normas internas dos tribunais.",,,,just_fed_2grau
+301,,,,,,just_fed_2grau
+303,,CPC,867 a 873,,,just_fed_2grau
+310,,LC 35 (LOMAN),"33, PARÁGRAFO ÚNICO",,,just_fed_2grau
+312,Cautelar,,,Requerente,Requerido,just_fed_2grau
+316,Prisão/Liberdade,"CPP, CPPM",321 e 322 ; 270,Requerente,Requerido,just_fed_2grau
+320,Incidente,CPC,"475-A, § 2º",Requerente,Requerido,just_fed_2grau
+320,incidente,CPC 2015, inc. II do art. 509,autor,réu,just_fed_2grau
+321,Incidente,CPC,"475-A, § 2º",Requerente,Requerido,just_fed_2grau
+318,Incidente,CPC,"475-A, 475-E e 475-F",Autor,Réu,just_fed_2grau
+319,Incidente,CPC,"475-A, 475-C e 475-D. ",Autor,Réu,just_fed_2grau
+325,,CF; Lei 1533/51,"5º, LXIX; 1º",Impetrante,Impetrado,just_fed_2grau
+325,Especial,CF; Lei 12016/2009,"5º, LXIX; 1º",Impetrante,Impetrado,just_fed_2grau
+326,Especial,CF; Lei 8437/92; Lei 12016/2009,"5º, LXX; 2º; 21 a 23",Impetrante,Impetrado,just_fed_2grau
+328,,,,,,just_fed_2grau
+342,,CPC,867 a 873,,,just_fed_2grau
+343,Especial,CP; CPM,144; 221,Notificante,Notificado,just_fed_2grau
+344,Especial,Lei Esparsa,L.5.250/67 - 25,Notificante,Notificado,just_fed_2grau
+341,Inquérito,CPP,"40,67 CPP/RISTJ",Noticiante,Noticiado,just_fed_2grau
+348,Incidente,CPC,56,Opoente,Oposto,just_fed_2grau
+350,,CPC,888,,,just_fed_2grau
+359,,,,,,just_fed_2grau
+355,Inquérito,CPP,46 § 1º ,Representante,Representado,just_fed_2grau
+357,Cautelar,CPP; CPPM,240; 170 e ss,Requerente,Acusado,just_fed_2grau
+360,Pré-Processual,"Lei 13.140/2015, CLT, Resolução CNJ 125/2010 e RITST","Art. 1º (Lei 13.140/2015), art. 764 (CLT), art. 4º (Resolução CNJ 125/2010) e art. 36, IV (RITST)",Requerente,Requerido,just_fed_2grau
+361,,8.069/1990,98,,,just_fed_2grau
+364,Prisão/Liberdade,CPP; CPPM,311; 254 e ss,Requerente,Acusado,just_fed_2grau
+365,Prisão/Liberdade,Lei 7960/89,1º e ss.,Requerente,Acusado,just_fed_2grau
+366,,"Leis de org. jud., regimentos e normas internas dos tribunais.",,,,just_fed_2grau
+367,Cautelar,Lei 9296/96,1º e ss.,Requerente,Acusado,just_fed_2grau
+372,,,,Requerente,Requerido,just_fed_2grau
+372,Ato,,RI e Resolução do CJF,Requerente,Requerido,just_fed_2grau
+373,Cautelar,CPC,877,Requerente,Requerido,just_fed_2grau
+374,,"art. 100 da CF, Constituições Estaduais, leis de org. judiciárias, regimentos e normas internas dos tribunais.",,Requerente,Requerido,just_fed_2grau
+385,Comum,CPC,272 e 274,Autor,Réu,just_fed_2grau
+386,Incidente,"(art. 125, IV, do CPC e Res. 125/CNJ)",,REQUERENTE,REQUERIDO,just_fed_2grau
+397,,CPP,28; 41,,,just_fed_2grau
+404,,,,,,just_fed_2grau
+414,,"Lei 9.784/99, outras normas federais e normas estaduais.",,,,just_fed_2grau
+415,,"art. 27 da LC 35/79 (LOMAN), Resolução 30 do CNJ, leis de organização judiciária, regimentos internos e outras normas dos tribunais.",,Processante,Processado,just_fed_2grau
+416,,"Lei 8.112/90 e outras leis federais, leis de organização judiciária, leis estaduais, regimentos internos e outras normas dos tribunais.",,Processante,Processado,just_fed_2grau
+434,Cautelar,CPC 2015,381,Requerente,Requerido,just_fed_2grau
+437,Cautelar,CPC,867 A 873,Requerente,Requerido,just_fed_2grau
+445,,"RI STJ, STF, TJs, TRFs",RI ,Reclamante,Reclamado,just_fed_2grau
+446,Especial,Regimentos Internos,,Reclamante,Reclamação,just_fed_2grau
+447,,"leis de org. jud., regimentos internos e outras normas dos tribunais.",,Reclamente,Reclamado,just_fed_2grau
+453,,normas dos tribunais,,Recorrente,Recorrido,just_fed_2grau
+476,,,,,,just_fed_2grau
+468,,Resolução 30 do CNJ e normas dos tribunais.,RPADServ,Recorrente,Recorrido,just_fed_2grau
+469,Recurso,CPP; CPPM,581 e 582; 516,Recorrente,Recorrido,just_fed_2grau
+470,Recurso,CPP,581 a 583,Recorrente,Recorrido,just_fed_2grau
+498,Recurso,CPC 2015,496,Juízo Recorrente,Recorrido,just_fed_2grau
+498,Recurso,CPP; 12.016/2009; CPPM,"574; 14, § 1.º; 106, § 1.º, 154, 654",Juízo Recorrente,Recorrido,just_fed_2grau
+500,Incidente,Lei 7.210 - LEP,126 e ss,Requerente,Requerido,just_fed_2grau
+508,Inquérito,CPP; CPPM,39; 33,Representante/Noticiante,Representado,just_fed_2grau
+511,Administrativo,CPC,198,Representante,Representado,just_fed_2grau
+514,,"art. 100, § 3o, da CF, ADCT, Constituições Estaduais, leis e normas dos tribunais.",,Requerente,Requerido,just_fed_2grau
+515,,L. 8069/90,155,Requerente,Requerido,just_fed_2grau
+516,Especial,CPC,1063,Autor,Réu,just_fed_2grau
+516,Especial,CPP; CPPM,541; arts. 481 e ss,Autor,Réu,just_fed_2grau
+518,Incidente,CPP; CPPM,120; 190,Requerente,Requerido,just_fed_2grau
+523,Recurso,CPP; CPPM,621; 550,Requerente,Requerido,just_fed_2grau
+540,Incidente,CPP; CPPM,125; 199,Requerente,Acusado,just_fed_2grau
+540,Cautelar,CPC,822,Requerente,Requerido,just_fed_2grau
+541,,"art. 143 e ss. da Lei 8.112/90, leis de org. judiciária, leis estaduais, regimentos e normas internas dos tribunais.",,Sindicante,Sindicado,just_fed_2grau
+545,Incidente,7.210/84 - LEP,183,Requerente,Requerido,just_fed_2grau
+549,Incidente,LL 4.348/64 e 8.437/92 e 9.494/97 e 1.533/51,4º; e 4º§1º; e 1º; e 13,Autor,Réu,just_fed_2grau
+552,,LL 4.348/64 e 8.437/92 e 9.494/97 e 1.533/51,4º; e 4º§1º; e 1º,Autor,Réu,just_fed_2grau
+557,,Lei Esparsa,L.9.099/95 - 69,Autoridade,Autor do Fato,just_fed_2grau
+558,Incidente,Lei 7210/84,86,Requerente,Requerido,just_fed_2grau
+560,,,,requerente,requerido,just_fed_2grau
+560,Tutela Provisória,CPC 2015,303 e 304,Requerente,Requerido,just_fed_2grau
+561,,,,requerente,requerido,just_fed_2grau
+561,Tutela Provisória,CPC 2015,305 a 310,Requerente,Requerido,just_fed_2grau
+565,Tutela Provisória,CPC 2015,294 a 299,Requerente,Requerido,just_fed_2grau
+568,Incidente,CP; Lei 7210/84 - LEP; CPM,"71, 75; 68, III, ""a""; 80, 81",Requerente,,just_fed_2grau
+55,Especial,L.E.,L.5.478/68,Autor,Réu,just_fed_juizado_es
+89,Investigatória,CPP,289-A e 290,Autoridade,Acusado,just_fed_juizado_es
+92,Incidente,Lei nº 11.343/06,art. 56 § 2º,,,just_fed_juizado_es
+24,Comum,CPP,"394, § 1º, III; Lei 11.719/2008",Autor,Réu,just_fed_juizado_es
+107,,CPP; CPPM,353-356;359,Deprecante,Deprecado,just_fed_juizado_es
+106,,CPC,202,Deprecante,Deprecado,just_fed_juizado_es
+119,Cautelar,,,Requerente,Requerido,just_fed_juizado_es
+144,Especial,L.E,L.9.605/98,Autor,Réu,just_fed_juizado_es
+148,Especial,CPP,519,Autor,Réu,just_fed_juizado_es
+152,,,,,,just_fed_juizado_es
+189,Recurso,CPC,535,Embargante,Embargado,just_fed_juizado_es
+211,,CPC,"134, 304, 312 e ss. ",,,just_fed_juizado_es
+212,,CPC,"112, 304  e 307 e ss. ",,,just_fed_juizado_es
+215,,CPC,"135, 304 e 312 e ss",excipiente,excepto,just_fed_juizado_es
+220,,Lei 7210/84 - LEP; CPPM,"65; 6º, 588 e ss",,,just_fed_juizado_es
+229,Execução,L.E.,"621, 632, 642, 730, 754, 759; L.9.099/95 - 53 e L.5.741/71 - 1º",Exequente,Executado,just_fed_juizado_es
+229,Execução,L. E.,"621, 632, 642, 730, 754, 759, L. 9.099/85",Exequente,Executado,just_fed_juizado_es
+230,,,,,,just_fed_juizado_es
+248,,CF; CPP; CPPM,"5º, LXVIII; 647 a 667; 466",Impetrante,Impetrado,just_fed_juizado_es
+267,Incidente,CPC 2015,133 a 137,Suscitante,Suscitado,just_fed_juizado_es
+270,,,,,,just_fed_juizado_es
+275,,CPC2015,146,,,just_fed_juizado_es
+277,Incidental,CPC 2015 ,Diversos,Requerente,Requerido,just_fed_juizado_es
+311,Cautelar,CPC,861,Requerente,Requerido,just_fed_juizado_es
+360,Pré-Processual,"Lei 13.140/2015, CLT, Resolução CNJ 125/2010 e RITST","Art. 1º (Lei 13.140/2015), art. 764 (CLT), art. 4º (Resolução CNJ 125/2010) e art. 36, IV (RITST)",Requerente,Requerido,just_fed_juizado_es
+367,Cautelar,Lei 9296/96,1º e ss.,Requerente,Acusado,just_fed_juizado_es
+372,,,,Requerente,Requerido,just_fed_juizado_es
+372,Ato,,RI e Resolução do CJF,Requerente,Requerido,just_fed_juizado_es
+396,Especial,L.E,L.4.898/65 - 12,Autor,Réu,just_fed_juizado_es
+397,,CPP,28; 41,,,just_fed_juizado_es
+394,,L.E.,9.099/95 - 77,Autor,Réu,just_fed_juizado_es
+393,,Leis 9099/95 e 10259/01,,Autor,Réu,just_fed_juizado_es
+450,Pré-processual,Resolução CNJ nº 125,,Reclamante,Reclamado,just_fed_juizado_es
+500,Incidente,Lei 7.210 - LEP,126 e ss,Requerente,Requerido,just_fed_juizado_es
+516,Especial,CPC,1063,Autor,Réu,just_fed_juizado_es
+516,Especial,CPP; CPPM,541; arts. 481 e ss,Autor,Réu,just_fed_juizado_es
+557,,Lei Esparsa,L.9.099/95 - 69,Autoridade,Autor do Fato,just_fed_juizado_es
+560,Tutela Provisória,CPC 2015,303 e 304,Requerente,Requerido,just_fed_juizado_es
+561,Tutela Provisória,CPC 2015,305 a 310,Requerente,Requerido,just_fed_juizado_es
+565,Tutela Provisória,CPC 2015,294 a 299,Requerente,Requerido,just_fed_juizado_es
+51,Recurso,CPC 2015,1.070,Agravante,Agravado,just_fed_turmas
+38,Recurso,CPC,522,Agravante,Agravado,just_fed_turmas
+44,,CPC - aplicação analógica,544,,,just_fed_turmas
+44,Recurso,CPC,544,Agravante,Agravado,just_fed_turmas
+62,Recurso,CPP; Lei 8.069/90; CPPM,"593;198, I; 526",Apelante,Apelado,just_fed_turmas
+114,Recurso,CPP,639,Requerente,Requerido,just_fed_turmas
+119,Cautelar,,,Requerente,Requerido,just_fed_turmas
+128,Incidente,CPP; CPPM,114; 112,Suscitante,Suscitado,just_fed_turmas
+127,,CPC,115 a 124,Suscitante,Suscitado,just_fed_turmas
+141,,"Lei 5.010/66, Norma Estadual e Regimentos Internos.",,,,just_fed_turmas
+141,Recurso,Lei Esparsa,L.5.010/66 - 6º,Corrigente,Corrigido,just_fed_turmas
+189,Recurso,CPC,535,Embargante,Embargado,just_fed_turmas
+211,,CPC,"134, 304, 312 e ss. ",,,just_fed_turmas
+212,,CPC,"112, 304  e 307 e ss. ",,,just_fed_turmas
+215,,CPC,"135, 304 e 312 e ss",excipiente,excepto,just_fed_turmas
+230,,,,,,just_fed_turmas
+248,,CF; CPP; CPPM,"5º, LXVIII; 647 a 667; 466",Impetrante,Impetrado,just_fed_turmas
+267,Incidente,CPC 2015,133 a 137,Suscitante,Suscitado,just_fed_turmas
+270,,,,,,just_fed_turmas
+275,,CPC2015,146,,,just_fed_turmas
+277,Incidental,CPC 2015 ,Diversos,Requerente,Requerido,just_fed_turmas
+325,Especial,CF; Lei 12016/2009,"5º, LXIX; 1º",Impetrante,Impetrado,just_fed_turmas
+370,Incidente,Lei 10.259/01; Lei 12.153/2009,14; 18,,,just_fed_turmas
+370,Incidente,Lei 10.259/01; Lei 12153/2009,14; ,Parte Autora,Parte Ré,just_fed_turmas
+372,,,,Requerente,Requerido,just_fed_turmas
+372,Ato,,RI e Resolução do CJF,Requerente,Requerido,just_fed_turmas
+445,,"RI STJ, STF, TJs, TRFs",RI ,Reclamante,Reclamado,just_fed_turmas
+446,Especial,Regimentos Internos,,Reclamante,Reclamação,just_fed_turmas
+475,Recurso,L.E.,L 9099/95 - 42,Recorrente,Recorrido,just_fed_turmas
+458,Recurso,L.E,L.10.259/01 - 5º,Recorrente,Recorrido,just_fed_turmas
+458,,L. 10259/01; Lei 11.153/2009,"4º, 5º; 3º, 4º",Recorrente,Recorrido,just_fed_turmas
+462,Recurso,Lei Esparsa,L.10.259/01 - 5º,Recorrente,Recorrido,just_fed_turmas
+470,Recurso,CPP,581 a 583,Recorrente,Recorrido,just_fed_turmas
+498,Recurso,CPP; 12.016/2009; CPPM,"574; 14, § 1.º; 106, § 1.º, 154, 654",Juízo Recorrente,Recorrido,just_fed_turmas
+516,Especial,CPC,1063,Autor,Réu,just_fed_turmas
+516,Especial,CPP; CPPM,541; arts. 481 e ss,Autor,Réu,just_fed_turmas
+523,Recurso,CPP; CPPM,621; 550,Requerente,Requerido,just_fed_turmas
+560,Tutela Provisória,CPC 2015,303 e 304,Requerente,Requerido,just_fed_turmas
+561,Tutela Provisória,CPC 2015,305 a 310,Requerente,Requerido,just_fed_turmas
+565,Tutela Provisória,CPC 2015,294 a 299,Requerente,Requerido,just_fed_turmas
+51,Recurso,CPC 2015,1.070,Agravante,Agravado,just_fed_nacional
+270,,,,,,just_fed_nacional
+275,,CPC2015,146,,,just_fed_nacional
+276,Incidente,CPC; 10.259/01; RI,476 e 479; 14,Parte Autora,Parte Ré,just_fed_nacional
+277,Incidental,CPC 2015 ,Diversos,Requerente,Requerido,just_fed_nacional
+325,Especial,CF; Lei 12016/2009,"5º, LXIX; 1º",Impetrante,Impetrado,just_fed_nacional
+370,Incidente,Lei 10.259/01; Lei 12.153/2009,14; 18,,,just_fed_nacional
+370,Incidente,Lei 10.259/01; Lei 12153/2009,14; ,Parte Autora,Parte Ré,just_fed_nacional
+372,,,,Requerente,Requerido,just_fed_nacional
+516,Especial,CPP; CPPM,541; arts. 481 e ss,Autor,Réu,just_fed_nacional
+560,Tutela Provisória,CPC 2015,303 e 304,Requerente,Requerido,just_fed_nacional
+561,Tutela Provisória,CPC 2015,305 a 310,Requerente,Requerido,just_fed_nacional
+565,Tutela Provisória,CPC 2015,294 a 299,Requerente,Requerido,just_fed_nacional
+51,Recurso,CPC 2015,1.070,Agravante,Agravado,just_fed_regional
+44,Recurso,CPC,544,Agravante,Agravado,just_fed_regional
+189,Recurso,CPC,535,Embargante,Embargado,just_fed_regional
+211,,CPC,"134, 304, 312 e ss. ",,,just_fed_regional
+215,,CPC,"135, 304 e 312 e ss",excipiente,excepto,just_fed_regional
+270,,,,,,just_fed_regional
+275,,CPC2015,146,,,just_fed_regional
+276,Incidente,CPC; 10.259/01; RI,476 e 479; 14,Parte Autora,Parte Ré,just_fed_regional
+277,Incidental,CPC 2015 ,Diversos,Requerente,Requerido,just_fed_regional
+325,Especial,CF; Lei 12016/2009,"5º, LXIX; 1º",Impetrante,Impetrado,just_fed_regional
+370,Incidente,Lei 10.259/01; Lei 12.153/2009,14; 18,,,just_fed_regional
+370,Incidente,Lei 10.259/01; Lei 12153/2009,14; ,Parte Autora,Parte Ré,just_fed_regional
+372,,,,Requerente,Requerido,just_fed_regional
+372,Ato,,RI e Resolução do CJF,Requerente,Requerido,just_fed_regional
+516,Especial,CPC,1063,Autor,Réu,just_fed_regional
+516,Especial,CPP; CPPM,541; arts. 481 e ss,Autor,Réu,just_fed_regional
+560,Tutela Provisória,CPC 2015,303 e 304,Requerente,Requerido,just_fed_regional
+561,Tutela Provisória,CPC 2015,305 a 310,Requerente,Requerido,just_fed_regional
+565,Tutela Provisória,CPC 2015,294 a 299,Requerente,Requerido,just_fed_regional
+39,,CLT,"art. 897, ""b"" e § 2º",Agravante,Agravado,just_trab_1grau
+45,,CLT,"art. 897, ""b""",Agravante,Agravado,just_trab_1grau
+58,,CPC,,,,just_trab_1grau
+59,Especial,L.E,L 6.858/80,Requerente,Interessado,just_trab_1grau
+78,Cautelar,CPC,813,Requerente,Requerido,just_trab_1grau
+85,Cautelar,CPC,879,Requerente,Requerido,just_trab_1grau
+3,Especial,L.E.,L.8.078/90 - 91,Autor,Réu,just_trab_1grau
+6,Especial,L.E.,L 7.347/85;  L.10.741/03 (art. 74 e 81); L.8.069/90 (art. 210);  L. 8.078/90 (art. 81 e 82).,Autor,Réu,just_trab_1grau
+28,,CLT,arts. 840 e ss,Reclamante,Reclamado,just_trab_1grau
+30,,CLT,art. 852-A a 852-I,RECLAMANTE,RECLAMADO,just_trab_1grau
+29,,Lei 5.584/70,"art. 2º, §§ 3º e 4º",RECLAMANTE,RECLAMADO,just_trab_1grau
+8,,CLT,"art. 872, § único",Reclamante,Reclamado,just_trab_1grau
+9,Especial,CPC,"914, II",Autor,Réu,just_trab_1grau
+97,Cautelar,CPC,839,Requerente,Requerido,just_trab_1grau
+106,,CPC,202,Deprecante,Deprecado,just_trab_1grau
+112,,CF,"109, X",Rogante,Rogado,just_trab_1grau
+102,,CPC,202,Ordenante,Ordenado,just_trab_1grau
+118,Cautelar,CPC,798,Requerente,Requerido,just_trab_1grau
+116,Cautelar,CPC,826,Requerente,Requerido,just_trab_1grau
+130,Especial,CPC,890,Autor,Réu,just_trab_1grau
+134,,CPC,871,Requerente,Requerido,just_trab_1grau
+151,Execução,CPC,"Art. 475-I, 475-J e 475-N",Exequente,Executado,just_trab_1grau
+203,Recurso,Lei Nº. 6.830/80,34,Embargante,Embargado,just_trab_1grau
+189,Recurso,CPC,535,Embargante,Embargado,just_trab_1grau
+195,Especial,CPC,1046,Embargante,Embargado,just_trab_1grau
+182,Incidente,CPC,746,Embargante,Embargado,just_trab_1grau
+183,Incidente,CPC,746,Embargante,Embargado,just_trab_1grau
+184,Incidente,CPC,"736, 741 e 745",Embargante,Embargado,just_trab_1grau
+211,,CPC,"134, 304, 312 e ss. ",,,just_trab_1grau
+212,,CPC,"112, 304  e 307 e ss. ",,,just_trab_1grau
+215,,CPC,"135, 304 e 312 e ss",excipiente,excepto,just_trab_1grau
+236,Especial,L. 6830/80,,Exequente,Executado,just_trab_1grau
+239,Execução,CLT e CPC,arts. 876/CLT e 475-O/CPC,Exequente ,Executado,just_trab_1grau
+222,Execução,Provimentos de TRTs,,Exequente ,Executado,just_trab_1grau
+226,Execução,CLT,art. 876,Exequente ,Executado,just_trab_1grau
+227,Execução,CLT,art. 876 caput,Exequente ,Executado,just_trab_1grau
+229,Execução,CF e CLT,"art. 114, I, CF e 876 e ss, CLT",Exequente ,Executado,just_trab_1grau
+230,,,,,,just_trab_1grau
+240,Cautelar,CPC,844,Requerente,Requerido,just_trab_1grau
+248,Cível,"CF e Livro III, Título II, Capítulo X do Código de Processo Penal","5º, LXVIII da CF 647 a 667 do Código de Processo Penal",,,just_trab_1grau
+249,Especial,L.E.,L.9.507/97,Impetrante,Impetrado,just_trab_1grau
+255,Especial,L.E.; CPC,"L 9099/95 - 57; 475, N, V",Requerentes,Requerentes,just_trab_1grau
+262,Incidente,CPC,261,Impugnante,Impugnado,just_trab_1grau
+267,Incidente,CPC 2015,133 a 137,Suscitante,Suscitado,just_trab_1grau
+269,Comum,CPC,390,Autor,Réu ,just_trab_1grau
+277,Incidental,CPC 2015 ,Diversos,Requerente,Requerido,just_trab_1grau
+284,,CLT,arts. 853 e ss,Requerente,Requerido,just_trab_1grau
+299,,CPC,932,,,just_trab_1grau
+303,,CPC,867 a 873,,,just_trab_1grau
+311,Cautelar,CPC,861,Requerente,Requerido,just_trab_1grau
+325,Especial,CF; Lei 12016/2009,"5º, LXIX; 1º",Impetrante,Impetrado,just_trab_1grau
+326,Especial,CF; Lei 8437/92; Lei 12016/2009,"5º, LXX; 2º; 21 a 23",Impetrante,Impetrado,just_trab_1grau
+336,Especial,CPC,1.102A ,Autor,Réu,just_trab_1grau
+342,,CPC,867 a 873,,,just_trab_1grau
+348,Incidente,CPC,56,Opoente,Oposto,just_trab_1grau
+360,Pré-Processual,"Lei 13.140/2015, CLT, Resolução CNJ 125/2010 e RITST","Art. 1º (Lei 13.140/2015), art. 764 (CLT), art. 4º (Resolução CNJ 125/2010) e art. 36, IV (RITST)",Requerente,Requerido,just_trab_1grau
+372,Ato,,RI e Resolução do CJF,Requerente,Requerido,just_trab_1grau
+376,Especial,CPC,"914, I",Autor,Réu,just_trab_1grau
+386,Incidente,"(art. 125, IV, do CPC e Res. 125/CNJ)",,REQUERENTE,REQUERIDO,just_trab_1grau
+434,Cautelar,CPC 2015,381,Requerente,Requerido,just_trab_1grau
+437,Cautelar,CPC,867 A 873,Requerente,Requerido,just_trab_1grau
+450,Pré-processual,Resolução CNJ nº 125,,Reclamante,Reclamado,just_trab_1grau
+481,,,,,,just_trab_1grau
+494,,CPC,926 a 931,,,just_trab_1grau
+516,Especial,CPC,1063,Autor,Réu,just_trab_1grau
+540,Cautelar,CPC,822,Requerente,Requerido,just_trab_1grau
+560,Tutela Provisória,CPC 2015,303 e 304,Requerente,Requerido,just_trab_1grau
+561,Tutela Provisória,CPC 2015,305 a 310,Requerente,Requerido,just_trab_1grau
+565,Tutela Provisória,CPC 2015,294 a 299,Requerente,Requerido,just_trab_1grau
+36,,"CPC, CLT, RITST, RITRTs","557,§1º, CPC, 896, §5º,CLT",Agravante,Agravado,just_trab_2grau
+51,,Regimentos Internos,art. 243 do RI/TST,Agravante,Agravado,just_trab_2grau
+39,,CLT,"art. 897, ""b"" e § 2º",Agravante,Agravado,just_trab_2grau
+44,Recurso,CPC,544,Agravante,Agravado,just_trab_2grau
+45,,CLT,"art. 897, ""b""",Agravante,Agravado,just_trab_2grau
+42,,CLT,"art. 897, \""b\""",Agravante,Agravado,just_trab_2grau
+47,,CLT,"art. 897, \""a\"" e § 1",Agravante,Agravado,just_trab_2grau
+78,Cautelar,CPC,813,Requerente,Requerido,just_trab_2grau
+85,Cautelar,CPC,879,Requerente,Requerido,just_trab_2grau
+1,,LC 75/93,"art. 83, IV",Autor,Réu,just_trab_2grau
+27,Especial,CPC,485,Autor,Réu,just_trab_2grau
+28,,CLT,arts. 840 e ss,Reclamante,Reclamado,just_trab_2grau
+97,Cautelar,CPC,839,Requerente,Requerido,just_trab_2grau
+106,,CPC,202,Deprecante,Deprecado,just_trab_2grau
+112,,CF,"109, X",Rogante,Rogado,just_trab_2grau
+102,,CPC,202,Ordenante,Ordenado,just_trab_2grau
+118,Cautelar,CPC,798,Requerente,Requerido,just_trab_2grau
+116,Cautelar,CPC,826,Requerente,Requerido,just_trab_2grau
+127,,CLT,803 e ss. ,Suscitante,Suscitado,just_trab_2grau
+127,,CPC,115 a 124,Suscitante,Suscitado,just_trab_2grau
+132,,Regimentos e normas internas dos Tribunais,,Consulente,Consultado,just_trab_2grau
+134,,CPC,871,Requerente,Requerido,just_trab_2grau
+139,,"leis de organização judiciária, regimentos e normas internas dos tribunais.",,Corrigente,Corrigido,just_trab_2grau
+140,,"Leis de organização judiciária, regimentos e normas internas dos tribunais.",,Corrigente,Corrigido,just_trab_2grau
+142,Especial,"L.E. ou norma estadual; L 5.010/66 -  6º; CLT, art. 709, II e regimentos internos. ",,Corrigente,Corrigido,just_trab_2grau
+151,Execução,CPC,"Art. 475-I, 475-J e 475-N",Exequente,Executado,just_trab_2grau
+172,,CF e CLT,"artigos 856/CLT e 114, § 2º, CF",Suscitante,Suscitado,just_trab_2grau
+173,,CF e Lei 7783/89,"art. 114, § 3º, da CF",Suscitante,Suscitado,just_trab_2grau
+189,Recurso,CPC,535,Embargante,Embargado,just_trab_2grau
+195,Especial,CPC,1046,Embargante,Embargado,just_trab_2grau
+211,,CPC,"134, 304, 312 e ss. ",,,just_trab_2grau
+212,,CPC,"112, 304  e 307 e ss. ",,,just_trab_2grau
+215,,CPC,"135, 304 e 312 e ss",excipiente,excepto,just_trab_2grau
+230,,,,,,just_trab_2grau
+240,Cautelar,CPC,844,Requerente,Requerido,just_trab_2grau
+248,Cível,"CF e Livro III, Título II, Capítulo X do Código de Processo Penal","5º, LXVIII da CF 647 a 667 do Código de Processo Penal",,,just_trab_2grau
+249,Especial,L.E.,L.9.507/97,Impetrante,Impetrado,just_trab_2grau
+262,Incidente,CPC,261,Impugnante,Impugnado,just_trab_2grau
+265,,CPC,948,,,just_trab_2grau
+266,Incidente,CPC 2015,947,suscitante,suscitado,just_trab_2grau
+267,Incidente,CPC 2015,133 a 137,Suscitante,Suscitado,just_trab_2grau
+269,Comum,CPC,390,Autor,Réu ,just_trab_2grau
+273,incidente,CPC 2015,976 a 987,Suscitante,Suscitado,just_trab_2grau
+276,Incidente,CPC,476 e 479 e L.10.259/01 - 14,Suscitante,,just_trab_2grau
+277,Incidental,CPC 2015 ,Diversos,Requerente,Requerido,just_trab_2grau
+303,,CPC,867 a 873,,,just_trab_2grau
+311,Cautelar,CPC,861,Requerente,Requerido,just_trab_2grau
+325,Especial,CF; Lei 12016/2009,"5º, LXIX; 1º",Impetrante,Impetrado,just_trab_2grau
+326,Especial,CF; Lei 8437/92; Lei 12016/2009,"5º, LXX; 2º; 21 a 23",Impetrante,Impetrado,just_trab_2grau
+342,,CPC,867 a 873,,,just_trab_2grau
+348,Incidente,CPC,56,Opoente,Oposto,just_trab_2grau
+360,Pré-Processual,"Lei 13.140/2015, CLT, Resolução CNJ 125/2010 e RITST","Art. 1º (Lei 13.140/2015), art. 764 (CLT), art. 4º (Resolução CNJ 125/2010) e art. 36, IV (RITST)",Requerente,Requerido,just_trab_2grau
+366,,"Leis de org. jud., regimentos e normas internas dos tribunais.",,,,just_trab_2grau
+369,,Lei 5.584/70,"Art. 2º, §§ 1º e 2º",Requerente,Requerido,just_trab_2grau
+372,Ato,,RI e Resolução do CJF,Requerente,Requerido,just_trab_2grau
+374,,"art. 100 da CF, Constituições Estaduais, leis de org. judiciárias, regimentos e normas internas dos tribunais.",,Requerente,Requerido,just_trab_2grau
+386,Incidente,"(art. 125, IV, do CPC e Res. 125/CNJ)",,REQUERENTE,REQUERIDO,just_trab_2grau
+414,,"Lei 9.784/99, outras normas federais e normas estaduais.",,,,just_trab_2grau
+415,,"art. 27 da LC 35/79 (LOMAN), Resolução 30 do CNJ, leis de organização judiciária, regimentos internos e outras normas dos tribunais.",,Processante,Processado,just_trab_2grau
+416,,"Lei 8.112/90 e outras leis federais, leis de organização judiciária, leis estaduais, regimentos internos e outras normas dos tribunais.",,Processante,Processado,just_trab_2grau
+434,Cautelar,CPC 2015,381,Requerente,Requerido,just_trab_2grau
+437,Cautelar,CPC,867 A 873,Requerente,Requerido,just_trab_2grau
+445,,"RI TST, art.190 e RI de TRT",,Reclamante,Reclamado,just_trab_2grau
+447,,"leis de org. jud., regimentos internos e outras normas dos tribunais.",,Reclamente,Reclamado,just_trab_2grau
+453,,normas dos tribunais,,Recorrente,Recorrido,just_trab_2grau
+476,,CLT,"art. 895, ""a"" e ""b""",Recorrente,Recorrido,just_trab_2grau
+459,,CLT,678,Recorrente,Recorrido,just_trab_2grau
+481,,,,,,just_trab_2grau
+482,Recurso,DL 779/69; CPC; L. 1533/51,"art. 1º, V; art. 475; art. 12",Juízo Recorrente,Recorrido,just_trab_2grau
+483,Recurso,"DL 779/69, art. 1º, V; CPC, art. 475; L. 12.016/2009, art. 14, par. 1°; CLT, art. 895, I eII",,Juízo Recorrente,Recorrido,just_trab_2grau
+514,,"art. 100, § 3o, da CF, ADCT, Constituições Estaduais, leis e normas dos tribunais.",,Requerente,Requerido,just_trab_2grau
+516,Especial,CPC,1063,Autor,Réu,just_trab_2grau
+540,Cautelar,CPC,822,Requerente,Requerido,just_trab_2grau
+541,,"art. 143 e ss. da Lei 8.112/90, leis de org. judiciária, leis estaduais, regimentos e normas internas dos tribunais.",,Sindicante,Sindicado,just_trab_2grau
+552,,LL 4.348/64 e 8.437/92 e 9.494/97 e 1.533/51,4º; e 4º§1º; e 1º,Autor,Réu,just_trab_2grau
+560,Tutela Provisória,CPC 2015,303 e 304,Requerente,Requerido,just_trab_2grau
+561,Tutela Provisória,CPC 2015,305 a 310,Requerente,Requerido,just_trab_2grau
+565,Tutela Provisória,CPC 2015,294 a 299,Requerente,Requerido,just_trab_2grau
+36,,"CPC, CLT, RITST, RITRTs","557,§1º, CPC, 896, §5º,CLT",Agravante,Agravado,just_trab_tst
+51,,Regimentos Internos,art. 243 do RI/TST,Agravante,Agravado,just_trab_tst
+44,Recurso,CPC,544,Agravante,Agravado,just_trab_tst
+45,,CLT,"art. 897, ""b""",Agravante,Agravado,just_trab_tst
+46,,,,Agravante,Agravado,just_trab_tst
+42,,CLT,"art. 897, \""b\""",Agravante,Agravado,just_trab_tst
+47,,CLT,"art. 897, \""a\"" e § 1",Agravante,Agravado,just_trab_tst
+78,Cautelar,CPC,813,Requerente,Requerido,just_trab_tst
+85,Cautelar,CPC,879,Requerente,Requerido,just_trab_tst
+1,,LC 75/93,"art. 83, IV",Autor,Réu,just_trab_tst
+27,Especial,CPC,485,Autor,Réu,just_trab_tst
+28,,CLT,arts. 840 e ss,Reclamante,Reclamado,just_trab_tst
+8,,CLT,"art. 872, § único",Reclamante,Reclamado,just_trab_tst
+97,Cautelar,CPC,839,Requerente,Requerido,just_trab_tst
+112,,CF,"109, X",Rogante,Rogado,just_trab_tst
+118,Cautelar,CPC,798,Requerente,Requerido,just_trab_tst
+116,Cautelar,CPC,826,Requerente,Requerido,just_trab_tst
+127,,CLT,803 e ss. ,Suscitante,Suscitado,just_trab_tst
+127,,CPC,115 a 124,Suscitante,Suscitado,just_trab_tst
+132,,Regimentos e normas internas dos Tribunais,,Consulente,Consultado,just_trab_tst
+134,,CPC,871,Requerente,Requerido,just_trab_tst
+139,,"leis de organização judiciária, regimentos e normas internas dos tribunais.",,Corrigente,Corrigido,just_trab_tst
+140,,"Leis de organização judiciária, regimentos e normas internas dos tribunais.",,Corrigente,Corrigido,just_trab_tst
+142,Especial,"L.E. ou norma estadual; L 5.010/66 -  6º; CLT, art. 709, II e regimentos internos. ",,Corrigente,Corrigido,just_trab_tst
+151,Execução,CPC,"Art. 475-I, 475-J e 475-N",Exequente,Executado,just_trab_tst
+172,,CF e CLT,"artigos 856/CLT e 114, § 2º, CF",Suscitante,Suscitado,just_trab_tst
+173,,CF e Lei 7783/89,"art. 114, § 3º, da CF",Suscitante,Suscitado,just_trab_tst
+179,Trababalhista,L. 10.192/01,14,Requerente,Requerido,just_trab_tst
+181,,CLT e RI/TST,art. 894/CLT e art. 239 RI/TST,Embargante,Embargado,just_trab_tst
+199,,Lei 7701/88 e RI/TST,"art. 2º, II, e 240 do RI/TST",Embargante,Embargado,just_trab_tst
+189,Recurso,CPC,535,Embargante,Embargado,just_trab_tst
+195,Especial,CPC,1046,Embargante,Embargado,just_trab_tst
+211,,CPC,"134, 304, 312 e ss. ",,,just_trab_tst
+212,,CPC,"112, 304  e 307 e ss. ",,,just_trab_tst
+215,,CPC,"135, 304 e 312 e ss",excipiente,excepto,just_trab_tst
+240,Cautelar,CPC,844,Requerente,Requerido,just_trab_tst
+248,Cível,"CF e Livro III, Título II, Capítulo X do Código de Processo Penal","5º, LXVIII da CF 647 a 667 do Código de Processo Penal",,,just_trab_tst
+249,Especial,L.E.,L.9.507/97,Impetrante,Impetrado,just_trab_tst
+262,Incidente,CPC,261,Impugnante,Impugnado,just_trab_tst
+265,,CPC,948,,,just_trab_tst
+267,Incidente,CPC 2015,133 a 137,Suscitante,Suscitado,just_trab_tst
+269,Comum,CPC,390,Autor,Réu ,just_trab_tst
+272,Incidental,CLT,896-B e 896-C,Requerente,Requerido,just_trab_tst
+273,incidente,CPC 2015,976 a 987,Suscitante,Suscitado,just_trab_tst
+276,Incidente,CPC,476 e 479 e L.10.259/01 - 14,Suscitante,,just_trab_tst
+277,Incidental,CPC 2015 ,Diversos,Requerente,Requerido,just_trab_tst
+292,,"art. 13, IV, da Lei 5.010/66; leis de org. jud., regimentos e normas internas dos tribunais.",,,,just_trab_tst
+303,,CPC,867 a 873,,,just_trab_tst
+311,Cautelar,CPC,861,Requerente,Requerido,just_trab_tst
+325,Especial,CF; Lei 12016/2009,"5º, LXIX; 1º",Impetrante,Impetrado,just_trab_tst
+326,Especial,CF; Lei 8437/92; Lei 12016/2009,"5º, LXX; 2º; 21 a 23",Impetrante,Impetrado,just_trab_tst
+342,,CPC,867 a 873,,,just_trab_tst
+348,Incidente,CPC,56,Opoente,Oposto,just_trab_tst
+360,Pré-Processual,"Lei 13.140/2015, CLT, Resolução CNJ 125/2010 e RITST","Art. 1º (Lei 13.140/2015), art. 764 (CLT), art. 4º (Resolução CNJ 125/2010) e art. 36, IV (RITST)",Requerente,Requerido,just_trab_tst
+366,,"Leis de org. jud., regimentos e normas internas dos tribunais.",,,,just_trab_tst
+372,Ato,,RI e Resolução do CJF,Requerente,Requerido,just_trab_tst
+374,,"art. 100 da CF, Constituições Estaduais, leis de org. judiciárias, regimentos e normas internas dos tribunais.",,Requerente,Requerido,just_trab_tst
+414,,"Lei 9.784/99, outras normas federais e normas estaduais.",,,,just_trab_tst
+415,,"art. 27 da LC 35/79 (LOMAN), Resolução 30 do CNJ, leis de organização judiciária, regimentos internos e outras normas dos tribunais.",,Processante,Processado,just_trab_tst
+416,,"Lei 8.112/90 e outras leis federais, leis de organização judiciária, leis estaduais, regimentos internos e outras normas dos tribunais.",,Processante,Processado,just_trab_tst
+434,Cautelar,CPC 2015,381,Requerente,Requerido,just_trab_tst
+437,Cautelar,CPC,867 A 873,Requerente,Requerido,just_trab_tst
+445,,"RI TST, art.190 e RI de TRT",,Reclamante,Reclamado,just_trab_tst
+447,,"leis de org. jud., regimentos internos e outras normas dos tribunais.",,Reclamente,Reclamado,just_trab_tst
+453,,normas dos tribunais,,Recorrente,Recorrido,just_trab_tst
+476,,CLT,"art. 895, ""a"" e ""b""",Recorrente,Recorrido,just_trab_tst
+478,,CF,"105, II",Recorrente,Recorrido,just_trab_tst
+460,,CLT,art. 896,Recorrente,Recorrido,just_trab_tst
+461,Recurso,"CPC,",544,Agravante,Agravado,just_trab_tst
+481,,,,,,just_trab_tst
+482,Recurso,DL 779/69; CPC; L. 1533/51,"art. 1º, V; art. 475; art. 12",Juízo Recorrente,Recorrido,just_trab_tst
+483,Recurso,"DL 779/69, art. 1º, V; CPC, art. 475; L. 12.016/2009, art. 14, par. 1°; CLT, art. 895, I eII",,Juízo Recorrente,Recorrido,just_trab_tst
+516,Especial,CPC,1063,Autor,Réu,just_trab_tst
+540,Cautelar,CPC,822,Requerente,Requerido,just_trab_tst
+541,,"art. 143 e ss. da Lei 8.112/90, leis de org. judiciária, leis estaduais, regimentos e normas internas dos tribunais.",,Sindicante,Sindicado,just_trab_tst
+551,,Lei N. 8.437/92,4°,Requerente,Requerido,just_trab_tst
+553,,Lei N. 4.348/64,4°,Requerente,Requerido,just_trab_tst
+553,,L.4.348/64  ,4º,Requerente,Requerido,just_trab_tst
+555,,CPC 2015,"982, § 3º",,,just_trab_tst
+560,Tutela Provisória,CPC 2015,303 e 304,Requerente,Requerido,just_trab_tst
+561,Tutela Provisória,CPC 2015,305 a 310,Requerente,Requerido,just_trab_tst
+565,Tutela Provisória,CPC 2015,294 a 299,Requerente,Requerido,just_trab_tst
+44,,CPC,544,Agravante,Agravado,stf
+41,,RI,270,Agravante,Agravado,stf
+89,Investigatória,CPP,289-A e 290,Autoridade,Acusado,stf
+19,Comum,CPP,406,Autor,Réu,stf
+189,Recurso,CPC,535,Embargante,Embargado,stf
+266,Incidente,CPC 2015,947,suscitante,suscitado,stf
+267,Incidente,CPC 2015,133 a 137,Suscitante,Suscitado,stf
+273,incidente,CPC 2015,976 a 987,Suscitante,Suscitado,stf
+277,Incidental,CPC 2015 ,Diversos,Requerente,Requerido,stf
+360,Pré-Processual,"Lei 13.140/2015, CLT, Resolução CNJ 125/2010 e RITST","Art. 1º (Lei 13.140/2015), art. 764 (CLT), art. 4º (Resolução CNJ 125/2010) e art. 36, IV (RITST)",Requerente,Requerido,stf
+367,Cautelar,Lei 9296/96,1º e ss.,Requerente,Acusado,stf
+446,Especial,Regimentos Internos,,Reclamante,Reclamação,stf
+473,,CPC,,Recorrente,Recorrido,stf
+474,Recurso,CPC; Res. STF 450 e 451,544,Agravante,Agravado,stf
+556,,CPC,"art. 976 c/c art. 986, § 3º c/c art. 1029, §  4º",,,stf
+554,,CPC,art. 294,,,stf
+555,,CPC 2015,"982, § 3º",,,stf
+560,Tutela Provisória,CPC 2015,303 e 304,Requerente,Requerido,stf
+561,Tutela Provisória,CPC 2015,305 a 310,Requerente,Requerido,stf
+565,Tutela Provisória,CPC 2015,294 a 299,Requerente,Requerido,stf
+566,,CPC,"art. 294, parágrafo único, c/c art. 299",,,stf
+567,Incidental,CPC,"art. 294, parágrafo único, c/c art. 299",,,stf
+51,,Regimentos Internos,,Agravante,Agravado,stj
+51,Recurso,CPC 2015,1.070,Agravante,Agravado,stj
+38,,CPC,544,Agravante,Agravado,stj
+44,,CPC,544,Agravante,Agravado,stj
+40,,RI,"270, parágrafo único",Agravante,Agravado,stj
+41,,RI,270,Agravante,Agravado,stj
+49,Recurso,CPC; Resolução STJ 7/2010,544,Agravante,Agravado,stj
+63,,RI,"67, parágrafo único, III",Apelante,Apelado,stj
+89,Investigatória,CPP,289-A e 290,Autoridade,Acusado,stj
+18,,CF;CPP;RI,"105, I CF",Autor,Réu,stj
+27,,CPC ,485,Autor,Réu,stj
+10,,Instrução Normativa nº. 2 STJ ,1º,Requerente,Requerido,stj
+111,,CF,"105, I, i",Rogante,Rogado,stj
+122,,RI,"67, parágrafo único, VIII",Comunicante,Comunicado,stj
+125,,CF; CPC,"105, I, g",Autor,Réu,stj
+127,,CF; CPC,"105, I, d",Suscitante,Suscitado,stj
+202,,CPC,496 III e 530 ,Embargante,Embargado,stj
+201,,CPC,"496, III; 530",Embargante ,Embargado,stj
+189,Recurso,CPC,535,Embargante,Embargado,stj
+193,,CPC,546,Embargante,Embargado,stj
+192,,IN,,Embargante,Embargado,stj
+198,,Súmula 316 STJ,,Embargante,Embargado,stj
+185,,"IN nº. 2, de 04/04/2005",5º,Embargante,Embargado,stj
+186,,"IN 2, de 04/04/2006",5,Embargante,Embargado,stj
+187,,"IN 2, de 04/04/2006",5º,Embargante,Embargado,stj
+208,,CPP,523,Excipiente,Excepto,stj
+211,,CPC,134; 304,Excipiente,Excepto,stj
+215,,CPC,135; 304 e 305,Excipiente,Excepto,stj
+231,,"IN 2, de 04/04/2005",3º,Exeqüente,Executado,stj
+232,,"IN 02, de 04/04/2005",3º,Exeqüente,Executado,stj
+233,,"IN 2, de 04/04/2005",3º,Exeqüente,Executado,stj
+234,,"IN 2, de 04/04/2005",3º,Exeqüente,Executado,stj
+235,,"IN 2, de 04/04/2005",3º,Exeqüente,Executado,stj
+248,,CF; CPP,"105, I, c",Impetrante,Impetrado,stj
+249,,CF,105,Impetrante,Impetrado,stj
+262,Incidente,CPC,261,Impugnante,Impugnado,stj
+265,,CPC,948,Arguinte,Arguído,stj
+265,,CPC,948,,,stj
+267,Incidente,CPC 2015,133 a 137,Suscitante,Suscitado,stj
+268,,CF,"109, § 5",Suscitante,Suscitado,stj
+269,Comum,CPC,390,Autor,Réu ,stj
+273,incidente,CPC 2015,976 a 987,Suscitante,Suscitado,stj
+276,Incidente,CPC; 10.259/01; RI,476 e 479; 14,Parte Autora,Parte Ré,stj
+276,Incidente,CPC,476 e 479 e L.10.259/01 - 14,Suscitante,,stj
+277,,,,,,stj
+277,Incidental,CPC 2015 ,Diversos,Requerente,Requerido,stj
+280,,RI,"67, paragrafo único, V",Autor,Investigado,stj
+304,,RI,"67, XIV",Interpelante,Interpelado,stj
+307,,CF,"34, VI; 36, II",Requisitante,,stj
+310,,LC 35 (LOMAN),"33, PARÁGRAFO ÚNICO",,,stj
+324,,CF,"5º, LXXI",Impetrante,Impetrado,stj
+325,,CF,"5º, LXIX",Impetrante,Impetrado,stj
+327,,CPC,796 ss,Requerente,Requerido,stj
+329,,,,,,stj
+360,Pré-Processual,"Lei 13.140/2015, CLT, Resolução CNJ 125/2010 e RITST","Art. 1º (Lei 13.140/2015), art. 764 (CLT), art. 4º (Resolução CNJ 125/2010) e art. 36, IV (RITST)",Requerente,Requerido,stj
+367,Cautelar,Lei 9296/96,1º e ss.,Requerente,Acusado,stj
+372,,RI,"67, VIII",Requerente,Requerido,stj
+372,,,,Requerente,Requerido,stj
+374,,CPC,730,Requerente,Requerido,stj
+445,,CF,"105, f",Reclamante,Reclamado,stj
+446,Especial,Regimentos Internos,,Reclamante,Reclamação,stj
+453,,normas dos tribunais,,Recorrente,Recorrido,stj
+471,,CPC,,Recorrente,Recorrido,stj
+471,,CF,"105, III",Recorrente,Recorrido,stj
+476,,CF,"105, II",Recorrente,Recorrido,stj
+477,,CPP e CF,574 I,Recorrente,Recorrido,stj
+477,,CF,"105, II",Recorrente,Recorrido,stj
+478,,CF,"105, II",Recorrente,Recorrido,stj
+506,,CPP,39,Representante,Representado,stj
+514,,IN,,Requerente,Requerido,stj
+516,Especial,CPC,1063,Autor,Réu,stj
+523,,CPP,621 ss,Requerente,Requerido,stj
+535,,CF,"105, I, i",Requerente,,stj
+536,,CF,"105, I, i",Requerente,Requerido,stj
+541,,RI,"67, parágrafo único VI",Requerente,,stj
+551,,L.8.437/92  ,4º,Requerente,Requerido,stj
+553,,L.4.348/64  ,4º,Requerente,Requerido,stj
+555,,CPC 2015,"982, § 3º",,,stj
+560,Tutela Provisória,CPC 2015,303 e 304,Requerente,Requerido,stj
+561,Tutela Provisória,CPC 2015,305 a 310,Requerente,Requerido,stj
+565,Tutela Provisória,CPC 2015,294 a 299,Requerente,Requerido,stj
+142,Especial,"L.E. ou norma estadual; L 5.010/66 -  6º; CLT, art. 709, II e regimentos internos. ",,Corrigente,Corrigido,cjf
+211,,CPC,"134, 304, 312 e ss. ",,,cjf
+215,,CPC,"135, 304 e 312 e ss",excipiente,excepto,cjf
+270,,,,,,cjf
+275,,CPC2015,146,,,cjf
+276,Incidente,CPC; 10.259/01; RI,476 e 479; 14,Parte Autora,Parte Ré,cjf
+366,,"Leis de org. jud., regimentos e normas internas dos tribunais.",,,,cjf
+370,Incidente,Lei 10.259/01; Lei 12153/2009,14; ,Parte Autora,Parte Ré,cjf
+414,,"Lei 9.784/99, outras normas federais e normas estaduais.",,,,cjf
+516,Especial,CPC,1063,Autor,Réu,cjf
+560,Tutela Provisória,CPC 2015,303 e 304,Requerente,Requerido,cjf
+561,Tutela Provisória,CPC 2015,305 a 310,Requerente,Requerido,cjf
+565,Tutela Provisória,CPC 2015,294 a 299,Requerente,Requerido,cjf
+31,,Regimento Interno,,Requerente,Requerido,cnj
+76,Incidental,Leis de Organização Judiciária e Regimentos Internos de Tribunais ou Conselhos,,Arguinte,Arguído,cnj
+86,,Regimento Interno,,Requerente,Requerido,cnj
+87,,,,,,cnj
+95,Administrativo,CPC; Regimentos Internos,"475, § 1º",Suscitante,Suscitado,cnj
+132,,Regimentos e normas internas dos Tribunais,,Consulente,Consultado,cnj
+135,,,,,,cnj
+139,,,,,,cnj
+140,,,,,,cnj
+140,,"Leis de organização judiciária, regimentos e normas internas dos tribunais.",,Corrigente,Corrigido,cnj
+207,,,,,,cnj
+292,,,,,,cnj
+292,,"art. 13, IV, da Lei 5.010/66; leis de org. jud., regimentos e normas internas dos tribunais.",,,,cnj
+339,,Regimento Interno,,Requerente,Requerido,cnj
+352,,,,,,cnj
+418,,,,,,cnj
+354,,Regimento Interno,,Requerente,Requerido,cnj
+366,,"Leis de org. jud., regimentos e normas internas dos tribunais.",,,,cnj
+387,,Regimento Interno,,Requerente,Requerido,cnj
+388,,,,,,cnj
+389,,Regimento Interno,,Requerente,Requerido,cnj
+407,,,,,,cnj
+408,,,,,,cnj
+417,,,,,,cnj
+415,,"art. 27 da LC 35/79 (LOMAN), Resolução 30 do CNJ, leis de organização judiciária, regimentos internos e outras normas dos tribunais.",,Processante,Processado,cnj
+416,,"Lei 8.112/90 e outras leis federais, leis de organização judiciária, leis estaduais, regimentos internos e outras normas dos tribunais.",,Processante,Processado,cnj
+423,,,,,,cnj
+447,,"leis de org. jud., regimentos internos e outras normas dos tribunais.",,Reclamente,Reclamado,cnj
+448,,,,,,cnj
+449,,Regimento Interno,,Requerente,Requerido,cnj
+511,Administrativo,CPC,198,Representante,Representado,cnj
+516,Especial,CPC,1063,Autor,Réu,cnj
+525,,Regimento Interno,,Requerente, Requerido,cnj
+541,,"art. 143 e ss. da Lei 8.112/90, leis de org. judiciária, leis estaduais, regimentos e normas internas dos tribunais.",,Sindicante,Sindicado,cnj
+542,,,,,,cnj
+560,Tutela Provisória,CPC 2015,303 e 304,Requerente,Requerido,cnj
+561,Tutela Provisória,CPC 2015,305 a 310,Requerente,Requerido,cnj
+565,Tutela Provisória,CPC 2015,294 a 299,Requerente,Requerido,cnj
+37,Recurso,7210/84,197,Agravante,Agravado,just_mil_uniao_1grau
+53,,Lei 11343/06,"62, § 6º",,,just_mil_uniao_1grau
+60,Incidente,Lei 7210/84 - LEP; CPPM,187; 650,Requerente,,just_mil_uniao_1grau
+79,Incidente,CPP; CPPM,"134, 135 e 136; 206, 215 a 219",Requerente,Acusado,just_mil_uniao_1grau
+89,Investigatória,CPP,289-A e 290,Autoridade,Acusado,just_mil_uniao_1grau
+90,Inquérito,CF; CPP; CPPM,"5º, LXII; 304; 230, al. ""a"" ",Autoridade,Flagranteado,just_mil_uniao_1grau
+21,,CPM; CPPM,"121; 29, 31, 34, 384 a 450, 489",Autor,Réu,just_mil_uniao_1grau
+107,,CPP; CPPM,353-356;359,Deprecante,Deprecado,just_mil_uniao_1grau
+103,,CPC - aplicação analógica,201,Ordenante,Ordenado,just_mil_uniao_1grau
+123,Incidente,Lei 7210/84 - LEP; CPPM; Decreto Presidencial,"70, I; 643 e ss",Requerente,,just_mil_uniao_1grau
+132,,Regimentos e normas internas dos Tribunais,,Consulente,Consultado,just_mil_uniao_1grau
+136,Incidente,CP; Lei 7210/84 - LEP,"43, 44, §§ 4º e 5º;180, 183",Requerente,Requerido,just_mil_uniao_1grau
+142,Especial,"L.E. ou norma estadual; L 5.010/66 -  6º; CLT, art. 709, II e regimentos internos. ",,Corrigente,Corrigido,just_mil_uniao_1grau
+165,,CPPM,451 a 454,,,just_mil_uniao_1grau
+166,,CPPM,"451 a 453, 456",,,just_mil_uniao_1grau
+195,Incidente,CPP; CPPM,"130, II; 203, II",Embargante,Embargado,just_mil_uniao_1grau
+196,Processo incidente,CPP; CPPM,"130, I; 203, I",Embargante,Embargado,just_mil_uniao_1grau
+217,Incidente,Lei 7210/84,185,Requerente,Requerido,just_mil_uniao_1grau
+208,Incidente,CPP; CPM,"523; 214, § 2.º, 215, parágrafo único",Excipiente,Excepto,just_mil_uniao_1grau
+209,Incidente,CPP; CPPM,110; 154 e 407/408,Excipiente,Excepto,just_mil_uniao_1grau
+211,Incidente,CPP; CPPM,"112; 128, ""a"", e ss.",Excipiente,Excepto,just_mil_uniao_1grau
+213,Incidente,CPP; CPPM,108; 143,Excipiente,Excepto,just_mil_uniao_1grau
+214,Incidente,CPP; CPPM,110; 148 ess.,Excipiente,Excepto,just_mil_uniao_1grau
+215,Incidente,CPP; CPPM,"96; 128, \""a\""",Excipiente,Excepto,just_mil_uniao_1grau
+238,,Lei 7210/84 - LEP,"art. 2º, parágrafo único. ",,,just_mil_uniao_1grau
+220,,Lei 7210/84 - LEP; CPPM,"65; 6º, 588 e ss",,,just_mil_uniao_1grau
+223,,7.210/84 (LEP),171 e ss,,,just_mil_uniao_1grau
+249,Especial,L.E.,L.9.507/97,Impetrante,Impetrado,just_mil_uniao_1grau
+269,Incidente,CPP; CPPM,145; 163,Suscitante,Suscitado,just_mil_uniao_1grau
+277,Incidental,CPC 2015 ,Diversos,Requerente,Requerido,just_mil_uniao_1grau
+279,Incidente,Lei 7210/84 - LEP; CPPM,188; 643 e ss.,Requerente,,just_mil_uniao_1grau
+287,Inquérito,CPPM,9 a 28,Autor,Investigado,just_mil_uniao_1grau
+288,Incidente,CPP; CPPM,153; 156,Requerente,Acusado,just_mil_uniao_1grau
+295,,CPPM,451 e seguintes,Requerente,Requerido,just_mil_uniao_1grau
+296,,CPPM,463 e ss,Requerente,Requerido,just_mil_uniao_1grau
+297,,CPPM,art. 463,Autor,Réu,just_mil_uniao_1grau
+312,Cautelar,,,Requerente,Requerido,just_mil_uniao_1grau
+316,Prisão/Liberdade,"CPP, CPPM",321 e 322 ; 270,Requerente,Requerido,just_mil_uniao_1grau
+323,Incidental,Resolução CNJ 113/2010,4º,Autoridade,Executado,just_mil_uniao_1grau
+325,,CF; Lei 1533/51,"5º, LXIX; 1º",Impetrante,Impetrado,just_mil_uniao_1grau
+332,Especial,Lei 9034/95,"2.º, II e III",Autoridade,Investigado,just_mil_uniao_1grau
+343,Especial,CP; CPM,144; 221,Notificante,Notificado,just_mil_uniao_1grau
+351,Incidental,Resolução CNJ 113/2010,4º,Autoridade,Executado,just_mil_uniao_1grau
+357,Cautelar,CPP; CPPM,240; 170 e ss,Requerente,Acusado,just_mil_uniao_1grau
+364,Prisão/Liberdade,CPP; CPPM,311; 254 e ss,Requerente,Acusado,just_mil_uniao_1grau
+365,Prisão/Liberdade,Lei 7960/89,1º e ss.,Requerente,Acusado,just_mil_uniao_1grau
+366,,"Leis de org. jud., regimentos e normas internas dos tribunais.",,,,just_mil_uniao_1grau
+367,Cautelar,Lei 9296/96,1º e ss.,Requerente,Acusado,just_mil_uniao_1grau
+372,,,,Requerente,Requerido,just_mil_uniao_1grau
+397,,CPP,28; 41,,,just_mil_uniao_1grau
+414,,"Lei 9.784/99, outras normas federais e normas estaduais.",,,,just_mil_uniao_1grau
+416,,"Lei 8.112/90 e outras leis federais, leis de organização judiciária, leis estaduais, regimentos internos e outras normas dos tribunais.",,Processante,Processado,just_mil_uniao_1grau
+435,Incidental,Resolução CNJ 113/2010,4º,Autoridade,Executado,just_mil_uniao_1grau
+444,Penal,CP; CPPM,93 a 95; 651,,,just_mil_uniao_1grau
+490,Incidental,Resolução CNJ 113/2010,4º,Autoridade,Executado,just_mil_uniao_1grau
+497,,CPP; CPPM,"310; 224, 247, § 2.º",Acusado,Autoridade,just_mil_uniao_1grau
+499,Incidental,Resolução CNJ 113/2010,4º,Autoridade,Execução,just_mil_uniao_1grau
+508,Inquérito,CPP; CPPM,39; 33,Representante/Noticiante,Representado,just_mil_uniao_1grau
+516,Especial,CPP; CPPM,541; arts. 481 e ss,Autor,Réu,just_mil_uniao_1grau
+518,Incidente,CPP; CPPM,120; 190,Requerente,Requerido,just_mil_uniao_1grau
+529,Incidental,Resolução CNJ 113/2010,4º,Autoridade,Executado,just_mil_uniao_1grau
+540,Incidente,CPP; CPPM,125; 199,Requerente,Acusado,just_mil_uniao_1grau
+541,,"art. 143 e ss. da Lei 8.112/90, leis de org. judiciária, leis estaduais, regimentos e normas internas dos tribunais.",,Sindicante,Sindicado,just_mil_uniao_1grau
+545,Incidente,7.210/84 - LEP,183,Requerente,Requerido,just_mil_uniao_1grau
+558,Incidente,Lei 7210/84,86,Requerente,Requerido,just_mil_uniao_1grau
+560,Tutela Provisória,CPC 2015,303 e 304,Requerente,Requerido,just_mil_uniao_1grau
+561,Tutela Provisória,CPC 2015,305 a 310,Requerente,Requerido,just_mil_uniao_1grau
+565,Tutela Provisória,CPC 2015,294 a 299,Requerente,Requerido,just_mil_uniao_1grau
+568,Incidente,CP; Lei 7210/84 - LEP; CPM,"71, 75; 68, III, ""a""; 80, 81",Requerente,,just_mil_uniao_1grau
+51,,Regimentos Internos,,Agravante,Agravado,just_mil_uniao_stm
+44,,CPC - aplicação analógica,544,,,just_mil_uniao_stm
+53,,Lei 11343/06,"62, § 6º",,,just_mil_uniao_stm
+60,Incidente,Lei 7210/84 - LEP; CPPM,187; 650,Requerente,,just_mil_uniao_stm
+62,Recurso,CPP; Lei 8.069/90; CPPM,"593;198, I; 526",Apelante,Apelado,just_mil_uniao_stm
+79,Incidente,CPP; CPPM,"134, 135 e 136; 206, 215 a 219",Requerente,Acusado,just_mil_uniao_stm
+89,Investigatória,CPP,289-A e 290,Autoridade,Acusado,just_mil_uniao_stm
+90,Inquérito,CF; CPP; CPPM,"5º, LXII; 304; 230, al. ""a"" ",Autoridade,Flagranteado,just_mil_uniao_stm
+21,,CPM; CPPM,"121; 29, 31, 34, 384 a 450, 489",Autor,Réu,just_mil_uniao_stm
+103,,CPC - aplicação analógica,201,Ordenante,Ordenado,just_mil_uniao_stm
+123,Incidente,Lei 7210/84 - LEP; CPPM; Decreto Presidencial,"70, I; 643 e ss",Requerente,,just_mil_uniao_stm
+128,Incidente,CPP; CPPM,114; 112,Suscitante,Suscitado,just_mil_uniao_stm
+129,,CF; Lei 5.836/72,"art. 125, § 4º; Lei 5.836/72",,,just_mil_uniao_stm
+132,,Regimentos e normas internas dos Tribunais,,Consulente,Consultado,just_mil_uniao_stm
+136,Incidente,CP; Lei 7210/84 - LEP,"43, 44, §§ 4º e 5º;180, 183",Requerente,Requerido,just_mil_uniao_stm
+139,,"leis de organização judiciária, regimentos e normas internas dos tribunais.",,Corrigente,Corrigido,just_mil_uniao_stm
+140,,"Leis de organização judiciária, regimentos e normas internas dos tribunais.",,Corrigente,Corrigido,just_mil_uniao_stm
+141,,CPPM,"498, ""a"" e ""b""",Corrigente,Corrigido,just_mil_uniao_stm
+161,Incidente,CPP; CPPM,424; 109,Autor,Réu,just_mil_uniao_stm
+165,,CPPM,451 a 454,,,just_mil_uniao_stm
+200,Recurso,CPP; CPPM,609 e § único; 538 e 541,Embargante,Embargado,just_mil_uniao_stm
+189,Recurso,CPP; CPPM,619; 538,Embargante,Embargado,just_mil_uniao_stm
+195,Incidente,CPP; CPPM,"130, II; 203, II",Embargante,Embargado,just_mil_uniao_stm
+196,Processo incidente,CPP; CPPM,"130, I; 203, I",Embargante,Embargado,just_mil_uniao_stm
+197,,CPPM,,,,just_mil_uniao_stm
+217,Incidente,Lei 7210/84,185,Requerente,Requerido,just_mil_uniao_stm
+208,Incidente,CPP; CPM,"523; 214, § 2.º, 215, parágrafo único",Excipiente,Excepto,just_mil_uniao_stm
+209,Incidente,CPP; CPPM,110; 154 e 407/408,Excipiente,Excepto,just_mil_uniao_stm
+211,Incidente,CPP; CPPM,"112; 128, ""a"", e ss.",Excipiente,Excepto,just_mil_uniao_stm
+213,Incidente,CPP; CPPM,108; 143,Excipiente,Excepto,just_mil_uniao_stm
+214,Incidente,CPP; CPPM,110; 148 ess.,Excipiente,Excepto,just_mil_uniao_stm
+215,Incidente,CPP; CPPM,"96; 128, \""a\""",Excipiente,Excepto,just_mil_uniao_stm
+238,,Lei 7210/84 - LEP,"art. 2º, parágrafo único. ",,,just_mil_uniao_stm
+220,,Lei 7210/84 - LEP; CPPM,"65; 6º, 588 e ss",,,just_mil_uniao_stm
+248,,CF; CPP; CPPM,"5º, LXVIII; 647 a 667; 466",Impetrante,Impetrado,just_mil_uniao_stm
+249,Especial,L.E.,L.9.507/97,Impetrante,Impetrado,just_mil_uniao_stm
+269,Incidente,CPP; CPPM,145; 163,Suscitante,Suscitado,just_mil_uniao_stm
+277,Incidental,CPC 2015 ,Diversos,Requerente,Requerido,just_mil_uniao_stm
+279,Incidente,Lei 7210/84 - LEP; CPPM,188; 643 e ss.,Requerente,,just_mil_uniao_stm
+287,Inquérito,CPPM,9 a 28,Autor,Investigado,just_mil_uniao_stm
+288,Incidente,CPP; CPPM,153; 156,Requerente,Acusado,just_mil_uniao_stm
+316,Prisão/Liberdade,"CPP, CPPM",321 e 322 ; 270,Requerente,Requerido,just_mil_uniao_stm
+325,,CF; Lei 1533/51,"5º, LXIX; 1º",Impetrante,Impetrado,just_mil_uniao_stm
+332,Especial,Lei 9034/95,"2.º, II e III",Autoridade,Investigado,just_mil_uniao_stm
+343,Especial,CP; CPM,144; 221,Notificante,Notificado,just_mil_uniao_stm
+357,Cautelar,CPP; CPPM,240; 170 e ss,Requerente,Acusado,just_mil_uniao_stm
+364,Prisão/Liberdade,CPP; CPPM,311; 254 e ss,Requerente,Acusado,just_mil_uniao_stm
+365,Prisão/Liberdade,Lei 7960/89,1º e ss.,Requerente,Acusado,just_mil_uniao_stm
+366,,"Leis de org. jud., regimentos e normas internas dos tribunais.",,,,just_mil_uniao_stm
+367,Cautelar,Lei 9296/96,1º e ss.,Requerente,Acusado,just_mil_uniao_stm
+372,,,,Requerente,Requerido,just_mil_uniao_stm
+414,,"Lei 9.784/99, outras normas federais e normas estaduais.",,,,just_mil_uniao_stm
+415,,"art. 27 da LC 35/79 (LOMAN), Resolução 30 do CNJ, leis de organização judiciária, regimentos internos e outras normas dos tribunais.",,Processante,Processado,just_mil_uniao_stm
+416,,"Lei 8.112/90 e outras leis federais, leis de organização judiciária, leis estaduais, regimentos internos e outras normas dos tribunais.",,Processante,Processado,just_mil_uniao_stm
+444,Penal,CP; CPPM,93 a 95; 651,,,just_mil_uniao_stm
+445,,CPPM,584,,,just_mil_uniao_stm
+446,Especial,Regimentos Internos,,Reclamante,Reclamação,just_mil_uniao_stm
+475,,CPPM,"65 §§ 1 a 3, 145, 146, 192, 193, \""b\"", 194 § ún., 203 § 1.º, 210 § 1.º, 219",,,just_mil_uniao_stm
+469,Recurso,CPP; CPPM,581 e 582; 516,Recorrente,Recorrido,just_mil_uniao_stm
+470,Recurso,CPP,581 a 583,Recorrente,Recorrido,just_mil_uniao_stm
+497,,CPP; CPPM,"310; 224, 247, § 2.º",Acusado,Autoridade,just_mil_uniao_stm
+498,Recurso,CPP; 12.016/2009; CPPM,"574; 14, § 1.º; 106, § 1.º, 154, 654",Juízo Recorrente,Recorrido,just_mil_uniao_stm
+508,Inquérito,CPP; CPPM,39; 33,Representante/Noticiante,Representado,just_mil_uniao_stm
+509,,CF,"art. 125, § 4º",,,just_mil_uniao_stm
+516,Especial,CPP; CPPM,541; arts. 481 e ss,Autor,Réu,just_mil_uniao_stm
+518,Incidente,CPP; CPPM,120; 190,Requerente,Requerido,just_mil_uniao_stm
+523,Recurso,CPP; CPPM,621; 550,Requerente,Requerido,just_mil_uniao_stm
+540,Incidente,CPP; CPPM,125; 199,Requerente,Acusado,just_mil_uniao_stm
+541,,"art. 143 e ss. da Lei 8.112/90, leis de org. judiciária, leis estaduais, regimentos e normas internas dos tribunais.",,Sindicante,Sindicado,just_mil_uniao_stm
+545,Incidente,7.210/84 - LEP,183,Requerente,Requerido,just_mil_uniao_stm
+558,Incidente,Lei 7210/84,86,Requerente,Requerido,just_mil_uniao_stm
+560,Tutela Provisória,CPC 2015,303 e 304,Requerente,Requerido,just_mil_uniao_stm
+561,Tutela Provisória,CPC 2015,305 a 310,Requerente,Requerido,just_mil_uniao_stm
+565,Tutela Provisória,CPC 2015,294 a 299,Requerente,Requerido,just_mil_uniao_stm
+568,Incidente,CP; Lei 7210/84 - LEP; CPM,"71, 75; 68, III, ""a""; 80, 81",Requerente,,just_mil_uniao_stm
+37,Recurso,7210/84,197,Agravante,Agravado,just_mil_est_1grau
+54,Jurisdição Voluntária,CPC,1113,Requerente,Interessado,just_mil_est_1grau
+53,,Lei 11343/06,"62, § 6º",,,just_mil_est_1grau
+60,Incidente,Lei 7210/84 - LEP; CPPM,187; 650,Requerente,,just_mil_est_1grau
+78,Cautelar,CPC,813,Requerente,Requerido,just_mil_est_1grau
+79,Incidente,CPP; CPPM,"134, 135 e 136; 206, 215 a 219",Requerente,Acusado,just_mil_est_1grau
+84,,CPC 2015,99,,,just_mil_est_1grau
+84,,Lei 1.060/50,6º,,,just_mil_est_1grau
+89,Investigatória,CPP,289-A e 290,Autoridade,Acusado,just_mil_est_1grau
+90,Inquérito,CF; CPP; CPPM,"5º, LXII; 304; 230, al. ""a"" ",Autoridade,Flagranteado,just_mil_est_1grau
+4,Especial,Lei 8.429/92  ,,Autor,Réu,just_mil_est_1grau
+21,,CPM; CPPM,"121; 29, 31, 34, 384 a 450, 489",Autor,Réu,just_mil_est_1grau
+97,Cautelar,CPC,839,Requerente,Requerido,just_mil_est_1grau
+107,,CPP; CPPM,353-356;359,Deprecante,Deprecado,just_mil_est_1grau
+106,,CPC,202,Deprecante,Deprecado,just_mil_est_1grau
+112,,CF,"109, X",Rogante,Rogado,just_mil_est_1grau
+114,Recurso,CPP,639,Requerente,Requerido,just_mil_est_1grau
+103,,CPC - aplicação analógica,201,Ordenante,Ordenado,just_mil_est_1grau
+102,,CPC,202,Ordenante,Ordenado,just_mil_est_1grau
+118,Cautelar,CPC,798,Requerente,Requerido,just_mil_est_1grau
+123,Incidente,Lei 7210/84 - LEP; CPPM; Decreto Presidencial,"70, I; 643 e ss",Requerente,,just_mil_est_1grau
+130,Especial,CPC,890,Autor,Réu,just_mil_est_1grau
+132,,Regimentos e normas internas dos Tribunais,,Consulente,Consultado,just_mil_est_1grau
+133,Incidente,CPC 2015,"340, §1º",Requerente,Requerido,just_mil_est_1grau
+134,,CPC,871,Requerente,Requerido,just_mil_est_1grau
+136,Incidente,CP; Lei 7210/84 - LEP,"43, 44, §§ 4º e 5º;180, 183",Requerente,Requerido,just_mil_est_1grau
+142,Especial,"L.E. ou norma estadual; L 5.010/66 -  6º; CLT, art. 709, II e regimentos internos. ",,Corrigente,Corrigido,just_mil_est_1grau
+153,Execução,CPC,"475-I, § 1º e 475-O",Exequente,Executado,just_mil_est_1grau
+154,Execução,CPC,"475-I, § 1º e 475-O",Exequente,Executado,just_mil_est_1grau
+151,Execução,CPC,"Art. 475-I, 475-J e 475-N",Exequente,Executado,just_mil_est_1grau
+165,,CPPM,451 a 454,,,just_mil_est_1grau
+166,,CPPM,"451 a 453, 456",,,just_mil_est_1grau
+189,Recurso,CPP; CPPM,619; 538,Embargante,Embargado,just_mil_est_1grau
+189,Recurso,CPC,535,Embargante,Embargado,just_mil_est_1grau
+195,Incidente,CPP; CPPM,"130, II; 203, II",Embargante,Embargado,just_mil_est_1grau
+195,Especial,CPC,1046,Embargante,Embargado,just_mil_est_1grau
+196,Processo incidente,CPP; CPPM,"130, I; 203, I",Embargante,Embargado,just_mil_est_1grau
+184,Incidente,CPC,"736, 741 e 745",Embargante,Embargado,just_mil_est_1grau
+217,Incidente,Lei 7210/84,185,Requerente,Requerido,just_mil_est_1grau
+208,Incidente,CPP; CPM,"523; 214, § 2.º, 215, parágrafo único",Excipiente,Excepto,just_mil_est_1grau
+209,Incidente,CPP; CPPM,110; 154 e 407/408,Excipiente,Excepto,just_mil_est_1grau
+211,Incidente,CPP; CPPM,"112; 128, ""a"", e ss.",Excipiente,Excepto,just_mil_est_1grau
+211,,CPC,"134, 304, 312 e ss. ",,,just_mil_est_1grau
+212,,CPC,"112, 304  e 307 e ss. ",,,just_mil_est_1grau
+213,Incidente,CPP; CPPM,108; 143,Excipiente,Excepto,just_mil_est_1grau
+214,Incidente,CPP; CPPM,110; 148 ess.,Excipiente,Excepto,just_mil_est_1grau
+215,Incidente,CPP; CPPM,"96; 128, \""a\""",Excipiente,Excepto,just_mil_est_1grau
+215,,CPC,"135, 304 e 312 e ss",excipiente,excepto,just_mil_est_1grau
+218,EXECUÇÃO,CPC,730,Exequente,Executado,just_mil_est_1grau
+238,,Lei 7210/84 - LEP,"art. 2º, parágrafo único. ",,,just_mil_est_1grau
+220,,Lei 7210/84 - LEP; CPPM,"65; 6º, 588 e ss",,,just_mil_est_1grau
+223,,7.210/84 (LEP),171 e ss,,,just_mil_est_1grau
+240,Cautelar,CPC,844,Requerente,Requerido,just_mil_est_1grau
+241,Incidente,CPC,360 e ss,Autor,Réu,just_mil_est_1grau
+241,Incidente,CPC,360 e ss,Requerente,Requerido,just_mil_est_1grau
+248,Cível,"CF e Livro III, Título II, Capítulo X do Código de Processo Penal","5º, LXVIII da CF 647 a 667 do Código de Processo Penal",,,just_mil_est_1grau
+248,,CF; CPP; CPPM,"5º, LXVIII; 647 a 667; 466",Impetrante,Impetrado,just_mil_est_1grau
+249,Especial,L.E.,L.9.507/97,Impetrante,Impetrado,just_mil_est_1grau
+250,Especial,CPC,1055 a 1062,Requerente,Requerido,just_mil_est_1grau
+259,Incidente,CPC,"475, J, § 1º, L, M",Impugnante,Impugnado,just_mil_est_1grau
+260,Incidente,CPC,"475, J, § 1º, L, M",,,just_mil_est_1grau
+261,Incidente,CPC,51,Impugnante,Impugnado,just_mil_est_1grau
+262,Incidente,CPC,261,Impugnante,Impugnado,just_mil_est_1grau
+262,Incidente,CPC,261,Impugnante,Impugnado,just_mil_est_1grau
+263,,Lei 1060/50,"4º, § 2º e 7º, parágrafo único",,,just_mil_est_1grau
+263,Incidente,Lei 1.060/50,"4º, § 2º e art. 7º, parágrafo único",,,just_mil_est_1grau
+269,Comum,CPC,390,Autor,Réu ,just_mil_est_1grau
+269,Incidente,CPP; CPPM,145; 163,Suscitante,Suscitado,just_mil_est_1grau
+277,Incidental,CPC 2015 ,Diversos,Requerente,Requerido,just_mil_est_1grau
+279,Incidente,Lei 7210/84 - LEP; CPPM,188; 643 e ss.,Requerente,,just_mil_est_1grau
+287,Inquérito,CPPM,9 a 28,Autor,Investigado,just_mil_est_1grau
+288,Incidente,CPP; CPPM,153; 156,Requerente,Acusado,just_mil_est_1grau
+295,,,,,,just_mil_est_1grau
+295,,CPPM,451 e seguintes,Requerente,Requerido,just_mil_est_1grau
+296,,CPPM,463 e ss,Requerente,Requerido,just_mil_est_1grau
+294,Ato,CPC,492,Autor,Réu,just_mil_est_1grau
+303,,CPC,867 a 873,,,just_mil_est_1grau
+311,Cautelar,CPC,861,Requerente,Requerido,just_mil_est_1grau
+312,Cautelar,,,Requerente,Requerido,just_mil_est_1grau
+316,Prisão/Liberdade,"CPP, CPPM",321 e 322 ; 270,Requerente,Requerido,just_mil_est_1grau
+320,Incidente,CPC,"475-A, § 2º",Requerente,Requerido,just_mil_est_1grau
+321,Incidente,CPC,"475-A, § 2º",Requerente,Requerido,just_mil_est_1grau
+318,Incidente,CPC,"475-A, 475-E e 475-F",Autor,Réu,just_mil_est_1grau
+319,Incidente,CPC,"475-A, 475-C e 475-D. ",Autor,Réu,just_mil_est_1grau
+323,Incidental,Resolução CNJ 113/2010,4º,Autoridade,Executado,just_mil_est_1grau
+325,,CF; Lei 1533/51,"5º, LXIX; 1º",Impetrante,Impetrado,just_mil_est_1grau
+325,Especial,CF; Lei 12016/2009,"5º, LXIX; 1º",Impetrante,Impetrado,just_mil_est_1grau
+332,Especial,Lei 9034/95,"2.º, II e III",Autoridade,Investigado,just_mil_est_1grau
+334,,Lei 11340/06 (Maria da Penha),18 e ss,Requerente,Requerido,just_mil_est_1grau
+338,,Lei 1060/50,"5º, § 3º",,,just_mil_est_1grau
+342,,CPC,867 a 873,,,just_mil_est_1grau
+343,Especial,CP; CPM,144; 221,Notificante,Notificado,just_mil_est_1grau
+351,Incidental,Resolução CNJ 113/2010,4º,Autoridade,Executado,just_mil_est_1grau
+357,Cautelar,CPP; CPPM,240; 170 e ss,Requerente,Acusado,just_mil_est_1grau
+360,Pré-Processual,"Lei 13.140/2015, CLT, Resolução CNJ 125/2010 e RITST","Art. 1º (Lei 13.140/2015), art. 764 (CLT), art. 4º (Resolução CNJ 125/2010) e art. 36, IV (RITST)",Requerente,Requerido,just_mil_est_1grau
+364,Prisão/Liberdade,CPP; CPPM,311; 254 e ss,Requerente,Acusado,just_mil_est_1grau
+365,Prisão/Liberdade,Lei 7960/89,1º e ss.,Requerente,Acusado,just_mil_est_1grau
+366,,"Leis de org. jud., regimentos e normas internas dos tribunais.",,,,just_mil_est_1grau
+367,Cautelar,Lei 9296/96,1º e ss.,Requerente,Acusado,just_mil_est_1grau
+372,,,,Requerente,Requerido,just_mil_est_1grau
+372,Ato,,RI e Resolução do CJF,Requerente,Requerido,just_mil_est_1grau
+385,Comum,CPC,272 e 274,Autor,Réu,just_mil_est_1grau
+397,,CPP,28; 41,,,just_mil_est_1grau
+401,,CPC,275,Autor ,Réu,just_mil_est_1grau
+414,,"Lei 9.784/99, outras normas federais e normas estaduais.",,,,just_mil_est_1grau
+416,,"Lei 8.112/90 e outras leis federais, leis de organização judiciária, leis estaduais, regimentos internos e outras normas dos tribunais.",,Processante,Processado,just_mil_est_1grau
+434,Cautelar,CPC 2015,381,Requerente,Requerido,just_mil_est_1grau
+435,Incidental,Resolução CNJ 113/2010,4º,Autoridade,Executado,just_mil_est_1grau
+437,Cautelar,CPC,867 A 873,Requerente,Requerido,just_mil_est_1grau
+444,Penal,CP; CPPM,93 a 95; 651,,,just_mil_est_1grau
+447,,"leis de org. jud., regimentos internos e outras normas dos tribunais.",,Reclamente,Reclamado,just_mil_est_1grau
+490,Incidental,Resolução CNJ 113/2010,4º,Autoridade,Executado,just_mil_est_1grau
+497,,CPP; CPPM,"310; 224, 247, § 2.º",Acusado,Autoridade,just_mil_est_1grau
+499,Incidental,Resolução CNJ 113/2010,4º,Autoridade,Execução,just_mil_est_1grau
+508,Inquérito,CPP; CPPM,39; 33,Representante/Noticiante,Representado,just_mil_est_1grau
+516,Especial,CPC,1063,Autor,Réu,just_mil_est_1grau
+516,Especial,CPP; CPPM,541; arts. 481 e ss,Autor,Réu,just_mil_est_1grau
+518,Incidente,CPP; CPPM,120; 190,Requerente,Requerido,just_mil_est_1grau
+529,Incidental,Resolução CNJ 113/2010,4º,Autoridade,Executado,just_mil_est_1grau
+540,Incidente,CPP; CPPM,125; 199,Requerente,Acusado,just_mil_est_1grau
+540,Cautelar,CPC,822,Requerente,Requerido,just_mil_est_1grau
+541,,"art. 143 e ss. da Lei 8.112/90, leis de org. judiciária, leis estaduais, regimentos e normas internas dos tribunais.",,Sindicante,Sindicado,just_mil_est_1grau
+545,Incidente,7.210/84 - LEP,183,Requerente,Requerido,just_mil_est_1grau
+557,,Lei Esparsa,L.9.099/95 - 69,Autoridade,Autor do Fato,just_mil_est_1grau
+558,Incidente,Lei 7210/84,86,Requerente,Requerido,just_mil_est_1grau
+560,Tutela Provisória,CPC 2015,303 e 304,Requerente,Requerido,just_mil_est_1grau
+561,Tutela Provisória,CPC 2015,305 a 310,Requerente,Requerido,just_mil_est_1grau
+565,Tutela Provisória,CPC 2015,294 a 299,Requerente,Requerido,just_mil_est_1grau
+568,Incidente,CP; Lei 7210/84 - LEP; CPM,"71, 75; 68, III, ""a""; 80, 81",Requerente,,just_mil_est_1grau
+50,,CPC,1.021,Agravante,Agravado,just_mil_est_tjm
+51,,Regimentos Internos,,Agravante,Agravado,just_mil_est_tjm
+51,Recurso,CPC 2015,1.070,Agravante,Agravado,just_mil_est_tjm
+37,Recurso,7210/84,197,Agravante,Agravado,just_mil_est_tjm
+38,Recurso,CPC,522,Agravante,Agravado,just_mil_est_tjm
+43,,CPC - aplicação analógica,544,,,just_mil_est_tjm
+44,,CPC - aplicação analógica,544,,,just_mil_est_tjm
+44,Recurso,CPC,544,Agravante,Agravado,just_mil_est_tjm
+53,,Lei 11343/06,"62, § 6º",,,just_mil_est_tjm
+60,Incidente,Lei 7210/84 - LEP; CPPM,187; 650,Requerente,,just_mil_est_tjm
+62,Recurso,CPC,513,Apelante,Apelado,just_mil_est_tjm
+62,Recurso,CPP; Lei 8.069/90; CPPM,"593;198, I; 526",Apelante,Apelado,just_mil_est_tjm
+66,Recurso,CPC 2015," 1.009, c/c art. 496",Apelante,Apelado,just_mil_est_tjm
+78,Cautelar,CPC,813,Requerente,Requerido,just_mil_est_tjm
+79,Incidente,CPP; CPPM,"134, 135 e 136; 206, 215 a 219",Requerente,Acusado,just_mil_est_tjm
+84,,CPC 2015,99,,,just_mil_est_tjm
+84,,Lei 1.060/50,6º,,,just_mil_est_tjm
+89,Investigatória,CPP,289-A e 290,Autoridade,Acusado,just_mil_est_tjm
+90,Inquérito,CF; CPP; CPPM,"5º, LXII; 304; 230, al. ""a"" ",Autoridade,Flagranteado,just_mil_est_tjm
+95,Administrativo,CPC; Regimentos Internos,"475, § 1º",Suscitante,Suscitado,just_mil_est_tjm
+4,Especial,Lei 8.429/92  ,,Autor,Réu,just_mil_est_tjm
+21,,CPM; CPPM,"121; 29, 31, 34, 384 a 450, 489",Autor,Réu,just_mil_est_tjm
+27,Especial,CPC,485,Autor,Réu,just_mil_est_tjm
+97,Cautelar,CPC,839,Requerente,Requerido,just_mil_est_tjm
+107,,CPP; CPPM,353-356;359,Deprecante,Deprecado,just_mil_est_tjm
+106,,CPC,202,Deprecante,Deprecado,just_mil_est_tjm
+112,,CF,"109, X",Rogante,Rogado,just_mil_est_tjm
+114,Recurso,CPP,639,Requerente,Requerido,just_mil_est_tjm
+103,,CPC - aplicação analógica,201,Ordenante,Ordenado,just_mil_est_tjm
+102,,CPC,202,Ordenante,Ordenado,just_mil_est_tjm
+118,Cautelar,CPC,798,Requerente,Requerido,just_mil_est_tjm
+123,Incidente,Lei 7210/84 - LEP; CPPM; Decreto Presidencial,"70, I; 643 e ss",Requerente,,just_mil_est_tjm
+128,Incidente,CPP; CPPM,114; 112,Suscitante,Suscitado,just_mil_est_tjm
+127,,CPC,115 a 124,Suscitante,Suscitado,just_mil_est_tjm
+129,,CF; Lei 5.836/72,"art. 125, § 4º; Lei 5.836/72",,,just_mil_est_tjm
+130,Especial,CPC,890,Autor,Réu,just_mil_est_tjm
+132,,Regimentos e normas internas dos Tribunais,,Consulente,Consultado,just_mil_est_tjm
+134,,CPC,871,Requerente,Requerido,just_mil_est_tjm
+136,Incidente,CP; Lei 7210/84 - LEP,"43, 44, §§ 4º e 5º;180, 183",Requerente,Requerido,just_mil_est_tjm
+139,,"leis de organização judiciária, regimentos e normas internas dos tribunais.",,Corrigente,Corrigido,just_mil_est_tjm
+140,,"Leis de organização judiciária, regimentos e normas internas dos tribunais.",,Corrigente,Corrigido,just_mil_est_tjm
+141,,"Lei 5.010/66, Norma Estadual e Regimentos Internos.",,,,just_mil_est_tjm
+141,,CPPM,"498, ""a"" e ""b""",Corrigente,Corrigido,just_mil_est_tjm
+142,Especial,"L.E. ou norma estadual; L 5.010/66 -  6º; CLT, art. 709, II e regimentos internos. ",,Corrigente,Corrigido,just_mil_est_tjm
+153,Execução,CPC,"475-I, § 1º e 475-O",Exequente,Executado,just_mil_est_tjm
+154,Execução,CPC,"475-I, § 1º e 475-O",Exequente,Executado,just_mil_est_tjm
+151,Execução,CPC,"Art. 475-I, 475-J e 475-N",Exequente,Executado,just_mil_est_tjm
+161,Incidente,CPP; CPPM,424; 109,Autor,Réu,just_mil_est_tjm
+165,,CPPM,451 a 454,,,just_mil_est_tjm
+199,Recurso,CPC,530 ,Embargante,Embargado,just_mil_est_tjm
+200,Recurso,CPP; CPPM,609 e § único; 538 e 541,Embargante,Embargado,just_mil_est_tjm
+189,Recurso,CPP; CPPM,619; 538,Embargante,Embargado,just_mil_est_tjm
+189,Recurso,CPC,535,Embargante,Embargado,just_mil_est_tjm
+195,Incidente,CPP; CPPM,"130, II; 203, II",Embargante,Embargado,just_mil_est_tjm
+195,Especial,CPC,1046,Embargante,Embargado,just_mil_est_tjm
+196,Processo incidente,CPP; CPPM,"130, I; 203, I",Embargante,Embargado,just_mil_est_tjm
+197,,CPPM,,,,just_mil_est_tjm
+184,Incidente,CPC,"736, 741 e 745",Embargante,Embargado,just_mil_est_tjm
+217,Incidente,Lei 7210/84,185,Requerente,Requerido,just_mil_est_tjm
+208,Incidente,CPP; CPM,"523; 214, § 2.º, 215, parágrafo único",Excipiente,Excepto,just_mil_est_tjm
+209,Incidente,CPP; CPPM,110; 154 e 407/408,Excipiente,Excepto,just_mil_est_tjm
+211,Incidente,CPP; CPPM,"112; 128, ""a"", e ss.",Excipiente,Excepto,just_mil_est_tjm
+211,,CPC,"134, 304, 312 e ss. ",,,just_mil_est_tjm
+212,,CPC,"112, 304  e 307 e ss. ",,,just_mil_est_tjm
+213,Incidente,CPP; CPPM,108; 143,Excipiente,Excepto,just_mil_est_tjm
+214,Incidente,CPP; CPPM,110; 148 ess.,Excipiente,Excepto,just_mil_est_tjm
+215,Incidente,CPP; CPPM,"96; 128, \""a\""",Excipiente,Excepto,just_mil_est_tjm
+215,,CPC,"135, 304 e 312 e ss",excipiente,excepto,just_mil_est_tjm
+218,EXECUÇÃO,CPC,730,Exequente,Executado,just_mil_est_tjm
+238,,Lei 7210/84 - LEP,"art. 2º, parágrafo único. ",,,just_mil_est_tjm
+220,,Lei 7210/84 - LEP; CPPM,"65; 6º, 588 e ss",,,just_mil_est_tjm
+240,Cautelar,CPC,844,Requerente,Requerido,just_mil_est_tjm
+241,Incidente,CPC,360 e ss,Autor,Réu,just_mil_est_tjm
+241,Incidente,CPC,360 e ss,Requerente,Requerido,just_mil_est_tjm
+248,Cível,"CF e Livro III, Título II, Capítulo X do Código de Processo Penal","5º, LXVIII da CF 647 a 667 do Código de Processo Penal",,,just_mil_est_tjm
+248,,CF; CPP; CPPM,"5º, LXVIII; 647 a 667; 466",Impetrante,Impetrado,just_mil_est_tjm
+249,Especial,L.E.,L.9.507/97,Impetrante,Impetrado,just_mil_est_tjm
+250,Especial,CPC,1055 a 1062,Requerente,Requerido,just_mil_est_tjm
+259,Incidente,CPC,"475, J, § 1º, L, M",Impugnante,Impugnado,just_mil_est_tjm
+260,Incidente,CPC,"475, J, § 1º, L, M",,,just_mil_est_tjm
+261,Incidente,CPC,51,Impugnante,Impugnado,just_mil_est_tjm
+262,Incidente,CPC,261,Impugnante,Impugnado,just_mil_est_tjm
+262,Incidente,CPC,261,Impugnante,Impugnado,just_mil_est_tjm
+263,,Lei 1060/50,"4º, § 2º e 7º, parágrafo único",,,just_mil_est_tjm
+263,Incidente,Lei 1.060/50,"4º, § 2º e art. 7º, parágrafo único",,,just_mil_est_tjm
+265,,CPC,948,,,just_mil_est_tjm
+266,Incidente,CPC 2015,947,suscitante,suscitado,just_mil_est_tjm
+269,Comum,CPC,390,Autor,Réu ,just_mil_est_tjm
+269,Incidente,CPP; CPPM,145; 163,Suscitante,Suscitado,just_mil_est_tjm
+273,incidente,CPC 2015,976 a 987,Suscitante,Suscitado,just_mil_est_tjm
+276,Incidente,CPC; 10.259/01; RI,476 e 479; 14,Parte Autora,Parte Ré,just_mil_est_tjm
+276,Incidente,CPC,476 e 479 e L.10.259/01 - 14,Suscitante,,just_mil_est_tjm
+277,Incidental,CPC 2015 ,Diversos,Requerente,Requerido,just_mil_est_tjm
+279,Incidente,Lei 7210/84 - LEP; CPPM,188; 643 e ss.,Requerente,,just_mil_est_tjm
+287,Inquérito,CPPM,9 a 28,Autor,Investigado,just_mil_est_tjm
+288,Incidente,CPP; CPPM,153; 156,Requerente,Acusado,just_mil_est_tjm
+292,,"art. 13, IV, da Lei 5.010/66; leis de org. jud., regimentos e normas internas dos tribunais.",,,,just_mil_est_tjm
+295,,,,,,just_mil_est_tjm
+294,Ato,CPC,492,Autor,Réu,just_mil_est_tjm
+303,,CPC,867 a 873,,,just_mil_est_tjm
+311,Cautelar,CPC,861,Requerente,Requerido,just_mil_est_tjm
+312,Cautelar,,,Requerente,Requerido,just_mil_est_tjm
+316,Prisão/Liberdade,"CPP, CPPM",321 e 322 ; 270,Requerente,Requerido,just_mil_est_tjm
+320,Incidente,CPC,"475-A, § 2º",Requerente,Requerido,just_mil_est_tjm
+321,Incidente,CPC,"475-A, § 2º",Requerente,Requerido,just_mil_est_tjm
+318,Incidente,CPC,"475-A, 475-E e 475-F",Autor,Réu,just_mil_est_tjm
+319,Incidente,CPC,"475-A, 475-C e 475-D. ",Autor,Réu,just_mil_est_tjm
+324,Especial,CF,5º LXXI ,Impetrante,Impetrado,just_mil_est_tjm
+325,,CF; Lei 1533/51,"5º, LXIX; 1º",Impetrante,Impetrado,just_mil_est_tjm
+325,Especial,CF; Lei 12016/2009,"5º, LXIX; 1º",Impetrante,Impetrado,just_mil_est_tjm
+332,Especial,Lei 9034/95,"2.º, II e III",Autoridade,Investigado,just_mil_est_tjm
+342,,CPC,867 a 873,,,just_mil_est_tjm
+343,Especial,CP; CPM,144; 221,Notificante,Notificado,just_mil_est_tjm
+357,Cautelar,CPP; CPPM,240; 170 e ss,Requerente,Acusado,just_mil_est_tjm
+360,Pré-Processual,"Lei 13.140/2015, CLT, Resolução CNJ 125/2010 e RITST","Art. 1º (Lei 13.140/2015), art. 764 (CLT), art. 4º (Resolução CNJ 125/2010) e art. 36, IV (RITST)",Requerente,Requerido,just_mil_est_tjm
+364,Prisão/Liberdade,CPP; CPPM,311; 254 e ss,Requerente,Acusado,just_mil_est_tjm
+365,Prisão/Liberdade,Lei 7960/89,1º e ss.,Requerente,Acusado,just_mil_est_tjm
+366,,"Leis de org. jud., regimentos e normas internas dos tribunais.",,,,just_mil_est_tjm
+367,Cautelar,Lei 9296/96,1º e ss.,Requerente,Acusado,just_mil_est_tjm
+372,,,,Requerente,Requerido,just_mil_est_tjm
+372,Ato,,RI e Resolução do CJF,Requerente,Requerido,just_mil_est_tjm
+374,,"art. 100 da CF, Constituições Estaduais, leis de org. judiciárias, regimentos e normas internas dos tribunais.",,Requerente,Requerido,just_mil_est_tjm
+397,,CPP,28; 41,,,just_mil_est_tjm
+414,,"Lei 9.784/99, outras normas federais e normas estaduais.",,,,just_mil_est_tjm
+415,,"art. 27 da LC 35/79 (LOMAN), Resolução 30 do CNJ, leis de organização judiciária, regimentos internos e outras normas dos tribunais.",,Processante,Processado,just_mil_est_tjm
+416,,"Lei 8.112/90 e outras leis federais, leis de organização judiciária, leis estaduais, regimentos internos e outras normas dos tribunais.",,Processante,Processado,just_mil_est_tjm
+434,Cautelar,CPC 2015,381,Requerente,Requerido,just_mil_est_tjm
+437,Cautelar,CPC,867 A 873,Requerente,Requerido,just_mil_est_tjm
+444,Penal,CP; CPPM,93 a 95; 651,,,just_mil_est_tjm
+445,,"RI STJ, STF, TJs, TRFs",RI ,Reclamante,Reclamado,just_mil_est_tjm
+445,,CPPM,584,,,just_mil_est_tjm
+446,Especial,Regimentos Internos,,Reclamante,Reclamação,just_mil_est_tjm
+447,,"leis de org. jud., regimentos internos e outras normas dos tribunais.",,Reclamente,Reclamado,just_mil_est_tjm
+453,,normas dos tribunais,,Recorrente,Recorrido,just_mil_est_tjm
+475,,CPPM,"65 §§ 1 a 3, 145, 146, 192, 193, \""b\"", 194 § ún., 203 § 1.º, 210 § 1.º, 219",,,just_mil_est_tjm
+468,,Resolução 30 do CNJ e normas dos tribunais.,RPADServ,Recorrente,Recorrido,just_mil_est_tjm
+469,Recurso,CPP; CPPM,581 e 582; 516,Recorrente,Recorrido,just_mil_est_tjm
+470,Recurso,CPP,581 a 583,Recorrente,Recorrido,just_mil_est_tjm
+497,,CPP; CPPM,"310; 224, 247, § 2.º",Acusado,Autoridade,just_mil_est_tjm
+498,Recurso,CPC 2015,496,Juízo Recorrente,Recorrido,just_mil_est_tjm
+498,Recurso,CPP; 12.016/2009; CPPM,"574; 14, § 1.º; 106, § 1.º, 154, 654",Juízo Recorrente,Recorrido,just_mil_est_tjm
+508,Inquérito,CPP; CPPM,39; 33,Representante/Noticiante,Representado,just_mil_est_tjm
+509,,CF,"art. 125, § 4º",,,just_mil_est_tjm
+510,,CF ;CPM,"art. 125, § 4º; art. 102 ",,,just_mil_est_tjm
+511,Administrativo,CPC,198,Representante,Representado,just_mil_est_tjm
+514,,"art. 100, § 3o, da CF, ADCT, Constituições Estaduais, leis e normas dos tribunais.",,Requerente,Requerido,just_mil_est_tjm
+516,Especial,CPC,1063,Autor,Réu,just_mil_est_tjm
+516,Especial,CPP; CPPM,541; arts. 481 e ss,Autor,Réu,just_mil_est_tjm
+518,Incidente,CPP; CPPM,120; 190,Requerente,Requerido,just_mil_est_tjm
+523,Recurso,CPP; CPPM,621; 550,Requerente,Requerido,just_mil_est_tjm
+540,Incidente,CPP; CPPM,125; 199,Requerente,Acusado,just_mil_est_tjm
+540,Cautelar,CPC,822,Requerente,Requerido,just_mil_est_tjm
+541,,"art. 143 e ss. da Lei 8.112/90, leis de org. judiciária, leis estaduais, regimentos e normas internas dos tribunais.",,Sindicante,Sindicado,just_mil_est_tjm
+545,Incidente,7.210/84 - LEP,183,Requerente,Requerido,just_mil_est_tjm
+549,Incidente,LL 4.348/64 e 8.437/92 e 9.494/97 e 1.533/51,4º; e 4º§1º; e 1º; e 13,Autor,Réu,just_mil_est_tjm
+552,,LL 4.348/64 e 8.437/92 e 9.494/97 e 1.533/51,4º; e 4º§1º; e 1º,Autor,Réu,just_mil_est_tjm
+557,,Lei Esparsa,L.9.099/95 - 69,Autoridade,Autor do Fato,just_mil_est_tjm
+558,Incidente,Lei 7210/84,86,Requerente,Requerido,just_mil_est_tjm
+560,Tutela Provisória,CPC 2015,303 e 304,Requerente,Requerido,just_mil_est_tjm
+561,Tutela Provisória,CPC 2015,305 a 310,Requerente,Requerido,just_mil_est_tjm
+565,Tutela Provisória,CPC 2015,294 a 299,Requerente,Requerido,just_mil_est_tjm
+568,Incidente,CP; Lei 7210/84 - LEP; CPM,"71, 75; 68, III, ""a""; 80, 81",Requerente,,just_mil_est_tjm
+70,Eleitoral,Código Eleitoral,175 a 214,Interessado,Requerido,just_elei_1grau
+89,Investigatória,CPP,289-A e 290,Autoridade,Acusado,just_elei_1grau
+20,Criminal,Código Eleitoral e Código de Processo Penal,"29, I, d e 35,II do CE e 78 do CPP",Autor,Réu,just_elei_1grau
+11,Cível-Eleitoral,Contituição Federal,"14, § 10",Autor,Réu,just_elei_1grau
+12,Cível-Eleitoral,Lei Complementar N. 64/90,22,Autor,Réu,just_elei_1grau
+118,Cautelar,CPC,798,Requerente,Requerido,just_elei_1grau
+184,Incidente,CPC,"736, 741 e 745",Embargante,Embargado,just_elei_1grau
+209,Incidente,CPP; CPPM,110; 154 e 407/408,Excipiente,Excepto,just_elei_1grau
+210,Incidente,CPP,110,Excipiente,Excepto,just_elei_1grau
+211,,CPC,"134, 304, 312 e ss. ",,,just_elei_1grau
+213,Incidente,CPP; CPPM,108; 143,Excipiente,Excepto,just_elei_1grau
+214,Incidente,CPP; CPPM,110; 148 ess.,Excipiente,Excepto,just_elei_1grau
+215,Incidente,CPP; CPPM,"96; 128, \""a\""",Excipiente,Excepto,just_elei_1grau
+215,,CPC,"135, 304 e 312 e ss",excipiente,excepto,just_elei_1grau
+236,Especial,L. 6830/80,,Exequente,Executado,just_elei_1grau
+248,,CF; CPP; CPPM,"5º, LXVIII; 647 a 667; 466",Impetrante,Impetrado,just_elei_1grau
+249,Especial,L.E.,L.9.507/97,Impetrante,Impetrado,just_elei_1grau
+277,Incidental,CPC 2015 ,Diversos,Requerente,Requerido,just_elei_1grau
+285,Inquérito,CPP,4º ,Autor,Investigado,just_elei_1grau
+324,Especial,CF,5º LXXI ,Impetrante,Impetrado,just_elei_1grau
+325,Especial,CF; Lei 12016/2009,"5º, LXIX; 1º",Impetrante,Impetrado,just_elei_1grau
+426,,,,,,just_elei_1grau
+372,Ato,,RI e Resolução do CJF,Requerente,Requerido,just_elei_1grau
+375,Eleitoral,Lei N. 9.504/97 e Lei N. 9.096/95,28 a 32 da Lei N. 9.504/97 e 30 a 37 da Lei N. 9.96/95,Interessado,,just_elei_1grau
+413,,,,,,just_elei_1grau
+414,,"Lei 9.784/99, outras normas federais e normas estaduais.",,,,just_elei_1grau
+433,,,,,,just_elei_1grau
+484,Eleitoral,Código Eleitoral e Lei N 9.504/97,89 do CE e 11 da Lei N. 9.504/97,Requerente,,just_elei_1grau
+486,Eleitoral,Lei N. 9.504/97,19,Requerente,,just_elei_1grau
+506,Eleitoral,Lei N. 9.504/97 e Lei N. 9.096/95,96 da Lei N. 9.504/97 e 45 a 49,Representante,Representado,just_elei_1grau
+560,Tutela Provisória,CPC 2015,303 e 304,Requerente,Requerido,just_elei_1grau
+561,Tutela Provisória,CPC 2015,305 a 310,Requerente,Requerido,just_elei_1grau
+565,Tutela Provisória,CPC 2015,294 a 299,Requerente,Requerido,just_elei_1grau
+70,Eleitoral,Código Eleitoral,175 a 214,Interessado,Requerido,just_elei_2grau
+89,Investigatória,CPP,289-A e 290,Autoridade,Acusado,just_elei_2grau
+20,Criminal,Código Eleitoral e Código de Processo Penal,"29, I, d e 35,II do CE e 78 do CPP",Autor,Réu,just_elei_2grau
+27,Especial,CPC,485,Autor,Réu,just_elei_2grau
+11,Cível-Eleitoral,Contituição Federal,"14, § 10",Autor,Réu,just_elei_2grau
+12,Cível-Eleitoral,Lei Complementar N. 64/90,22,Autor,Réu,just_elei_2grau
+118,Cautelar,CPC,798,Requerente,Requerido,just_elei_2grau
+127,,CPC,115 a 124,Suscitante,Suscitado,just_elei_2grau
+132,Eleitoral,Código Eleitoral,"23,XII e 30,VIII",Consulente,,just_elei_2grau
+138,Eleitoral,Código Eleitoral,"71,§4°",Interessado,,just_elei_2grau
+143,Eleitoral,Código Eleitoral,"23,VIII e 30,IX",Interessado,,just_elei_2grau
+184,Incidente,CPC,"736, 741 e 745",Embargante,Embargado,just_elei_2grau
+209,Incidente,CPP; CPPM,110; 154 e 407/408,Excipiente,Excepto,just_elei_2grau
+210,Incidente,CPP,110,Excipiente,Excepto,just_elei_2grau
+211,,CPC,"134, 304, 312 e ss. ",,,just_elei_2grau
+213,Incidente,CPP; CPPM,108; 143,Excipiente,Excepto,just_elei_2grau
+214,Incidente,CPP; CPPM,110; 148 ess.,Excipiente,Excepto,just_elei_2grau
+215,Incidente,CPP; CPPM,"96; 128, \""a\""",Excipiente,Excepto,just_elei_2grau
+215,,CPC,"135, 304 e 312 e ss",excipiente,excepto,just_elei_2grau
+236,Especial,L. 6830/80,,Exequente,Executado,just_elei_2grau
+248,,CF; CPP; CPPM,"5º, LXVIII; 647 a 667; 466",Impetrante,Impetrado,just_elei_2grau
+249,Especial,L.E.,L.9.507/97,Impetrante,Impetrado,just_elei_2grau
+277,Incidental,CPC 2015 ,Diversos,Requerente,Requerido,just_elei_2grau
+285,Inquérito,CPP,4º ,Autor,Investigado,just_elei_2grau
+293,Eleitoral,Código Eleitoral,"1°, parágrafo único; 23, I e X e 30,I e XVII",Interessado,,just_elei_2grau
+324,Especial,CF,5º LXXI ,Impetrante,Impetrado,just_elei_2grau
+325,Especial,CF; Lei 12016/2009,"5º, LXIX; 1º",Impetrante,Impetrado,just_elei_2grau
+426,,,,,,just_elei_2grau
+358,Eleitoral,Código Eleitoral,"22,I,h e 29,I,g",Requerente,Requerido,just_elei_2grau
+372,Ato,,RI e Resolução do CJF,Requerente,Requerido,just_elei_2grau
+375,Eleitoral,Lei N. 9.504/97 e Lei N. 9.096/95,28 a 32 da Lei N. 9.504/97 e 30 a 37 da Lei N. 9.96/95,Interessado,,just_elei_2grau
+403,,,,,,just_elei_2grau
+412,,,,,,just_elei_2grau
+413,,,,,,just_elei_2grau
+414,,"Lei 9.784/99, outras normas federais e normas estaduais.",,,,just_elei_2grau
+433,,,,,,just_elei_2grau
+436,Eleitoral,Lei 9.096/95,45 a 49,Interessado,,just_elei_2grau
+445,,"RI STJ, STF, TJs, TRFs",RI ,Reclamante,Reclamado,just_elei_2grau
+446,Especial,Regimentos Internos,,Reclamante,Reclamação,just_elei_2grau
+455,,,,,,just_elei_2grau
+463,Recurso,Código Eleitoral e Lei N. 9.504/97,"262 a 279 do CE e 96,§8° da Lei N. 9.504/97",Recorrente,Recorrido,just_elei_2grau
+454,Eleitoral,Código Eleitoral,262,Recorrente,Recorrido,just_elei_2grau
+464,,,,,,just_elei_2grau
+465,,,,,,just_elei_2grau
+466,,,,,,just_elei_2grau
+467,,,,,,just_elei_2grau
+480,,,,,,just_elei_2grau
+484,Eleitoral,Código Eleitoral e Lei N 9.504/97,89 do CE e 11 da Lei N. 9.504/97,Requerente,,just_elei_2grau
+486,Eleitoral,Lei N. 9.504/97,19,Requerente,,just_elei_2grau
+487,Eleitoral,Lei N. 9.096/95,"7°, §1° e 8°",Requerente,,just_elei_2grau
+506,Eleitoral,Lei N. 9.504/97 e Lei N. 9.096/95,96 da Lei N. 9.504/97 e 45 a 49,Representante,Representado,just_elei_2grau
+523,Recurso,CPP; CPPM,621; 550,Requerente,Requerido,just_elei_2grau
+524,Eleitoral,Código Eleitoral,"71,§4°",Interessado,,just_elei_2grau
+552,,LL 4.348/64 e 8.437/92 e 9.494/97 e 1.533/51,4º; e 4º§1º; e 1º,Autor,Réu,just_elei_2grau
+560,Tutela Provisória,CPC 2015,303 e 304,Requerente,Requerido,just_elei_2grau
+561,Tutela Provisória,CPC 2015,305 a 310,Requerente,Requerido,just_elei_2grau
+565,Tutela Provisória,CPC 2015,294 a 299,Requerente,Requerido,just_elei_2grau
+38,Recurso,CPC,522,Agravante,Agravado,just_elei_tse
+70,Eleitoral,Código Eleitoral,175 a 214,Interessado,Requerido,just_elei_tse
+89,Investigatória,CPP,289-A e 290,Autoridade,Acusado,just_elei_tse
+20,Criminal,Código Eleitoral e Código de Processo Penal,"29, I, d e 35,II do CE e 78 do CPP",Autor,Réu,just_elei_tse
+27,Especial,CPC,485,Autor,Réu,just_elei_tse
+11,Cível-Eleitoral,Contituição Federal,"14, § 10",Autor,Réu,just_elei_tse
+12,Cível-Eleitoral,Lei Complementar N. 64/90,22,Autor,Réu,just_elei_tse
+100,Eleitoral,9.096/95,"28, §2°",Requerente,Requerido,just_elei_tse
+118,Cautelar,CPC,798,Requerente,Requerido,just_elei_tse
+127,,CPC,115 a 124,Suscitante,Suscitado,just_elei_tse
+132,Eleitoral,Código Eleitoral,"23,XII e 30,VIII",Consulente,,just_elei_tse
+143,Eleitoral,Código Eleitoral,"23,VIII e 30,IX",Interessado,,just_elei_tse
+184,Incidente,CPC,"736, 741 e 745",Embargante,Embargado,just_elei_tse
+209,Incidente,CPP; CPPM,110; 154 e 407/408,Excipiente,Excepto,just_elei_tse
+210,Incidente,CPP,110,Excipiente,Excepto,just_elei_tse
+211,,CPC,"134, 304, 312 e ss. ",,,just_elei_tse
+213,Incidente,CPP; CPPM,108; 143,Excipiente,Excepto,just_elei_tse
+214,Incidente,CPP; CPPM,110; 148 ess.,Excipiente,Excepto,just_elei_tse
+215,Incidente,CPP; CPPM,"96; 128, \""a\""",Excipiente,Excepto,just_elei_tse
+215,,CPC,"135, 304 e 312 e ss",excipiente,excepto,just_elei_tse
+236,Especial,L. 6830/80,,Exequente,Executado,just_elei_tse
+248,,CF; CPP; CPPM,"5º, LXVIII; 647 a 667; 466",Impetrante,Impetrado,just_elei_tse
+249,Especial,L.E.,L.9.507/97,Impetrante,Impetrado,just_elei_tse
+277,Incidental,CPC 2015 ,Diversos,Requerente,Requerido,just_elei_tse
+285,Inquérito,CPP,4º ,Autor,Investigado,just_elei_tse
+293,Eleitoral,Código Eleitoral,"1°, parágrafo único; 23, I e X e 30,I e XVII",Interessado,,just_elei_tse
+322,Eleitoral,Código Eleitoral,"23,XI",Interessado,,just_elei_tse
+324,Especial,CF,5º LXXI ,Impetrante,Impetrado,just_elei_tse
+325,Especial,CF; Lei 12016/2009,"5º, LXIX; 1º",Impetrante,Impetrado,just_elei_tse
+426,,,,,,just_elei_tse
+358,Eleitoral,Código Eleitoral,"22,I,h e 29,I,g",Requerente,Requerido,just_elei_tse
+372,Ato,,RI e Resolução do CJF,Requerente,Requerido,just_elei_tse
+375,Eleitoral,Lei N. 9.504/97 e Lei N. 9.096/95,28 a 32 da Lei N. 9.504/97 e 30 a 37 da Lei N. 9.96/95,Interessado,,just_elei_tse
+403,,,,,,just_elei_tse
+412,,,,,,just_elei_tse
+413,,,,,,just_elei_tse
+414,,"Lei 9.784/99, outras normas federais e normas estaduais.",,,,just_elei_tse
+433,,,,,,just_elei_tse
+436,Eleitoral,Lei 9.096/95,45 a 49,Interessado,,just_elei_tse
+445,,"RI STJ, STF, TJs, TRFs",RI ,Reclamante,Reclamado,just_elei_tse
+446,Especial,Regimentos Internos,,Reclamante,Reclamação,just_elei_tse
+455,,,,,,just_elei_tse
+472,Recurso,Constituição Federal e Código Eleitoral,"121, §4º,I e II da CF/88 e 276,I,a e b do CE",Recorrente,Recorrido,just_elei_tse
+476,Recurso,Constituição Federal e Código Eleitoral,"121, §4°, III e IV da CF/88 e 276,II,a e b do CE",Recorrente,Recorrido,just_elei_tse
+454,Eleitoral,Código Eleitoral,262,Recorrente,Recorrido,just_elei_tse
+464,,,,,,just_elei_tse
+465,,,,,,just_elei_tse
+466,,,,,,just_elei_tse
+467,,,,,,just_elei_tse
+480,,,,,,just_elei_tse
+484,Eleitoral,Código Eleitoral e Lei N 9.504/97,89 do CE e 11 da Lei N. 9.504/97,Requerente,,just_elei_tse
+486,Eleitoral,Lei N. 9.504/97,19,Requerente,,just_elei_tse
+488,Eleitoral,Lei N. 9.096/95,9° e 10,Requerente,,just_elei_tse
+506,Eleitoral,Lei N. 9.504/97 e Lei N. 9.096/95,96 da Lei N. 9.504/97 e 45 a 49,Representante,Representado,just_elei_tse
+523,Recurso,CPP; CPPM,621; 550,Requerente,Requerido,just_elei_tse
+524,Eleitoral,Código Eleitoral,"71,§4°",Interessado,,just_elei_tse
+552,,LL 4.348/64 e 8.437/92 e 9.494/97 e 1.533/51,4º; e 4º§1º; e 1º,Autor,Réu,just_elei_tse
+558,Incidente,Lei 7210/84,86,Requerente,Requerido,just_elei_tse
+560,Tutela Provisória,CPC 2015,303 e 304,Requerente,Requerido,just_elei_tse
+561,Tutela Provisória,CPC 2015,305 a 310,Requerente,Requerido,just_elei_tse
+565,Tutela Provisória,CPC 2015,294 a 299,Requerente,Requerido,just_elei_tse
+245,,,,,,mpe
+271,,,,,,mpe
+282,,,,,,mpe
+340,,,,,,mpe
+406,,,,,,mpe
+379,,,,,,mpe
+399,,,,,,mpe
+553,,,,,,mpe
+245,,,,,,mpt
+271,,,,,,mpt
+282,,,,,,mpt
+340,,,,,,mpt
+406,,,,,,mpt
+379,,,,,,mpt
+399,,,,,,mpt
+553,,,,,,mpt
+245,,,,,,mpm
+271,,,,,,mpm
+282,,,,,,mpm
+340,,,,,,mpm
+406,,,,,,mpm
+379,,,,,,mpm
+399,,,,,,mpm
+553,,,,,,mpm
+245,,,,,,mpf
+271,,,,,,mpf
+282,,,,,,mpf
+340,,,,,,mpf
+406,,,,,,mpf
+379,,,,,,mpf
+399,,,,,,mpf
+553,,,,,,mpf
+245,,,,,,cnmp
+271,,,,,,cnmp
+282,,,,,,cnmp
+340,,,,,,cnmp
+406,,,,,,cnmp
+379,,,,,,cnmp
+399,,,,,,cnmp
+553,,,,,,cnmp
+292,,"art. 13, IV, da Lei 5.010/66; leis de org. jud., regimentos e normas internas dos tribunais.",,,,just_trab_csjt
+560,Tutela Provisória,CPC 2015,303 e 304,Requerente,Requerido,just_trab_csjt
+561,Tutela Provisória,CPC 2015,305 a 310,Requerente,Requerido,just_trab_csjt
+565,Tutela Provisória,CPC 2015,294 a 299,Requerente,Requerido,just_trab_csjt

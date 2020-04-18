@@ -5,8 +5,11 @@ from sqlalchemy.orm import sessionmaker
 from diarios.misc import get_user_config
 
 
-def query(database, sql):
-    conn = get_db_engine(database).connect()
+def query(database, sql, echo=True):
+    conn = get_db_engine(
+        database,
+        echo=echo
+    ).connect()
     return pd.read_sql(sql, conn)
 
 
@@ -93,5 +96,19 @@ def create_index(
         )
     )
     conn.execute(sql)
-    
+
+
+def order_by(
+    database,
+    table,
+    columns
+):
+    conn = get_db_engine(database).connect()
+    cols = ', '.join(columns)
+    sql = (
+        'ALTER TABLE {0} ORDER BY {1}'
+        .format(table, cols)
+    )
+    conn.execute(sql)
+        
 

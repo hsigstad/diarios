@@ -40,6 +40,9 @@ def get_office_type(office):
 
 def get_election_date(year, rnd=1):
     dates = get_data('eleicao.csv')
+    dates['electiondate'] = pd.to_datetime(
+        dates.electiondate
+    )
     dt = pd.DataFrame({
         'year': year,
         'round': rnd,

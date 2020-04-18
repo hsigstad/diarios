@@ -17,6 +17,7 @@ class CaseParser:
             'classe': clean.clean_classe
         },
         parte='AUTOR:|RÉU:',
+        advogado=None,
         split_parte_on=',|-|;',
         split_text_on=None,        
         id_suffix=None,
@@ -56,6 +57,8 @@ class CaseParser:
         self.df_mov_cols = df_mov_cols       
         self.drop_if_no_number = drop_if_no_number
         self.parte_levels = parte_levels
+        self.advogado = advogado
+
         
     def parse(self, df):
         df = self._add_cols_before_split(df)
@@ -112,6 +115,12 @@ class CaseParser:
 
     def _get_parte(self, df):
         df_id = df.loc[:, self.parte_levels]
+        if self.advogado:
+            adv = df.text.str.extractall(
+                self.advogado
+            ).reset_index('match', drop=True)
+            adv['key'] = 'advogado'
+            adv['parte'] = clean.clean_oab(adv.parte)
         df = extract_keywords(
             df['text'], self.parte,
             max_name_length=self.max_name_length,
@@ -122,6 +131,8 @@ class CaseParser:
         )
         df = self._split_parte(df)
         df['parte'] = self._clean_parte_name(df)
+        if self.advogado:        
+            df = pd.concat([df, adv])
         df['key'] = self.clean_parte_key(
             df.key
         ) 
@@ -165,7 +176,8 @@ class CaseParser:
         df = df.query('parte != ""')
         df = df.loc[
             (df.parte.str.len() > 8) |
-            (df.parte == 'mp')
+            (df.parte == 'mp') |
+            df.parte.str.contains('[0-9]')
         ]
         return df    
     
@@ -180,9 +192,12 @@ class CaseParser:
         return regex
 
     def _get_proc(self, df):
-        cols1 = ['proc_id']
+        cols = ['proc_id'] + self.df_proc_cols
+        cols = set(cols).intersection(
+            set(df.columns)
+        )
         proc = (
-            df.loc[:, cols1 + self.df_proc_cols]
+            df.loc[:, cols]
             .drop_duplicates('proc_id')
         )
         proc = proc.set_index('proc_id')
@@ -190,8 +205,12 @@ class CaseParser:
         return proc
 
     def _get_mov(self, df):
-        cols1 = ['mov_id', 'proc_id', 'text']
-        mov = df.loc[:, cols1 + self.df_mov_cols]
+        cols = ['mov_id', 'proc_id', 'text']
+        cols = cols + self.df_mov_cols
+        cols = set(cols).intersection(
+            set(df.columns)
+        )
+        mov = df.loc[:, cols]
         mov = self.clean_mov(mov)
         return mov
 
@@ -263,10 +282,18 @@ def parse_diario_extract(
     if nchar:
         text = text[:nchar]
     tribunal = re.match('.*?/', text).group(0)
+    split_regex = (
+        '{}(?=[0-9]{{4}}/'
+        '[0-9]{{2}}/[0-9]{{2}}/)'
+        .format(tribunal)
+    )
     df = (
-        pd.Series(text.split(tribunal))
+        pd.Series(re.split(split_regex, text))
         .str.replace(';', '')                
-        .str.replace(r'^([0-9]{4}/[0-9]{2}/[0-9]{2})/', r'\1;', n=3)
+        .str.replace(
+            r'^([0-9]{4}/[0-9]{2}/[0-9]{2})/',
+            r'\1;', n=3
+        )
         .str.replace(r'\.md', r';', n=1)
         .str.replace(r'(-|:)([0-9]+)(-|:)', r'\2;', n=1)
         .str.split(';', expand=True)
@@ -284,6 +311,8 @@ def extract_regexes(
         axis=1,
         match_index=False
     ):
+    if type(regexes) == str:
+        regexes = [regexes]
     if extractall:
         func = (
             lambda x: text
@@ -351,7 +380,6 @@ def get_keyword_regex(
     last_name = '.{{0,{0}}}'.format(
         last_name_length
     )
-    #The ?s makes sure . includes newline    
     regex = (
         '(?s)(?P<key>{0})'
         '((?P<name>{1})|(?P<lastname>{2}))'
@@ -361,10 +389,12 @@ def get_keyword_regex(
 
 def inspect(
         proc, parte, mov,
-        tp='parte'
+        tp='parte',
+        min_mov_length=100        
     ):
     mov = (
         mov
+        .loc[mov.text.str.len() > min_mov_length]        
         .merge(proc.reset_index().loc[:, 'proc_id'], on='proc_id')
         .merge(parte.loc[:, 'proc_id'], on='proc_id')
         .drop_duplicates('proc_id')

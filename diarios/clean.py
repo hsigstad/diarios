@@ -4,6 +4,7 @@ import glob
 from unidecode import unidecode
 import os
 import re
+from copy import copy
 import warnings
 from diarios.misc import get_user_config
 warnings.filterwarnings(
@@ -12,10 +13,10 @@ warnings.filterwarnings(
 
 
 class TRF:
-
     def __init__(self, n):
-        if re.match('TRF', n):
-            n = n[3]
+        if type(n) == str:
+            if re.match('TRF', n):
+                n = int(n[3])
         self.n = n
         self.name = 'TRF{}'.format(n)
         self.estados = get_trf_estados(
@@ -111,6 +112,42 @@ def get_estado_mapping():
         'tocantins': 'TO'
     }
 
+
+def get_municipio_regex(estados=None):
+    mun = get_data('municipio.csv')
+    corr1 = get_data('municipio_correction_tse.csv')
+    corr2 = get_data('municipio_correction_manual.csv')
+    ar = np.concatenate([
+        mun.loc[:, ('estado', 'municipio')].values,
+        mun.loc[:, ('estado', 'municipio_accents')].values,
+        corr1.loc[:, ('estado', 'wrong')].values,
+        corr2.loc[:, ('estado', 'wrong')].values
+    ])
+    df = (
+        pd.DataFrame(
+            ar,
+            columns=['estado','municipio']
+        )
+        .drop_duplicates()
+        .query('estado.notnull()')
+    )
+    df['municipio'] = title(df.municipio)
+    df2 = copy(df)
+    df2['municipio'] = df2.municipio.str.upper()
+    df = pd.concat([df, df2])
+    df3 = copy(df)
+    df3['municipio'] = df3.municipio.str.replace(
+        "'", "´"
+    )
+    df = pd.concat([df, df3]).drop_duplicates()
+    if estados:
+        if not type(estados) == list:
+            estados = [estados]
+        df = df.loc[df.estado.isin(estados)]
+    regex = r'\b({})\b'.format(
+        '|'.join(df.municipio.values)
+    )
+    return regex
         
 def clean_municipio(municipio, estado):
     municipio = clean_text(
@@ -241,12 +278,12 @@ def clean_parte_key(keywords):
     
 def clean_tipo_parte(keywords):
     mapping = {
-        'interessado': 'third party',        
+        'interessado': 'third party',
+        'adv|dr|repr': 'lawyer', # has to be before defd and plaintiff        
         'autor|ente$|ante$|reqte|exeqte': 'plaintiff',
         'lit at|ativ': 'plaintiff',
         '^-$|^\*\*$': 'plaintiff',
         'promotor': 'plaintiff',
-        'adv|dr|repr': 'lawyer', # has to be before defendant!
         'reu|^res?$|parte re|do$|da$': 'defendant',
         'requerid': 'defendant',
         'requerent': 'plaintiff',
@@ -760,6 +797,7 @@ def clean_diario_text(text):
 def clean_text(
     text,
     drop='^a-z0-9 ',
+    replace_character='',
     lower=True,
     accents=False,
     links=False,
@@ -781,7 +819,8 @@ def clean_text(
         text = text.apply(unidecode)
     if drop:
         text = text.str.replace(
-            '[{}]'.format(drop), ''
+            '[{}]'.format(drop),
+            replace_character
         )
     if not multiple_spaces:
         text = text.str.replace('  +', ' ')
@@ -894,6 +933,26 @@ def add_leads_and_lags(df, variables, ivar, tvar, leads_and_lags):
     return df
 
 
-letter = "[a-zA-Z' çúáéíóàâêôãõÇÁÉÍÓÀÃÕ]"
+def clean_oab(sr):
+    if type(sr) == str:
+        sr = pd.Series([sr])
+    n = pd.to_numeric(
+        sr.str.replace('[^0-9]', ''),
+        errors='coerce'
+    ).astype(str).str.replace('\.0','')
+    states = "|".join(
+        get_estado_mapping().values()
+    )
+    state = sr.str.extract(
+        "({})".format(states),
+        expand=False
+    )
+    ab = sr.str.extract(
+        '[0-9](a|b|A|B)',
+        expand=False
+    ).str.upper().fillna('')
+    cleaned = n + ab + "/" + state
+    return cleaned
+    
 
-
+letter = "a-zA-Z' çúáéíóàâêôãõÇÚÁÉÍÓÀÂÊÔÃÕ"
