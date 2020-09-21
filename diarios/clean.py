@@ -459,8 +459,18 @@ def get_number_regexes():
 
 
 def get_verificador_cnj(n, remainder):
+    '''
+    Args:
+       n: NNNNNN
+       remainder: YYYY.J.TT.FFFF
+
+    NB: Cannot be vectorized since floats are imprecise
+    '''
     base = '{}{}00'.format(n, remainder)
-    return 98 - (int(base) % 97)
+    try:
+        return 98 - (int(base) % 97)
+    except ValueError:
+        return
 
 
 def get_tribunal(series, input_type='number', output='tribunal'):
