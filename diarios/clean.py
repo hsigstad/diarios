@@ -470,7 +470,45 @@ def get_verificador_cnj(n, remainder):
     try:
         return 98 - (int(base) % 97)
     except ValueError:
-        return
+        print('Value Error')
+
+def convert_ncnj_tjms(df, col):
+    df = df[df.tribunal.str.contains('TJMS')]
+    df2 = df
+    df = df[col].str.split(r'\.|\-', expand=True)
+    df.columns = df.columns.map(str)
+    df['remainder'] = '20' + df['1'] + '812' + '0' + df['0']
+    df = df.rename(columns={'2': 'n'})
+    df['dd'] = df.apply(lambda x: get_verificador_cnj(x.n, x.remainder), axis=1)
+    df['dd'] = df['dd'].astype(str)
+    df['dd'] = df['dd'].apply(lambda x: x.zfill(2))
+    df['n'] = df['n'].apply(lambda x: x.zfill(7))
+    df['n_cnj'] = df['n'] + '-' + df['dd'] + '.20' + df['1'] + '.8.12.0' + df['0']
+    df2 = pd.concat([df2, df['n_cnj']], axis=1)
+    return df2
+
+
+def convert_ncnj_tjsp(df, col):
+    df = df[df.tribunal.str.contains('TJSP')]
+    df2 = df
+    df = df[col].str.split(r'\.|\-', expand=True)
+    df.columns = df.columns.map(str)
+    df['remainder'] = df['2'] + '826' + '0' + df['0']
+    df = df.rename(columns={'3': 'n'})
+    df['dd'] = df.apply(lambda x: get_verificador_cnj(x.n, x.remainder), axis=1)
+    df['dd'] = df['dd'].astype(str)
+    df['dd'] = df['dd'].apply(lambda x: x.zfill(2))
+    df['n'] = df['n'].apply(lambda x: x.zfill(7))
+    df['n_cnj'] = df['n'] + '-' + df['dd'] + '.' + df['2'] + '.8.26.0' + df['0']
+    df2 = pd.concat([df2, df['n_cnj']], axis=1)
+    return df2
+
+
+def get_old_format(df, col):
+    regex = r'[0-9][0-9][0-9][0-9][0-9][0-9][0-9]\-[0-9][0-9]\.[1-2][0-9][0-9][0-9]\.[0-9].[0-9][0-9]\.[0-9][0-9][0-9][0-9]'
+    df['valid'] = df[col].str.contains(regex)
+    df = df[df.valid.astype(str).str.contains('False')]
+    return df
 
 
 def get_tribunal(series, input_type='number', output='tribunal'):
