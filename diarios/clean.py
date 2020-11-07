@@ -177,8 +177,9 @@ def clean_date(dates):
 
 def clean_parte(
         partes,
+        delete=None,
         remove='[^ ]+:.*',
-        remove_after=['(^| )dra? ', '^(os?|as?|s) ', ' e outro.*', ' e$'],
+        remove_after=['(^| )dra?s? ', '^(os?|as?|s) ', ' e outro.*', ' e$'],
         mapping={
             'ministerio publico': 'mp',
             'justica publica': 'mp'
@@ -188,10 +189,14 @@ def clean_parte(
         remove = '|'.join(remove)
     if type(remove_after) == list:
         remove_after = '|'.join(remove_after)
+    if type(delete) == list:
+        delete = '|'.join(delete)
     partes = partes.str.replace(remove, '')
     partes = clean_text(partes, **kwargs)
     partes = map_regex(partes, mapping)
     partes = partes.str.replace(remove_after, '')
+    if delete:
+        partes.loc[partes.str.contains(delete)] = ''
     return partes
 
 
@@ -319,14 +324,15 @@ def clean_decision(decisions, grau='1'):
     return map_regex(decisions, mapping)
 
 
-def map_regex(series, mapping, keep_unmatched=True):
+def map_regex(series, mapping, keep_unmatched=True, flags=0):
     if type(series) == np.ndarray:
         series = pd.Series(series)
     ix = series.index
     series = series.reset_index(drop=True)
     mapped = pd.Series(index=series.index)
     for key, val in mapping.items():
-        mapped.loc[series.str.contains(key) & mapped.isnull()] = val
+        mapped.loc[series.str.contains(key, flags=flags)
+                   & mapped.isnull()] = val
     if keep_unmatched:
         mapped.loc[mapped.isnull()] = series
     mapped.index = ix
@@ -529,11 +535,14 @@ def get_tribunal(series, input_type='number', output='tribunal'):
                                                                      (output)])
 
 
-def transform(x, from_var, to_var):
+def transform(x, from_var, to_var, keep_unmatched=False):
     infile = '{}.csv'.format(from_var.replace('_id', ''))
     df = get_data(infile).set_index(from_var)
     if type(x) == pd.Series:
-        return (x.to_frame(name=from_var).join(df, on=from_var)[to_var])
+        df = x.to_frame(name=from_var).join(df, on=from_var, how='left')
+        if keep_unmatched:
+            df[to_var] = df[to_var].fillna(df[from_var])
+        return df[to_var]
     else:
         return df.loc[x, to_var]
 
@@ -702,10 +711,10 @@ def get_data(datafile):
 
 def get_data_file(datafile):
     pkg_dir, _ = os.path.split(__file__)
-    return os.path.join(pkg_dir, 'data', datafile)
+    return os.path.join(pkg_dir, "data", datafile)
 
 
-def generate_id(df, suffix=None):
+def generate_id(df, by=None, suffix=None, suffix_length=2):
     '''
     Args:
        df: series or df
@@ -713,11 +722,67 @@ def generate_id(df, suffix=None):
                number to be appended to id
     '''
     if type(df) == pd.DataFrame:
-        df = df.astype(str).apply(lambda x: '_'.join(x), axis=1)
+        df = df.loc[:, by].astype(str).apply(lambda x: '_'.join(x), axis=1)
     ids = (df.astype('category').cat.codes) + 1
     if suffix:
-        ids = ids.apply(lambda x: x * 100 + suffix)
+        ids = ids.apply(lambda x: x * 10**suffix_length + suffix)
     return ids
+
+
+def title(sr):
+    sr = sr.str.title()
+    tolower = {
+        'De': 'de',
+        'Da': 'da',
+        'Do': 'do',
+        'Das': 'das',
+        'Dos': 'dos',
+        'E': 'e'
+    }
+    for key, val in tolower.items():
+        sr = sr.str.replace(r'\b{}\b'.format(key), val)
+    return sr
+
+
+def get_municipio_regex(estados=None):
+    mun = get_data('municipio.csv')
+    corr1 = get_data('municipio_correction_tse.csv')
+    corr2 = get_data('municipio_correction_manual.csv')
+    ar = np.concatenate([
+        mun.loc[:, ('estado', 'municipio')].values,
+        mun.loc[:, ('estado', 'municipio_accents')].values,
+        corr1.loc[:, ('estado', 'wrong')].values,
+        corr2.loc[:, ('estado', 'wrong')].values
+    ])
+    df = (pd.DataFrame(ar,
+                       columns=['estado', 'municipio'
+                                ]).drop_duplicates().query('estado.notnull()'))
+    df['municipio'] = title(df.municipio)
+    df2 = copy(df)
+    df2['municipio'] = df2.municipio.str.upper()
+    df = pd.concat([df, df2])
+    df3 = copy(df)
+    df3['municipio'] = df3.municipio.str.replace("'", "´")
+    df = pd.concat([df, df3]).drop_duplicates()
+    if estados:
+        if not type(estados) == list:
+            estados = [estados]
+        df = df.loc[df.estado.isin(estados)]
+    regex = r'\b({})\b'.format('|'.join(df.municipio.values))
+    regex = regex.replace(' ', r'\s+')
+    return regex
+
+
+def clean_oab(sr):
+    if type(sr) == str:
+        sr = pd.Series([sr])
+    n = pd.to_numeric(sr.str.replace('[^0-9]', ''),
+                      errors='coerce').astype(str).str.replace('\.0', '')
+    states = "|".join(get_estado_mapping().values())
+    state = sr.str.extract("({})".format(states), expand=False)
+    ab = sr.str.extract('[0-9](a|b|A|B)', expand=False).str.upper().fillna('')
+    cleaned = n + ab + "/" + state
+    return cleaned
 
 
 def clean_reais(sr):
