@@ -460,7 +460,13 @@ def get_number_regexes():
                  '(?P<filingyear>[0-9]{4})'
                  '\.[0-9]\.?[0-9]{2}\.[0-9]{4}'),
         'TRF4_2': ('(?P<filingyear>[0-9]{4})'
-                   '\.[0-9]{2}\.[0-9]{2}\.[0-9]{6}')
+                   '\.[0-9]{2}\.[0-9]{2}\.[0-9]{6}'),
+        'TRE-PB': ('[0-9]+/'
+                   '(?P<filingyear>[0-9]{4})'),
+        'TRE-MA': ('[0-9]+-[0-9]{2}/'
+                   '(?P<filingyear>[0-9]{2})'),
+        'TRE-MT': ('[0-9]+/'
+                   '(?P<filingyear>[0-9]{4})'),
     }
 
 
@@ -478,6 +484,7 @@ def get_verificador_cnj(n, remainder):
     except ValueError:
         print('Value Error')
 
+
 def convert_ncnj_tjms(df, col):
     df = df[df.tribunal.str.contains('TJMS')]
     df2 = df
@@ -485,11 +492,13 @@ def convert_ncnj_tjms(df, col):
     df.columns = df.columns.map(str)
     df['remainder'] = '20' + df['1'] + '812' + '0' + df['0']
     df = df.rename(columns={'2': 'n'})
-    df['dd'] = df.apply(lambda x: get_verificador_cnj(x.n, x.remainder), axis=1)
+    df['dd'] = df.apply(lambda x: get_verificador_cnj(x.n, x.remainder),
+                        axis=1)
     df['dd'] = df['dd'].astype(str)
     df['dd'] = df['dd'].apply(lambda x: x.zfill(2))
     df['n'] = df['n'].apply(lambda x: x.zfill(7))
-    df['n_cnj'] = df['n'] + '-' + df['dd'] + '.20' + df['1'] + '.8.12.0' + df['0']
+    df['n_cnj'] = df['n'] + '-' + df['dd'] + '.20' + df['1'] + '.8.12.0' + df[
+        '0']
     df2 = pd.concat([df2, df['n_cnj']], axis=1)
     return df2
 
@@ -501,7 +510,8 @@ def convert_ncnj_tjsp(df, col):
     df.columns = df.columns.map(str)
     df['remainder'] = df['2'] + '826' + '0' + df['0']
     df = df.rename(columns={'3': 'n'})
-    df['dd'] = df.apply(lambda x: get_verificador_cnj(x.n, x.remainder), axis=1)
+    df['dd'] = df.apply(lambda x: get_verificador_cnj(x.n, x.remainder),
+                        axis=1)
     df['dd'] = df['dd'].astype(str)
     df['dd'] = df['dd'].apply(lambda x: x.zfill(2))
     df['n'] = df['n'].apply(lambda x: x.zfill(7))
