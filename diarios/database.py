@@ -1,10 +1,19 @@
 import pandas as pd
 from time import time
 import sqlite3
+import os
+from re import sub
 
 
 def query(database, sql):
-    conn = sqlite3.connect(database)
+    if type(database) == str:
+        conn = sqlite3.connect(database)
+    if type(database) == list:
+        conn = sqlite3.connect(database[0])
+        c = conn.cursor()
+        for d in database[1:]:
+            name = sub('\..*', '', os.path.basename(d))
+            c.execute("ATTACH '{}' AS {}".format(d, name))
     return pd.read_sql(sql, conn)
 
 
