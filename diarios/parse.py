@@ -73,7 +73,7 @@ class CaseParser:
         out = (proc, parte, mov)
         if self.split_adv:
             parte, adv = self._split_adv(parte)
-            out = (proc, parte, adv, mov)
+            out = (proc, parte, mov, adv)
         return out
 
     def _add_cols_before_split(self, df):
@@ -115,8 +115,8 @@ class CaseParser:
         df['lastname'] = self.clean_last_parte(df.lastname)
         df = self._split_parte(df)
         df['parte'] = np.where(df['name'] == '', df['lastname'], df['name'])
-        df = self._add_advogado(df, text)
         df['parte'] = self.clean_parte(df.parte)
+        df = self._add_advogado(df, text)
         df['key'] = self.clean_parte_key(df.key)
         df['tipo_parte'] = self.clean_tipo_parte(df.key)
         df['tipo_parte_id'] = clean.transform(df.tipo_parte, 'tipo_parte',
@@ -131,7 +131,7 @@ class CaseParser:
                                            suffix_length=self.suffix_length)
         cols = [
             'parte_id', 'proc_id', 'mov_id', 'parte', 'tipo_parte',
-            'tipo_parte_id', 'key', 'oab'
+            'tipo_parte_id', 'key', 'oab', 'name_group'
         ]
         df = keep_cols(df, cols + self.df_parte_cols)
         df = df.drop_duplicates('parte_id')  # Just in case
@@ -162,7 +162,8 @@ class CaseParser:
 
     def _drop_partes(self, df):
         df = df.loc[df.parte != ""]
-        df = df.loc[(df.parte.str.len() > 8) | (df.parte == 'mp')]
+        df = df.loc[(df.parte.str.len() > 8) | (df.parte == 'mp')
+                    | df.parte.str.match('[0-9]+/[A-Z]{2}')]
         return df
 
     def _split_adv(self, df):
@@ -173,6 +174,7 @@ class CaseParser:
             method='ffill'))
         df = df.loc[df.tipo_parte_id != 4].copy()
         adv = adv.loc[adv.tipo_parte_id == 4]
+        adv = adv.drop('parte_id', 1)
         df['parte_id'] = clean.generate_id(
             df,
             by=['mov_id', 'tipo_parte_id', 'parte'],
@@ -377,7 +379,7 @@ def inspect(proc, parte, mov, adv=None, tp='parte', min_mov_length=100):
         print('\n')
         for _, r in prt.iterrows():
             print('{}: {}'.format(r.key, r.parte))
-            if adv:
+            if adv is not None:
                 advs = adv.loc[adv.parte_id == r.parte_id]
                 for _, r in advs.iterrows():
                     print(' ', r.oab, r.advogado)
