@@ -28,7 +28,8 @@ class CaseParser:
                  df_mov_cols=[],
                  df_parte_cols=[],
                  drop_if_no_number=True,
-                 oab=False):
+                 advogado=None,
+                 split_adv=False):
         self.parte = parte
         self.regexes_before_split = regexes_before_split
         self.regexes = regexes
@@ -50,7 +51,8 @@ class CaseParser:
         self.df_mov_cols = df_mov_cols
         self.df_parte_cols = df_parte_cols
         self.drop_if_no_number = drop_if_no_number
-        self.oab = oab
+        self.split_adv = split_adv
+        self.advogado = advogado
 
     def parse(self, df):
         df = self._add_cols_before_split(df)
@@ -66,9 +68,13 @@ class CaseParser:
         if len(df) == 0:
             return
         proc = self._get_proc(df)
-        parte, adv = self._get_parte(df)
+        parte = self._get_parte(df)
         mov = self._get_mov(df)
-        return proc, parte, adv, mov
+        out = (proc, parte, mov)
+        if self.split_adv:
+            parte, adv = self._split_adv(parte)
+            out = (proc, parte, adv, mov)
+        return out
 
     def _add_cols_before_split(self, df):
         if self.regexes_before_split:
@@ -99,25 +105,17 @@ class CaseParser:
 
     def _get_parte(self, df):
         df_id = keep_cols(df, ['mov_id', 'proc_id'] + self.df_parte_cols)
-        df = extract_keywords(df['text'],
+        text = df.text
+        df = extract_keywords(text,
                               self.parte,
                               max_name_length=self.max_name_length,
                               last_name_length=self.last_name_length)
         if len(df) == 0:
-            df = pd.DataFrame({
-                'mov_id': [],
-                'proc_id': [],
-                'parte_id': [],
-                'parte': [],
-                'key': [],
-                'tipo_parte_id': []
-            })
-            return df, df
+            return get_empty_parte()
         df['lastname'] = self.clean_last_parte(df.lastname)
         df = self._split_parte(df)
         df['parte'] = np.where(df['name'] == '', df['lastname'], df['name'])
-        df['oab'] = ''
-        df.loc[:, ('parte', 'oab')] = split_name_oab(df.parte).values
+        df = self._add_advogado(df, text)
         df['parte'] = self.clean_parte(df.parte)
         df['key'] = self.clean_parte_key(df.key)
         df['tipo_parte'] = self.clean_tipo_parte(df.key)
@@ -125,15 +123,29 @@ class CaseParser:
                                               'tipo_parte_id')
         df = self._drop_partes(df)
         df = df.join(df_id)
-        df = df.drop_duplicates(['parte', 'tipo_parte_id', 'mov_id'])
-        df, adv = self._split_adv(df)
+        idcols = ['parte', 'tipo_parte_id', 'mov_id']
+        df = df.drop_duplicates(idcols)
+        df['parte_id'] = clean.generate_id(df,
+                                           by=idcols,
+                                           suffix=self.id_suffix,
+                                           suffix_length=self.suffix_length)
         cols = [
             'parte_id', 'proc_id', 'mov_id', 'parte', 'tipo_parte',
-            'tipo_parte_id', 'key'
+            'tipo_parte_id', 'key', 'oab'
         ]
         df = keep_cols(df, cols + self.df_parte_cols)
         df = df.drop_duplicates('parte_id')  # Just in case
-        return df, adv
+        return df
+
+    def _add_advogado(self, df, text):
+        if not self.advogado:
+            return add_oab(df)
+        adv = text.str.extractall(self.advogado)
+        adv = adv.reset_index('match', drop=True)
+        adv['key'] = 'advogado'
+        adv['parte'] = clean.clean_oab(adv.parte)
+        df = pd.concat([df, adv])
+        return df
 
     def _split_parte(self, df):
         df = split_col(df,
@@ -170,6 +182,9 @@ class CaseParser:
         adv = (df.loc[:, cols].merge(adv, on='name_group'))
         cols = ['parte_id', 'advogado', 'oab']
         adv = adv.loc[:, cols]
+        if 'oab' in df.columns:
+            df = df.drop('oab', 1)
+        df = df.drop_duplicates('parte_id')  # Just in case
         return df, adv
 
     def _get_keywords(self):
@@ -196,31 +211,26 @@ class CaseParser:
         return mov
 
 
+def get_empty_parte():
+    df = pd.DataFrame({
+        'mov_id': [],
+        'proc_id': [],
+        'parte_id': [],
+        'parte': [],
+        'key': [],
+        'tipo_parte_id': []
+    })
+    return df
+
+
 def _drop_duplicate_procs(df):
     # Could try
     # proc=df.groupby('proc_id').agg(lambda x: scipy.stats.mode(x)[0])
     # But probably quite slow
     df['nmissing'] = df.isnull().sum(axis=1)
     proc = df.sort_values('nmissing').drop_duplicates('proc_id', keep='first')
+    proc = proc.drop('nmissing', 1)
     return proc
-
-
-class DiarioParser(CaseParser):
-    def __init__(self, number_types='CNJ', **kwargs):
-        super(DiarioParser, self).__init__(
-            clean_proc=lambda x: clean_diario_proc(x, number_types),
-            clean_mov=clean_diario_mov,
-            df_mov_cols=['tribunal', 'number', 'date', 'caderno', 'line'],
-            df_proc_cols=['tribunal', 'number', 'classe'],
-            **kwargs)
-
-
-def split_name_oab(sr):
-    df = sr.str.split(r'(?i)\boab', expand=True, n=1)
-    if not 1 in df.columns:
-        df[1] = ''
-    df[1] = clean.clean_oab(df[1])
-    return df
 
 
 def clean_diario_proc(proc, number_types=['CNJ']):
@@ -234,6 +244,34 @@ def clean_diario_proc(proc, number_types=['CNJ']):
 def clean_diario_mov(mov):
     mov['caderno_id'] = clean.get_caderno_id(mov['tribunal'], mov['caderno'])
     return mov
+
+
+class DiarioParser(CaseParser):
+    def __init__(self,
+                 number_types='CNJ',
+                 df_mov_cols=['tribunal', 'number', 'date', 'caderno', 'line'],
+                 df_proc_cols=['tribunal', 'number', 'classe'],
+                 **kwargs):
+        super(DiarioParser, self).__init__(
+            df_proc_cols=df_proc_cols,
+            df_mov_cols=df_mov_cols,
+            clean_proc=lambda x: clean_diario_proc(x, number_types),
+            clean_mov=clean_diario_mov,
+            **kwargs)
+
+
+def add_oab(df):
+    df['oab'] = ''
+    df.loc[:, ('parte', 'oab')] = split_name_oab(df.parte).values
+    return df
+
+
+def split_name_oab(sr):
+    df = sr.str.split(r'(?i)\boab', expand=True, n=1)
+    if not 1 in df.columns:
+        df[1] = ''
+    df[1] = clean.clean_oab(df[1])
+    return df
 
 
 def split_col(df, name_col, split_on=',|-', group_id=None):
@@ -321,7 +359,7 @@ def keep_cols(df, cols):
     return df.loc[:, cols]
 
 
-def inspect(proc, parte, adv, mov, tp='parte', min_mov_length=100):
+def inspect(proc, parte, mov, adv=None, tp='parte', min_mov_length=100):
     mov = (mov.loc[(mov.text.str.len() > min_mov_length)
                    & (mov.number != '')].merge(
                        proc.reset_index().loc[:, 'proc_id'],
@@ -339,9 +377,10 @@ def inspect(proc, parte, adv, mov, tp='parte', min_mov_length=100):
         print('\n')
         for _, r in prt.iterrows():
             print('{}: {}'.format(r.key, r.parte))
-            advs = adv.loc[adv.parte_id == r.parte_id]
-            for _, r in advs.iterrows():
-                print(' ', r.oab, r.advogado)
+            if adv:
+                advs = adv.loc[adv.parte_id == r.parte_id]
+                for _, r in advs.iterrows():
+                    print(' ', r.oab, r.advogado)
     if tp == 'proc':
         print(prc)
     if tp == 'mov':
