@@ -324,6 +324,90 @@ def clean_decision(decisions, grau='1'):
     return map_regex(decisions, mapping)
 
 
+def extract_series(text, regex):
+    """Extract regex series from text list
+
+    Keyword arguments:
+    text -- pandas Series with text
+    regex -- regex or pandas Series with regexes
+
+    Returns:
+    pandas DataFrame of named capture groups for regex matches
+    """
+    df = pd.DataFrame({'text': text, 'regex': regex})
+    return df.apply(lambda row: _search_row(row.regex, row.text),
+                    axis=1,
+                    result_type='expand')
+
+
+def _search_row(regex, text):
+    try:
+        return re.search(regex, text).groupdict()
+    except AttributeError:
+        return dict()
+
+
+def extractall_series(text, regex):
+    """Extract regex series from text list
+
+    Keyword arguments:
+    text -- pandas Series with text
+    regex -- regex or pandas Series with regexes
+
+    Returns:
+    pandas DataFrame of named capture groups for all regex matches
+    """
+    df = pd.DataFrame({'text': text, 'regex': regex}, index=text.index)
+    out = df.apply(lambda row: _searchall_row(row.regex, row.text), axis=1)
+    out = out.apply(pd.Series).stack()
+    out = out.apply(pd.Series)
+    return out
+
+
+def _searchall_row(regex, text):
+    try:
+        return [a.groupdict() for a in re.finditer(regex, text)]
+    except AttributeError:
+        return []
+
+
+def split_series(text,
+                 regex,
+                 text_pos='right',
+                 drop_end=False,
+                 level_name='group'):
+    """ Split text on regex 
+
+    Keyword arguments:
+    text -- pandas Series with text
+    regex -- regex to split on with named capture group(s)
+    text_pos -- keep text to the 'left' or 'right' of split
+    level_name -- new index level name
+
+    Returns:
+    pandas DataFrame of with columns the capture groups
+    and the text to the left or right of split
+
+    Will split on first regex match so be careful
+    """
+    df = text.str.split(regex, expand=True).stack()
+    df.index = df.index.set_names('match', level=-1)
+    df = df.reset_index(level='match')
+    regex = re.compile(regex)
+    group = df.match % (regex.groups + 1)
+    group_names = {v: k for k, v in regex.groupindex.items()}
+    df['variable'] = group.replace(group_names).replace({0: 'text'})
+    shift = {'left': 0, 'right': 1}
+    df[level_name] = (df.match + shift[text_pos]) // (regex.groups + 1)
+    df = df.set_index(['variable', level_name], append=True)
+    out = df.unstack('variable')[0]
+    if drop_end:
+        end = out.isnull().sum(axis=1) == len(out.columns) - 1
+        out = out.loc[~end]
+    out.columns.name = None
+    return out
+
+
 def map_regex(series, mapping, keep_unmatched=True, flags=0):
     if type(series) == np.ndarray:
         series = pd.Series(series)
