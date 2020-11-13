@@ -345,6 +345,8 @@ def _search_row(regex, text):
         return re.search(regex, text).groupdict()
     except AttributeError:
         return dict()
+    except TypeError:
+        return dict()
 
 
 def extractall_series(text, regex):
@@ -368,6 +370,8 @@ def _searchall_row(regex, text):
     try:
         return [a.groupdict() for a in re.finditer(regex, text)]
     except AttributeError:
+        return []
+    except TypeError:
         return []
 
 
@@ -409,6 +413,27 @@ def split_series(text,
 
 
 def map_regex(series, mapping, keep_unmatched=True, flags=0):
+    """ Map using regex
+
+    Keyword arguments:
+    series -- pandas Series, numpy ndarray, or str
+    mapping -- dict with regexes as keys
+    keep_unmatched -- keep original if no match
+    flags -- re module flags
+
+    Returns:
+    pandas Series or str with values of first matching regex in dict
+    """
+    if series is np.NaN:
+        return np.NaN
+    if type(series) == str:
+        for key, val in mapping.items():
+            if re.search(key, series):
+                return val
+        if keep_unmatched:
+            return series
+        else:
+            return np.NaN
     if type(series) == np.ndarray:
         series = pd.Series(series)
     ix = series.index
