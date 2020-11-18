@@ -28,6 +28,7 @@ class CaseParser:
                  df_mov_cols=[],
                  df_parte_cols=[],
                  drop_if_no_number=True,
+                 parte_levels=['mov_id', 'proc_id'],
                  advogado=None,
                  split_adv=False):
         self.parte = parte
@@ -52,6 +53,7 @@ class CaseParser:
         self.df_parte_cols = df_parte_cols
         self.drop_if_no_number = drop_if_no_number
         self.split_adv = split_adv
+        self.parte_levels = parte_levels
         self.advogado = advogado
 
     def parse(self, df):
@@ -104,7 +106,7 @@ class CaseParser:
         return df
 
     def _get_parte(self, df):
-        df_id = keep_cols(df, ['mov_id', 'proc_id'] + self.df_parte_cols)
+        df_id = keep_cols(df, self.parte_levels + self.df_parte_cols)
         text = df.text
         df = extract_keywords(text,
                               self.parte,
@@ -123,16 +125,16 @@ class CaseParser:
                                               'tipo_parte_id')
         df = self._drop_partes(df)
         df = df.join(df_id)
-        idcols = ['parte', 'tipo_parte_id', 'mov_id']
+        idcols = ['parte', 'tipo_parte_id'] + self.parte_levels
         df = df.drop_duplicates(idcols)
         df['parte_id'] = clean.generate_id(df,
                                            by=idcols,
                                            suffix=self.id_suffix,
                                            suffix_length=self.suffix_length)
         cols = [
-            'parte_id', 'proc_id', 'mov_id', 'parte', 'tipo_parte',
-            'tipo_parte_id', 'key', 'oab', 'name_group'
-        ]
+            'parte_id', 'parte', 'tipo_parte', 'tipo_parte_id', 'key', 'oab',
+            'name_group'
+        ] + self.parte_levels
         df = keep_cols(df, cols + self.df_parte_cols)
         df = df.drop_duplicates('parte_id')  # Just in case
         return df
@@ -170,16 +172,16 @@ class CaseParser:
         cols = {'parte': 'advogado'}
         adv = (df.rename(columns=cols).reset_index())
         adv.loc[adv.tipo_parte_id == 4, 'name_group'] = np.nan
-        adv['name_group'] = (adv.groupby('mov_id')['name_group'].fillna(
-            method='ffill'))
+        adv['name_group'] = (adv.groupby(
+            self.parte_levels)['name_group'].fillna(method='ffill'))
         df = df.loc[df.tipo_parte_id != 4].copy()
         adv = adv.loc[adv.tipo_parte_id == 4]
         adv = adv.drop('parte_id', 1)
-        df['parte_id'] = clean.generate_id(
-            df,
-            by=['mov_id', 'tipo_parte_id', 'parte'],
-            suffix=self.id_suffix,
-            suffix_length=self.suffix_length)
+        df['parte_id'] = clean.generate_id(df,
+                                           by=['tipo_parte_id', 'parte'] +
+                                           self.parte_levels,
+                                           suffix=self.id_suffix,
+                                           suffix_length=self.suffix_length)
         cols = ['parte_id', 'name_group']
         adv = (df.loc[:, cols].merge(adv, on='name_group'))
         cols = ['parte_id', 'advogado', 'oab']
@@ -273,6 +275,7 @@ def split_name_oab(sr):
     if not 1 in df.columns:
         df[1] = ''
     df[1] = clean.clean_oab(df[1])
+    df[0] = clean.clean_text(df[0])
     return df
 
 
@@ -361,7 +364,13 @@ def keep_cols(df, cols):
     return df.loc[:, cols]
 
 
-def inspect(proc, parte, mov, adv=None, tp='parte', min_mov_length=100):
+def inspect(proc,
+            parte,
+            mov,
+            adv=None,
+            tp='parte',
+            min_mov_length=100,
+            parte_level='mov_id'):
     mov = (mov.loc[(mov.text.str.len() > min_mov_length)
                    & (mov.number != '')].merge(
                        proc.reset_index().loc[:, 'proc_id'],
@@ -371,9 +380,8 @@ def inspect(proc, parte, mov, adv=None, tp='parte', min_mov_length=100):
     ex = mov.sample().iloc[0]
     proc_id = ex.proc_id
     print(ex['text'])
-    prt = (parte.query('mov_id == {}'.format(ex.mov_id)).loc[:,
-                                                             ('parte_id',
-                                                              'parte', 'key')])
+    prt = (parte.loc[parte[parte_level] == ex[parte_level],
+                     ('parte_id', 'parte', 'key')])
     prc = (proc.query('proc_id == {}'.format(proc_id)).iloc[0])
     if tp == 'parte':
         print('\n')

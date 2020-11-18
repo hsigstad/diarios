@@ -225,12 +225,14 @@ def clean_parte_key(keywords):
 def clean_tipo_parte(keywords):
     mapping = {
         'interessado': 'third party',
+        'vitim': 'victim',
         'adv|dr|repr': 'lawyer',  # has to be before defd and plaintiff        
+        'autor do fato': 'defendant',
         'autor|ente$|ante$|reqte|exeqte': 'plaintiff',
         'lit at|ativ': 'plaintiff',
         '^-$|^\*\*$': 'plaintiff',
         'promotor': 'plaintiff',
-        'reu|^res?$|parte re|do$|da$': 'defendant',
+        'reu|^res?$|parte re|dos?$|das?$': 'defendant',
         'requerid': 'defendant',
         'requerent': 'plaintiff',
         'reqd|exectd': 'defendant',
@@ -436,6 +438,9 @@ def map_regex(series, mapping, keep_unmatched=True, flags=0):
             return np.NaN
     if type(series) == np.ndarray:
         series = pd.Series(series)
+    if sum(series.isnull()) == len(series):
+        print('Empty Series')
+        return series
     ix = series.index
     series = series.reset_index(drop=True)
     mapped = pd.Series(index=series.index)

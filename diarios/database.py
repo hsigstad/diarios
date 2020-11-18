@@ -3,38 +3,47 @@ from time import time
 import sqlite3
 import os
 from re import sub
+from diarios.misc import get_user_config
+from sqlalchemy import create_engine
 
 
-def query(database, sql):
+def query(database, sql, cache_size=None, flavor='sqlite3', echo=True):
     if type(database) == str:
-        conn = sqlite3.connect(database)
+        conn = connect(database, flavor, echo=echo)
     if type(database) == list:
         conn = sqlite3.connect(database[0])
         c = conn.cursor()
         for d in database[1:]:
             name = sub('\..*', '', os.path.basename(d))
             c.execute("ATTACH '{}' AS {}".format(d, name))
+    if cache_size:  # Maybe remove this?
+        c = conn.cursor()
+        c.execute('PRAGMA cache_size = {}'.format(cache_size))
     return pd.read_sql(sql, conn)
 
 
 def insert(database,
            table,
            files,
-           columns,
+           columns=None,
            primary=None,
-           chunksize=1000,
+           echo=False,
            index=False,
            fts5=False,
+           flavor='sqlite3',
+           chunksize=100000,
            read_csv=pd.read_csv,
            **kwargs):
-    conn = sqlite3.connect(database)
+    conn = connect(database, flavor, echo=echo)
+    if flavor == 'sqlite3':
+        if_exists = 'replace'
+    if flavor == 'mysql':
+        if_exists = 'append'
     if fts5:
         conn.execute("DROP TABLE IF EXISTS {};".format(table))
         conn.execute("CREATE VIRTUAL TABLE {} USING FTS5 ({});".format(
             table, ','.join(columns)))
         if_exists = 'append'
-    else:
-        if_exists = 'replace'
     for infile in files:
         print(infile)
         df = pd.read_csv(infile)
@@ -48,13 +57,37 @@ def insert(database,
         if_exists = 'append'
 
 
-def create_index(database, table, columns, name, unique=False):
+def create_index(database,
+                 table,
+                 columns,
+                 name,
+                 unique=False,
+                 flavor='sqlite3'):
     if unique:
         unique = 'UNIQUE'
     else:
         unique = ''
-    conn = sqlite3.connect(database)
+    conn = connect(database, flavor)
     cols = ', '.join(columns)
     sql = ('CREATE {0} INDEX {1} '
            'ON {2} ({3})'.format(unique, name, table, cols))
     conn.execute(sql)
+
+
+def connect(database, flavor, **kwargs):
+    if flavor == 'sqlite3':
+        conn = sqlite3.connect(database)
+    if flavor == 'mysql':
+        conn = get_db_engine(database, **kwargs)
+    return conn
+
+
+def get_db_engine(database, echo=True):
+    user = get_user_config('mysql_user')
+    pw = get_user_config('mysql_pw')
+    host = get_user_config('mysql_host')
+    engine = create_engine('mysql+mysqlconnector://{0}:'
+                           '{1}@{2}/{3}?charset=utf8'.format(
+                               user, pw, host, database),
+                           echo=echo)
+    return engine
