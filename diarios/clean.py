@@ -493,10 +493,13 @@ def extract_from_list(series, regex_list):
     return extracted
 
 
-def clean_number(numbers):
+def clean_number(numbers, types=['CNJ']):
     numbers = (numbers.str.extract('([0-9].*[0-9])',
                                    expand=False).str.replace(' ', ''))
-    numbers = clean_cnj_number(numbers, errors='ignore')
+    if 'CNJ' in types:
+        numbers = clean_cnj_number(numbers, errors='ignore')
+    if 'antigo' in types:
+        numbers = clean_number_antigo(numbers, errors='ignore')
     return numbers
 
 
@@ -505,15 +508,31 @@ def is_cnj_number(numbers):
     return numbers.str.match(regex)
 
 
+def clean_number_antigo(numbers, errors='coerce'):
+    cleaned = numbers.fillna('').str.replace(
+        '[^0-9]*((20|19)\d{2})\.?'
+        '(\d{2})\.?'
+        '(\d{2})\.?'
+        '(\d{6})-?'
+        '(\d)[^0-9]*', r'\1.\3.\4.\5-\6')
+    if errors == 'coerce':
+        cleaned.loc[~cleaned.str.match('\d{4}.\d{2}.\d{2}.\d{6}-\d')] = pd.NA
+    return cleaned
+
+
 def clean_cnj_number(numbers, errors='coerce'):
     cleaned = numbers.fillna('').str.replace(
-        '([0-9]+)(\-|\.)?([0-9]{2})\.'
-        '((20|19)[0-9]{2})\.'
-        '([0-9])\.?'
-        '([0-9]{2})\.'
-        '([0-9]{4})', r'0000000\1-\3.\4.\6.\7.\8').str[-25:]
+        '(\d+)(\-|\.)?(\d{2})\.?'
+        '((20|19)\d{2})\.?'
+        '(\d)\.?'
+        '(\d{2})\.?'
+        '(\d{4}).*', r'0000000\1-\3.\4.\6.\7.\8').str[-25:]
     if errors == 'ignore':
+        # Not sure if this is needed any longer:
         cleaned.loc[cleaned.isnull()] = numbers
+    if errors == 'coerce':
+        cleaned.loc[~cleaned.str.match('\d{7}-\d{2}.\d{4}.\d.\d{2}.\d{4}'
+                                       )] = pd.NA
     return cleaned
 
 
@@ -524,63 +543,63 @@ def get_number_regex(tp='CNJ'):
 
 def get_number_regexes():
     return {
-        'CNJ': ('([0-9]+)(\-|\.)?([0-9]{2})\.'
-                '(?P<filingyear>(20|19)[0-9]{2})\.'
-                '(?P<code_j>[0-9])\.?'
-                '(?P<code_tr>[0-9]{2})\.'
-                '(?P<oooo>[0-9]{4})'),
-        'TJAL': ('[0-9]+\.'
-                 '(?P<filingyear>[0-9]{2})'
-                 '\.[0-9]+-[0-9]'),
-        'TJAM': ('[0-9]+\.'
-                 '(?P<filingyear>[0-9]{2})'
-                 '\.[0-9]+-[0-9]'),
-        'TJCE': ('[0-9]+\.'
-                 '(?P<filingyear>(199|200|201)[0-9])'
-                 '\.[0-9]{4}\.[0-9]{3}'),
-        'TJGO': ('(?P<filingyear>(199|200|201)[0-9])'
-                 '[0-9]{7,10}'),
-        'TJMA': ('[0-9]{4,10}'
-                 '(?P<filingyear>(199|200|201)[0-9])'
-                 '[0-9]{7}'),
-        'TJMA_2': ('[0-9]+-[0-9]{2}\.'
-                   '(?P<filingyear>(199|200|201)[0-9])'
-                   '\.[0-9]{2}\.[0-9]{4}'),
-        'TJMG': ('[0-9]{4}'
-                 '(?P<filingyear>[0-9]{2})'
-                 '[0-9]{6}\-[0-9]'),
-        'TJMS': ('[0-9]+\.'
-                 '(?P<filingyear>[0-9]{2})'
-                 '\.[0-9]{6}-[0-9]'),
-        'TJPA': ('[0-9]{9}'
-                 '(?P<filingyear>(199|200|201)[0-9])'
-                 '[0-9]{7}'),
-        'TJPB': ('[0-9]{3}'
-                 '(?P<filingyear>(199|200|201)[0-9])'
-                 '[0-9]{6}-[0-9]'),
-        'TJPR': ('[0-9]{1,6}/'
-                 '(?P<filingyear>[0-9]{4})'),
-        'TJSC': ('[0-9]+\.'
-                 '(?P<filingyear>[0-9]{2})'
-                 '\.[0-9]{6}-[0-9]'),
-        'TJSE': ('(?P<filingyear>(199|200|201)[0-9])'
-                 '[0-9]{7}'),
-        'TJSP': ('[0-9]+\.[0-9]{2}\.'
-                 '(?P<filingyear>(199|200|201)[0-9])'
-                 '\.[0-9]{6}-[0-9]'),  # 625.01.1996.002168-3            
-        'TJTO': ('(?P<filingyear>(199|200|201)[0-9])'
-                 '\.[0-9]{4}\.[0-9]{4}(-|–)[0-9]'),
-        'TRF4': ('[0-9]{1,4}\.'
-                 '(?P<filingyear>[0-9]{4})'
-                 '\.[0-9]\.?[0-9]{2}\.[0-9]{4}'),
-        'TRF4_2': ('(?P<filingyear>[0-9]{4})'
-                   '\.[0-9]{2}\.[0-9]{2}\.[0-9]{6}'),
-        'TRE-PB': ('[0-9]+/'
-                   '(?P<filingyear>[0-9]{4})'),
-        'TRE-MA': ('[0-9]+-[0-9]{2}/'
-                   '(?P<filingyear>[0-9]{2})'),
-        'TRE-MT': ('[0-9]+/'
-                   '(?P<filingyear>[0-9]{4})'),
+        'CNJ': ('(\d+)(\-|\.)?(\d{2})\.'
+                '(?P<filingyear>(20|19)\d{2})\.'
+                '(?P<code_j>\d)\.?'
+                '(?P<code_tr>\d{2})\.'
+                '(?P<oooo>\d{4})'),
+        'TJAL': ('\d+\.'
+                 '(?P<filingyear>\d{2})'
+                 '\.\d+-\d'),
+        'TJAM': ('\d+\.'
+                 '(?P<filingyear>\d{2})'
+                 '\.\d+-\d'),
+        'TJCE': ('\d+\.'
+                 '(?P<filingyear>(199|200|201)\d)'
+                 '\.\d{4}\.\d{3}'),
+        'TJGO': ('(?P<filingyear>(199|200|201)\d)'
+                 '\d{7,10}'),
+        'TJMA': ('\d{4,10}'
+                 '(?P<filingyear>(199|200|201)\d)'
+                 '\d{7}'),
+        'TJMA_2': ('\d+-\d{2}\.'
+                   '(?P<filingyear>(199|200|201)\d)'
+                   '\.\d{2}\.\d{4}'),
+        'TJMG': ('\d{4}'
+                 '(?P<filingyear>\d{2})'
+                 '\d{6}\-\d'),
+        'TJMS': ('\d+\.'
+                 '(?P<filingyear>\d{2})'
+                 '\.\d{6}-\d'),
+        'TJPA': ('\d{9}'
+                 '(?P<filingyear>(199|200|201)\d)'
+                 '\d{7}'),
+        'TJPB': ('\d{3}'
+                 '(?P<filingyear>(199|200|201)\d)'
+                 '\d{6}-\d'),
+        'TJPR': ('\d{1,6}/'
+                 '(?P<filingyear>\d{4})'),
+        'TJSC': ('\d+\.'
+                 '(?P<filingyear>\d{2})'
+                 '\.\d{6}-\d'),
+        'TJSE': ('(?P<filingyear>(199|200|201)\d)'
+                 '\d{7}'),
+        'TJSP': ('\d+\.\d{2}\.'
+                 '(?P<filingyear>(199|200|201)\d)'
+                 '\.\d{6}-\d'),  # 625.01.1996.002168-3            
+        'TJTO': ('(?P<filingyear>(199|200|201)\d)'
+                 '\.\d{4}\.\d{4}(-|–)\d'),
+        'TRF4': ('\d{1,4}\.'
+                 '(?P<filingyear>\d{4})'
+                 '\.\d\.?\d{2}\.\d{4}'),
+        'TRF4_2': ('(?P<filingyear>\d{4})'
+                   '\.\d{2}\.\d{2}\.\d{6}'),
+        'TRE-PB': ('\d+/'
+                   '(?P<filingyear>\d{4})'),
+        'TRE-MA': ('\d+-\d{2}/'
+                   '(?P<filingyear>\d{2})'),
+        'TRE-MT': ('\d+/'
+                   '(?P<filingyear>\d{4})'),
     }
 
 
@@ -594,9 +613,30 @@ def get_verificador_cnj(n, remainder):
     '''
     base = '{}{}00'.format(n, remainder)
     try:
-        return 98 - (int(base) % 97)
+        return str(int(98 - (int(base) % 97)))
     except ValueError:
-        print('Value Error')
+        pass
+
+
+def convert_number_antigo_cnj(number, tribunal, errors='ignore'):
+    j = transform(tribunal, 'tribunal', 'code_j').astype(str)
+    tr = transform(tribunal, 'tribunal',
+                   'code_tr').astype(str).apply(lambda x: x.zfill(2))
+    df = clean_number_antigo(number, errors='coerce').str.split(r'[.\-]',
+                                                                expand=True)
+    df.columns = df.columns.map(str)
+    df['remainder'] = df['0'] + j + tr + df['1'] + df['2']
+    df = df.rename(columns={'3': 'n'})
+    df['dd'] = df.apply(lambda x: get_verificador_cnj(x.n, x.remainder),
+                        axis=1)
+    df['dd'] = df['dd'].astype(str)
+    df['dd'] = df['dd'].fillna('').apply(lambda x: x.zfill(2))
+    df['n'] = df['n'].fillna('').apply(lambda x: x.zfill(7))
+    n_cnj = (df['n'] + '-' + df['dd'] + '.' + df['0'] + '.' + j + '.' + tr +
+             '.' + df['1'] + df['2'])
+    if errors == 'ignore':
+        n_cnj.loc[n_cnj.isnull()] = number
+    return n_cnj
 
 
 def convert_ncnj_tjms(df, col):
@@ -635,7 +675,7 @@ def convert_ncnj_tjsp(df, col):
 
 
 def get_old_format(df, col):
-    regex = r'[0-9][0-9][0-9][0-9][0-9][0-9][0-9]\-[0-9][0-9]\.[1-2][0-9][0-9][0-9]\.[0-9].[0-9][0-9]\.[0-9][0-9][0-9][0-9]'
+    regex = r'\d{7}\-\d{2}\.[1-2]\d{3}\.\d.\d{2}\.\d{4}'
     df['valid'] = df[col].str.contains(regex)
     df = df[df.valid.astype(str).str.contains('False')]
     return df
@@ -904,20 +944,20 @@ def clean_oab(sr):
                       errors='coerce').astype(str).str.replace('\.0', '')
     states = "|".join(get_estado_mapping().values())
     state = sr.str.extract("({})".format(states), expand=False)
-    ab = sr.str.extract('[0-9](a|b|A|B)', expand=False).str.upper().fillna('')
+    ab = sr.str.extract('\d(a|b|A|B)', expand=False).str.upper().fillna('')
     cleaned = n + ab + "/" + state
     return cleaned
 
 
 def clean_reais(sr):
-    return pd.to_numeric(sr.str.replace(',[0-9]{2}([^0-9].*|$)',
+    return pd.to_numeric(sr.str.replace(',\d{2}([^0-9].*|$)',
                                         '').str.replace('[^0-9]', ''),
                          errors='coerce')
 
 
 def clean_integer(sr):
     mapping = get_integer_mapping()
-    regex = list(mapping.keys()) + ['[0-9]+']
+    regex = list(mapping.keys()) + ['\d+']
     regex = '({})'.format('|'.join(regex))
     sr = sr.str.extract(regex, expand=False)
     sr = map_regex(sr, mapping)
@@ -966,7 +1006,7 @@ def clean_oab(sr):
                       errors='coerce').astype(str).str.replace('\.0', '')
     states = "|".join(get_estado_mapping().values())
     state = sr.str.extract("({})".format(states), expand=False)
-    ab = sr.str.extract('[0-9](a|b|A|B)', expand=False).str.upper().fillna('')
+    ab = sr.str.extract('\d(a|b|A|B)', expand=False).str.upper().fillna('')
     cleaned = n + ab + "/" + state
     return cleaned
 
