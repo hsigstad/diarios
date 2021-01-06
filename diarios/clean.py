@@ -498,26 +498,14 @@ def clean_number(numbers, types=['CNJ']):
                                    expand=False).str.replace(' ', ''))
     if 'CNJ' in types:
         numbers = clean_cnj_number(numbers, errors='ignore')
-    if 'antigo' in types:
-        numbers = clean_number_antigo(numbers, errors='ignore')
+    # if 'antigo' in types:
+    #     numbers = clean_number_antigo(numbers, errors='ignore')
     return numbers
 
 
 def is_cnj_number(numbers):
     regex = get_number_regex('CNJ')
     return numbers.str.match(regex)
-
-
-def clean_number_antigo(numbers, errors='coerce'):
-    cleaned = numbers.fillna('').str.replace(
-        '[^0-9]*((20|19)\d{2})\.?'
-        '(\d{2})\.?'
-        '(\d{2})\.?'
-        '(\d{6})-?'
-        '(\d)[^0-9]*', r'\1.\3.\4.\5-\6')
-    if errors == 'coerce':
-        cleaned.loc[~cleaned.str.match('\d{4}.\d{2}.\d{2}.\d{6}-\d')] = pd.NA
-    return cleaned
 
 
 def clean_cnj_number(numbers, errors='coerce'):
@@ -613,65 +601,116 @@ def get_verificador_cnj(n, remainder):
     '''
     base = '{}{}00'.format(n, remainder)
     try:
-        return str(int(98 - (int(base) % 97)))
+        return str(int(98 - (int(base) % 97))).zfill(2)
     except ValueError:
         pass
 
 
-def convert_number_antigo_cnj(number, tribunal, errors='ignore'):
-    j = transform(tribunal, 'tribunal', 'code_j').astype(str)
-    tr = transform(tribunal, 'tribunal',
-                   'code_tr').astype(str).apply(lambda x: x.zfill(2))
-    df = clean_number_antigo(number, errors='coerce').str.split(r'[.\-]',
-                                                                expand=True)
+def clean_number_antigo(number, tribunal, errors='coerce'):
+    # TJAL: 035.07.000018-7
+    # TJGO: 200302975980
+    # TJMG: 0024.09.000095-2
+    # TJMA: 61-61.2012.10.0105
+    # TJMS: 018.07.001979-4
+    # TJPB: 0482001001567-4
+    # TJPI: 2004.40.00.001847-7
+    # TJPR: 226/2005
+    # TJRO: 003.2008.006388-5
+    # TJSC: 011.11.008037-9
+    # TJSE: 20165200070
+    # TJSP: 660.01.2010.002107-1
+    # TJTO: 2011.0011.4133-0
+    # TRF1: 2003.37.00.007789-9
+    # TRF2: 2016.51.01.164775-3
+    # TRF4: 2009.70.09.000477
+    df = pd.DataFrame({'number': number, 'tribunal': tribunal})
+    df['number'] = df.number.fillna('')
+    df.loc[df.tribunal == 'TRF2',
+           'number'] = clean_number_antigo1(df.number, errors=errors)
+    return df.number
+
+
+def clean_number_antigo1(number, errors='coerce'):
+    cleaned = number.fillna('').str.replace(
+        '[^0-9]*((20|19)\d{2})\.?'
+        '(\d{2})\.?'
+        '(\d{2})\.?'
+        '(\d{6})-?'
+        '(\d)[^0-9]*', r'\1.\3.\4.\5-\6')
+    if errors == 'coerce':
+        cleaned.loc[~cleaned.str.match('\d{4}.\d{2}.\d{2}.\d{6}-\d')] = pd.NA
+    return cleaned
+
+
+def is_number_antigo(number, tribunal):
+    df = pd.DataFrame({'number': number, 'tribunal': tribunal})
+    regexes = get_number_regexes()
+    df['is_antigo'] = False
+    for t, r in regexes.items():
+        df.loc[df.tribunal == t.replace('_2', ''), 'is_antigo'] = df.number.str.match(r)
+    return df['is_antigo']
+    
+
+def convert_number_antigo(number, tribunal, errors='ignore'):
+    # TRF1: 2009.37.00.009224-9 -> 0000628-30.2010.4.01.3700 (nnnnnnn?)
+    # TRF2: 2016.51.01.164775-3 -> 0164775-04.2016.4.02.5101
+    # TRF4: 2009.72.08.003061 -> (same as TRF2?)
+    # TJSP: 660.01.2010.002107-1 -> 0002107-31.2010.8.26.0660
+    # TJSC: 011.11.008037-9 -> 0008037-57.2011.8.24.0011
+    # TJMS: 018.07.001979-4 -> 0001979-89.2007.8.12.0018
+    # TJTO: 2008.0003.0041-8 -> 5000033-46.2008.827.2733 (no pattern?)
+    # TJPB: 0342011000042-8 -> ???
+    # TJSE: not transitioned to numeracao unica
+    # TJGO: 200803065609 -> 306560-09.2008.8.09.0120 (how to get oooo?)
+    if type(number) == list:
+        number = pd.Series(number)
+    antigo = clean_number_antigo(number, tribunal)
+    antigo.loc[is_number_antigo(antigo, tribunal)==False] = pd.NA
+    df = antigo.str.split(r'[.\-]', expand=True)
     df.columns = df.columns.map(str)
-    df['remainder'] = df['0'] + j + tr + df['1'] + df['2']
-    df = df.rename(columns={'3': 'n'})
+    df['j'] = transform(tribunal, 'tribunal', 'code_j').astype(str)
+    df['tr'] = transform(tribunal, 'tribunal',
+                         'code_tr').astype(str).str.zfill(2)
+    df['tribunal'] = tribunal
+    df['aaaa'] = _get_aaaa(df)
+    df['oooo'] = _get_oooo(df)
+    df['n'] = _get_n(df)
+    df['remainder'] = df['aaaa'] + df['j'] + df['tr'] + df['oooo']
     df['dd'] = df.apply(lambda x: get_verificador_cnj(x.n, x.remainder),
                         axis=1)
-    df['dd'] = df['dd'].astype(str)
-    df['dd'] = df['dd'].fillna('').apply(lambda x: x.zfill(2))
-    df['n'] = df['n'].fillna('').apply(lambda x: x.zfill(7))
-    n_cnj = (df['n'] + '-' + df['dd'] + '.' + df['0'] + '.' + j + '.' + tr +
-             '.' + df['1'] + df['2'])
+    cnj = (df['n'] + '-' + df['dd'] + '.' + df['aaaa'] + '.' + df['j'] + '.' +
+           df['tr'] + '.' + df['oooo'])
     if errors == 'ignore':
-        n_cnj.loc[n_cnj.isnull()] = number
-    return n_cnj
+        cnj.loc[cnj.isnull()] = number
+    return cnj
 
 
-def convert_ncnj_tjms(df, col):
-    df = df[df.tribunal.str.contains('TJMS')]
-    df2 = df
-    df = df[col].str.split(r'\.|\-', expand=True)
-    df.columns = df.columns.map(str)
-    df['remainder'] = '20' + df['1'] + '812' + '0' + df['0']
-    df = df.rename(columns={'2': 'n'})
-    df['dd'] = df.apply(lambda x: get_verificador_cnj(x.n, x.remainder),
-                        axis=1)
-    df['dd'] = df['dd'].astype(str)
-    df['dd'] = df['dd'].apply(lambda x: x.zfill(2))
-    df['n'] = df['n'].apply(lambda x: x.zfill(7))
-    df['n_cnj'] = df['n'] + '-' + df['dd'] + '.20' + df['1'] + '.8.12.0' + df[
-        '0']
-    df2 = pd.concat([df2, df['n_cnj']], axis=1)
-    return df2
+def _get_aaaa(df):
+    df = df.copy()
+    df['aaaa'] = pd.NA
+    df.loc[df.tribunal == 'TRF2', 'aaaa'] = df['0']
+    df.loc[df.tribunal == 'TJSP', 'aaaa'] = df['2']
+    df.loc[df.tribunal.isin(['TJMS', 'TJSC']), 'aaaa'] = '20' + df['1']
+    return df.aaaa
 
 
-def convert_ncnj_tjsp(df, col):
-    df = df[df.tribunal.str.contains('TJSP')]
-    df2 = df
-    df = df[col].str.split(r'\.|\-', expand=True)
-    df.columns = df.columns.map(str)
-    df['remainder'] = df['2'] + '826' + '0' + df['0']
-    df = df.rename(columns={'3': 'n'})
-    df['dd'] = df.apply(lambda x: get_verificador_cnj(x.n, x.remainder),
-                        axis=1)
-    df['dd'] = df['dd'].astype(str)
-    df['dd'] = df['dd'].apply(lambda x: x.zfill(2))
-    df['n'] = df['n'].apply(lambda x: x.zfill(7))
-    df['n_cnj'] = df['n'] + '-' + df['dd'] + '.' + df['2'] + '.8.26.0' + df['0']
-    df2 = pd.concat([df2, df['n_cnj']], axis=1)
-    return df2
+def _get_oooo(df):
+    df = df.copy()
+    df['oooo'] = pd.NA
+    df.loc[df.tribunal == 'TRF2', 'oooo'] = df['1'] + df['2']
+    df.loc[df.tribunal == 'TJSP', 'oooo'] = '0' + df['0']
+    df.loc[df.tribunal.isin(['TJMS', 'TJSC']), 'oooo'] = '0' + df['0']
+    return df.oooo
+
+
+def _get_n(df):
+    df = df.copy()
+    df['n'] = pd.NA
+    df.loc[df.tribunal == 'TRF2', 'n'] = df['3']
+    df.loc[df.tribunal == 'TJSP', 'n'] = df['3']
+    df.loc[df.tribunal.isin(['TJMS', 'TJSC']), 'n'] = df['2']
+    df['n'] = df['n'].fillna('').str.zfill(7)
+    return df.n
 
 
 def get_old_format(df, col):
@@ -700,6 +739,8 @@ def get_tribunal(series, input_type='number', output='tribunal'):
 
 
 def transform(x, from_var, to_var, keep_unmatched=False):
+    if type(x) == list:
+        x = pd.Series(x)
     infile = '{}.csv'.format(from_var.replace('_id', ''))
     df = get_data(infile).set_index(from_var)
     if type(x) == pd.Series:
