@@ -509,7 +509,10 @@ def is_cnj_number(numbers):
 
 
 def clean_cnj_number(numbers, errors='coerce'):
-    cleaned = numbers.fillna('').str.replace(
+    cleaned = numbers.fillna('')
+    # Remove any dot in ddddddd:
+    cleaned = cleaned.str.replace('^[^\d]*(\d{1,5})\.(\d{1,5})-', r'\1\2-')
+    cleaned = cleaned.str.replace(
         '(\d+)(\-|\.)?(\d{2})\.?'
         '((20|19)\d{2})\.?'
         '(\d)\.?'
@@ -577,6 +580,10 @@ def get_number_regexes():
                  '\.\d{6}-\d'),  # 625.01.1996.002168-3            
         'TJTO': ('(?P<filingyear>(199|200|201)\d)'
                  '\.\d{4}\.\d{4}(-|–)\d'),
+        'TRF1': ('(?P<filingyear>\d{4})'
+                 '\.\d{2}\.\d{2}\.\d{6}-\d'),
+        'TRF2': ('(?P<filingyear>\d{4})'
+                 '\.\d{2}\.\d{2}\.\d{6}-\d'),
         'TRF4': ('\d{1,4}\.'
                  '(?P<filingyear>\d{4})'
                  '\.\d\.?\d{2}\.\d{4}'),
@@ -647,9 +654,10 @@ def is_number_antigo(number, tribunal):
     regexes = get_number_regexes()
     df['is_antigo'] = False
     for t, r in regexes.items():
-        df.loc[df.tribunal == t.replace('_2', ''), 'is_antigo'] = df.number.str.match(r)
+        df.loc[df.tribunal == t.replace('_2', ''),
+               'is_antigo'] = df.number.str.match(r)
     return df['is_antigo']
-    
+
 
 def convert_number_antigo(number, tribunal, errors='ignore'):
     # TRF1: 2009.37.00.009224-9 -> 0000628-30.2010.4.01.3700 (nnnnnnn?)
@@ -665,7 +673,7 @@ def convert_number_antigo(number, tribunal, errors='ignore'):
     if type(number) == list:
         number = pd.Series(number)
     antigo = clean_number_antigo(number, tribunal)
-    antigo.loc[is_number_antigo(antigo, tribunal)==False] = pd.NA
+    antigo.loc[is_number_antigo(antigo, tribunal) == False] = pd.NA
     df = antigo.str.split(r'[.\-]', expand=True)
     df.columns = df.columns.map(str)
     df['j'] = transform(tribunal, 'tribunal', 'code_j').astype(str)
@@ -752,11 +760,11 @@ def transform(x, from_var, to_var, keep_unmatched=False):
         return df.loc[x, to_var]
 
 
-def extract_info_from_case_numbers(numbers, types=['CNJ']):
+def extract_info_from_case_numbers(number, types=['CNJ']):
     regexes = map(get_number_regex, types)
-    info = pd.DataFrame(index=numbers.index)
+    info = pd.DataFrame(index=number.index)
     for regex in regexes:
-        df = numbers.str.extract(regex)
+        df = number.str.extract(regex)
         new_cols = (set(df.columns) - set(info.columns))
         info = info.join(df.loc[:, new_cols])
         if info.isnull().any().any():
