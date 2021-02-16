@@ -1060,4 +1060,10 @@ def clean_oab(sr):
     return cleaned
 
 
+def clean_cpf(cpf):
+    cpf = pd.to_numeric(cpf, errors='coerce')
+    cpf = cpf.astype(str).str.replace('\.0$', '').str.zfill(11)
+    return cpf
+
+
 letter = "a-zA-Z' çúáéíóàâêôãõÇÚÁÉÍÓÀÂÊÔÃÕ"

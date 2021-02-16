@@ -1,5 +1,5 @@
 import os
-os.chdir('/home/henrik/Dropbox/brazil/diarios')
+os.chdir('/home/henrik/diarios')
 from diarios import clean
 import unittest
 import numpy as np
@@ -28,29 +28,29 @@ class TestFunctions(unittest.TestCase):
     #     ])
     #     self.assertTrue(all(clean.get_cpf(names, 'AP')==cpfs))
 
-    def test_get_number_type(self):
-        numbers = pd.Series([
-            '000 020320-09.2016.8.26.0000', '02032009.2016.826.0000',
-            '...02032009.1994.826.0000 sfd', '032903453245-1'
-        ],
-                            index=[5, 1, 1, 10])
-        types = np.array(["cnj", "cnj", "cnj", "mg"])
-        self.assertTrue(all(clean.get_number_type(numbers) == types))
+    # def test_get_number_type(self):
+    #     numbers = pd.Series([
+    #         '000 020320-09.2016.8.26.0000', '02032009.2016.826.0000',
+    #         '...02032009.1994.826.0000 sfd', '032903453245-1'
+    #     ],
+    #                         index=[5, 1, 1, 10])
+    #     types = np.array(["cnj", "cnj", "cnj", "mg"])
+    #     self.assertTrue(all(clean.get_number_type(numbers) == types))
 
-    def test_get_filing_year(self):
-        numbers = pd.Series([
-            '000 020320-09.2016.8.26.0000', '992989453245-6',
-            '...02032009.1994.826.0000 sfd', 'safsd000130.2014.1231234/53asf',
-            '032903453245-1', '2000-13121111'
-        ],
-                            index=[5, 2, 3, 4, 1, 6])
-        years = pd.Series([2016, 1989, 1994, 2014, 2003, 2000],
-                          index=[5, 2, 3, 4, 1, 6],
-                          name='filingyear')
-        self.assertTrue(
-            all(
-                clean.get_filing_year(numbers).sort_index() ==
-                years.sort_index()))
+    # def test_get_filing_year(self):
+    #     numbers = pd.Series([
+    #         '000 020320-09.2016.8.26.0000', '992989453245-6',
+    #         '...02032009.1994.826.0000 sfd', 'safsd000130.2014.1231234/53asf',
+    #         '032903453245-1', '2000-13121111'
+    #     ],
+    #                         index=[5, 2, 3, 4, 1, 6])
+    #     years = pd.Series([2016, 1989, 1994, 2014, 2003, 2000],
+    #                       index=[5, 2, 3, 4, 1, 6],
+    #                       name='filingyear')
+    #     self.assertTrue(
+    #         all(
+    #             clean.get_filing_year(numbers).sort_index() ==
+    #             years.sort_index()))
 
     def test_map_regex(self):
         in_series = pd.Series(['abc', 'aab', 'xyz'], index=[5, 5, 2])
@@ -60,7 +60,7 @@ class TestFunctions(unittest.TestCase):
         self.assertTrue(all(out_series == out_series2))
 
     def test_convert_number_antigo(self):
-        out1 = convert_number_antigo_cnj(
+        out1 = clean.convert_number_antigo(
             ['2016.51.01.164775-3', '660.01.2010.002107-1', '018.07.001979-4'],
             ['TRF2', 'TJSP', 'TJMS'])
         out2 = pd.Series([

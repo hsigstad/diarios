@@ -7,7 +7,7 @@ from diarios.misc import get_user_config
 from sqlalchemy import create_engine
 
 
-def query(database, sql, cache_size=None, flavor='sqlite3', echo=True):
+def query(database, sql, flavor='sqlite3', echo=True):
     if type(database) == str:
         conn = connect(database, flavor, echo=echo)
     if type(database) == list:
@@ -16,9 +16,6 @@ def query(database, sql, cache_size=None, flavor='sqlite3', echo=True):
         for d in database[1:]:
             name = sub('\..*', '', os.path.basename(d))
             c.execute("ATTACH '{}' AS {}".format(d, name))
-    if cache_size:  # Maybe remove this?
-        c = conn.cursor()
-        c.execute('PRAGMA cache_size = {}'.format(cache_size))
     return pd.read_sql(sql, conn)
 
 
@@ -33,6 +30,7 @@ def insert(database,
            flavor='sqlite3',
            chunksize=100000,
            read_csv=pd.read_csv,
+           dtype_csv=None,
            **kwargs):
     conn = connect(database, flavor, echo=echo)
     if flavor == 'sqlite3':
@@ -46,7 +44,7 @@ def insert(database,
         if_exists = 'append'
     for infile in files:
         print(infile)
-        df = pd.read_csv(infile)
+        df = pd.read_csv(infile, dtype=dtype_csv)
         for c in columns:
             if c not in df.columns:
                 df[c] = pd.NA
