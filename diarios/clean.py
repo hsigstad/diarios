@@ -95,6 +95,39 @@ def get_estado_mapping():
     }
 
 
+def get_capital(estado):
+    mapping = {
+        'AC': 'RIO BRANCO',
+        'AL': 'MACEIO',
+        'AP': 'MACAPA',
+        'AM': 'MANAUS',
+        'BA': 'SALVADOR',
+        'CE': 'FORTALEZA',
+        'ES': 'VITORIA',
+        'GO': 'GOIANIA',
+        'MA': 'SAO LUIS',
+        'MT': 'CUIABA',
+        'MS': 'CAMPO GRANDE',
+        'MG': 'BELO HORIZONTE',
+        'PA': 'BELEM',
+        'PB': 'JOAO PESSOA',
+        'PR': 'CURITIBA',
+        'PE': 'RECIFE',
+        'PI': 'TERESINA',
+        'RJ': 'RIO DE JANEIRO',
+        'RN': 'NATAL',
+        'RS': 'PORTO ALEGRE',
+        'RO': 'PORTO VELHO',
+        'RR': 'BOA VISTA',
+        'SC': 'FLORIANOPOLIS',
+        'SP': 'SAO PAULO',
+        'SE': 'ARACAJU',
+        'TO': 'PALMAS',
+        'DF': 'BRASILIA',
+    }
+    return estado.map(mapping)
+
+
 def get_municipio_regex(estados=None):
     mun = get_data('municipio.csv')
     corr1 = get_data('municipio_correction_tse.csv')
@@ -124,7 +157,7 @@ def get_municipio_regex(estados=None):
 
 
 def clean_municipio(municipio, estado):
-    municipio = clean_text(municipio, drop='^a-z\- ')
+    municipio = clean_text(municipio, drop='^A-Z\- ')
     df = pd.DataFrame({
         'wrong': municipio,
         'estado': estado,
@@ -878,7 +911,8 @@ def clean_diario_text(text):
 def clean_text(text,
                drop='^a-z0-9 ',
                replace_character='',
-               lower=True,
+               lower=False,
+               upper=True,
                accents=False,
                links=False,
                newline=False,
@@ -894,6 +928,8 @@ def clean_text(text,
         text = text.str.replace('==>.*?<==', '')
     if lower:
         text = text.str.lower()
+    if upper:
+        text = text.str.upper()
     if not accents:
         text = text.apply(unidecode)
     if drop:
@@ -910,10 +946,10 @@ def remove_links(text):
                              r'\1').str.replace(r'(?s)\(http.*?\)', r''))
 
 
-def clean_text_columns(df, exclude=[], drop='^a-z0-9 '):
+def clean_text_columns(df, exclude=[], drop='^A-Z0-9 ', **kwargs):
     for col in df.select_dtypes(include='object').columns:
         if col not in exclude:
-            df[col] = clean_text(df[col], drop=drop)
+            df[col] = clean_text(df[col], drop=drop, **kwargs)
     return df
 
 
@@ -1067,3 +1103,4 @@ def clean_cpf(cpf):
 
 
 letter = "a-zA-Z' çúáéíóàâêôãõÇÚÁÉÍÓÀÂÊÔÃÕ"
+estados = list(get_estado_mapping().values())

@@ -1,140 +1,142 @@
 estado,wrong,correct
-AC,capital,rio branco
-AL,capital,maceio
-AL,arapicara,arapiraca
-AL,limoeiro do anadia,limoeiro de anadia
-AL,minerador do negrao,minador do negrao
-AL,sao jose da lage,sao jose da laje
-AL,são luiz do quitunde,sao luis do quitunde
-AL,sao luiz do quitunde,sao luis do quitunde
-AP,capital,macapa
-AM,capital,manaus
-BA,santa terezinha,santa teresinha
-BA,gongoji,gongogi
-BA,rio do pires santana,rio do pires
-BA,capital,salvador
-CE,capital,fortaleza
-CE,itapage,itapaje
-CE,acapui,icapui
-CE,aiuba,aiuaba
-CE,atonina do norte,antonina do norte
-CE,baixo,baixio
-CE,iracema do oeste,iracema
-CE,mons tabosa,monsenhor tabosa
-CE,sao joao jaguaribe,sao joao do jaguaribe
-ES,alfredo chaes,alfredo chaves
-ES,aracuz,aracruz
-ES,capital,vitoria
-ES,casatelo,castelo
-ES,coporanga,ecoporanga
-ES,muniz freira,muniz freire
-ES,vial vilerio,vila valerio
-GO,capital,goias
-GO,goias velho,goias
-MA,pindare mirim,pindare-mirim
-MA,são luis,sao luis
-MA,capital,sao luis
-MA,são mateus,são mateus do maranhão
-MA,sj de ribamar,são josé de ribamar
-MG,entre-folhas,entre folhas
-MG,passa-vinte,passa vinte
-MG,brasopolis,brazopolis
-MG,capital,belo horizonte
-MG,abre-campo,abre campo
-MG,entre-rios de minas,entre rios de minas
-MG,jabuticatubas,jaboticatubas
-MG,passa-quatro,passa quatro
-MG,passa-tempo,passa tempo
-MG,sao joao del-rei,sao joao del rei
-PA,santa izabel do pará,santa isabel do para
-PA,santa izabel do para,santa isabel do para
-PA,peixe - boi,peixe-boi
-PA,jacaréacanga,jacareacanga
-PA,capital,belem
-PB,capital,joao pessoa
-PB,bernardinho batista,bernardino batista
-PB,bom sucesso do sul,bom sucesso
-PB,cauite,cuite
-PB,diamante doeste,diamante
-PB,guarariba,guarabira
-PB,lucema,lucena
-PB,mantinhas,matinhas
-PB,mogueiro,mogeiro
-PB,puxinama,puxinana
-PB,serido,sao vicente do serido
-PB,souza,sousa
-PE,capital,recife
-PE,lagoa do itaenga,lagoa de itaenga
-PE,belem do sao francisco,belem de sao francisco
-PE,sao caetano,sao caitano
-PE,vitória santo antão,vitoria de santo antao
-PE,vitoria santo antao,vitoria de santo antao
-PI,luiz correia,luis correia
-PR,capital,curitiba
-PR,alto paraiso antiga vila alta,alto paraiso
-PR,ibati,ibaiti
-RJ,capital,rio de janeiro
-RJ,parati,paraty
-RJ,araruma,araruama
-RJ,barra do parai,barra do pirai
-RJ,casemiro de abreu,casimiro de abreu
-RJ,condeiro,cordeiro
-RJ,itaperuma,itaperuna
-RJ,laje de muriae,laje do muriae
-RJ,rio de janeiro capital,rio de janeiro
-RJ,sao francisco do itabapoana,sao francisco de itabapoana
-RJ,sao joao de mereti,sao joao de meriti
-RJ,trajano de moraes,trajano de morais
-RJ,armação de búzios,armação dos búzios
-RJ,rio de janeiro - capital,rio de janeiro
-RJ,campo grande,rio de janeiro
-RN,capital,natal
-RN,augusto severo,campo grande
-RN,olho dagua dos borges,olho dagua do borges
-RS,capital,porto alegre
-RS,santa teresa,santa tereza
-RS,sao valetim do sul,sao valentim do sul
-RS,victor graef,victor graeff
-RS,gramadocanela,gramado
-RO,capital,porto velho
-RO,alta floresta doeste,alta floresta do oeste
-RO,alvorada doeste,alvorada do oeste
-RO,santa luzia doeste,santa luzia do oeste
-RO,nova brasilandia doeste,nova brasilandia do oeste
-RO,machadinho doeste,machadinho do oeste
-RO,sao felipe doeste,sao felipe do oeste
-SE,capital,aracaju
-SE,gracho cardoso,graccho cardoso
-SP,capital,sao paulo
-SP,mogi mirim,moji mirim
-SP,monte-mor,monte mor
-SP,araina,aramina
-SP,ataoca,itaoca
-SP,barueiri,barueri
-SP,bernardinho de campos,bernardino de campos
-SP,biritiba-mirim,biritiba mirim
-SP,borra bonita,barra bonita
-SP,capiravi,capivari
-SP,diadena,diadema
-SP,euclides da cinha paulista,euclides da cunha paulista
-SP,glicero,glicerio
-SP,luziania,luiziania
-SP,naraze paulista,nazare paulista
-SP,nova lusitania,nova luzitania
-SP,paraguacu,paraguacu paulista
-SP,paulina,paulinia
-SP,pedronopolis,pedranopolis
-SP,picatu,piacatu
-SP,pindamonangaba,pindamonhangaba
-SP,rio clara,rio claro
-SP,santo antonio de alegria,santo antonio da alegria
-SP,sao luiz do paraitinga,sao luis do paraitinga
-SP,sao pdero,sao pedro
-SP,sao roque do canaa,sao roque
-SP,votoramtim,votorantim
-SP,mogi-guacu,mogi guacu
-SP,mogi-mirim,mogi mirim
-SP,mojimirim,mogi mirim
-SP,embuguacu,embu-guacu
-TO,capital,palmas
-TO,colinas,colinas do tocantins
+AC,CAPITAL,RIO BRANCO
+AL,CAPITAL,MACEIO
+AL,ARAPICARA,ARAPIRACA
+AL,LIMOEIRO DO ANADIA,LIMOEIRO DE ANADIA
+AL,MINERADOR DO NEGRAO,MINADOR DO NEGRAO
+AL,SAO JOSE DA LAGE,SAO JOSE DA LAJE
+AL,SÃO LUIZ DO QUITUNDE,SAO LUIS DO QUITUNDE
+AL,SAO LUIZ DO QUITUNDE,SAO LUIS DO QUITUNDE
+AP,CAPITAL,MACAPA
+AM,CAPITAL,MANAUS
+BA,SANTA TEREZINHA,SANTA TERESINHA
+BA,GONGOJI,GONGOGI
+BA,RIO DO PIRES SANTANA,RIO DO PIRES
+BA,CAPITAL,SALVADOR
+CE,CAPITAL,FORTALEZA
+CE,ITAPAGE,ITAPAJE
+CE,ACAPUI,ICAPUI
+CE,AIUBA,AIUABA
+CE,ATONINA DO NORTE,ANTONINA DO NORTE
+CE,BAIXO,BAIXIO
+CE,IRACEMA DO OESTE,IRACEMA
+CE,MONS TABOSA,MONSENHOR TABOSA
+CE,SAO JOAO JAGUARIBE,SAO JOAO DO JAGUARIBE
+DF,BRASILIA,BRASILIA
+DF,DISTRITO FEDERAL,DISTRITO FEDERAL
+ES,ALFREDO CHAES,ALFREDO CHAVES
+ES,ARACUZ,ARACRUZ
+ES,CAPITAL,VITORIA
+ES,CASATELO,CASTELO
+ES,COPORANGA,ECOPORANGA
+ES,MUNIZ FREIRA,MUNIZ FREIRE
+ES,VIAL VILERIO,VILA VALERIO
+GO,CAPITAL,GOIAS
+GO,GOIAS VELHO,GOIAS
+MA,PINDARE MIRIM,PINDARE-MIRIM
+MA,SÃO LUIS,SAO LUIS
+MA,CAPITAL,SAO LUIS
+MA,SÃO MATEUS,SÃO MATEUS DO MARANHÃO
+MA,SJ DE RIBAMAR,SÃO JOSÉ DE RIBAMAR
+MG,ENTRE-FOLHAS,ENTRE FOLHAS
+MG,PASSA-VINTE,PASSA VINTE
+MG,BRASOPOLIS,BRAZOPOLIS
+MG,CAPITAL,BELO HORIZONTE
+MG,ABRE-CAMPO,ABRE CAMPO
+MG,ENTRE-RIOS DE MINAS,ENTRE RIOS DE MINAS
+MG,JABUTICATUBAS,JABOTICATUBAS
+MG,PASSA-QUATRO,PASSA QUATRO
+MG,PASSA-TEMPO,PASSA TEMPO
+MG,SAO JOAO DEL-REI,SAO JOAO DEL REI
+PA,SANTA IZABEL DO PARá,SANTA ISABEL DO PARA
+PA,SANTA IZABEL DO PARA,SANTA ISABEL DO PARA
+PA,PEIXE - BOI,PEIXE-BOI
+PA,JACARÉACANGA,JACAREACANGA
+PA,CAPITAL,BELEM
+PB,CAPITAL,JOAO PESSOA
+PB,BERNARDINHO BATISTA,BERNARDINO BATISTA
+PB,BOM SUCESSO DO SUL,BOM SUCESSO
+PB,CAUITE,CUITE
+PB,DIAMANTE DOESTE,DIAMANTE
+PB,GUARARIBA,GUARABIRA
+PB,LUCEMA,LUCENA
+PB,MANTINHAS,MATINHAS
+PB,MOGUEIRO,MOGEIRO
+PB,PUXINAMA,PUXINANA
+PB,SERIDO,SAO VICENTE DO SERIDO
+PB,SOUZA,SOUSA
+PE,CAPITAL,RECIFE
+PE,LAGOA DO ITAENGA,LAGOA DE ITAENGA
+PE,BELEM DO SAO FRANCISCO,BELEM DE SAO FRANCISCO
+PE,SAO CAETANO,SAO CAITANO
+PE,VITÓRIA SANTO ANTÃO,VITORIA DE SANTO ANTAO
+PE,VITORIA SANTO ANTAO,VITORIA DE SANTO ANTAO
+PI,LUIZ CORREIA,LUIS CORREIA
+PR,CAPITAL,CURITIBA
+PR,ALTO PARAISO ANTIGA VILA ALTA,ALTO PARAISO
+PR,IBATI,IBAITI
+RJ,CAPITAL,RIO DE JANEIRO
+RJ,PARATI,PARATY
+RJ,ARARUMA,ARARUAMA
+RJ,BARRA DO PARAI,BARRA DO PIRAI
+RJ,CASEMIRO DE ABREU,CASIMIRO DE ABREU
+RJ,CONDEIRO,CORDEIRO
+RJ,ITAPERUMA,ITAPERUNA
+RJ,LAJE DE MURIAE,LAJE DO MURIAE
+RJ,RIO DE JANEIRO CAPITAL,RIO DE JANEIRO
+RJ,SAO FRANCISCO DO ITABAPOANA,SAO FRANCISCO DE ITABAPOANA
+RJ,SAO JOAO DE MERETI,SAO JOAO DE MERITI
+RJ,TRAJANO DE MORAES,TRAJANO DE MORAIS
+RJ,ARMAÇÃO DE BÚZIOS,ARMAÇÃO DOS BÚZIOS
+RJ,RIO DE JANEIRO - CAPITAL,RIO DE JANEIRO
+RJ,CAMPO GRANDE,RIO DE JANEIRO
+RN,CAPITAL,NATAL
+RN,AUGUSTO SEVERO,CAMPO GRANDE
+RN,OLHO DAGUA DOS BORGES,OLHO DAGUA DO BORGES
+RS,CAPITAL,PORTO ALEGRE
+RS,SANTA TERESA,SANTA TEREZA
+RS,SAO VALETIM DO SUL,SAO VALENTIM DO SUL
+RS,VICTOR GRAEF,VICTOR GRAEFF
+RS,GRAMADOCANELA,GRAMADO
+RO,CAPITAL,PORTO VELHO
+RO,ALTA FLORESTA DOESTE,ALTA FLORESTA DO OESTE
+RO,ALVORADA DOESTE,ALVORADA DO OESTE
+RO,SANTA LUZIA DOESTE,SANTA LUZIA DO OESTE
+RO,NOVA BRASILANDIA DOESTE,NOVA BRASILANDIA DO OESTE
+RO,MACHADINHO DOESTE,MACHADINHO DO OESTE
+RO,SAO FELIPE DOESTE,SAO FELIPE DO OESTE
+SE,CAPITAL,ARACAJU
+SE,GRACHO CARDOSO,GRACCHO CARDOSO
+SP,CAPITAL,SAO PAULO
+SP,MOGI MIRIM,MOJI MIRIM
+SP,MONTE-MOR,MONTE MOR
+SP,ARAINA,ARAMINA
+SP,ATAOCA,ITAOCA
+SP,BARUEIRI,BARUERI
+SP,BERNARDINHO DE CAMPOS,BERNARDINO DE CAMPOS
+SP,BIRITIBA-MIRIM,BIRITIBA MIRIM
+SP,BORRA BONITA,BARRA BONITA
+SP,CAPIRAVI,CAPIVARI
+SP,DIADENA,DIADEMA
+SP,EUCLIDES DA CINHA PAULISTA,EUCLIDES DA CUNHA PAULISTA
+SP,GLICERO,GLICERIO
+SP,LUZIANIA,LUIZIANIA
+SP,NARAZE PAULISTA,NAZARE PAULISTA
+SP,NOVA LUSITANIA,NOVA LUZITANIA
+SP,PARAGUACU,PARAGUACU PAULISTA
+SP,PAULINA,PAULINIA
+SP,PEDRONOPOLIS,PEDRANOPOLIS
+SP,PICATU,PIACATU
+SP,PINDAMONANGABA,PINDAMONHANGABA
+SP,RIO CLARA,RIO CLARO
+SP,SANTO ANTONIO DE ALEGRIA,SANTO ANTONIO DA ALEGRIA
+SP,SAO LUIZ DO PARAITINGA,SAO LUIS DO PARAITINGA
+SP,SAO PDERO,SAO PEDRO
+SP,SAO ROQUE DO CANAA,SAO ROQUE
+SP,VOTORAMTIM,VOTORANTIM
+SP,MOGI-GUACU,MOGI GUACU
+SP,MOGI-MIRIM,MOGI MIRIM
+SP,MOJIMIRIM,MOGI MIRIM
+SP,EMBUGUACU,EMBU-GUACU
+TO,CAPITAL,PALMAS
+TO,COLINAS,COLINAS DO TOCANTINS
