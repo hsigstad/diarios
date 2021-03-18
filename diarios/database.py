@@ -18,6 +18,8 @@ def query(database, sql, flavor='sqlite3', echo=True):
             c.execute("ATTACH '{}' AS {}".format(d, name))
     return pd.read_sql(sql, conn)
 
+    return pd.read_csv(infile)
+
 
 def insert(database,
            table,
@@ -29,7 +31,6 @@ def insert(database,
            fts5=False,
            flavor='sqlite3',
            chunksize=100000,
-           read_csv=pd.read_csv,
            dtype_csv=None,
            **kwargs):
     conn = connect(database, flavor, echo=echo)
@@ -44,7 +45,7 @@ def insert(database,
         if_exists = 'append'
     for infile in files:
         print(infile)
-        df = pd.read_csv(infile, dtype=dtype_csv)
+        df = pd.read_csv(infile, dtype=dtype_csv, lineterminator='\n')
         for c in columns:
             if c not in df.columns:
                 df[c] = pd.NA

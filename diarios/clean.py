@@ -240,13 +240,13 @@ def clean_line(lines):
 def clean_classe(classes):
     classes = clean_text(classes)
     mapping = {
-        'improb': 'ACIA',
-        'popular': 'APop',
-        'publica': 'ACP',
-        'agravo de instrumento': 'AI',
-        'apelacao': 'Ap',
-        'procedimento ordinario': 'ProOrd',
-        'procedimento sumario': 'ProSum'
+        'IMPROB': 'ACIA',
+        'POPULAR': 'APop',
+        'PUBLICA': 'ACP',
+        'AGRAVO DE INSTRUMENTO': 'AI',
+        'APELACAO': 'Ap',
+        'PROCEDIMENTO ORDINARIO': 'ProOrd',
+        'PROCEDIMENTO SUMARIO': 'ProSum'
     }
     return map_regex(classes, mapping)
 
@@ -278,16 +278,16 @@ def clean_tipo_parte(keywords):
 
 def get_procedencia(
     texts,
-    regex=('(?s)((julgo\s.{0,20}procedentes?)'
+    regex=('(?s)(?i)((julgo\s.{0,20}procedentes?)'
            '(\sparcialmente\s)?(\sem\sparte.?\s)?)'),
     mapping={
-        'julg.{0,5}par.{0,10}procedente': 'parcialmente procedente',
-        'julg.{0,5} procedentes? ((parcialmente)|(em parte))':
-        'parcialmente procedente',
-        'julg.{0,5} procedente': 'procedente',
-        'julg.{0,5} improcedente': 'improcedente'
+        'JULG.{0,5}PAR.{0,10}PROCEDENTE': 'PARCIALMENTE PROCEDENTE',
+        'JULG.{0,5} PROCEDENTES? ((PARCIALMENTE)|(EM PARTE))':
+        'PARCIALMENTE PROCEDENTE',
+        'JULG.{0,5} PROCEDENTE': 'PROCEDENTE',
+        'JULG.{0,5} IMPROCEDENTE': 'IMPROCEDENTE'
     }):
-    decision = texts.str.extract(regex, flags=re.IGNORECASE)[0]
+    decision = texts.str.extract(regex)[0]
     decision = clean_text(decision)
     return map_regex(decision, mapping)
 
@@ -900,25 +900,30 @@ def get_caderno_id(diario, caderno):
 
 
 def clean_diario_text(text):
-    return clean_text(text,
-                      lower=False,
-                      drop=None,
-                      accents=True,
-                      links=False,
-                      newline=True)
+    return clean_text(
+        text,
+        upper=False,
+        lower=False,
+        drop=None,
+        accents=True,
+        links=False,
+        newline=True,
+    )
 
 
-def clean_text(text,
-               drop='^a-z0-9 ',
-               replace_character='',
-               lower=False,
-               upper=True,
-               accents=False,
-               links=False,
-               newline=False,
-               pagebreak=False,
-               multiple_spaces=False,
-               strip=True):
+def clean_text(
+    text,
+    drop='^A-Za-z0-9 ',
+    replace_character='',
+    lower=False,
+    upper=True,
+    accents=False,
+    links=False,
+    newline=False,
+    pagebreak=False,
+    multiple_spaces=False,
+    strip=True,
+):
     text = text.fillna('').astype(str)
     if not links:
         text = remove_links(text)
