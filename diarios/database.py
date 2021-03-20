@@ -56,20 +56,25 @@ def insert(database,
         if_exists = 'append'
 
 
-def create_index(database,
-                 table,
-                 columns,
-                 name,
-                 unique=False,
-                 flavor='sqlite3'):
+def create_index(
+    database,
+    table,
+    columns,
+    name,
+    unique=False,
+    flavor='sqlite3',
+    fulltext=False,
+):
     if unique:
-        unique = 'UNIQUE'
+        pre = 'UNIQUE'
+    elif fulltext:
+        pre = 'FULLTEXT'
     else:
-        unique = ''
+        pre = ''
     conn = connect(database, flavor)
     cols = ', '.join(columns)
     sql = ('CREATE {0} INDEX {1} '
-           'ON {2} ({3})'.format(unique, name, table, cols))
+           'ON {2} ({3})'.format(pre, name, table, cols))
     conn.execute(sql)
 
 
