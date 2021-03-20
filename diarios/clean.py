@@ -28,13 +28,42 @@ def get_trf_estados(trf):
 def get_trf_estados_mapping():
     return {
         'TRF1': [
-            'AC', 'AM', 'AP', 'BA', 'DF', 'GO', 'MA', 'MG', 'MT', 'PA', 'PI',
-            'RO', 'RR', 'TO'
+            'AC',
+            'AM',
+            'AP',
+            'BA',
+            'DF',
+            'GO',
+            'MA',
+            'MG',
+            'MT',
+            'PA',
+            'PI',
+            'RO',
+            'RR',
+            'TO',
         ],
-        'TRF2': ['ES', 'RJ'],
-        'TRF3': ['MS', 'SP'],
-        'TRF4': ['PR', 'RS', 'SC'],
-        'TRF5': ['AL', 'CE', 'PB', 'PE', 'RN', 'SE']
+        'TRF2': [
+            'ES',
+            'RJ',
+        ],
+        'TRF3': [
+            'MS',
+            'SP',
+        ],
+        'TRF4': [
+            'PR',
+            'RS',
+            'SC',
+        ],
+        'TRF5': [
+            'AL',
+            'CE',
+            'PB',
+            'PE',
+            'RN',
+            'SE',
+        ]
     }
 
 
@@ -65,33 +94,33 @@ def clean_estado(estado):
 
 def get_estado_mapping():
     return {
-        'acre': 'AC',
-        'alagoas': 'AL',
-        'amapa': 'AP',
-        'amazonas': 'AM',
-        'bahia': 'BA',
-        'ceara': 'CE',
-        'distrito federal': 'DF',
-        'espirito santo': 'ES',
-        'goias': 'GO',
-        'maranhao': 'MA',
-        'mato grosso': 'MT',
-        'mato grosso do sul': 'MS',
-        'minas gerais': 'MG',
-        'para': 'PA',
-        'paraiba': 'PB',
-        'parana': 'PR',
-        'pernambuco': 'PE',
-        'piaui': 'PI',
-        'rio de janeiro': 'RJ',
-        'rio grande do norte': 'RN',
-        'rio grande do sul': 'RS',
-        'rondonia': 'RO',
-        'roraima': 'RR',
-        'sao paolo': 'SP',
-        'santa catarina': 'SC',
-        'sergipe': 'SE',
-        'tocantins': 'TO'
+        'ACRE': 'AC',
+        'ALAGOAS': 'AL',
+        'AMAPA': 'AP',
+        'AMAZONAS': 'AM',
+        'BAHIA': 'BA',
+        'CEARA': 'CE',
+        'DISTRITO FEDERAL': 'DF',
+        'ESPIRITO SANTO': 'ES',
+        'GOIAS': 'GO',
+        'MARANHAO': 'MA',
+        'MATO GROSSO': 'MT',
+        'MATO GROSSO DO SUL': 'MS',
+        'MINAS GERAIS': 'MG',
+        'PARA': 'PA',
+        'PARAIBA': 'PB',
+        'PARANA': 'PR',
+        'PERNAMBUCO': 'PE',
+        'PIAUI': 'PI',
+        'RIO DE JANEIRO': 'RJ',
+        'RIO GRANDE DO NORTE': 'RN',
+        'RIO GRANDE DO SUL': 'RS',
+        'RONDONIA': 'RO',
+        'RORAIMA': 'RR',
+        'SAO PAOLO': 'SP',
+        'SANTA CATARINA': 'SC',
+        'SERGIPE': 'SE',
+        'TOCANTINS': 'TO',
     }
 
 
@@ -208,16 +237,20 @@ def clean_date(dates):
         '/', '-').str.extract('([0-9]{4}-[0-9]{2}-[0-9]{2})'))
 
 
-def clean_parte(
-        partes,
-        delete=None,
-        remove='[^ ]+:.*',
-        remove_after=['(^| )dra?s? ', '^(os?|as?|s) ', ' e outro.*', ' e$'],
-        mapping={
-            'ministerio publico': 'mp',
-            'justica publica': 'mp'
-        },
-        **kwargs):
+def clean_parte(partes,
+                delete=None,
+                remove='[^ ]+:.*',
+                remove_after=[
+                    '(^| )DRA?S? ',
+                    '^(OS?|AS?|S) ',
+                    ' E OUTRO.*',
+                    ' E$',
+                ],
+                mapping={
+                    'MINISTERIO PUBLICO': 'MP',
+                    'JUSTICA PUBLICA': 'MP'
+                },
+                **kwargs):
     if type(remove) == list:
         remove = '|'.join(remove)
     if type(remove_after) == list:
@@ -252,26 +285,26 @@ def clean_classe(classes):
 
 
 def clean_parte_key(keywords):
-    return (clean_text(keywords).str.replace(' a?o?s?$', '').str.strip())
+    return (clean_text(keywords).str.replace(' A?O?S?$', '').str.strip())
 
 
 def clean_tipo_parte(keywords):
     mapping = {
-        'interessado': 'third party',
-        'vitim': 'victim',
-        'adv|dr|repr': 'lawyer',  # has to be before defd and plaintiff        
-        'autor do fato': 'defendant',
-        'autor|ente$|ante$|reqte|exeqte': 'plaintiff',
-        'lit at|ativ': 'plaintiff',
-        '^-$|^\*\*$': 'plaintiff',
-        'promotor': 'plaintiff',
-        'reu|^res?$|parte re|dos?$|das?$': 'defendant',
-        'requerid': 'defendant',
-        'requerent': 'plaintiff',
-        'reqd|exectd': 'defendant',
-        '^x$': 'defendant',
-        'passiv|lit pa?s|litispa': 'defendant',
-        'paciente': 'paciente'
+        'INTERESSADO': 'THIRD PARTY',
+        'VITIM': 'VICTIM',
+        'ADV|DR|REPR': 'LAWYER',  # HAS TO BE BEFORE DEFD AND PLAINTIFF        
+        'AUTOR DO FATO': 'DEFENDANT',
+        'AUTOR|ENTE$|ANTE$|REQTE|EXEQTE': 'PLAINTIFF',
+        'LIT AT|ATIV': 'PLAINTIFF',
+        '^-$|^\*\*$': 'PLAINTIFF',
+        'PROMOTOR': 'PLAINTIFF',
+        'REU|^RES?$|PARTE RE|DOS?$|DAS?$': 'DEFENDANT',
+        'REQUERID': 'DEFENDANT',
+        'REQUERENT': 'PLAINTIFF',
+        'REQD|EXECTD': 'DEFENDANT',
+        '^X$': 'DEFENDANT',
+        'PASSIV|LIT PA?S|LITISPA': 'DEFENDANT',
+        'PACIENTE': 'PACIENTE',
     }
     return map_regex(keywords, mapping)
 
@@ -298,63 +331,63 @@ def get_plaintiffwins(decision, parcial=1):
 
 def get_plaintiffwins_mapping(parcial=1):
     return {
-        'improcedente': 0,
-        'parcialmente procedente': parcial,
-        'procedente': 1,
-        'recebo inicial': 1,
-        'rejeito inicial': 0,
-        'defiro liminar': 1,
-        'indefiro liminar': 0,
-        'defiro desbloqueio': 0,
-        'indefiro desbloqueio': 1,
-        'defiro bloqueio': 1,
-        'indefiro bloqueio': 0,
-        'mantenho bloqueio': 1,
-        'rejeito embargos': 1,
-        'preliminar não acholida': 1,
-        'extinto sem merito': 0,
-        'extinto punibilidade': 0,
-        'deram': 1,
-        'negar': 0,
-        'denegar': 0,
-        'rejeit': 0,
-        'nao conhecer': 0
+        'IMPROCEDENTE': 0,
+        'PARCIALMENTE PROCEDENTE': PARCIAL,
+        'PROCEDENTE': 1,
+        'RECEBO INICIAL': 1,
+        'REJEITO INICIAL': 0,
+        'DEFIRO LIMINAR': 1,
+        'INDEFIRO LIMINAR': 0,
+        'DEFIRO DESBLOQUEIO': 0,
+        'INDEFIRO DESBLOQUEIO': 1,
+        'DEFIRO BLOQUEIO': 1,
+        'INDEFIRO BLOQUEIO': 0,
+        'MANTENHO BLOQUEIO': 1,
+        'REJEITO EMBARGOS': 1,
+        'PRELIMINAR NÃO ACHOLIDA': 1,
+        'EXTINTO SEM MERITO': 0,
+        'EXTINTO PUNIBILIDADE': 0,
+        'DERAM': 1,
+        'NEGAR': 0,
+        'DENEGAR': 0,
+        'REJEIT': 0,
+        'NAO CONHECER': 0,
     }
 
 
 def clean_decision(decisions, grau='1'):
     decisions = clean_text(decisions)
     mapping = {
-        'julgo .{0,5}par.{0,10}procedente': 'parcialmente procedente',
-        'julgo.{0,5} procedentes? ((parcialmente)|(em parte))':
-        'parcialmente procedente',
-        'julgo.{0,5} procedente': 'procedente',
-        'julgo.{0,5} improcedente': 'improcedente',
-        'indefiro.{0,20}desbloqueio': 'indefiro desbloqueio',
-        '^defiro.{0,20}desbloqueio': 'defiro desbloqueio',
-        'recebo.{0,20}( acao|inicial)': 'recebo inicial',
-        '^defiro.{0,20}bloqueio': 'defiro bloqueio',
-        '^defiro.{0,20}liminar': 'defiro liminar',
-        'indefiro.{0,20}bloqueio': 'indefiro bloqueio',
-        'indefiro.{0,20}liminar': 'indefiro liminar',
-        'mantenho.{0,20}bloqueio': 'mantenho bloqueio',
-        'embargos.{0,30}rejeit': 'rejeito embargos',
-        'preliminar.{0,10}nao.{0,10}acholidas': 'indefiro liminar',
-        '(indef|rejeit).{0,20}( acao|inicial)': 'rejeito inicial',
-        'rejeito.{0,20}embargos': 'rejeito embargos',
-        'homologo.{0,70}acordo': 'homologo acordo',
-        'homologada.{0,10}transacao': 'homologo acordo',
-        'homologo.{0,40}pedido de desistencia': 'homologo desistencia',
-        'sem .{10,20} merito': 'extinto sem merito',
-        'extint.{0,20}punibilidade': 'extinto punibilidade'
+        'JULGO .{0,5}PAR.{0,10}PROCEDENTE': 'PARCIALMENTE PROCEDENTE',
+        'JULGO.{0,5} PROCEDENTES? ((PARCIALMENTE)|(EM PARTE))':
+        'PARCIALMENTE PROCEDENTE',
+        'JULGO.{0,5} PROCEDENTE': 'PROCEDENTE',
+        'JULGO.{0,5} IMPROCEDENTE': 'IMPROCEDENTE',
+        'INDEFIRO.{0,20}DESBLOQUEIO': 'INDEFIRO DESBLOQUEIO',
+        '^DEFIRO.{0,20}DESBLOQUEIO': 'DEFIRO DESBLOQUEIO',
+        'RECEBO.{0,20}( ACAO|INICIAL)': 'RECEBO INICIAL',
+        '^DEFIRO.{0,20}BLOQUEIO': 'DEFIRO BLOQUEIO',
+        '^DEFIRO.{0,20}LIMINAR': 'DEFIRO LIMINAR',
+        'INDEFIRO.{0,20}BLOQUEIO': 'INDEFIRO BLOQUEIO',
+        'INDEFIRO.{0,20}LIMINAR': 'INDEFIRO LIMINAR',
+        'MANTENHO.{0,20}BLOQUEIO': 'MANTENHO BLOQUEIO',
+        'EMBARGOS.{0,30}REJEIT': 'REJEITO EMBARGOS',
+        'PRELIMINAR.{0,10}NAO.{0,10}ACHOLIDAS': 'INDEFIRO LIMINAR',
+        '(INDEF|REJEIT).{0,20}( ACAO|INICIAL)': 'REJEITO INICIAL',
+        'REJEITO.{0,20}EMBARGOS': 'REJEITO EMBARGOS',
+        'HOMOLOGO.{0,70}ACORDO': 'HOMOLOGO ACORDO',
+        'HOMOLOGADA.{0,10}TRANSACAO': 'HOMOLOGO ACORDO',
+        'HOMOLOGO.{0,40}PEDIDO DE DESISTENCIA': 'HOMOLOGO DESISTENCIA',
+        'SEM .{10,20} MERITO': 'EXTINTO SEM MERITO',
+        'EXTINT.{0,20}PUNIBILIDADE': 'EXTINTO PUNIBILIDADE',
     }
     if grau == '2':
         mapping = {
-            'deram': 'deram',
-            'negar': 'negar',
-            'denegar': 'denegar',
-            'rejeit': 'rejeit',
-            'nao conhecer': 'nao conhecer'
+            'DERAM': 'DERAM',
+            'NEGAR': 'NEGAR',
+            'DENEGAR': 'DENEGAR',
+            'REJEIT': 'REJEIT',
+            'NAO CONHECER': 'NAO CONHECER',
         }
     return map_regex(decisions, mapping)
 
@@ -495,26 +528,37 @@ def remove_regexes(texts, regex_list, flags='(?s)'):
 
 def get_decision(texts, grau='1'):
     regex_list = [
-        '(julgo .{0,20}procedentes?)( parcialmente )?( em parte.? )?',
-        'recebo .{0,20}( acao|inicial)', 'inicial .{0,20}recebida',
-        'dou .{0,20}saneado', 'preliminares.{0,20}acolhidas',
-        'mantenho a decisao agravada', 'recebo a apelacao',
-        'declaro encerrada a instrucao processual',
-        'mantenho .{0,20}bloqueios?', '(in)?defiro .{0,20}desbloqueio',
-        'recebo os embargos.{0,40}rejeito', 'declaro suspenso',
-        'defiro .{0,20}bloqueio', 'conheco .{0,10}embargos.{0,20}provimento',
-        '(in)?defiro .{0,20}liminar',
-        'rejeit(o|a) .{0,30}( acao|inicial|embargos)',
-        'indef(erida|iro).{0,20}inicial', 'homologo .{0,70}acordo',
-        'homologada .{0,10}transacao', 'homologo .{0,40}pedido de desistencia',
-        'extingo .{10,30} sem .{10,20} merito', 'extint.{0,20}punibilidade',
-        'homologo .{0,10}desistencia.{0,20}testemunhas?'
+        '(JULGO .{0,20}PROCEDENTES?)( PARCIALMENTE )?( EM PARTE.? )?',
+        'RECEBO .{0,20}( ACAO|INICIAL)',
+        'INICIAL .{0,20}RECEBIDA',
+        'DOU .{0,20}SANEADO',
+        'PRELIMINARES.{0,20}ACOLHIDAS',
+        'MANTENHO A DECISAO AGRAVADA',
+        'RECEBO A APELACAO',
+        'DECLARO ENCERRADA A INSTRUCAO PROCESSUAL',
+        'MANTENHO .{0,20}BLOQUEIOS?',
+        '(IN)?DEFIRO .{0,20}DESBLOQUEIO',
+        'RECEBO OS EMBARGOS.{0,40}REJEITO',
+        'DECLARO SUSPENSO',
+        'DEFIRO .{0,20}BLOQUEIO',
+        'CONHECO .{0,10}EMBARGOS.{0,20}PROVIMENTO',
+        '(IN)?DEFIRO .{0,20}LIMINAR',
+        'REJEIT(O|A) .{0,30}( ACAO|INICIAL|EMBARGOS)',
+        'INDEF(ERIDA|IRO).{0,20}INICIAL',
+        'HOMOLOGO .{0,70}ACORDO',
+        'HOMOLOGADA .{0,10}TRANSACAO',
+        'HOMOLOGO .{0,40}PEDIDO DE DESISTENCIA',
+        'EXTINGO .{10,30} SEM .{10,20} MERITO',
+        'EXTINT.{0,20}PUNIBILIDADE',
+        'HOMOLOGO .{0,10}DESISTENCIA.{0,20}TESTEMUNHAS?',
     ]
     if grau == '2':
-        regex_list = [('(rejei|deram|negar|denegar|nao conhecer)'
-                       '.{0,40}(recurso|interno|agravo|embargos|ordem)'
-                       '(.{0,5}v\. ?u\.)?'),
-                      '(recurso.{0,20}provido)(.{0,5}v\. ?u\.)?']
+        regex_list = [
+            ('(REJEI|DERAM|NEGAR|DENEGAR|NAO CONHECER)'
+             '.{0,40}(RECURSO|INTERNO|AGRAVO|EMBARGOS|ORDEM)'
+             '(.{0,5}V\. ?U\.)?'),
+            '(RECURSO.{0,20}PROVIDO)(.{0,5}V\. ?U\.)?',
+        ]
     return extract_from_list(texts, regex_list)
 
 
@@ -1056,28 +1100,28 @@ def clean_integer(sr):
 
 def get_integer_mapping():
     return {
-        'uma?': '1',
-        'dois': '2',
-        'duas': '2',
-        'duplo': '2',
-        'tres': '3',
-        'triplo': '3',
-        'quatro': '4',
-        'cinco': '5',
-        'seis': '6',
-        'sete': '7',
-        'oito': '8',
-        'nove': '9',
-        'dez': '10',
-        'vinte': '20',
-        'trinta': '30',
-        'quarenta': '40',
-        'cinquenta': '50',
-        'sessenta': '60',
-        'setenta': '70',
-        'oitenta': '80',
-        'noventa': '90',
-        'cem': '100'
+        'UMA?': '1',
+        'DOIS': '2',
+        'DUAS': '2',
+        'DUPLO': '2',
+        'TRES': '3',
+        'TRIPLO': '3',
+        'QUATRO': '4',
+        'CINCO': '5',
+        'SEIS': '6',
+        'SETE': '7',
+        'OITO': '8',
+        'NOVE': '9',
+        'DEZ': '10',
+        'VINTE': '20',
+        'TRINTA': '30',
+        'QUARENTA': '40',
+        'CINQUENTA': '50',
+        'SESSENTA': '60',
+        'SETENTA': '70',
+        'OITENTA': '80',
+        'NOVENTA': '90',
+        'CEM': '100',
     }
 
 

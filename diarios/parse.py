@@ -164,7 +164,7 @@ class CaseParser:
 
     def _drop_partes(self, df):
         df = df.loc[df.parte != ""]
-        df = df.loc[(df.parte.str.len() > 8) | (df.parte == 'mp')
+        df = df.loc[(df.parte.str.len() > 8) | (df.parte == 'MP')
                     | df.parte.str.match('[0-9]+/[A-Z]{2}')]
         return df
 

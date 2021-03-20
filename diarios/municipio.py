@@ -1,11 +1,10 @@
+import path
 import pandas as pd
 import sys
 import os
 import glob
 import re
 from unidecode import unidecode
-import sys
-sys.path.append('/home/henrik/Dropbox/brazil/diarios')
 from diarios.misc import get_user_config
 from diarios.clean import clean_text
 from diarios.clean import transform
@@ -16,145 +15,83 @@ from diarios.clean import get_municipio_id
 
 
 def main():
-    mun = pd.read_csv('data/municipio_id.csv')
+    mun = pd.read_csv('diarios/data/municipio_id.csv')
     mun_comarca = get_municipio_comarca()
     mun_comarca = clean_municipio_comarca(mun_comarca)
     mun_ibge = get_mun_ibge()
-    mun = pd.merge(
-        mun,
-        mun_ibge,
-        on='municipio_id',
-        how='left'
-    )
-    mun = pd.merge(
-        mun,
-        mun_comarca,
-        on='ibge6',
-        how='left'
-    )
+    mun = pd.merge(mun, mun_ibge, on='municipio_id', how='left')
+    mun = pd.merge(mun, mun_comarca, on='ibge6', how='left')
     # NB: 277 where comarca_id and
     # comarca_id2 disagree.
     # Using comarca_id for those cases.
     mun = impute_comarca_id(mun)
-    mun['estado'] = transform(
-        mun.estado_id,
-        'estado_id', 'estado'
-    )
+    mun['estado'] = transform(mun.estado_id, 'estado_id', 'estado')
     mun = add_subsecao_id(mun)
-    mun = (
-        mun.loc[:, (
-            'municipio_id', 'municipio',
-            'municipio_accents',
-            'ibge7',
-            'ibge6', 'estado',
-            'estado_id', 'comarca_id',
-            'subsecao_id'
-        )]
-        .query('municipio_id.notnull()')
-        .drop_duplicates('municipio_id')
-        .sort_values('municipio_id')
-    )
-    mun.to_csv('data/municipio.csv', index=False)
-    outfile = os.path.join(
-        get_user_config('external_dropbox_directory'),
-        'municipios',
-        'municipio.csv'
-    )
-    mun.to_csv(outfile, index=False)    
+    mun = (mun.loc[:, ('municipio_id', 'municipio', 'municipio_accents',
+                       'ibge7', 'ibge6', 'estado', 'estado_id', 'comarca_id',
+                       'subsecao_id')].query('municipio_id.notnull()').
+           drop_duplicates('municipio_id').sort_values('municipio_id'))
+    mun.to_csv('diarios/data/municipio.csv', index=False)
     return mun
 
 
 def get_mun_ibge():
     infile = os.path.join(
-        get_user_config('external_dropbox_directory'),
+        path.db_dir,
         'municipios',
         'clean',
-        'municipios_all_codes.csv'        
+        'municipios_all_codes.csv',
     )
     cols = {
         'id_TSE': 'municipio_id',
         'id_munic_6': 'ibge6',
-        'id_munic_7': 'ibge7',        
+        'id_munic_7': 'ibge7',
         'id_judicial_district': 'comarca7'
     }
-    df = pd.read_csv(
-        infile,
-        usecols=cols.keys()
-    ).rename(columns=cols)
-    cid = (
-        df.loc[:, ('ibge7', 'municipio_id')]
-        .rename(columns={
-            'municipio_id': 'comarca_id2',
-            'ibge7': 'comarca7'
-        })
-    )
-    df = df.merge(
-        cid, on='comarca7',
-        how='left'
-    )
+    df = pd.read_csv(infile, usecols=cols.keys()).rename(columns=cols)
+    cid = (df.loc[:, ('ibge7', 'municipio_id')].rename(columns={
+        'municipio_id': 'comarca_id2',
+        'ibge7': 'comarca7'
+    }))
+    df = df.merge(cid, on='comarca7', how='left')
     df = df.drop(['comarca7', 'ibge7'], 1)
     return df
 
-    
+
 def get_municipio_comarca():
-    indir = os.path.join(
-        get_user_config('external_dropbox_directory'),
-        'comarcas'
-    )
-    infiles = [
-        os.path.join(indir, f) for f in os.listdir(indir)
-    ]
-    return pd.concat(
-        map(pd.read_csv, infiles),
-        sort=True
-    )
+    indir = os.path.join(path.db_dir, 'comarcas')
+    infiles = [os.path.join(indir, f) for f in os.listdir(indir)]
+    return pd.concat(map(pd.read_csv, infiles), sort=True)
 
 
 def clean_municipio_comarca(municipio):
-    municipio['comarca'] = clean_text(
-        municipio['comarca'],
-        drop='^a-z\- '        
-    )
-    municipio['ibge6'] = municipio['muni_code']//10
-    municipio['estado_id'] = transform(
-        municipio.muni_state,
-        'estado', 'estado_id'
-    )
-    municipio = add_comarca_id(municipio)  
-    municipio = (
-        municipio
-        .loc[:, ('estado_id', 'muni_name',
-                 'muni_code', 'ibge6',
-                 'comarca_id')]        
-        .rename(columns={
-            'muni_code': 'ibge7',
-            'muni_name': 'municipio_accents'
-        })     
-        .drop_duplicates()
-        .sort_values(['estado_id'])
-    )
+    municipio['comarca'] = clean_text(municipio['comarca'], drop='^A-Z\- ')
+    municipio['ibge6'] = municipio['muni_code'] // 10
+    municipio['estado_id'] = transform(municipio.muni_state, 'estado',
+                                       'estado_id')
+    municipio = add_comarca_id(municipio)
+    municipio['muni_name'] = municipio['muni_name'].str.upper()
+    municipio = (municipio.loc[:, ('estado_id', 'muni_name', 'muni_code',
+                                   'ibge6', 'comarca_id')].rename(
+                                       columns={
+                                           'muni_code': 'ibge7',
+                                           'muni_name': 'municipio_accents'
+                                       }).drop_duplicates().sort_values(
+                                           ['estado_id']))
     return municipio
 
 
 def add_comarca_id(municipio):
     comarca = get_data('comarca.csv')
-    comarca = (
-        comarca
-        .loc[:, ('comarca_id',
-                 'comarca', 'estado_id')]
-    )
-    return pd.merge(
-        municipio, comarca,
-        on=['comarca', 'estado_id'],
-        how='left'
-    )
+    comarca = (comarca.loc[:, ('comarca_id', 'comarca', 'estado_id')])
+    return pd.merge(municipio,
+                    comarca,
+                    on=['comarca', 'estado_id'],
+                    how='left')
 
 
-def impute_comarca_id(mun):    
-    mun.loc[
-        mun.comarca_id.isnull(),
-        'comarca_id'
-    ] = mun.comarca_id2
+def impute_comarca_id(mun):
+    mun.loc[mun.comarca_id.isnull(), 'comarca_id'] = mun.comarca_id2
     mun = mun.drop('comarca_id2', 1)
     return mun
 
@@ -162,21 +99,23 @@ def impute_comarca_id(mun):
 def add_subsecao_id(municipio):
     df = get_subsecao()
     df = clean_subsecao(df)
-    return pd.merge(
-        municipio, df,
-        on=['municipio_id'],
-        validate='m:1',
-        how='left'
-    )    
+    return pd.merge(municipio,
+                    df,
+                    on=['municipio_id'],
+                    validate='m:1',
+                    how='left')
 
 
 def get_subsecao():
     infile = os.path.join(
-        get_user_config('external_dropbox_directory'),
+        path.db_dir,
         'subsecoes',
-        'Organização Justiça Federal.xlsx'
+        'Organização Justiça Federal.xlsx',
     )
-    return pd.read_excel(infile)
+    return pd.read_excel(
+        infile,
+        engine='openpyxl',
+    )
 
 
 def clean_subsecao(df):
@@ -187,13 +126,8 @@ def clean_subsecao(df):
         'Município sede': 'sede',
         'Jurisdição': 'municipio'
     }
-    df = (
-        df.rename(columns=cols)
-        .loc[:, cols.values()]
-    )
-    df['sede'] = df.sede.str.replace(
-        'Altamira\( exceto.*', 'Altamira'
-    )
+    df = (df.rename(columns=cols).loc[:, cols.values()])
+    df['sede'] = df.sede.str.replace('Altamira\( exceto.*', 'Altamira')
     sede = df.drop(columns='municipio').drop_duplicates()
     sede['municipio'] = sede.sede
     df = pd.concat([df, sede])
@@ -205,14 +139,11 @@ def clean_subsecao(df):
     df = df.loc[df.subsecao_id.notnull()]
     df = df.drop_duplicates()
     for row in get_wrong_rows():
-        df = df.loc[~(
-            (df.estado == row[0]) &
-            (df.municipio == row[1]) &
-            (df.subsecao == row[2])
-        )]
-    df = df.drop_duplicates('municipio_id') #NB!!!
+        df = df.loc[~((df.estado == row[0]) & (df.municipio == row[1]) &
+                      (df.subsecao == row[2]))]
+    df = df.drop_duplicates('municipio_id')  #NB!!!
     return df.loc[:, ('municipio_id', 'subsecao_id')]
-    
+
 
 def get_wrong_rows():
     return [
@@ -228,10 +159,10 @@ def get_wrong_rows():
         # âmbito de sua competência.
         # Art. 15. A Subseção de Serra, composta por uma Vara Federal de competência cível,
         # incluindo Juizado Especial Federal Adjunto, alcança a extensão territorial dos
-        # municípios de Serra e Fundão, observado o disposto no artigo anterior. 
+        # municípios de Serra e Fundão, observado o disposto no artigo anterior.
         ['RJ', 'belford roxo', 'sao joao de meriti'],
         ['RJ', 'duque de caxias', 'sao joao de meriti'],
-        ['RJ', 'japeri' ,'sao joao de meriti'],
+        ['RJ', 'japeri', 'sao joao de meriti'],
         ['RJ', 'queimados', 'sao joao de meriti'],
         # Municípios de Belfort Roxo, Queimados, Japeri e Duque de
         # Caxias: A subseção de Duque de Caxias alcança esses
@@ -242,6 +173,7 @@ def get_wrong_rows():
         # Federais de São João de Meriti.
         ['MG', 'santa vitoria', 'uberlandia']
     ]
+
 
 df = main()
 print(df.sample().iloc[0])
