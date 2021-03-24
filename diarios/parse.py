@@ -247,6 +247,7 @@ def clean_diario_proc(proc, number_types=['CNJ']):
 
 def clean_diario_mov(mov):
     mov['caderno_id'] = clean.get_caderno_id(mov['tribunal'], mov['caderno'])
+    mov['line_end'] = (pd.to_numeric(mov['line']) + mov.text.str.count('\n'))
     return mov
 
 

@@ -73,8 +73,12 @@ def create_index(
         pre = ''
     conn = connect(database, flavor)
     cols = ', '.join(columns)
-    sql = ('CREATE {0} INDEX {1} '
-           'ON {2} ({3})'.format(pre, name, table, cols))
+    sql = 'DROP INDEX {} ON {}'.format(name, table)
+    try:
+        conn.execute(sql)
+    except:
+        pass
+    sql = 'CREATE {} INDEX {} ON {} ({})'.format(pre, name, table, cols)
     conn.execute(sql)
 
 

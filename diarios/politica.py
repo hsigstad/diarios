@@ -9,20 +9,20 @@ def split_coalition(coalition, name='party'):
 
 
 def get_district(df):
-    district = np.where(df.office.isin(['prefeito', 'vereador']),
+    district = np.where(df.office.isin(['PREFEITO', 'VEREADOR']),
                         df.municipio_id, df.estado)
     return district
 
 
 def get_office_type(office):
     mapping = {
-        'vereador': 'pr',
-        'deputado estadual': 'pr',
-        'deputado federal': 'pr',
-        'prefeito': 'majority',
-        'governador': 'majority',
-        'presidente': 'majority',
-        'senador': 'majority'
+        'VEREADOR': 'pr',
+        'DEPUTADO ESTADUAL': 'pr',
+        'DEPUTADO FEDERAL': 'pr',
+        'PREFEITO': 'majority',
+        'GOVERNADOR': 'majority',
+        'PRESIDENTE': 'majority',
+        'SENADOR': 'majority'
     }
     return office.map(mapping)
 

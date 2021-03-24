@@ -314,11 +314,10 @@ def get_procedencia(
     regex=('(?s)(?i)((julgo\s.{0,20}procedentes?)'
            '(\sparcialmente\s)?(\sem\sparte.?\s)?)'),
     mapping={
-        'JULG.{0,5}PAR.{0,10}PROCEDENTE': 'PARCIALMENTE PROCEDENTE',
-        'JULG.{0,5} PROCEDENTES? ((PARCIALMENTE)|(EM PARTE))':
-        'PARCIALMENTE PROCEDENTE',
-        'JULG.{0,5} PROCEDENTE': 'PROCEDENTE',
-        'JULG.{0,5} IMPROCEDENTE': 'IMPROCEDENTE'
+        'PAR.{0,10}PROCEDENTE': 'PARCIALMENTE PROCEDENTE',
+        'PROCEDENTES? ((PARCIALMENTE)|(EM PARTE))': 'PARCIALMENTE PROCEDENTE',
+        r'\bPROCEDENTE': 'PROCEDENTE',
+        r'\bIMPROCEDENTE': 'IMPROCEDENTE',
     }):
     decision = texts.str.extract(regex)[0]
     decision = clean_text(decision)
@@ -965,12 +964,15 @@ def clean_text(
     links=False,
     newline=False,
     pagebreak=False,
+    cr=False,
     multiple_spaces=False,
     strip=True,
 ):
     text = text.fillna('').astype(str)
     if not links:
         text = remove_links(text)
+    if not cr:
+        text = text.str.replace(r'\r', '\n')
     if not newline:
         text = text.str.replace('\n', ' ')
     if not pagebreak:
@@ -1145,9 +1147,10 @@ def clean_oab(sr):
     return cleaned
 
 
-def clean_cpf(cpf):
+def clean_cpf(cpf, as_str=False):
     cpf = pd.to_numeric(cpf, errors='coerce')
-    cpf = cpf.astype(str).str.replace('\.0$', '').str.zfill(11)
+    if as_str:
+        cpf = cpf.astype(str).str.replace('\.0$', '').str.zfill(11)
     return cpf
 
 
