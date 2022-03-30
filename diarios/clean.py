@@ -801,11 +801,11 @@ def get_tribunal(series, input_type="number", output="tribunal"):
         return series.to_frame(name="diario").join(diario, on="diario").loc[:, (output)]
 
 
-def transform(x, from_var, to_var, keep_unmatched=False):
+def transform(x, from_var, to_var, keep_unmatched=False, indir=None):
     if type(x) == list:
         x = pd.Series(x)
     infile = "{}.csv".format(from_var.replace("_id", ""))
-    df = get_data(infile).set_index(from_var)
+    df = get_data(infile, indir=indir).set_index(from_var)
     if type(x) == pd.Series:
         df = x.to_frame(name=from_var).join(df, on=from_var, how="left")
         if keep_unmatched:
@@ -975,8 +975,11 @@ def clean_text_columns(df, exclude=[], drop="^A-Z0-9 ", **kwargs):
     return df
 
 
-def get_data(datafile):
-    infile = get_data_file(datafile)
+def get_data(datafile, indir=None):
+    if indir is not None:
+        infile = os.path.join(indir, datafile)
+    else:
+        infile = get_data_file(datafile)
     return pd.read_csv(infile)
 
 
