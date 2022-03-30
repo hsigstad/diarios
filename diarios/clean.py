@@ -815,6 +815,12 @@ def transform(x, from_var, to_var, keep_unmatched=False, infile=None):
         if keep_unmatched:
             df[to_var] = df[to_var].fillna(df[from_var])
         return df[to_var]
+    if type(x) == pd.DataFrame:
+        x.columns = from_var
+        df = x.join(df, on=from_var, how="left")
+        if keep_unmatched:
+            raise ValueError("keep_unmatched not supported for dataframes")
+        return df[to_var]
     else:
         return df.loc[x, to_var]
 
