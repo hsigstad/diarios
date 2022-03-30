@@ -801,7 +801,7 @@ def get_tribunal(series, input_type="number", output="tribunal"):
         return series.to_frame(name="diario").join(diario, on="diario").loc[:, (output)]
 
 
-def transform(x, from_var, to_var, keep_unmatched=False, infile=None):
+def transform(x, from_var, to_var, keep_unmatched=False, infile=None, dropna=True):
     if type(x) == list:
         x = pd.Series(x)
     if infile is not None:
@@ -809,17 +809,21 @@ def transform(x, from_var, to_var, keep_unmatched=False, infile=None):
     else:
         infile = "{}.csv".format(from_var.replace("_id", ""))
         df = get_data(infile)
+    if (type(from_var) == list) and len(from_var) == 1:
+        from_var = from_var[0]
+    if dropna:
+        df = df[df[from_var].notnull()]
     df = df.set_index(from_var)
-    if type(x) == pd.Series:
-        df = x.to_frame(name=from_var).join(df, on=from_var, how="left")
-        if keep_unmatched:
-            df[to_var] = df[to_var].fillna(df[from_var])
-        return df[to_var]
     if type(x) == pd.DataFrame:
         x.columns = from_var
         df = x.join(df, on=from_var, how="left")
         if keep_unmatched:
             raise ValueError("keep_unmatched not supported for dataframes")
+        return df[to_var]
+    if type(x) == pd.Series:
+        df = x.to_frame(name=from_var).join(df, on=from_var, how="left")
+        if keep_unmatched:
+            df[to_var] = df[to_var].fillna(df[from_var])
         return df[to_var]
     else:
         return df.loc[x, to_var]
