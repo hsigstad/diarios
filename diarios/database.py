@@ -34,10 +34,7 @@ def insert(database,
            dtype_csv=None,
            **kwargs):
     conn = connect(database, flavor, echo=echo)
-    if flavor == 'sqlite3':
-        if_exists = 'replace'
-    if flavor == 'mysql':
-        if_exists = 'append'
+    if_exists = 'replace'
     if fts5:
         conn.execute("DROP TABLE IF EXISTS {};".format(table))
         conn.execute("CREATE VIRTUAL TABLE {} USING FTS5 ({});".format(
