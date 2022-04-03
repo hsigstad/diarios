@@ -802,31 +802,58 @@ def get_tribunal(series, input_type="number", output="tribunal"):
 
 
 def transform(x, from_var, to_var, keep_unmatched=False, infile=None, dropna=True):
+    from_var = _transform_clean_from_var(from_var)
+    x = _transform_clean_x(x, from_var)
+    df = _transform_get_df(infile, from_var, dropna)
+    if type(x) not in [pd.Series, pd.DataFrame]:
+        return df.loc[x, to_var]
+    df = x.join(df, on=from_var, how="left")
+    if keep_unmatched:
+        if type(x) == pd.DataFrame:
+            raise ValueError("keep_unmatched not supported for dataframes")
+        df[to_var] = df[to_var].fillna(df[from_var])
+    return df[to_var]
+
+
+def _transform_clean_x(x, from_var):
     if type(x) == list:
         x = pd.Series(x)
+    if type(x) == pd.DataFrame:
+        x = x.copy()
+        x.columns = from_var
+    if type(x) == pd.Series:
+        x = x.copy()
+        x = x.to_frame(name=from_var)
+    return x
+
+
+def _transform_clean_from_var(from_var):
+    if (type(from_var) == list) and (len(from_var) == 1):
+        from_var = from_var[0]
+    return from_var
+
+
+def _transform_dropna(df, from_var):
+    if type(from_var) == list:
+        for v in from_var:
+            df = df[df[v].notnull()]
+    else:
+        df = df[df[from_var].notnull()]
+    return df
+
+
+def _transform_get_df(infile, from_var, dropna):
     if infile is not None:
         df = pd.read_csv(infile)
     else:
         infile = "{}.csv".format(from_var.replace("_id", ""))
         df = get_data(infile)
-    if (type(from_var) == list) and len(from_var) == 1:
-        from_var = from_var[0]
     if dropna:
-        df = df[df[from_var].notnull()]
+        df = _transform_dropna(df, from_var)
+    if len(df) > len(df.drop_duplicates(from_var)):
+        raise ValueError("Observations not unique by {} in {}".format(from_var, infile))
     df = df.set_index(from_var)
-    if type(x) == pd.DataFrame:
-        x.columns = from_var
-        df = x.join(df, on=from_var, how="left")
-        if keep_unmatched:
-            raise ValueError("keep_unmatched not supported for dataframes")
-        return df[to_var]
-    if type(x) == pd.Series:
-        df = x.to_frame(name=from_var).join(df, on=from_var, how="left")
-        if keep_unmatched:
-            df[to_var] = df[to_var].fillna(df[from_var])
-        return df[to_var]
-    else:
-        return df.loc[x, to_var]
+    return df
 
 
 def extract_info_from_case_numbers(number, types=["CNJ"]):
