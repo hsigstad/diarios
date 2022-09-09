@@ -18,8 +18,6 @@ def query(database, sql, flavor="sqlite3", echo=True):
             c.execute("ATTACH '{}' AS {}".format(d, name))
     return pd.read_sql(sql, conn)
 
-    return pd.read_csv(infile)
-
 
 def insert(
     database,
@@ -83,7 +81,12 @@ def create_index(
         conn.execute(sql)
     except:
         pass
-    sql = "CREATE {} INDEX {} ON {} ({})".format(pre, name, table, cols)
+    if flavor == "postgresql" and fulltext:
+        sql = "CREATE INDEX {} ON {} USING GIN (to_tsvector('portuguese', {}))".format(
+            name, table, cols
+        )
+    else:
+        sql = "CREATE {} INDEX {} ON {} ({})".format(pre, name, table, cols)
     conn.execute(sql)
 
 
@@ -92,6 +95,8 @@ def connect(database, flavor, **kwargs):
         conn = sqlite3.connect(database)
     if flavor == "mysql":
         conn = get_db_engine(database, **kwargs)
+    if flavor == "postgresql":
+        conn = get_postgresql_engine(database, **kwargs)
     return conn
 
 
@@ -102,6 +107,17 @@ def get_db_engine(database, echo=True):
     engine = create_engine(
         "mysql+mysqlconnector://{0}:"
         "{1}@{2}/{3}?charset=utf8".format(user, pw, host, database),
+        echo=echo,
+    )
+    return engine
+
+
+def get_postgresql_engine(database, echo=True):
+    user = get_user_config("postgresql_user")
+    pw = get_user_config("postgresql_pw")
+    host = get_user_config("postgresql_host")
+    engine = create_engine(
+        "postgresql://{0}:" "{1}@{2}/{3}".format(user, pw, host, database),
         echo=echo,
     )
     return engine

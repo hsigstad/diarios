@@ -380,16 +380,15 @@ def inspect(
 ):
     if len(mov) == 0:
         return None
-    mov = (
-        mov.loc[(mov.text.str.len() > min_mov_length) & (mov.number != "")]
-        .merge(proc.reset_index().loc[:, "proc_id"], on="proc_id")
-        .merge(parte.loc[:, "proc_id"], on="proc_id", how="left")
-    )
+    # mov = (
+    #    mov.loc[(mov.text.str.len() > min_mov_length) & (mov.number != "")]
+    #    .merge(proc.reset_index().loc[:, "proc_id"], on="proc_id")
+    #    .merge(parte.loc[:, "proc_id"], on="proc_id", how="left")
+    # )
     ex = mov.sample().iloc[0]
     proc_id = ex.proc_id
     print(ex["text"])
     prt = parte.loc[parte[parte_level] == ex[parte_level], ("parte_id", "parte", "key")]
-    prc = proc.query("proc_id == {}".format(proc_id)).iloc[0]
     if tp == "parte":
         print("\n")
         for _, r in prt.iterrows():
@@ -399,10 +398,12 @@ def inspect(
                 for _, r in advs.iterrows():
                     print(" ", r.oab, r.advogado)
     if tp == "proc":
+        prc = proc.query("proc_id == {}".format(proc_id)).iloc[0]
         print(prc)
     if tp == "mov":
         print(ex)
     if tp == "all":
+        prc = proc.query("proc_id == {}".format(proc_id)).iloc[0]
         print(prt)
         print(ex)
         print(prc)
