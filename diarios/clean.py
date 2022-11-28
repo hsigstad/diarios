@@ -1172,5 +1172,90 @@ def clean_cpf(cpf, as_str=False):
     return cpf
 
 
+def extract_number(sr, cardinal=True, ordinal=True, numeric=True):
+    mapping = {}
+    if cardinal:
+        mapping = _get_cardinal_numbers()
+    if ordinal:
+        mapping = {**mapping, **_get_ordinal_numbers()}
+    mapping = {
+        r'\b{}\b'.format(k): v
+        for k, v in mapping.items()
+    }
+    ones = {k: v for k, v in mapping.items() if v % 10 != 0}
+    tens = {k: v for k, v in mapping.items() if v % 10 == 0 and v % 100 != 0}
+    hundreds = {k: v for k, v in mapping.items() if v % 100 == 0}
+    number = pd.Series(index=sr.index)
+    if numeric:
+        number = pd.to_numeric(sr.str.extract('([0-9]+)', expand=False))
+    if len(mapping) > 0:
+        number.loc[number.isnull()] = (
+            map_regex(sr, hundreds, keep_unmatched=False).fillna(0) +
+            map_regex(sr, tens, keep_unmatched=False).fillna(0) +
+            map_regex(sr, ones, keep_unmatched=False).fillna(0)
+        )
+    return number
+
+
+def _get_ordinal_numbers():
+    return {
+        'PRIMEIR[AO]': 1,
+        'SEGUND[AO]': 2,
+        'TERCEIR[AO]': 3,
+        'QUART[AO]': 4,
+        'QUINT[AO]': 5,
+        'SEXT[AO]': 6,
+        'SETIM[AO]': 7,
+        'OITAV[AO]': 8,
+        'NON[AO]': 9,
+        'DECIM[AO]': 10,
+        'VIGESIM[AO]': 20,
+        'TRIGESIM[AO]': 30,
+        'QUADRAGESIM[AO]': 40,
+    }
+
+def _get_cardinal_numbers():
+    return {
+        'UM[A]': 1,
+        'DOIS': 2,
+        'DUAS': 2,        
+        'TRES': 3,
+        'QUATRO': 4,
+        'CINCO': 5,
+        'SEIS': 6,
+        'SETE': 7,
+        'OITO': 8,
+        'NOVE': 9,
+        'DEZ': 10,
+        'ONZE': 11,
+        'DOZE': 12,
+        'TREZE': 13,
+        'CATORZE': 14,
+        'QUINZE': 15,
+        'DEZ[AE]SSEIS': 16,
+        'DEZ[AE]SSETE': 17,        
+        'DEZOITO': 18,
+        'DEZ[AE]NOVE': 19,                
+        'VINTE': 20,
+        'TRINTA': 30,
+        'QUARENTA': 40,
+        'CINQUENTA': 50,
+        'SESSENTA': 60,
+        'SETENTA': 70,
+        'OITENTA': 80,
+        'NOVENTA': 90,
+        'CEM': 100,
+        'CENTO': 100,
+        'DUZENT[OA]S': 200,
+        'TREZENT[OA]S': 300,
+        'QUATROCENT[OA]S': 400,
+        'QUINHENT[OA]S': 500,
+        'SEISCENT[OA]S': 600,
+        'SETECENT[OA]S': 700,
+        'OITOCENT[OA]S': 800,
+        'NOVECENT[OA]S': 900,
+        'MIL': 1000,
+    }
+
 letter = "a-zA-Z' çúáéíóàâêôãõÇÚÁÉÍÓÀÂÊÔÃÕ"
 estados = list(get_estado_mapping().values())
