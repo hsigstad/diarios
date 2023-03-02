@@ -1173,6 +1173,7 @@ def clean_cpf(cpf, as_str=False):
 
 
 def extract_number(sr, cardinal=True, ordinal=True, numeric=True):
+    sr = clean_text(sr, drop="^A-Za-z0-9 ", upper=True)
     mapping = {}
     if cardinal:
         mapping = _get_cardinal_numbers()
@@ -1194,8 +1195,34 @@ def extract_number(sr, cardinal=True, ordinal=True, numeric=True):
             map_regex(sr, tens, keep_unmatched=False).fillna(0) +
             map_regex(sr, ones, keep_unmatched=False).fillna(0)
         )
+    number.loc[number==0] = pd.NA
     return number
 
+def get_ordinal_number_regex(flags='(?i)(?s)'):
+    tens = [
+        'D[EÉ]CIM',
+        'VIG[EÉ]SIM',
+        'TRIG[EÉ]SIM',
+        'QUADRAG[EÉ]SIM',     
+    ]
+    ones = [
+        'PRIMEIR',
+        'SEGUND',
+        'TERCEIR',
+        'QUART',
+        'QUINT',
+        'SEXT',
+        'SETIM',
+        'OITAV',
+        'NON',
+        'D[EÉ]CIM',
+    ]
+    regex = r'{}\b(({})[AO]\s+)?({})[AO]\b'.format(
+        flags,
+        '|'.join(tens),
+        '|'.join(ones)
+    )
+    return regex
 
 def _get_ordinal_numbers():
     return {
