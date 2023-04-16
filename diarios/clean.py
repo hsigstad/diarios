@@ -1206,6 +1206,7 @@ def get_ordinal_number_regex(flags='(?i)(?s)'):
         'QUADRAG[EÉ]SIM',     
     ]
     ones = [
+        '[0-9]+',
         'PRIMEIR',
         'SEGUND',
         'TERCEIR',
@@ -1217,7 +1218,7 @@ def get_ordinal_number_regex(flags='(?i)(?s)'):
         'NON',
         'D[EÉ]CIM',
     ]
-    regex = r'{}\b(({})[AO]\s+)?({})[AO]\b'.format(
+    regex = r'{}\b(({})[AO]\s+)?({})[AOªº]\b'.format(
         flags,
         '|'.join(tens),
         '|'.join(ones)
