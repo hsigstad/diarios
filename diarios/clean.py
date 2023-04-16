@@ -95,8 +95,7 @@ def clean_estado(estado):
     estado = clean_text(estado)
     mapping = get_estado_mapping()
     ufs = mapping.values()
-    lower_ufs = [uf.lower() for uf in ufs]
-    uf_mapping = dict(zip(lower_ufs, ufs))
+    uf_mapping = dict(zip(ufs, ufs))
     mapping = {**mapping, **uf_mapping}
     return estado.map(mapping)
 
@@ -1174,6 +1173,7 @@ def clean_cpf(cpf, as_str=False):
 
 def extract_number(sr, cardinal=True, ordinal=True, numeric=True):
     sr = clean_text(sr, drop="^A-Za-z0-9 ", upper=True)
+    # Does not extract zero for now
     mapping = {}
     if cardinal:
         mapping = _get_cardinal_numbers()
