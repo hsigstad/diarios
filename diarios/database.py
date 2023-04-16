@@ -117,7 +117,7 @@ def get_postgresql_engine(database, echo=True):
     pw = get_user_config("postgresql_pw")
     host = get_user_config("postgresql_host")
     engine = create_engine(
-        "postgresql://{0}:" "{1}@{2}/{3}".format(user, pw, host, database),
+        "postgresql+psycopg2://{}:{}@{}/{}".format(user, pw, host, database),
         echo=echo,
     )
     return engine
