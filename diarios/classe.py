@@ -1,13 +1,12 @@
 import pandas as pd
 import os
-os.chdir('/home/henrik/Dropbox/brazil/diarios')
+os.chdir('/home/henrik/diarios')
 from diarios.misc import get_user_config
 from diarios.clean import clean_text
-os.chdir('/home/henrik/Dropbox/PEproject_andrei/code/source/parse/diarios')
 
 
 def read(infile):
-    indir = get_user_config('external_dropbox_directory')
+    indir = get_user_config('db_dir')
     infile = os.path.join(indir, 'tabelas_unificadas', 'dump', 'CSV', infile)
     return pd.read_csv(infile)
 
@@ -91,5 +90,5 @@ def get_dipositivo(classe):
 
 classe, disp = get_classe()
 
-classe.to_csv('data/classe.csv', index=False)
-disp.to_csv('data/classe_dispositivo.csv', index=False)
+classe.to_csv('diarios/data/classe.csv', index=False)
+disp.to_csv('diarios/data/classe_dispositivo.csv', index=False)
