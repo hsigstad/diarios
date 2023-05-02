@@ -23,7 +23,7 @@ def main():
                                         subset='comarca_id'))
     comarca = add_comarca_info(comarca)
     comarca = comarca.sort_values('comarca_id')
-    foro.to_csv('diarios/data/foro.csv', index=False)
+    #foro.to_csv('diarios/data/foro.csv', index=False) # Use foro.py
     comarca.to_csv('diarios/data/comarca.csv', index=False)
     return foro, comarca
 
