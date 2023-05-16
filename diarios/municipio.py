@@ -54,7 +54,7 @@ def get_mun_ibge():
         'ibge7': 'comarca7'
     }))
     df = df.merge(cid, on='comarca7', how='left')
-    df = df.drop(['comarca7', 'ibge7'], 1)
+    df = df.drop(['comarca7'], 1)
     return df
 
 
@@ -71,10 +71,9 @@ def clean_municipio_comarca(municipio):
                                        'estado_id')
     municipio = add_comarca_id(municipio)
     municipio['muni_name'] = municipio['muni_name'].str.upper()
-    municipio = (municipio.loc[:, ('estado_id', 'muni_name', 'muni_code',
+    municipio = (municipio.loc[:, ('estado_id', 'muni_name',
                                    'ibge6', 'comarca_id')].rename(
                                        columns={
-                                           'muni_code': 'ibge7',
                                            'muni_name': 'municipio_accents'
                                        }).drop_duplicates().sort_values(
                                            ['estado_id']))
