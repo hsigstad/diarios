@@ -463,6 +463,14 @@ def split_series(text, regex, text_pos="right", drop_end=False, level_name="grou
 
     Will split on first regex match so be careful
     """
+    if type(regex) == pd.Series:
+        raise TypeError("Not implemented for series of regexes")
+        text_df = pd.DataFrame({
+            'text': text,
+            'regex': regex
+        })
+        df = text_df.apply(lambda row: re.split(row.regex, row.text), 1)
+        # Not finished
     df = text.str.split(regex, expand=True).stack()
     df.index = df.index.set_names("match", level=-1)
     df = df.reset_index(level="match")
@@ -892,6 +900,9 @@ def get_tipo_parte_id(tipo_partes):
 def get_foro_id(numbers):
     return get_foro_info(numbers).loc[:, "id"]
 
+def get_foro(numbers):
+    return get_foro_info(numbers).loc[:, "foro"]
+
 
 def get_comarca_id(number=None, comarca=None, tribunal=None):
     if number is not None:
@@ -926,8 +937,7 @@ def get_foro_info(numbers):
         .reset_index()
         .merge(
             foro,
-            left_on=["code_tr", "oooo"],
-            right_on=["estado_id", "oooo"],
+            on=["code_j", "code_tr", "oooo"],
             how="left",
         )
     )
