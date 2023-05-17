@@ -328,7 +328,10 @@ def parse_diario_extract(infile, nchar=None):
 
 
 def extract_regexes(
-    text, regexes, flags=0, extractall=False, axis=1, match_index=False
+        text, regexes, flags=0,
+        extractall=False, axis=1,
+        match_index=False,
+        update=False
 ):
     if type(regexes) == str:
         regexes = [regexes]
@@ -336,7 +339,18 @@ def extract_regexes(
         func = lambda x: text.str.extractall(x, flags=flags)
     else:
         func = lambda x: text.str.extract(x, flags=flags)
-    df = pd.concat(map(func, regexes), axis=axis, sort=True)
+    if update:
+        if axis==0:
+            raise(ValueError("Update only implemented for axis=1"))
+        df = func(regexes[0])
+        for regex in regexes[1:]:
+            df2 = func(regex)
+            old_cols = set(df.columns).intersection(df2.columns)
+            new_cols = set(df2.columns) - set(df.columns)
+            df = pd.concat([df, df2[new_cols]], axis=1)
+            df.update(df2[old_cols], overwrite=False)
+    else:
+        df = pd.concat(map(func, regexes), axis=axis, sort=True)
     drop_cols = [c for c in df.columns if isinstance(c, int)]
     df = df.drop(columns=drop_cols)
     if extractall:

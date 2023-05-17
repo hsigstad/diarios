@@ -1235,6 +1235,16 @@ def get_ordinal_number_regex(flags='(?i)(?s)'):
     )
     return regex
 
+
+def get_cardinal_number_regex(flags='(?i)(?s)'):
+    numbers = _get_cardinal_numbers().keys()
+    regex = r'{}\b([0-9]+|{})\b'.format(
+        flags,
+        '|'.join(numbers)
+    )
+    return regex
+
+
 def _get_ordinal_numbers():
     return {
         'PRIMEIR[AO]': 1,
