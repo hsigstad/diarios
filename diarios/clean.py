@@ -1187,8 +1187,8 @@ def clean_cpf(cpf, as_str=False):
     return cpf
 
 
-def extract_number(sr, cardinal=True, ordinal=True, numeric=True):
-    sr = clean_text(sr, drop="^A-Za-z0-9 ", upper=True)
+def extract_number(sr, cardinal=True, ordinal=True, numeric=True, decimal_sep=","):
+    sr = clean_text(sr, drop="^A-Za-z0-9{} ".format(decimal_sep), upper=True)
     # Does not extract zero for now
     mapping = {}
     if cardinal:
@@ -1204,7 +1204,12 @@ def extract_number(sr, cardinal=True, ordinal=True, numeric=True):
     hundreds = {k: v for k, v in mapping.items() if v % 100 == 0}
     number = pd.Series(index=sr.index)
     if numeric:
-        number = pd.to_numeric(sr.str.extract('([0-9]+)', expand=False))
+        regex = '([0-9]+({}[0-9]+)?)'.format(decimal_sep)
+        number = pd.to_numeric(
+            sr
+            .str.extract(regex)[0]
+            .str.replace(decimal_sep, ".")
+        )
     if len(mapping) > 0:
         number.loc[number.isnull()] = (
             map_regex(sr, hundreds, keep_unmatched=False).fillna(0) +
