@@ -325,10 +325,16 @@ def get_procedencia(
         r"\bPROCEDENTE": "PROCEDENTE",
         r"\bIMPROCEDENTE": "IMPROCEDENTE",
     },
+    keep_unmatched=True,
 ):
-    decision = texts.str.extract(regex)[0]
+    if type(regex) == str:
+        regex = [regex]
+    decision = texts.str.extract(regex[0])[0]
+    if len(regex) > 1:
+        for r in regex[1:]:
+            decision.loc[decision.isnull()] = texts.str.extract(r)[0] 
     decision = clean_text(decision)
-    return map_regex(decision, mapping)
+    return map_regex(decision, mapping, keep_unmatched=keep_unmatched)
 
 
 def get_plaintiffwins(decision, parcial=1):
@@ -479,7 +485,7 @@ def split_series(text, regex, text_pos="right", drop_end=False, level_name="grou
     group_names = {v: k for k, v in regex.groupindex.items()}
     df["variable"] = group.replace(group_names).replace({0: "text"})
     shift = {"left": 0, "right": 1}
-    df[level_name] = (df.match + shift[text_pos]) // (regex.groups + 1)
+    df[level_name] = (df.match - shift[text_pos]) // (regex.groups + 1)
     df = df.set_index(["variable", level_name], append=True)
     out = df.unstack("variable")[0]
     if drop_end:
