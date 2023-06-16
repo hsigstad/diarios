@@ -912,7 +912,7 @@ def get_foro(numbers):
 
 def get_comarca_id(number=None, comarca=None, tribunal=None):
     if number is not None:
-        comarca_id = get_foro_info(number).loc[:, "comarca_id"]
+        comarca_id = get_foro_info(number).loc[:, "municipio_id"]
     elif comarca is not None and tribunal is not None:
         df = pd.DataFrame(
             {"comarca": comarca, "tribunal": tribunal, "index": comarca.index}
@@ -935,6 +935,8 @@ def get_comarca(numbers):
 
 def get_foro_info(numbers):
     foro = get_data("foro.csv")
+    foro['code_j'] = transform(foro.tribunal, 'tribunal', 'code_j')
+    foro['code_tr'] = transform(foro.tribunal, 'tribunal', 'code_tr')
     index_name = numbers.index.name
     if not index_name:
         index_name = "index"
