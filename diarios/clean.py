@@ -1007,12 +1007,12 @@ def clean_text(
         text = text.str.replace("\n", " ")
     if not pagebreak:
         text = text.str.replace("==>.*?<==", "")
+    if not accents:
+        text = text.apply(unidecode)
     if lower:
         text = text.str.lower()
     if upper:
         text = text.str.upper()
-    if not accents:
-        text = text.apply(unidecode)
     if drop:
         text = text.str.replace("[{}]".format(drop), replace_character)
     if not multiple_spaces:
@@ -1229,7 +1229,6 @@ def get_ordinal_number_regex(flags='(?i)(?s)'):
         'QUADRAG[EÉ]SIM',     
     ]
     ones = [
-        '[0-9]+',
         'PRIMEIR',
         'SEGUND',
         'TERCEIR',
