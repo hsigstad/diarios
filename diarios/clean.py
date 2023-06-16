@@ -125,7 +125,7 @@ def get_estado_mapping():
         "RIO GRANDE DO SUL": "RS",
         "RONDONIA": "RO",
         "RORAIMA": "RR",
-        "SAO PAOLO": "SP",
+        "SAO PAULO": "SP",
         "SANTA CATARINA": "SC",
         "SERGIPE": "SE",
         "TOCANTINS": "TO",
