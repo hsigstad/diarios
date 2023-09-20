@@ -162,7 +162,10 @@ def get_capital(estado):
         "TO": "PALMAS",
         "DF": "BRASILIA",
     }
-    return estado.map(mapping)
+    if type(estado) == str:
+        return mapping[estado]
+    else:
+        return estado.map(mapping)
 
 
 def get_municipio_regex(estados=None):
