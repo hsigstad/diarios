@@ -87,7 +87,7 @@ def title(sr):
     sr = sr.str.title()
     tolower = {"De": "de", "Da": "da", "Do": "do", "Das": "das", "Dos": "dos", "E": "e"}
     for key, val in tolower.items():
-        sr = sr.str.replace(r"\b{}\b".format(key), val)
+        sr = sr.str.replace(r"\b{}\b".format(key), val, regex=True)
     return sr
 
 
@@ -190,7 +190,7 @@ def get_municipio_regex(estados=None):
     df2["municipio"] = df2.municipio.str.upper()
     df = pd.concat([df, df2])
     df3 = copy(df)
-    df3["municipio"] = df3.municipio.str.replace("'", "´")
+    df3["municipio"] = df3.municipio.str.replace("'", "´", regex=False)
     df = pd.concat([df, df3]).drop_duplicates()
     if estados:
         if not type(estados) == list:
@@ -224,7 +224,7 @@ def get_municipio_id(municipio, estado):
 
 def clean_comarca(comarca):
     comarca = clean_text(comarca)
-    comarca = comarca.str.replace("comarca de", "").str.strip()
+    comarca = comarca.str.replace("comarca de", "", regex=False).str.strip()
     return comarca
 
 
@@ -234,15 +234,15 @@ def clean_vara(vara):
 
 
 def clean_valor(valores):
-    return valores.str.replace(".", "").str.replace(",", ".")
+    return valores.str.replace(".", "", regex=False).str.replace(",", ".", regex=False)
 
 
 def clean_date(dates):
     return (
         dates.fillna("")
         .astype(str)
-        .str.replace("/", "-")
-        .str.extract("([0-9]{4}-[0-9]{2}-[0-9]{2})")
+        .str.replace("/", "-", regex=False)
+        .str.extract("([0-9]{4}-[0-9]{2}-[0-9]{2})", regex=True)
     )
 
 
@@ -265,12 +265,12 @@ def clean_parte(
         remove_after = "|".join(remove_after)
     if type(delete) == list:
         delete = "|".join(delete)
-    partes = partes.str.replace(remove, "")
+    partes = partes.str.replace(remove, "", regex=True)
     partes = clean_text(partes, **kwargs)
     partes = map_regex(partes, mapping)
-    partes = partes.str.replace(remove_after, "")
+    partes = partes.str.replace(remove_after, "", regex=True)
     if delete:
-        partes.loc[partes.str.contains(delete)] = ""
+        partes.loc[partes.str.contains(delete, regex=True)] = ""
     return partes
 
 
@@ -293,7 +293,7 @@ def clean_classe(classes):
 
 
 def clean_parte_key(keywords):
-    return clean_text(keywords).str.replace(" A?O?S?$", "").str.strip()
+    return clean_text(keywords).str.replace(" A?O?S?$", "", regex=True).str.strip()
 
 
 def clean_tipo_parte(keywords):
@@ -332,10 +332,10 @@ def get_procedencia(
 ):
     if type(regex) == str:
         regex = [regex]
-    decision = texts.str.extract(regex[0])[0]
+    decision = texts.str.extract(regex[0], regex=True)[0]
     if len(regex) > 1:
         for r in regex[1:]:
-            decision.loc[decision.isnull()] = texts.str.extract(r)[0] 
+            decision.loc[decision.isnull()] = texts.str.extract(r, regex=True)[0] 
     decision = clean_text(decision)
     return map_regex(decision, mapping, keep_unmatched=keep_unmatched)
 
@@ -480,7 +480,7 @@ def split_series(text, regex, text_pos="right", drop_end=False, level_name="grou
         })
         df = text_df.apply(lambda row: re.split(row.regex, row.text), 1)
         # Not finished
-    df = text.str.split(regex, expand=True).stack()
+    df = text.str.split(regex, expand=True, regex=True).stack()
     df.index = df.index.set_names("match", level=-1)
     df = df.reset_index(level="match")
     regex = re.compile(regex)
@@ -529,7 +529,7 @@ def map_regex(series, mapping, keep_unmatched=True, flags=0):
     series = series.reset_index(drop=True)
     mapped = pd.Series(index=series.index)
     for key, val in mapping.items():
-        mapped.loc[series.str.contains(key, flags=flags) & mapped.isnull()] = val
+        mapped.loc[series.str.contains(key, flags=flags, regex=True) & mapped.isnull()] = val
     if keep_unmatched:
         mapped.loc[mapped.isnull()] = series
     mapped.index = ix
@@ -539,7 +539,7 @@ def map_regex(series, mapping, keep_unmatched=True, flags=0):
 def remove_regexes(texts, regex_list, flags="(?s)"):
     for regex in regex_list:
         regex = r"{}{}".format(flags, regex)
-        texts = texts.str.replace(regex, "")
+        texts = texts.str.replace(regex, "", regex=True)
     return texts
 
 
@@ -585,12 +585,12 @@ def extract_from_list(series, regex_list):
     extracted = pd.Series(index=series.index)
     for regex in regex_list:
         regex = "({})".format(regex)
-        extracted.loc[extracted.isnull()] = series.str.extract(regex)[0]
+        extracted.loc[extracted.isnull()] = series.str.extract(regex, regex=True)[0]
     return extracted
 
 
 def clean_number(numbers, types=["CNJ"]):
-    numbers = numbers.str.extract("([0-9].*[0-9])", expand=False).str.replace(" ", "")
+    numbers = numbers.str.extract("([0-9].*[0-9])", expand=False, regex=True).str.replace(" ", "", regex=False)
     if "CNJ" in types:
         numbers = clean_cnj_number(numbers, errors="ignore")
     # if 'antigo' in types:
@@ -606,7 +606,7 @@ def is_cnj_number(numbers):
 def clean_cnj_number(numbers, errors="coerce"):
     cleaned = numbers.fillna("")
     # Remove any dot in ddddddd:
-    cleaned = cleaned.str.replace("^[^\d]*(\d{1,5})\.(\d{1,5})-", r"\1\2-")
+    cleaned = cleaned.str.replace("^[^\d]*(\d{1,5})\.(\d{1,5})-", r"\1\2-", regex=True)
     cleaned = cleaned.str.replace(
         "(\d+)(\-|\.)?(\d{2})\.?"
         "((20|19)\d{2})\.?"
@@ -614,6 +614,7 @@ def clean_cnj_number(numbers, errors="coerce"):
         "(\d{2})\.?"
         "(\d{4}).*",
         r"0000000\1-\3.\4.\6.\7.\8",
+        regex=True,
     ).str[-25:]
     if errors == "ignore":
         # Not sure if this is needed any longer:
@@ -708,6 +709,7 @@ def clean_number_antigo1(number, errors="coerce"):
     cleaned = number.fillna("").str.replace(
         "[^0-9]*((20|19)\d{2})\.?" "(\d{2})\.?" "(\d{2})\.?" "(\d{6})-?" "(\d)[^0-9]*",
         r"\1.\3.\4.\5-\6",
+        regex=True,
     )
     if errors == "coerce":
         cleaned.loc[~cleaned.str.match("\d{4}.\d{2}.\d{2}.\d{6}-\d")] = pd.NA
@@ -738,7 +740,7 @@ def convert_number_antigo(number, tribunal, errors="ignore"):
         number = pd.Series(number)
     antigo = clean_number_antigo(number, tribunal)
     antigo.loc[is_number_antigo(antigo, tribunal) == False] = pd.NA
-    df = antigo.str.split(r"[.\-]", expand=True)
+    df = antigo.str.split(r"[.\-]", expand=True, regex=True)
     df.columns = df.columns.map(str)
     df["j"] = transform(tribunal, "tribunal", "code_j").astype(str)
     df["tr"] = transform(tribunal, "tribunal", "code_tr").astype(str).str.zfill(2)
@@ -796,8 +798,8 @@ def _get_n(df):
 
 def get_old_format(df, col):
     regex = r"\d{7}\-\d{2}\.[1-2]\d{3}\.\d.\d{2}\.\d{4}"
-    df["valid"] = df[col].str.contains(regex)
-    df = df[df.valid.astype(str).str.contains("False")]
+    df["valid"] = df[col].str.contains(regex, regex=True)
+    df = df[df.valid.astype(str).str.contains("False", regex=True)]
     return df
 
 
@@ -876,7 +878,7 @@ def extract_info_from_case_numbers(number, types=["CNJ"]):
     regexes = map(get_number_regex, types)
     info = pd.DataFrame(index=number.index)
     for regex in regexes:
-        df = number.str.extract(regex)
+        df = number.str.extract(regex, regex=True)
         new_cols = set(df.columns) - set(info.columns)
         info = info.join(df.loc[:, new_cols])
         if info.isnull().any().any():
@@ -1005,11 +1007,11 @@ def clean_text(
     if not links:
         text = remove_links(text)
     if not cr:
-        text = text.str.replace(r"\r", "\n")
+        text = text.str.replace(r"\r", "\n", regex=True)
     if not newline:
-        text = text.str.replace("\n", " ")
+        text = text.str.replace("\n", " ", regex=True)
     if not pagebreak:
-        text = text.str.replace("==>.*?<==", "")
+        text = text.str.replace("==>.*?<==", "", regex=True)
     if not accents:
         text = text.apply(unidecode)
     if lower:
@@ -1017,16 +1019,16 @@ def clean_text(
     if upper:
         text = text.str.upper()
     if drop:
-        text = text.str.replace("[{}]".format(drop), replace_character)
+        text = text.str.replace("[{}]".format(drop), replace_character, regex=True)
     if not multiple_spaces:
-        text = text.str.replace("  +", " ")
+        text = text.str.replace("  +", " ", regex=True)
     if strip:
         text = text.str.strip()
     return text
 
 
 def remove_links(text):
-    return text.str.replace(r"\[(.*?)\]", r"\1").str.replace(r"(?s)\(http.*?\)", r"")
+    return text.str.replace(r"\[(.*?)\]", r"\1", regex=True).str.replace(r"(?s)\(http.*?\)", r"", regex=True)
 
 
 def clean_text_columns(df, exclude=[], drop="^A-Z0-9 ", **kwargs):
@@ -1067,7 +1069,7 @@ def title(sr):
     sr = sr.str.title()
     tolower = {"De": "de", "Da": "da", "Do": "do", "Das": "das", "Dos": "dos", "E": "e"}
     for key, val in tolower.items():
-        sr = sr.str.replace(r"\b{}\b".format(key), val)
+        sr = sr.str.replace(r"\b{}\b".format(key), val, regex=True)
     return sr
 
 
@@ -1093,7 +1095,7 @@ def get_municipio_regex(estados=None):
     df2["municipio"] = df2.municipio.str.upper()
     df = pd.concat([df, df2])
     df3 = copy(df)
-    df3["municipio"] = df3.municipio.str.replace("'", "´")
+    df3["municipio"] = df3.municipio.str.replace("'", "´", regex=False)
     df = pd.concat([df, df3]).drop_duplicates()
     if estados:
         if not type(estados) == list:
@@ -1108,20 +1110,20 @@ def clean_oab(sr):
     if type(sr) == str:
         sr = pd.Series([sr])
     n = (
-        pd.to_numeric(sr.str.replace("[^0-9]", ""), errors="coerce")
+        pd.to_numeric(sr.str.replace("[^0-9]", "", regex=True), errors="coerce")
         .astype(str)
-        .str.replace("\.0", "")
+        .str.replace("\.0", "", regex=True)
     )
     states = "|".join(get_estado_mapping().values())
-    state = sr.str.extract("({})".format(states), expand=False)
-    ab = sr.str.extract("\d(a|b|A|B)", expand=False).str.upper().fillna("")
+    state = sr.str.extract("({})".format(states), expand=False, regex=True)
+    ab = sr.str.extract("\d(a|b|A|B)", expand=False, regex=True).str.upper().fillna("")
     cleaned = n + ab + "/" + state
     return cleaned
 
 
 def clean_reais(sr):
     return pd.to_numeric(
-        sr.str.replace(",\d{2}([^0-9].*|$)", "").str.replace("[^0-9]", ""),
+        sr.str.replace(",\d{2}([^0-9].*|$)", "", regex=True).str.replace("[^0-9]", "", regex=True),
         errors="coerce",
     )
 
@@ -1130,7 +1132,7 @@ def clean_integer(sr):
     mapping = get_integer_mapping()
     regex = list(mapping.keys()) + ["\d+"]
     regex = "({})".format("|".join(regex))
-    sr = sr.str.extract(regex, expand=False)
+    sr = sr.str.extract(regex, expand=False, regex=True)
     sr = map_regex(sr, mapping)
     return pd.to_numeric(sr, errors="coerce")
 
@@ -1174,13 +1176,13 @@ def clean_oab(sr):
     if type(sr) == str:
         sr = pd.Series([sr])
     n = (
-        pd.to_numeric(sr.str.replace("[^0-9]", ""), errors="coerce")
+        pd.to_numeric(sr.str.replace("[^0-9]", "", regex=True), errors="coerce")
         .astype(str)
-        .str.replace("\.0", "")
+        .str.replace("\.0", "", regex=True)
     )
     states = "|".join(get_estado_mapping().values())
-    state = sr.str.extract("({})".format(states), expand=False)
-    ab = sr.str.extract("\d(a|b|A|B)", expand=False).str.upper().fillna("")
+    state = sr.str.extract("({})".format(states), expand=False, regex=True)
+    ab = sr.str.extract("\d(a|b|A|B)", expand=False, regex=True).str.upper().fillna("")
     cleaned = n + ab + "/" + state
     return cleaned
 
@@ -1188,7 +1190,7 @@ def clean_oab(sr):
 def clean_cpf(cpf, as_str=False):
     cpf = pd.to_numeric(cpf, errors="coerce")
     if as_str:
-        cpf = cpf.astype(str).str.replace("\.0$", "").str.zfill(11)
+        cpf = cpf.astype(str).str.replace("\.0$", "", regex=True).str.zfill(11)
     return cpf
 
 
@@ -1212,8 +1214,8 @@ def extract_number(sr, cardinal=True, ordinal=True, numeric=True, decimal_sep=",
         regex = '([0-9]+({}[0-9]+)?)'.format(decimal_sep)
         number = pd.to_numeric(
             sr
-            .str.extract(regex)[0]
-            .str.replace(decimal_sep, ".")
+            .str.extract(regex, regex=True)[0]
+            .str.replace(decimal_sep, ".", regex=True)
         )
     if len(mapping) > 0:
         number.loc[number.isnull()] = (

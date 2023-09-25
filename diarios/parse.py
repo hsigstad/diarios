@@ -148,7 +148,7 @@ class CaseParser:
     def _add_advogado(self, df, text):
         if not self.advogado:
             return add_oab(df)
-        adv = text.str.extractall(self.advogado)
+        adv = text.str.extractall(self.advogado, regex=True)
         adv = adv.reset_index("match", drop=True)
         adv["key"] = "advogado"
         adv["parte"] = clean.clean_oab(adv.parte)
@@ -284,7 +284,7 @@ def add_oab(df):
 
 
 def split_name_oab(sr):
-    df = sr.str.split(r"(?i)\boab", expand=True, n=1)
+    df = sr.str.split(r"(?i)\boab", expand=True, n=1, regex=True)
     if not 1 in df.columns:
         df[1] = ""
     df[1] = clean.clean_oab(df[1])
@@ -295,7 +295,7 @@ def split_name_oab(sr):
 def split_col(df, name_col, split_on=",|-", group_id=None):
     df = df.reset_index()
     df.index.name = "temp"
-    names = df[name_col].fillna("").str.split(split_on, expand=True).stack()
+    names = df[name_col].fillna("").str.split(split_on, expand=True, regex=True).stack()
     names.name = name_col
     df = df.drop(columns=name_col)
     df = df.join(names)
@@ -315,15 +315,15 @@ def parse_diario_extract(infile, nchar=None):
     split_regex = "{}(?=[0-9]{{4}}/" "[0-9]{{2}}/[0-9]{{2}}/)".format(tribunal)
     df = (
         pd.Series(re.split(split_regex, text))
-        .str.replace(";", "")
-        .str.replace(r"^([0-9]{4}/[0-9]{2}/[0-9]{2})/", r"\1;", n=3)
-        .str.replace(r"\.(md|txt)", r";", n=1)
-        .str.replace(r"(-|:)([0-9]+)(-|:)", r"\2;", n=1)
-        .str.split(";", expand=True)
+        .str.replace(";", "", regex=True)
+        .str.replace(r"^([0-9]{4}/[0-9]{2}/[0-9]{2})/", r"\1;", n=3, regex=True)
+        .str.replace(r"\.(md|txt)", r";", n=1, regex=True)
+        .str.replace(r"(-|:)([0-9]+)(-|:)", r"\2;", n=1, regex=True)
+        .str.split(";", expand=True, regex=True)
     )
     df.columns = ["date", "caderno", "line", "text"]
     df["tribunal"] = tribunal[:-1]
-    df["date"] = df["date"].str.replace("/", "-")
+    df["date"] = df["date"].str.replace("/", "-", regex=True)
     return df.loc[df.line.notnull()]
 
 
@@ -336,9 +336,9 @@ def extract_regexes(
     if type(regexes) == str:
         regexes = [regexes]
     if extractall:
-        func = lambda x: text.str.extractall(x, flags=flags)
+        func = lambda x: text.str.extractall(x, flags=flags, regex=True)
     else:
-        func = lambda x: text.str.extract(x, flags=flags)
+        func = lambda x: text.str.extract(x, flags=flags, regex=True)
     if update:
         if axis==0:
             raise(ValueError("Update only implemented for axis=1"))
@@ -363,7 +363,7 @@ def extract_regexes(
 
 def extract_keywords(text, keywords, max_name_length=100, last_name_length=50):
     regex = get_keyword_regex(keywords, max_name_length, last_name_length)
-    df = text.str.extractall(regex)
+    df = text.str.extractall(regex, regex=True)
     df.index = df.index.droplevel(1)
     return df
 
