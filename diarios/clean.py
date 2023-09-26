@@ -242,7 +242,7 @@ def clean_date(dates):
         dates.fillna("")
         .astype(str)
         .str.replace("/", "-", regex=False)
-        .str.extract("([0-9]{4}-[0-9]{2}-[0-9]{2})", regex=True)
+        .str.extract("([0-9]{4}-[0-9]{2}-[0-9]{2})")
     )
 
 
@@ -332,10 +332,10 @@ def get_procedencia(
 ):
     if type(regex) == str:
         regex = [regex]
-    decision = texts.str.extract(regex[0], regex=True)[0]
+    decision = texts.str.extract(regex[0])[0]
     if len(regex) > 1:
         for r in regex[1:]:
-            decision.loc[decision.isnull()] = texts.str.extract(r, regex=True)[0] 
+            decision.loc[decision.isnull()] = texts.str.extract(r)[0] 
     decision = clean_text(decision)
     return map_regex(decision, mapping, keep_unmatched=keep_unmatched)
 
@@ -480,7 +480,7 @@ def split_series(text, regex, text_pos="right", drop_end=False, level_name="grou
         })
         df = text_df.apply(lambda row: re.split(row.regex, row.text), 1)
         # Not finished
-    df = text.str.split(regex, expand=True, regex=True).stack()
+    df = text.str.split(regex, expand=True).stack()
     df.index = df.index.set_names("match", level=-1)
     df = df.reset_index(level="match")
     regex = re.compile(regex)
@@ -585,12 +585,12 @@ def extract_from_list(series, regex_list):
     extracted = pd.Series(index=series.index)
     for regex in regex_list:
         regex = "({})".format(regex)
-        extracted.loc[extracted.isnull()] = series.str.extract(regex, regex=True)[0]
+        extracted.loc[extracted.isnull()] = series.str.extract(regex)[0]
     return extracted
 
 
 def clean_number(numbers, types=["CNJ"]):
-    numbers = numbers.str.extract("([0-9].*[0-9])", expand=False, regex=True).str.replace(" ", "", regex=False)
+    numbers = numbers.str.extract("([0-9].*[0-9])", expand=False).str.replace(" ", "", regex=False)
     if "CNJ" in types:
         numbers = clean_cnj_number(numbers, errors="ignore")
     # if 'antigo' in types:
@@ -740,7 +740,7 @@ def convert_number_antigo(number, tribunal, errors="ignore"):
         number = pd.Series(number)
     antigo = clean_number_antigo(number, tribunal)
     antigo.loc[is_number_antigo(antigo, tribunal) == False] = pd.NA
-    df = antigo.str.split(r"[.\-]", expand=True, regex=True)
+    df = antigo.str.split(r"[.\-]", expand=True)
     df.columns = df.columns.map(str)
     df["j"] = transform(tribunal, "tribunal", "code_j").astype(str)
     df["tr"] = transform(tribunal, "tribunal", "code_tr").astype(str).str.zfill(2)
@@ -878,7 +878,7 @@ def extract_info_from_case_numbers(number, types=["CNJ"]):
     regexes = map(get_number_regex, types)
     info = pd.DataFrame(index=number.index)
     for regex in regexes:
-        df = number.str.extract(regex, regex=True)
+        df = number.str.extract(regex)
         new_cols = set(df.columns) - set(info.columns)
         info = info.join(df.loc[:, new_cols])
         if info.isnull().any().any():
@@ -1115,8 +1115,8 @@ def clean_oab(sr):
         .str.replace("\.0", "", regex=True)
     )
     states = "|".join(get_estado_mapping().values())
-    state = sr.str.extract("({})".format(states), expand=False, regex=True)
-    ab = sr.str.extract("\d(a|b|A|B)", expand=False, regex=True).str.upper().fillna("")
+    state = sr.str.extract("({})".format(states), expand=False)
+    ab = sr.str.extract("\d(a|b|A|B)", expand=False).str.upper().fillna("")
     cleaned = n + ab + "/" + state
     return cleaned
 
@@ -1132,7 +1132,7 @@ def clean_integer(sr):
     mapping = get_integer_mapping()
     regex = list(mapping.keys()) + ["\d+"]
     regex = "({})".format("|".join(regex))
-    sr = sr.str.extract(regex, expand=False, regex=True)
+    sr = sr.str.extract(regex, expand=False)
     sr = map_regex(sr, mapping)
     return pd.to_numeric(sr, errors="coerce")
 
@@ -1181,8 +1181,8 @@ def clean_oab(sr):
         .str.replace("\.0", "", regex=True)
     )
     states = "|".join(get_estado_mapping().values())
-    state = sr.str.extract("({})".format(states), expand=False, regex=True)
-    ab = sr.str.extract("\d(a|b|A|B)", expand=False, regex=True).str.upper().fillna("")
+    state = sr.str.extract("({})".format(states), expand=False)
+    ab = sr.str.extract("\d(a|b|A|B)", expand=False).str.upper().fillna("")
     cleaned = n + ab + "/" + state
     return cleaned
 
@@ -1214,7 +1214,7 @@ def extract_number(sr, cardinal=True, ordinal=True, numeric=True, decimal_sep=",
         regex = '([0-9]+({}[0-9]+)?)'.format(decimal_sep)
         number = pd.to_numeric(
             sr
-            .str.extract(regex, regex=True)[0]
+            .str.extract(regex)[0]
             .str.replace(decimal_sep, ".", regex=True)
         )
     if len(mapping) > 0:
