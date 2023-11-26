@@ -168,39 +168,29 @@ def get_capital(estado):
         return estado.map(mapping)
 
 
-def get_municipio_regex(estados=None):
-    mun = get_data("municipio.csv")
-    corr1 = get_data("municipio_correction_tse.csv")
-    corr2 = get_data("municipio_correction_manual.csv")
-    ar = np.concatenate(
-        [
-            mun.loc[:, ("estado", "municipio")].values,
-            mun.loc[:, ("estado", "municipio_accents")].values,
-            corr1.loc[:, ("estado", "wrong")].values,
-            corr2.loc[:, ("estado", "wrong")].values,
-        ]
-    )
-    df = (
-        pd.DataFrame(ar, columns=["estado", "municipio"])
-        .drop_duplicates()
-        .query("estado.notnull()")
-    )
-    df["municipio"] = title(df.municipio)
-    df2 = copy(df)
-    df2["municipio"] = df2.municipio.str.upper()
-    df = pd.concat([df, df2])
-    df3 = copy(df)
-    df3["municipio"] = df3.municipio.str.replace("'", "´", regex=False)
-    df = pd.concat([df, df3]).drop_duplicates()
-    if estados:
-        if not type(estados) == list:
-            estados = [estados]
-        df = df.loc[df.estado.isin(estados)]
-    regex = r"\b({})\b".format("|".join(df.municipio.values))
-    return regex
+def extract_municipio(text, estado, add=None):
+    regex = get_municipio_regex(estado, add=add)
+    if type(text) == str:
+        try:
+            municipio = re.search(regex, text).group(1)
+        except:
+            municipio = ''
+    else:
+        municipio = text.str.extract(regex, expand=False)
+    municipio = clean_municipio(municipio, estado)
+    return municipio
 
 
 def clean_municipio(municipio, estado):
+    if type(municipio) == str:
+        correct = _clean_municipio_series(pd.Series([municipio]), estado)
+        return correct[0]
+    else:
+        correct = _clean_municipio_series(municipio, estado)
+        return correct
+
+
+def _clean_municipio_series(municipio, estado):
     municipio = clean_text(municipio, drop="^A-Z\- ")
     df = pd.DataFrame({"wrong": municipio, "estado": estado, "index": municipio.index})
     corr1 = get_data("municipio_correction_tse.csv")
@@ -457,7 +447,11 @@ def _searchall_row(regex, text):
         return []
 
 
-def split_series(text, regex, text_pos="right", drop_end=False, level_name="group"):
+def split_series(text, regex,
+                 text_pos="right",
+                 drop_end=False,
+                 level_name="group",
+                 text_name=None):
     """Split text on regex
 
     Keyword arguments:
@@ -495,6 +489,9 @@ def split_series(text, regex, text_pos="right", drop_end=False, level_name="grou
         end = out.isnull().sum(axis=1) == len(out.columns) - 1
         out = out.loc[~end]
     out.columns.name = None
+    if not text_name:
+        text_name = text.name
+    out = out.rename(columns={'text': text_name})
     return out
 
 
@@ -1003,6 +1000,9 @@ def clean_text(
     multiple_spaces=False,
     strip=True,
 ):
+    is_string = type(text) == str
+    if is_string:
+        text = pd.Series([text])
     text = text.fillna("").astype(str)
     if not links:
         text = remove_links(text)
@@ -1024,7 +1024,10 @@ def clean_text(
         text = text.str.replace("  +", " ", regex=True)
     if strip:
         text = text.str.strip()
-    return text
+    if is_string:
+        return text[0]
+    else:
+        return text
 
 
 def remove_links(text):
@@ -1073,7 +1076,7 @@ def title(sr):
     return sr
 
 
-def get_municipio_regex(estados=None):
+def get_municipio_regex(estados=None, add=None):
     mun = get_data("municipio.csv")
     corr1 = get_data("municipio_correction_tse.csv")
     corr2 = get_data("municipio_correction_manual.csv")
@@ -1085,6 +1088,8 @@ def get_municipio_regex(estados=None):
             corr2.loc[:, ("estado", "wrong")].values,
         ]
     )
+    if add is not None:
+        ar = np.concatenate([ar, add])
     df = (
         pd.DataFrame(ar, columns=["estado", "municipio"])
         .drop_duplicates()
