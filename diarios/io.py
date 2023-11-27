@@ -33,12 +33,16 @@ def read_file(infile, OCR=True, min_length=100, check_for_txt=True):
             else:
                 text = ocr_file(infile)
         return text
-    except textract.exceptions.ShellError:
-        try:
-            cd = run(["catdoc", infile], capture_output=True)
-            return decode(cd.stdout, 'utf-8')
-        except:
-            print("Uknown error:", infile)
+    except textract.exceptions.ShellError as e:
+        if infile[-4:] in [".doc", "docx"]:
+            try:
+                cd = run(["catdoc", infile], capture_output=True)
+                return decode(cd.stdout, 'utf-8')
+            except:
+                print("Unknown error:", infile)
+                return ""
+        else:
+            print(e, infile)
             return ""
 
 
