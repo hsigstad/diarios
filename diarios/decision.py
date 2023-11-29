@@ -34,7 +34,7 @@ def get_main_sentence_regexes():
     return regexes
 
 
-def get_dispositivo():
+def get_dispositivo_regex():
     regexes = [
         'decide.{0,15}turma.*',
         'a turma.{0,10}(?:unanimidade|maioria).*',
@@ -48,7 +48,7 @@ def get_dispositivo():
         r'\.\s+(?:nego|julgo|dou|absolvo|condeno)\b.*',
     ]
     regex = '|'.join(regexes)
-    return f'(?i)(?s)(?P<dispositivo>{regex})'
+    return f'(?i)(?s)(?P<text>{regex})'
 
 
 def get_mode():
@@ -57,6 +57,10 @@ def get_mode():
         'MAIORIA': 'MAIORIA',
     }
     
+
+def get_key_order(key, order):
+    order = {k: i for i, k in enumerate(order)}
+    return key.map(order)
 
 def get_desfecho_regexes(classes):
     if type(classes) == str:
@@ -151,9 +155,10 @@ class DecisionParser:
             parte=None,
             classes=["ProOrd", "ACIA", "APN", "ED", "Ap"],
             remove_dots=[r'\barts?', r'\bfls?', '[0-9]'],
+            key_order=['PRESCRICAO', 'ABSOLVO', 'CONDENO'],
             split_desfecho=True,
             main_sentence_regexes=get_main_sentence_regexes(),
-            dispositivo=get_dispositivo(),
+            dispositivo_regex=get_dispositivo_regex(),
             subject=get_subject(),
             mode=get_mode(),
     ):
@@ -162,10 +167,11 @@ class DecisionParser:
         self.subject = subject
         self.mode = mode
         self.parte = parte
-        self.dispositivo = dispositivo
+        self.dispositivo_regex = dispositivo_regex
         self.classes = classes
+        self.text_pena_cols = ['regime']
         self.split_desfecho = split_desfecho
-
+        self.key_order = key_order
 
     def parse(self):
         df = pd.DataFrame(index=self.text.index)
@@ -206,51 +212,97 @@ class DecisionParser:
         return df
 
     def parse_parte(self):
-        single_parte = self.parte.groupby('num_npu').size() == 1
-        parsed1 = self.parse_single_parte(self.text.loc[single_parte])
-        parsed2 = self.parse_multiple_partes(self.text.loc[~single_parte])
+        self.dispositivo = clean_sentenca_text(
+            self.text
+            .str.extract(self.dispositivo_regex)
+            .text
+        )
+        single_parte = self.parte.groupby(parte.index.name).size() == 1
+        parsed1 = self._parse_single_parte(self.dispositivo.loc[single_parte])
+        parsed2 = self._parse_multiple_partes(self.dispositivo.loc[~single_parte])
         parsed_parte = pd.concat([parsed1, parsed2])
-        parsed_parte = drop_duplicate_parte_mov(parsed_parte)
+        parsed_parte = self._drop_duplicate_parte(parsed_parte)
         self.parsed_parte = parsed_parte
         return parsed_parte
 
-    def parse_single_parte(self, text):
-        single_parte = self.parte.groupby('num_npu').size() == 1        
+    def _parse_single_parte(self, text):
         text = remove_pena_base(text)
-        df = pd.concat([text, self.parte.loc[single_parte]], axis=1)
-        df = df.query('inteiro_teor.notnull()')
-        df = df.rename(columns={'inteiro_teor': 'text'})
-        dispositivo = clean_sentenca_text(
-            text
-            .str.extract(self.dispositivo)
-            .dispositivo
-        )
-        self._dispositivo = dispositivo
-        df['key'] = dispositivo.str.extract('(CONDENO|ABSOLVO)')
-        df['text'] = dispositivo
-        df = add_penas(df)
+        keys = get_split_keys(self.classes)
+        df = pd.DataFrame({'text': text})
+        df['key'] = map_regex(text, keys, keep_unmatched=False)
+        df = df.query('key.notnull()')
+        df = self._add_penas(df)
         return df
 
-    def parse_multiple_partes(self, text):
-        dispositivo = clean_sentenca_text(
-            text
-            .str.extract(self.dispositivo)
-            .dispositivo
-        )
+    def _add_penas(self, df):
+        regexes, boolean_regexes, cols = get_pena_regexes(self.classes)
+        pena = extract_regexes(df.text, regexes, update=True)
+        df = df.join(pena)
+        num_cols = set(cols) - set(self.text_pena_cols)
+        for c in num_cols:
+            if c in df.columns:
+                df[c] = extract_number(df[c])
+        for k, v in boolean_regexes.items():
+            df[k] = df.text.str.contains(v) * 1
+        df = self._clean_penas(df)
+        return df
+
+    def _clean_penas(self, df):
+        if intersect(["ACIA", "APN"], self.classes):
+            _, _, pena_cols = get_pena_regexes(self.classes)
+            for c in pena_cols:
+                if c in df.columns:
+                    df.loc[df.key != "CONDENO", c] = pd.NA
+        if "APN" in self.classes:
+            df.loc[df.regime.fillna('').str.contains('SEMI'), 'regime'] = "SEMIABERTO"
+            df['prisao_dias'] = df.years.fillna(0)*365 + df.months.fillna(0)*30 + df.days.fillna(0)
+            df['diasmulta'] = df.diasmulta.fillna(df.diasmulta2)
+            df = df.drop(columns='diasmulta2')
+        return df
+
+    def _parse_multiple_partes(self, text):
+        self.splitted = self._split_on_key(text)
+        splitted = self._add_parte_regex(self.splitted)
+        df = extractall_series(splitted.text, splitted.parte_regex)
+        df = df.join(splitted.key, how='inner')
+        df['text'] = remove_pena_base(df.text)
+        df = self._add_penas(df)
+        df = df.reset_index(['group', 'match'], drop=True)
+        return df
+
+    def _add_parte_regex(self, splitted):
         parte_regex = get_parte_regex(self.parte)
-        parte_regex = r"(?s)(?P<text>\b(?P<parte>" + parte_regex + r")\b.*?)(?=" + parte_regex + "|$)"
-        parte_regex.name = 'parte_regex'
-        out = split_on_condeno_absolvo_etc(dispositivo)
-        self._dispositivo = pd.concat([self._dispositivo, dispositivo])
-        self.splitted = out
-        out = out.join(parte_regex) # Removes those without parte
-        out2 = extractall_series(out.dispositivo, out.parte_regex)
-        out3 = out.join(out2)
-        out3 = out3.query('key.notnull() & parte.notnull()')
-        out3['text'] = remove_pena_base(out3.text)
-        out3 = add_penas(out3)
-        out3 = out3.reset_index(['group', 'match'], drop=True)
-        return out3
+        parte_regex = (
+            r"(?s)(?P<text>\b(?P<parte>" + parte_regex + r")\b.*?)" +
+            "(?=" + parte_regex + "|$)"
+        )
+        return splitted.join(parte_regex, how='inner')
+    
+    def _split_on_key(self, text):
+        # Splits on condeno, absolvo, etc
+        keys = get_split_keys(self.classes)
+        regex = r"(?i)\b(?P<key>{})\b".format('|'.join(keys.keys()))
+        df = split_series(text, regex, drop_end=True)
+        df['key'] = map_regex(df.key, keys)
+        return df
+    
+    def _drop_duplicate_parte(self, df):
+        _, _, pena_cols = get_pena_regexes(self.classes)
+        pena_cols = set(df.columns).intersection(pena_cols)
+        df['has_pena'] = df[pena_cols].notnull().sum(axis=1) > 0
+        df['key_order'] = get_key_order(df.key, self.key_order)
+        df['has_key'] = df.key.notnull() # Should not be necessary
+        sort_cols = ['has_key', 'has_pena', 'key_order']
+        ix_name = df.index.name
+        df = (
+            df
+            .sort_values(sort_cols)
+            .reset_index()
+            .drop_duplicates([ix_name, 'parte'], keep='last')
+            .set_index(ix_name)
+            .drop(columns=['has_pena', 'key_order', 'has_key'])
+        )
+        return df
 
     def test(self, regex=None, max_str=2000, max_str_sentence=1000):
         if regex:
@@ -272,7 +324,7 @@ class DecisionParser:
         print("DESFECHO:", desfecho)
         return sm
 
-    def test_parte(self, regex=None, max_str=2000, max_str_dispositivo=1000):
+    def test_parte(self, regex=None, max_str=2000, max_str_dispositivo=1000, max_str_pena=1000):
         if regex:
             text = self.text.loc[self.text.str.contains(regex)]
         else:
@@ -282,7 +334,7 @@ class DecisionParser:
         print('')
         print("DISPOSITIVO")
         print('')
-        print(self._dispositivo.loc[sm][0:max_str_dispositivo])
+        print(self.dispositivo.loc[sm][-max_str_dispositivo:])
         print('')
         try:
             partes = self.parte.loc[sm]
@@ -302,20 +354,24 @@ class DecisionParser:
         try:
             penas = self.parsed_parte.loc[sm]
             if type(penas) == pd.core.series.Series:
-                print(penas.text)
+                print(penas.text[-max_str_pena:])
                 print(penas)
             else:
                 for _, row in self.parsed_parte.loc[sm].iterrows():
-                    print(row.text)
+                    print(row.text[-max_str_pena:])
                     print(row)
         except KeyError:
             print("Nothing extracted")
         return sm
 
 
+def intersect(list1, list2):
+    return len(set(list1).intersection(list2)) > 0
+
+
 def _clean_text(text, remove_dots):
     for r in remove_dots:
-        text = text.str.replace(f'({r})\.', r'\1')
+        text = text.str.replace(f'({r})\.', r'\1', regex=True)
     return text
 
 
@@ -323,11 +379,12 @@ def get_parte_regex(parte):
     parte = clean_text(parte) + '|'
     parte = parte.loc[parte.notnull()]
     regex = parte.groupby(parte.index.name).sum()
-    regex = regex.str.replace(r"\|$", "")
+    regex = regex.str.replace(r"\|$", "", regex=True)
+    regex.name = 'parte_regex'
     return regex
 
 
-def get_regexes(classes=['APN', 'ACIA']):
+def get_pena_regexes(classes=['APN', 'ACIA']):
     n = get_cardinal_number_regex()
     s = '.{0,5}'
     m = '.{0,10}'
@@ -337,7 +394,7 @@ def get_regexes(classes=['APN', 'ACIA']):
     days = f'(?P<days>{n}){m}\\bDIAS?\\b'
     tp = '(DETENCAO|RECLUSAO)'
     regexes = [
-        f'MULTA{m}\\bR\\b{s}(?P<multaR>{n})'
+        f'MULTA{m}\\bR\s*(?P<multaR>{n})'
     ]
     boolean_regexes = {
         'has_multa': 'MULTA',
@@ -349,7 +406,6 @@ def get_regexes(classes=['APN', 'ACIA']):
             f'REGIME{l}?(?P<regime>FECHADO|SEMI{s}ABERTO|ABERTO)',
             f'(?P<diasmulta>{n}){l}DIAS{s}MULTA',
             f'DIAS{s}MULTA{m}(?P<diasmulta2>{n})',
-            multaR
         ]
     if 'ACIA' in classes:
         regexes += [
@@ -362,84 +418,46 @@ def get_regexes(classes=['APN', 'ACIA']):
             'perda_funcao': f'PERDA.{l}FUNCAO',        
             'ressarcir': 'RESSARCI|RESTITUICAO',
         }
-    return regexes, boolean_regexes
+    cols = (
+        list(boolean_regexes.keys()) +
+        pd.Series(regexes).str.extractall('<(.*?)>')[0].tolist()
+    )
+    return regexes, boolean_regexes, cols
 
 
-def split_on_condeno_absolvo_etc(text):
-    keys = {
-        'CONDEN(?:O|AR)': 'CONDENO',
-        'DOSIMETRIA': 'CONDENO',
-        '(?:DECLARO|DECRETO|JULGO)[^.]*EXTIN[^.]*(?:PUNIBILIDADE|PUNITIVA)':
-        'PRESCRICAO',
-        '(?:JULGO|DECLARO|VERIFICO)[^.]*PRESCRICAO': 'PRESCRICAO',
-        'ABSOLV(?:O|ER)': 'ABSOLVO',
-        'PRONUNCI(?:O|AR)': 'PRONUNCIO',
-    }
-    df = split_series(text, r"(?i)\b(?P<key>{})\b".format('|'.join(keys.keys())))
-    df['key'] = map_regex(df.key, keys)
-    return df
+
+def get_split_keys(classes):
+    keys = {}
+    for classe in classes:
+        keys = {**keys, **_get_split_keys(classe)}
+    return keys
+
+
+def _get_split_keys(classe):
+    keys = {}
+    if classe in ["ACIA", "APN"]:
+        keys = {
+            **keys,
+            'CONDEN(?:O|AR)': 'CONDENO',
+            'ABSOLV(?:O|ER)': 'ABSOLVO',
+        }
+    if classe == "APN":
+        keys = {
+            **keys,
+            'DOSIMETRIA': 'CONDENO',
+            '(?:DECLARO|DECRETO|JULGO)[^.]*EXTIN[^.]*(?:PUNIBILIDADE|PUNITIVA)':
+            'PRESCRICAO',
+            '(?:JULGO|DECLARO|VERIFICO)[^.]*PRESCRICAO': 'PRESCRICAO',
+            'PRONUNCI(?:O|AR)': 'PRONUNCIO',
+        }
+    return keys
 
 
 def remove_pena_base(text):
     # Removing "FIXO PENA BASE DE 2 ANOS" etc
-    return text.str.replace('(?s)(^.*)((TORN|FIX).{0,15}DEFINITIV[OA]|TOTALIZ(O|AM))', r'\2') 
+    regex = '(?s)(^.*)((TORN|FIX).{0,15}DEFINITIV[OA]|TOTALIZ(O|AM))'
+    return text.str.replace(regex, r'\2', regex=True) 
 
-
-def add_penas(df):
-    regexes, boolean_regexes = get_regexes()
-    out = extract_regexes(df.text, regexes, update=True)
-    for c in ['years', 'months', 'days', 'diasmulta',
-              'dirpol', 'contratar', 'multaR', 'ressarcirR']:
-        if c in out.columns:
-            out[c] = extract_number(out[c])
-    for k, v in boolean_regexes.items():
-        df[k] = df.text.str.contains(v)
-    df2 = df.join(out)
-    df2 = clean_penas(df2)
-    return df2
-
-
-def clean_penas(df2):
-    df2['absolvido'] = df2.key == "ABSOLVO"
-    df2['condenado'] = df2.key == "CONDENO"
-    df2['prescricao'] = df2.key == "PRESCRICAO"
-    cols = [
-        'years',
-        'months',
-        'days',
-        'diasmulta',
-        'diasmulta2',
-        'regime',
-        'multaR',
-        'ressarcir',
-        'ressarcirR',
-        'dirpol',
-        'contratar',
-    ]
-    for c in cols:
-        if c in df2.columns:
-            df2.loc[df2.condenado==0, c] = pd.NA
-    df2.loc[df2.regime.fillna('').str.contains('SEMI'), 'regime'] = "SEMIABERTO"
-    df2['prisao_dias'] = df2.years.fillna(0)*365 + df2.months.fillna(0)*30 + df2.days.fillna(0)
-    df2['diasmulta'] = df2.diasmulta.fillna(df2.diasmulta2)
-    df2 = df2.drop(columns='diasmulta2')
-    return df2
-
-
-def drop_duplicate_parte_mov(df2):
-    # TODO: Add dirpol, ressarcir etc here
-    df2['has_pena'] = df2[['years', 'months', 'days', 'diasmulta']].notnull().sum(axis=1) > 0
-    df2['key_order'] = 1 # PRESCRICAO has lowest priority
-    # If condenado for something but absolvido for something else: condenado
-    df2.loc[df2.key=="ABSOLVO", 'key_order'] = 2
-    df2.loc[df2.key=="CONDENO", 'key_order'] = 3 
-    df2['has_key'] = df2.key.notnull() # Should not be necessary
-    sort_cols = ['has_key', 'has_pena', 'key_order']
-    df4 = df2.sort_values(sort_cols).reset_index().drop_duplicates(
-        ['num_npu', 'parte'],
-        keep='last'
-    ).set_index('num_npu')
-    return df4
 
 # Not done: Differentiate between reclusao and detencao (sometimes 2 anos reclusao e 3 meses detencao)
 
@@ -461,133 +479,12 @@ def get_df():
     df2 = df2.query('has_parte==True')
     return df2, parte
 
-#df2, parte = get_df()
+#df, parte = get_df()
 
-parser = DecisionParser(df2.inteiro_teor, parte.parte)        
+parser = DecisionParser(df.inteiro_teor, parte.parte)        
 
 out = parser.parse_parte()
 sm = parser.test_parte()
 
-safd
-
-out = parser.parse()
-sm = parser.test()
-
-
-
-
-# IMPOE-SE, POIS, A ABSOLVICAO DOS ACUSADOS
-# CONDENO O APENADO AO 
-# DA RE
-
-
-
-# mapping = {
-#     "PARCIAL.{0,20}PROCEDENTE": "PARCIALMENTE PROCEDENTE",
-#     "IMPROCEDENTE": "IMPROCEDENTE",
-#     "PROCEDENTE.{0,20}PARTE": "PARCIALMENTE PROCEDENTE",
-#     "PROCEDENTE": "PROCEDENTE",
-#     "SEM.{0,20}MERITO": "S/MERITO",
-#     "EXTINTA A PUNIBILIDADE": "PRESCRICAO",
-#     "EXTINT": "EXTINTO",
-#     "INCOMPETEN": "INCOMPETENCIA",
-# }
-
-
-# df["multa"] = df.sentenca_text.str.extract("MULTA[^.]*?R ?([0-9.,]{4,15})")
-# df.loc[df.multa.isnull(), "multa"] = df.sentenca_text.str.extract(
-#     "MULTA[^.]([0-9.,]{4,15})", expand=False
-# )
-# df["multa"] = pd.to_numeric(
-#     df.multa.str.replace("\.[0-9]{1,2}[^0-9]*$", "")
-#     .str.replace(",[0-9]{1,3}[^0-9]*$", "")
-#     .str.replace("[,.]", "")
-# )
-
-
-
-
-
-#     '(?i)rejeito\s+os\s+embargos[^.]+declar': 'REJEITO EMBARGOS',
-#     '(?i)dar\s+provimento\s+ao\s+recurso\s+em\s+sentido estrito': 'DAR PROVIMENTO AO RECURSO EM SENTIDO ESTRITO',
-#     '(?i)dou\s+provimento[^.]+agravo\s+(regimental|interno)': 'DOU PROVIMENTO AO AGRAVO REGIMENTAL',
-#     '(?i)negar\s+provimento[^.]+apel(ação|ações|o)': 'NEGAR PROVIMENTO A APELACAO',
-#     '(?i)dar\s+parcial\s+provimento[^.]+apel(ação|ações|o)': 'DAR PARCIAL PROVIMENTO A APELACAO',
-#     '(?i)dar\s+provimento[^.]+apel(ação|ações|o)': 'DAR PROVIMENTO A APELACAO',
-#     '(?i)declaro[^.]+nulidade': 'DECLARO NULIDADE',
-#     '(?i)julgo\s+prejudicada[^.]+apel(ação|ações|o)': 'JULGO PREJUDICADA A APELACAO',
-#     '(?i)acompanho[^.]+voto[^.]+relator': 'ACOMPANHO O VOTO DO RELATOR',
-#     '(?i)julgamento\s+adiado': 'JULGAMENTO ADIADO',
-#     '(?i)retirado\s+d[ea]\s+pauta': 'RETIRADO DE PAUTA',
-#     '(?i)processo\s+adiado': 'PROCESSO ADIADO',
-#     '(?i)pediu\s+vista': 'PEDIU VISTA',    
-# }
-
-def get_text(sample=None):
-    df = pd.read_csv('build/query/sentenca.csv')
-    if sample is not None:
-        df = df.sample(sample)
-    df = df.drop_duplicates(['number', 'mov_id']) # 35 duplicates, not sure why
-    df = df.set_index(['number', 'mov_id'])
-    df['text'] = clean_sentenca_text(df.text)
-    df['text'] = df.text.str.extract(r'(?s)(\b(JULGO|ABSOLVO|CONDENO)\b.*)')[0]
-    return df.text
-
-
-
-
-
-
-def test(df):
-    sm = df.sample().iloc[0]
-    print(text.loc[sm.number].iloc[0])
-    print("-----------")
-    print(sm.text)
-    cols = [
-        'parte', 'key',
-        'years', 'months', 'days',
-        'regime', 'diasmulta',
-    ]
-    print(sm[cols])
-    return sm
-
-# Most dia-multas are 1/30 of salario minimo:
-# A RAZAO DE 130 UM TRINTA AVOS DO SALARIO-MINIMO DA EPOCA 
-# SENDO CADA UM FIXADO NO VALOR EQUIVALENTE A UM TRIGESIMO DO SALARIO MINIMO
-# QUE FIXO NA BASE DE UM TRIGESIMO DO SALARIO MINIMO VIGENTE
-# A RAZAO DE 130 DO SALARIO MINIMO VIGENTE A EPOCA DOS FATOS
-
-
-#text = get_text(sample=1000)
-text = get_text()
-df = split_on_condeno_absolvo_etc(text)
-df = add_candidato(df)
-df = keep_text_starting_with_parte_mention(df)
-df['text'] = remove_pena_base(df.text)
-df2 = add_penas(df)
-df3 = df2.query('has_parte==True & key.notnull()')
-df3 = drop_duplicate_parte_mov(df3)
-cols = [
-    "number",
-    "mov_id",
-    "parte",
-    'condenado',
-    'absolvido',
-    'prescricao',
-    'prisao_dias',
-    "regime",
-    'diasmulta',
-]
-df3.loc[:, cols].to_csv('build/clean/pena.csv', index=False)
-sm = test(df3)
-
-
-def test_dup(df):
-    sm = df.query('dup>1 & has_key==True').sample().iloc[0]
-    dd = df.query('number=="{}" & has_key==True'.format(sm.number))
-    print(dd[['key', 'years', 'days', 'months', 'diasmulta', 'has_pena']])
-    for t in dd.text:
-        print(t)
-    return sm
-              
-    
+#out = parser.parse()
+#sm = parser.test()
