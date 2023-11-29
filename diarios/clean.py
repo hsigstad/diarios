@@ -421,7 +421,7 @@ def _search_row(regex, text):
         return dict()
 
 
-def extractall_series(text, regex):
+def extractall_series(text, regex, level_name='match'):
     """Extract regex series from text list
 
     Keyword arguments:
@@ -435,6 +435,7 @@ def extractall_series(text, regex):
     out = df.apply(lambda row: _searchall_row(row.regex, row.text), axis=1)
     out = out.apply(pd.Series).stack()
     out = out.apply(pd.Series)
+    out.index = out.index.set_names(level_name, level=-1)
     return out
 
 
@@ -1221,6 +1222,7 @@ def extract_number(sr, cardinal=True, ordinal=True, numeric=True, decimal_sep=",
             sr
             .str.extract(regex)[0]
             .str.replace(decimal_sep, ".", regex=True)
+            .str[0:22] # Removing extremely large integers
         )
     if len(mapping) > 0:
         number.loc[number.isnull()] = (
