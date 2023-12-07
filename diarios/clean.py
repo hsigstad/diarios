@@ -433,8 +433,8 @@ def extractall_series(text, regex, level_name='match'):
     """
     df = pd.DataFrame({"text": text, "regex": regex}, index=text.index)
     out = df.apply(lambda row: _searchall_row(row.regex, row.text), axis=1)
-    out = out.apply(pd.Series).stack()
-    out = out.apply(pd.Series)
+    out = out.apply(lambda x: pd.Series(x, dtype=object)).stack()
+    out = out.apply(lambda x: pd.Series(x, dtype=object))
     out.index = out.index.set_names(level_name, level=-1)
     return out
 
@@ -525,7 +525,7 @@ def map_regex(series, mapping, keep_unmatched=True, flags=0):
         return series
     ix = series.index
     series = series.reset_index(drop=True)
-    mapped = pd.Series(index=series.index)
+    mapped = pd.Series(index=series.index, dtype=object)
     for key, val in mapping.items():
         mapped.loc[series.str.contains(key, flags=flags, regex=True) & mapped.isnull()] = val
     if keep_unmatched:
@@ -1201,7 +1201,7 @@ def clean_cpf(cpf, as_str=False):
 
 
 def extract_number(sr, cardinal=True, ordinal=True, numeric=True, decimal_sep=","):
-    sr = clean_text(sr, drop="^A-Za-z0-9{} ".format(decimal_sep), upper=True)
+    sr = clean_text(sr, drop=f"^A-Za-z0-9{decimal_sep} ", upper=True)
     # Does not extract zero for now
     mapping = {}
     if cardinal:
@@ -1215,15 +1215,20 @@ def extract_number(sr, cardinal=True, ordinal=True, numeric=True, decimal_sep=",
     ones = {k: v for k, v in mapping.items() if v % 10 != 0}
     tens = {k: v for k, v in mapping.items() if v % 10 == 0 and v % 100 != 0}
     hundreds = {k: v for k, v in mapping.items() if v % 100 == 0}
-    number = pd.Series(index=sr.index)
+    number = pd.Series(index=sr.index, dtype=float)
     if numeric:
-        regex = '([0-9]+({}[0-9]+)?)'.format(decimal_sep)
-        number = pd.to_numeric(
+        regex = f'([0-9]+({decimal_sep}[0-9]+)?)'
+        number = (
             sr
             .str.extract(regex)[0]
             .str.replace(decimal_sep, ".", regex=True)
-            .str[0:22] # Removing extremely large integers
         )
+        too_large = number.str.len() > 20
+        if sum(too_large) > 0:
+            print("Truncating too large numbers:")
+            print(number.loc[too_large])
+            number = number.str[0:21]
+        number = pd.to_numeric(number)
     if len(mapping) > 0:
         number.loc[number.isnull()] = (
             map_regex(sr, hundreds, keep_unmatched=False).fillna(0) +
@@ -1262,7 +1267,7 @@ def get_ordinal_number_regex(flags='(?i)(?s)'):
 
 def get_cardinal_number_regex(flags='(?i)(?s)'):
     numbers = _get_cardinal_numbers().keys()
-    regex = r'{}\b([0-9]+|{})\b'.format(
+    regex = r'{}([0-9][0-9.,]*|\b(?:{})\b)'.format(
         flags,
         '|'.join(numbers)
     )

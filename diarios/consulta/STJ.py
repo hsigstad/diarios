@@ -165,6 +165,8 @@ def add_decisao_text(decisao, infiles):
     df = read_files(infiles, text_col='decisao')
     df['num_npu'] = df.infile.str.extract(r'(\d{7}-\d{2}\.\d{4}\.\d{1}\.\d{2}\.\d{4})')
     df['n_decisao'] = pd.to_numeric(df.infile.str.extract(r'-(\d+)\.[a-z]{2,3}', expand=False))
+    df = df.drop_duplicates(['num_npu', 'n_decisao', 'decisao'])
+    df = df.drop_duplicates(['num_npu', 'n_decisao']) # Should not be necessary
     decisao = (
         decisao
         .reset_index()

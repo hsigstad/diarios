@@ -35,12 +35,16 @@ def read_file(infile, OCR=True, min_length=100, check_for_txt=True):
         return text
     except textract.exceptions.ShellError as e:
         if infile[-4:] in [".doc", "docx"]:
-            try:
-                cd = run(["catdoc", infile], capture_output=True)
-                return decode(cd.stdout, 'utf-8')
+            try: # some .doc files are really .docx
+                text = textract.process(infile, extension='docx')
+                return decode(text, 'utf-8')
             except:
-                print("Unknown error:", infile)
-                return ""
+                try:
+                    cd = run(["catdoc", infile], capture_output=True)
+                    return decode(cd.stdout, 'utf-8')
+                except:
+                    print("Unknown error:", infile)
+                    return ""
         else:
             print(e, infile)
             return ""

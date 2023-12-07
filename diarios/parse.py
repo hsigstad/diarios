@@ -347,8 +347,8 @@ def extract_regexes(
             df2 = func(regex)
             old_cols = set(df.columns).intersection(df2.columns)
             new_cols = set(df2.columns) - set(df.columns)
-            df = pd.concat([df, df2[new_cols]], axis=1)
-            df.update(df2[old_cols], overwrite=False)
+            df = pd.concat([df, df2[list(new_cols)]], axis=1)
+            df.update(df2[list(old_cols)], overwrite=False)
     else:
         df = pd.concat(map(func, regexes), axis=axis, sort=True)
     drop_cols = [c for c in df.columns if isinstance(c, int)]
