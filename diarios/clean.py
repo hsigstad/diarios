@@ -1340,7 +1340,8 @@ def _clean_fundamento(df):
     df.loc[df.inciso=='CAPUT', 'paragrafo'] = "0"
     df.loc[df.inciso=='CAPUT', 'inciso'] = ""
     df.loc[df.paragrafo=='UNICO', 'paragrafo'] = "1"
-    df['alinea'] = df.alinea.fillna(df.alinea_paragrafo)
+    df['alinea'] = df.alinea.fillna(df.alinea_paragrafo).fillna('')
+    df['citation'] = df.citation.str.replace('\s+', ' ', regex=True)
     return df
 
 
@@ -1389,16 +1390,18 @@ def extract_fundamentos(
         fundamento_regexes = [
             r'(?P<artigos>\bart.{{0,5}}[0-9][^.]+?)(?P<lei>{})'
         ],
-        artigo_regex='[^§]\s(?P<artigo>[0-9]+)[º°,\s]',
-        paragrafo_regex=r'(?i)(?:§|paragr[aá]fo)\s*(?P<paragrafo>[0-9]+|[uú]nico)',
-        inciso_regex=r'\s(?P<inciso>(?:[IXV]+|caput|CAPUT))\b(?:.{0,2}(?:letra.{0,2}|LETRA.{0,2}|ALINEA.{0,2}|alinea.{0,2})?\b(?P<alinea>[a-d])\b)?',
+        # (?<!f) excludes paragrafo 45:
+        artigo_regex='(?<!f)[^§]\s+(?P<artigo>[0-9]+(?:-[A-D])?)(?=[º°,\s])', 
+        paragrafo_regex=r'(?i)(?:§|par[aá]grafo)\s*(?P<paragrafo>[0-9]+|[uú]nico)',
+        inciso_regex=r'\s(?P<inciso>(?:[IXVL]+|caput|CAPUT))\b(?:.{0,3}(?:letra.{0,2}|LETRA.{0,2}|AL[IÍ]NEA.{0,2}|al[íi]nea.{0,2})?\b(?P<alinea>[a-d])\b)?',
         alinea_paragrafo_regex='[“"]([a-z])[”"]',
         clean_lei=clean_lei,
         clean=_clean_fundamento,
         flags='(?s)(?i)',
 ):
     # DOES NOT CAPTURE CORRECTLY:
-    # art 405, §§ 1° e 2°, do CPP
+    # art 405, §§ 1° e 2°, do CPP (captures CPP art 2)
+    # inciso VII do art 386 do CPP (captures CPP 386)
     lei_regexes = f'\\b(?:{"|".join(lei_regexes)})\\b'
     fund = pd.DataFrame()
     for regex in fundamento_regexes:
@@ -1427,14 +1430,14 @@ def extract_fundamentos(
         inciso,
         alinea_paragrafo_regex
     )
-    df = fund.join(artigo).join(paragrafo).join(inciso).reset_index()
+    df = fund.join(artigo, how='outer').join(paragrafo).join(inciso).reset_index()
     df = _drop_empty_paragrafo(df)
     for c in ['inciso', 'paragrafo']:
         df[c] = clean_text(df[c])
     df = clean(df)
     df = df.set_index('ix')
     df['lei'] = clean_lei(df.lei)
-    df['lei'] = map_regex(df.lei, lei_map)
+    df['lei'] = map_regex(df.lei, lei_map, flags=re.I)
     cols = ['citation', 'lei', 'artigo', 'paragrafo', 'inciso', 'alinea']
     df = df[cols]
     return df
@@ -1444,8 +1447,9 @@ def get_alinea_paragrafo(paragrafo, inciso, regex):
     paragrafo['has_inciso'] = inciso.groupby(
         ['fund_id', 'artigo_id', 'paragrafo_id']
     ).inciso.size() > 0
+    paragrafo['has_inciso'] = paragrafo.has_inciso.fillna(False)
     paragrafo.loc[
-        paragrafo.has_inciso==True,
+        paragrafo.has_inciso==False,
         'alinea_paragrafo'
     ] = paragrafo.incisos.str.extract(regex)[0]
     paragrafo = paragrafo.drop(columns='has_inciso')
