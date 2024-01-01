@@ -1291,9 +1291,10 @@ def _get_ordinal_numbers():
         'QUADRAGESIM[AO]': 40,
     }
 
+
 def _get_cardinal_numbers():
     return {
-        'UM[A]': 1,
+        'UMA?': 1,
         'DOIS': 2,
         'DUAS': 2,        
         'TRES': 3,
@@ -1333,6 +1334,131 @@ def _get_cardinal_numbers():
         'NOVECENT[OA]S': 900,
         'MIL': 1000,
     }
+
+
+def _clean_fundamento(df):
+    df.loc[df.inciso=='CAPUT', 'paragrafo'] = "0"
+    df.loc[df.inciso=='CAPUT', 'inciso'] = ""
+    df.loc[df.paragrafo=='UNICO', 'paragrafo'] = "1"
+    df['alinea'] = df.alinea.fillna(df.alinea_paragrafo)
+    return df
+
+
+def clean_lei(lei):
+    contains_number = lei.str.contains('[0-9]')
+    is_lei = lei.str.contains('(?i)lei')
+    decreto_lei = lei.str.contains(r'(?i)decreto|\bdl\b')
+    lei_complementar = lei.str.contains(r'(?i)lei\s+complementar|\blc\b')
+    number = (
+        lei
+        .str.replace('[,.]', '', regex=True)
+        .str.extract('([0-9/]+)', expand=False)
+    )
+    lei.loc[contains_number & is_lei] = 'L' + number.loc[contains_number & is_lei]
+    lei.loc[contains_number & decreto_lei] = 'DL' + number.loc[contains_number & decreto_lei]
+    lei.loc[contains_number & lei_complementar] = 'LC' + number.loc[contains_number & lei_complementar]
+    lei = lei.str.replace('/(19|20)([0-9]{2})', r'/\2') # L8666/93 instead of L8666/1993
+    return lei
+
+
+def extract_fundamentos(
+        text,
+        lei_regexes=[
+            'CPC', 'LIA', 'NCPC', 'CPP', 'CF', 'CP', 'CPB',
+            r'\b(?:lei|dl|decreto.{0,2}lei|lei\s+complementar|lc)\b.{0,6}?[0-9][0-9./]+',
+            'Lei\s+de\s+Improbidade',
+            'Código\s+Penal',
+            'Código\s+Eleitoral',
+            'Código\s+d[oe]\s+Processo\s+Penal',
+            'Código\s+d[oe]\s+Processo\s+Civil',
+            'Novo\s+Código\s+d[oe]\s+Processo\s+Civil',
+            'Constituição',
+        ],
+        lei_map={
+            'L8429/92': 'LIA',
+            'L8249/92': 'LIA', # Common misspelling
+            'Lei\s+de\s+Improbidade': 'LIA',
+            'Código\s+Penal': 'CP',
+            'Código\s+Eleitoral': 'CE',
+            'Código\s+d[oe]\s+Processo\s+Penal': 'CPP',
+            'Novo\s+Código\s+d[oe]\s+Processo\s+Civil': 'NCPC',            
+            'Código\s+d[oe]\s+Processo\s+Civil': 'CPC',
+            'Constituição': 'CF',
+            '^CPB$': 'CP',
+        },
+        fundamento_regexes = [
+            r'(?P<artigos>\bart.{{0,5}}[0-9][^.]+?)(?P<lei>{})'
+        ],
+        artigo_regex='[^§]\s(?P<artigo>[0-9]+)[º°,\s]',
+        paragrafo_regex=r'(?i)(?:§|paragr[aá]fo)\s*(?P<paragrafo>[0-9]+|[uú]nico)',
+        inciso_regex=r'\s(?P<inciso>(?:[IXV]+|caput|CAPUT))\b(?:.{0,2}(?:letra.{0,2}|LETRA.{0,2}|ALINEA.{0,2}|alinea.{0,2})?\b(?P<alinea>[a-d])\b)?',
+        alinea_paragrafo_regex='[“"]([a-z])[”"]',
+        clean_lei=clean_lei,
+        clean=_clean_fundamento,
+        flags='(?s)(?i)',
+):
+    # DOES NOT CAPTURE CORRECTLY:
+    # art 405, §§ 1° e 2°, do CPP
+    lei_regexes = f'\\b(?:{"|".join(lei_regexes)})\\b'
+    fund = pd.DataFrame()
+    for regex in fundamento_regexes:
+        regex = regex.format(lei_regexes)
+        regex = f'{flags}(?P<citation>{regex})'
+        fund = pd.concat([fund, text.str.extractall(regex)])
+    fund = fund.reset_index().drop(columns='match')
+    fund.index.name = "fund_id"
+    artigo = split_series(
+        fund.artigos,
+        artigo_regex,
+        drop_end=True,
+        text_name='paragrafos',
+        level_name="artigo_id"
+    )
+    paragrafo = split_series(
+        artigo.paragrafos,
+        paragrafo_regex,
+        drop_end=False,
+        text_name='incisos',
+        level_name="paragrafo_id"
+    )
+    inciso = paragrafo.incisos.str.extractall(inciso_regex)
+    paragrafo['alinea_paragrafo'] = get_alinea_paragrafo(
+        paragrafo,
+        inciso,
+        alinea_paragrafo_regex
+    )
+    df = fund.join(artigo).join(paragrafo).join(inciso).reset_index()
+    df = _drop_empty_paragrafo(df)
+    for c in ['inciso', 'paragrafo']:
+        df[c] = clean_text(df[c])
+    df = clean(df)
+    df = df.set_index('ix')
+    df['lei'] = clean_lei(df.lei)
+    df['lei'] = map_regex(df.lei, lei_map)
+    cols = ['citation', 'lei', 'artigo', 'paragrafo', 'inciso', 'alinea']
+    df = df[cols]
+    return df
+
+
+def get_alinea_paragrafo(paragrafo, inciso, regex):
+    paragrafo['has_inciso'] = inciso.groupby(
+        ['fund_id', 'artigo_id', 'paragrafo_id']
+    ).inciso.size() > 0
+    paragrafo.loc[
+        paragrafo.has_inciso==True,
+        'alinea_paragrafo'
+    ] = paragrafo.incisos.str.extract(regex)[0]
+    paragrafo = paragrafo.drop(columns='has_inciso')
+    return paragrafo.alinea_paragrafo
+
+
+def _drop_empty_paragrafo(df):
+    df['has_paragrafo'] = df.paragrafo.notnull()
+    has_paragrafo = df.groupby(['fund_id', 'artigo_id']).has_paragrafo.transform('sum') > 0
+    df = df.loc[~(has_paragrafo & (df.paragrafo_id==-1))]
+    df = df.drop(columns='has_paragrafo')
+    return df
+
 
 letter = "a-zA-Z' çúáéíóàâêôãõÇÚÁÉÍÓÀÂÊÔÃÕ"
 estados = list(get_estado_mapping().values())
