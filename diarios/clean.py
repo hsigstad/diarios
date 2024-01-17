@@ -1402,6 +1402,8 @@ def extract_fundamentos(
     # DOES NOT CAPTURE CORRECTLY:
     # art 405, §§ 1° e 2°, do CPP (captures CPP art 2)
     # inciso VII do art 386 do CPP (captures CPP 386)
+    # Art 2º, IV, "a", "b" e "c" (captures only alinea a)
+    # art 4° do diploma legal (does not capture)
     lei_regexes = f'\\b(?:{"|".join(lei_regexes)})\\b'
     fund = pd.DataFrame()
     for regex in fundamento_regexes:
