@@ -168,39 +168,29 @@ def get_capital(estado):
         return estado.map(mapping)
 
 
-def get_municipio_regex(estados=None):
-    mun = get_data("municipio.csv")
-    corr1 = get_data("municipio_correction_tse.csv")
-    corr2 = get_data("municipio_correction_manual.csv")
-    ar = np.concatenate(
-        [
-            mun.loc[:, ("estado", "municipio")].values,
-            mun.loc[:, ("estado", "municipio_accents")].values,
-            corr1.loc[:, ("estado", "wrong")].values,
-            corr2.loc[:, ("estado", "wrong")].values,
-        ]
-    )
-    df = (
-        pd.DataFrame(ar, columns=["estado", "municipio"])
-        .drop_duplicates()
-        .query("estado.notnull()")
-    )
-    df["municipio"] = title(df.municipio)
-    df2 = copy(df)
-    df2["municipio"] = df2.municipio.str.upper()
-    df = pd.concat([df, df2])
-    df3 = copy(df)
-    df3["municipio"] = df3.municipio.str.replace("'", "´", regex=False)
-    df = pd.concat([df, df3]).drop_duplicates()
-    if estados:
-        if not type(estados) == list:
-            estados = [estados]
-        df = df.loc[df.estado.isin(estados)]
-    regex = r"\b({})\b".format("|".join(df.municipio.values))
-    return regex
+def extract_municipio(text, estado, add=None):
+    regex = get_municipio_regex(estado, add=add)
+    if type(text) == str:
+        try:
+            municipio = re.search(regex, text).group(1)
+        except:
+            municipio = ''
+    else:
+        municipio = text.str.extract(regex, expand=False)
+    municipio = clean_municipio(municipio, estado)
+    return municipio
 
 
 def clean_municipio(municipio, estado):
+    if type(municipio) == str:
+        correct = _clean_municipio_series(pd.Series([municipio]), estado)
+        return correct[0]
+    else:
+        correct = _clean_municipio_series(municipio, estado)
+        return correct
+
+
+def _clean_municipio_series(municipio, estado):
     municipio = clean_text(municipio, drop="^A-Z\- ")
     df = pd.DataFrame({"wrong": municipio, "estado": estado, "index": municipio.index})
     corr1 = get_data("municipio_correction_tse.csv")
@@ -431,7 +421,7 @@ def _search_row(regex, text):
         return dict()
 
 
-def extractall_series(text, regex):
+def extractall_series(text, regex, level_name='match'):
     """Extract regex series from text list
 
     Keyword arguments:
@@ -443,8 +433,9 @@ def extractall_series(text, regex):
     """
     df = pd.DataFrame({"text": text, "regex": regex}, index=text.index)
     out = df.apply(lambda row: _searchall_row(row.regex, row.text), axis=1)
-    out = out.apply(pd.Series).stack()
-    out = out.apply(pd.Series)
+    out = out.apply(lambda x: pd.Series(x, dtype=object)).stack()
+    out = out.apply(lambda x: pd.Series(x, dtype=object))
+    out.index = out.index.set_names(level_name, level=-1)
     return out
 
 
@@ -457,7 +448,11 @@ def _searchall_row(regex, text):
         return []
 
 
-def split_series(text, regex, text_pos="right", drop_end=False, level_name="group"):
+def split_series(text, regex,
+                 text_pos="right",
+                 drop_end=False,
+                 level_name="group",
+                 text_name=None):
     """Split text on regex
 
     Keyword arguments:
@@ -495,6 +490,9 @@ def split_series(text, regex, text_pos="right", drop_end=False, level_name="grou
         end = out.isnull().sum(axis=1) == len(out.columns) - 1
         out = out.loc[~end]
     out.columns.name = None
+    if not text_name:
+        text_name = text.name
+    out = out.rename(columns={'text': text_name})
     return out
 
 
@@ -527,7 +525,7 @@ def map_regex(series, mapping, keep_unmatched=True, flags=0):
         return series
     ix = series.index
     series = series.reset_index(drop=True)
-    mapped = pd.Series(index=series.index)
+    mapped = pd.Series(index=series.index, dtype=object)
     for key, val in mapping.items():
         mapped.loc[series.str.contains(key, flags=flags, regex=True) & mapped.isnull()] = val
     if keep_unmatched:
@@ -1003,6 +1001,9 @@ def clean_text(
     multiple_spaces=False,
     strip=True,
 ):
+    is_string = type(text) == str
+    if is_string:
+        text = pd.Series([text])
     text = text.fillna("").astype(str)
     if not links:
         text = remove_links(text)
@@ -1024,7 +1025,10 @@ def clean_text(
         text = text.str.replace("  +", " ", regex=True)
     if strip:
         text = text.str.strip()
-    return text
+    if is_string:
+        return text[0]
+    else:
+        return text
 
 
 def remove_links(text):
@@ -1073,7 +1077,7 @@ def title(sr):
     return sr
 
 
-def get_municipio_regex(estados=None):
+def get_municipio_regex(estados=None, add=None):
     mun = get_data("municipio.csv")
     corr1 = get_data("municipio_correction_tse.csv")
     corr2 = get_data("municipio_correction_manual.csv")
@@ -1085,6 +1089,8 @@ def get_municipio_regex(estados=None):
             corr2.loc[:, ("estado", "wrong")].values,
         ]
     )
+    if add is not None:
+        ar = np.concatenate([ar, add])
     df = (
         pd.DataFrame(ar, columns=["estado", "municipio"])
         .drop_duplicates()
@@ -1195,7 +1201,7 @@ def clean_cpf(cpf, as_str=False):
 
 
 def extract_number(sr, cardinal=True, ordinal=True, numeric=True, decimal_sep=","):
-    sr = clean_text(sr, drop="^A-Za-z0-9{} ".format(decimal_sep), upper=True)
+    sr = clean_text(sr, drop=f"^A-Za-z0-9{decimal_sep} ", upper=True)
     # Does not extract zero for now
     mapping = {}
     if cardinal:
@@ -1209,14 +1215,20 @@ def extract_number(sr, cardinal=True, ordinal=True, numeric=True, decimal_sep=",
     ones = {k: v for k, v in mapping.items() if v % 10 != 0}
     tens = {k: v for k, v in mapping.items() if v % 10 == 0 and v % 100 != 0}
     hundreds = {k: v for k, v in mapping.items() if v % 100 == 0}
-    number = pd.Series(index=sr.index)
+    number = pd.Series(index=sr.index, dtype=float)
     if numeric:
-        regex = '([0-9]+({}[0-9]+)?)'.format(decimal_sep)
-        number = pd.to_numeric(
+        regex = f'([0-9]+({decimal_sep}[0-9]+)?)'
+        number = (
             sr
             .str.extract(regex)[0]
             .str.replace(decimal_sep, ".", regex=True)
         )
+        too_large = number.str.len() > 20
+        if sum(too_large) > 0:
+            print("Truncating too large numbers:")
+            print(number.loc[too_large])
+            number = number.str[0:21]
+        number = pd.to_numeric(number)
     if len(mapping) > 0:
         number.loc[number.isnull()] = (
             map_regex(sr, hundreds, keep_unmatched=False).fillna(0) +
@@ -1255,7 +1267,7 @@ def get_ordinal_number_regex(flags='(?i)(?s)'):
 
 def get_cardinal_number_regex(flags='(?i)(?s)'):
     numbers = _get_cardinal_numbers().keys()
-    regex = r'{}\b([0-9]+|{})\b'.format(
+    regex = r'{}([0-9][0-9.,]*|\b(?:{})\b)'.format(
         flags,
         '|'.join(numbers)
     )
@@ -1279,9 +1291,10 @@ def _get_ordinal_numbers():
         'QUADRAGESIM[AO]': 40,
     }
 
+
 def _get_cardinal_numbers():
     return {
-        'UM[A]': 1,
+        'UMA?': 1,
         'DOIS': 2,
         'DUAS': 2,        
         'TRES': 3,
@@ -1321,6 +1334,135 @@ def _get_cardinal_numbers():
         'NOVECENT[OA]S': 900,
         'MIL': 1000,
     }
+
+
+def _clean_fundamento(df):
+    df.loc[df.inciso=='CAPUT', 'paragrafo'] = "0"
+    df.loc[df.inciso=='CAPUT', 'inciso'] = ""
+    df.loc[df.paragrafo=='UNICO', 'paragrafo'] = "1"
+    df['alinea'] = df.alinea.fillna(df.alinea_paragrafo).fillna('')
+    df['citation'] = df.citation.str.replace('\s+', ' ', regex=True)
+    return df
+
+
+def clean_lei(lei):
+    contains_number = lei.str.contains('[0-9]')
+    is_lei = lei.str.contains('(?i)lei')
+    decreto_lei = lei.str.contains(r'(?i)decreto|\bdl\b')
+    lei_complementar = lei.str.contains(r'(?i)lei\s+complementar|\blc\b')
+    number = (
+        lei
+        .str.replace('[,.]', '', regex=True)
+        .str.extract('([0-9/]+)', expand=False)
+    )
+    lei.loc[contains_number & is_lei] = 'L' + number.loc[contains_number & is_lei]
+    lei.loc[contains_number & decreto_lei] = 'DL' + number.loc[contains_number & decreto_lei]
+    lei.loc[contains_number & lei_complementar] = 'LC' + number.loc[contains_number & lei_complementar]
+    lei = lei.str.replace('/(19|20)([0-9]{2})', r'/\2') # L8666/93 instead of L8666/1993
+    return lei
+
+
+def extract_fundamentos(
+        text,
+        lei_regexes=[
+            'CPC', 'LIA', 'NCPC', 'CPP', 'CF', 'CP', 'CPB',
+            r'\b(?:lei|dl|decreto.{0,2}lei|lei\s+complementar|lc)\b.{0,6}?[0-9][0-9./]+',
+            'Lei\s+de\s+Improbidade',
+            'Código\s+Penal',
+            'Código\s+Eleitoral',
+            'Código\s+d[oe]\s+Processo\s+Penal',
+            'Código\s+d[oe]\s+Processo\s+Civil',
+            'Novo\s+Código\s+d[oe]\s+Processo\s+Civil',
+            'Constituição',
+        ],
+        lei_map={
+            'L8429/92': 'LIA',
+            'L8249/92': 'LIA', # Common misspelling
+            'Lei\s+de\s+Improbidade': 'LIA',
+            'Código\s+Penal': 'CP',
+            'Código\s+Eleitoral': 'CE',
+            'Código\s+d[oe]\s+Processo\s+Penal': 'CPP',
+            'Novo\s+Código\s+d[oe]\s+Processo\s+Civil': 'NCPC',            
+            'Código\s+d[oe]\s+Processo\s+Civil': 'CPC',
+            'Constituição': 'CF',
+            '^CPB$': 'CP',
+        },
+        fundamento_regexes = [
+            r'(?P<artigos>\bart.{{0,5}}[0-9][^.]+?)(?P<lei>{})'
+        ],
+        # (?<!f) excludes paragrafo 45:
+        artigo_regex='(?<!f)[^§]\s+(?P<artigo>[0-9]+(?:-[A-D])?)(?=[º°,\s])', 
+        paragrafo_regex=r'(?i)(?:§|par[aá]grafo)\s*(?P<paragrafo>[0-9]+|[uú]nico)',
+        inciso_regex=r'\s(?P<inciso>(?:[IXVL]+|caput|CAPUT))\b(?:.{0,3}(?:letra.{0,2}|LETRA.{0,2}|AL[IÍ]NEA.{0,2}|al[íi]nea.{0,2})?\b(?P<alinea>[a-d])\b)?',
+        alinea_paragrafo_regex='[“"]([a-z])[”"]',
+        clean_lei=clean_lei,
+        clean=_clean_fundamento,
+        flags='(?s)(?i)',
+):
+    # DOES NOT CAPTURE CORRECTLY:
+    # art 405, §§ 1° e 2°, do CPP (captures CPP art 2)
+    # inciso VII do art 386 do CPP (captures CPP 386)
+    lei_regexes = f'\\b(?:{"|".join(lei_regexes)})\\b'
+    fund = pd.DataFrame()
+    for regex in fundamento_regexes:
+        regex = regex.format(lei_regexes)
+        regex = f'{flags}(?P<citation>{regex})'
+        fund = pd.concat([fund, text.str.extractall(regex)])
+    fund = fund.reset_index().drop(columns='match')
+    fund.index.name = "fund_id"
+    artigo = split_series(
+        fund.artigos,
+        artigo_regex,
+        drop_end=True,
+        text_name='paragrafos',
+        level_name="artigo_id"
+    )
+    paragrafo = split_series(
+        artigo.paragrafos,
+        paragrafo_regex,
+        drop_end=False,
+        text_name='incisos',
+        level_name="paragrafo_id"
+    )
+    inciso = paragrafo.incisos.str.extractall(inciso_regex)
+    paragrafo['alinea_paragrafo'] = get_alinea_paragrafo(
+        paragrafo,
+        inciso,
+        alinea_paragrafo_regex
+    )
+    df = fund.join(artigo, how='outer').join(paragrafo).join(inciso).reset_index()
+    df = _drop_empty_paragrafo(df)
+    for c in ['inciso', 'paragrafo']:
+        df[c] = clean_text(df[c])
+    df = clean(df)
+    df = df.set_index('ix')
+    df['lei'] = clean_lei(df.lei)
+    df['lei'] = map_regex(df.lei, lei_map, flags=re.I)
+    cols = ['citation', 'lei', 'artigo', 'paragrafo', 'inciso', 'alinea']
+    df = df[cols]
+    return df
+
+
+def get_alinea_paragrafo(paragrafo, inciso, regex):
+    paragrafo['has_inciso'] = inciso.groupby(
+        ['fund_id', 'artigo_id', 'paragrafo_id']
+    ).inciso.size() > 0
+    paragrafo['has_inciso'] = paragrafo.has_inciso.fillna(False)
+    paragrafo.loc[
+        paragrafo.has_inciso==False,
+        'alinea_paragrafo'
+    ] = paragrafo.incisos.str.extract(regex)[0]
+    paragrafo = paragrafo.drop(columns='has_inciso')
+    return paragrafo.alinea_paragrafo
+
+
+def _drop_empty_paragrafo(df):
+    df['has_paragrafo'] = df.paragrafo.notnull()
+    has_paragrafo = df.groupby(['fund_id', 'artigo_id']).has_paragrafo.transform('sum') > 0
+    df = df.loc[~(has_paragrafo & (df.paragrafo_id==-1))]
+    df = df.drop(columns='has_paragrafo')
+    return df
+
 
 letter = "a-zA-Z' çúáéíóàâêôãõÇÚÁÉÍÓÀÂÊÔÃÕ"
 estados = list(get_estado_mapping().values())
