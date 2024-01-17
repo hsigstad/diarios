@@ -19,7 +19,11 @@ class Extractor:
         start_dir = os.getcwd()
         os.chdir(self.inpath)
         if not cmd:
-            cmd = ['pcre2grep', '-HMon']
+            cmd = [
+                'pcre2grep', '-HMon',
+                '--buffer-size=100000000', #300MB? (larger gives malloc failed)
+                '--max-buffer-size=100000000', #3GBex
+            ]
         cmd.append(regex)
         outfile = os.path.join(self.outpath, outfile)
         if append:
