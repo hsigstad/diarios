@@ -54,9 +54,18 @@ def get_dispositivo_regexes():
         '(?:diante|posto).{0,5}is[st]o.*',
         'após o voto.*',
         'proferido.{0,10}relatório.*',
-        r'\b(?:nego|dou|absolvo|condeno)\b.*',
+        r'\b(?:nego|dou|absolvo|condeno|declaro|concedo)\b.*',
     ]
     regexes = [f'(?i)(?s)({regex})' for regex in regexes]
+    return regexes
+
+
+def get_desfecho_regexes(classes):
+    if type(classes) == str:
+        classes = [classes]
+    regexes = {}
+    for classe in classes:
+        regexes = {**regexes, **_get_desfecho_regexes(classe)}
     return regexes
 
 
@@ -72,17 +81,42 @@ def get_key_order(key, order):
     return key.map(order)
 
 
-def get_desfecho_regexes(classes):
-    if type(classes) == str:
-        classes = [classes]
-    regexes = {}
-    for classe in classes:
-        regexes = {**regexes, **_get_desfecho_regexes(classe)}
-    return regexes
 
 
 def _get_desfecho_regexes(classe):
-    regexes = dict()
+    regexes = {
+        'HOMOLOG(O|ASE).*DESISTENCIA':
+        'HOMOLOGAR-DESISTENCIA',
+    }
+    if classe in ["all"]: # Not caring about object
+        regexes = {
+            **regexes,
+            'PARCIALMENTE PROCEDENTE': 'PARCIALMENTE PROCEDENTE-',
+            'PROCEDENTE EM PARTE': 'PARCIALMENTE PROCEDENTE-',
+            'JULG(O|ASE) PROCEDENTE': 'PROCEDENTE-',
+            'JULG(O|ASE) IMPROCEDENTE': 'IMPROCEDENTE-',
+            'EXT.*SEM.*MERITO': 'S/MERITO-',
+            'NAO (SE )?CONHEC': 'NAO CONHECER-',
+            'JULG(O|ASE) EXTINTO|EXTINGO': 'EXTINTO-',
+            '(INDEFIRO|INDEFERESE)': 'INDEFERIR-',
+            r'\bDEFIRO': 'DEFERIR-',
+            r'\b(DOU|JULGO|DECLARO|JULGASE).*PREJUDICAD': 'PREJUDICADO-',
+            r'\bD(OU|EU|AR|ASE) (SEGU|PROV)IMENTO PARCIAL': 'PARCIAL PROVIMENTO-',
+            r'\bD(OU|EU|AR|ASE) PARCIAL (SEGU|PROV)IMENTO': 'PARCIAL PROVIMENTO-',
+            r'\bD(OU|EU|AR|ASE) (SEGU|PROV)IMENTO': 'PROVIMENTO-',
+            r'\bNEG(AR|O|ASE).*(SEGU|PROV)IMENTO': 'IMPROVIMENTO-',
+            'REJEITO': 'REJEITAR-',
+            'ACOLH.*PARTE': 'ACOLHER EM PARTE-',
+            'ACOLHO': 'ACOLHER-',
+            r'CONCEDO': 'CONCEDER-',
+            r'\b(NEGO|DENEGO)': 'NEGAR-',
+            'ABSOLVO': 'ABSOLVER-',
+            'CONDENO': 'CONDENAR-',
+            '(NAO |IN)ADMITO': 'NAO ADMITIR-',
+            'ADMITO': 'ADMITIR-',
+            '(DECLAR|JULG|DECRET)[^.]*EXTIN[^.]*(PUNIBILIDADE|PUNITIVA)':
+            'PRESCRICAO-',
+        }
     if classe in ["APN", "ProOrd", "ACIA", "ACP"]:
         regexes = {
             **regexes,
@@ -105,6 +139,49 @@ def _get_desfecho_regexes(classe):
             'ACOLH.*EMBARGOS.*DECL':
             'ACOLHER-EMBARGOS',
         }
+    if classe in ["Ag"]:
+        obj = '(RECURSO|AGRAVO)'
+        regexes = {
+            **regexes,
+            f'\\b(DOU|JULGO|DECLARO|JULGASE).*PREJUDICAD.*{obj}':
+            'PREJUDICADO-RECURSO',
+            f'\\b(DOU|DASE).*(SEGU|PROV)IMENTO.*{obj}':
+            'PROVIMENTO-RECURSO',
+            f'\\b(RESOLVO NEGAR|NEGO|NEGASE).*(SEGU|PROV)IMENTO.*{obj}':
+            'IMPROVIMENTO-RECURSO',
+            f'NAO (SE )?CONHEC.*{obj}':
+            'NAO CONHECER-RECURSO',
+        }        
+    if classe in ["HC"]:
+        obj = '(ORDEM|HABEAS|WRIT|IMPETRACAO|PEDIDO)'
+        regexes = {
+            **regexes,
+            f'\\b(DEFIRO|CONCEDO).*{obj}':
+            'CONCEDER-ORDEM',
+            f'\\b(NEGO|DENEGO|INDEFIRO|INDEFERESE).*{obj}':
+            'DENEGAR-ORDEM',
+            'REJEITO.*INICIAL':
+            'REJEITAR-INICIAL',
+            f'NAO CONHEC.*{obj}':
+            'NAO CONHECER-ORDEM',
+            f'\\b(DOU|JULGO|DECLARO).*PREJUDICAD.*{obj}':
+            'PREJUDICADA-ORDEM',
+            'JULGO.*EXTINTO.*SEM.*MERITO':
+            'S/MERITO-ORDEM',
+        }
+    if classe in ["RC"]: # Revisao Criminal
+        obj = '(PEDIDO|REVISAO CRIMINAL|PLEITO|ACAO)'
+        regexes = {
+            **regexes,
+            f'\\b(DEFIRO|CONCEDO|JULGO PROCEDENTE).*{obj}':
+            'CONCEDER-PEDIDO',
+            f'\\b(JULGO IMPROCEDENTE|NEGO|DENEGO|INDEFIRO|INDEFERESE|NAO ADMITO).*{obj}':
+            'DENEGAR-PEDIDO',
+            f'NAO (SE )?CONHEC.*{obj}':
+            'NAO CONHECER-PEDIDO',
+            'JULGO.*EXTINT.*SEM.*MERITO':
+            'S/MERITO-ORDEM',
+        }                
     if classe in ["APN"]:
         regexes = {
             **regexes,
@@ -187,6 +264,7 @@ class DecisionParser:
             name_match_single_parte=False,
             split_desfecho=True,
             main_sentence_regexes=get_main_sentence_regexes(),
+            get_desfecho_regexes=get_desfecho_regexes,
             alternative_parte_regexes={'MINISTERIO.*PUBLICO': 'MP|MPF|MINISTERIO PUBLICO'},
             dispositivo_regexes=get_dispositivo_regexes(),
             all_partes_regexes=[r'\bOS REUS\b', r'\bOS REQUERIDOS\b', r'\bOS ACUSADOS'],
@@ -211,6 +289,7 @@ class DecisionParser:
         self.split_desfecho = split_desfecho
         self.key_order = key_order
         self.name_match_single_parte = name_match_single_parte
+        self.get_desfecho_regexes = get_desfecho_regexes
 
     def parse(self):
         df = pd.DataFrame(index=self.text.index)
@@ -219,7 +298,7 @@ class DecisionParser:
             self.main_sentence_regexes
         )
         df['main_sentence'] = clean_text(df.main_sentence)
-        regexes = get_desfecho_regexes(self.classes)
+        regexes = self.get_desfecho_regexes(self.classes)
         desfecho = map_regex(
             df.main_sentence,
             regexes,
