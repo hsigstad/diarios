@@ -212,7 +212,7 @@ def _structure_string_to_df(string):
         {'value': string.split('\n')}
     ).drop(0)
     df['value'] = df['value'].str.replace(
-        '(^ *)([^ ])','\\1,\\2'
+        '(^ *)([^ ])','\\1,\\2', regex=True
     )
     df = df['value'].str.split(
         ',', expand=True

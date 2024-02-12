@@ -1358,7 +1358,7 @@ def clean_lei(lei):
     lei.loc[contains_number & is_lei] = 'L' + number.loc[contains_number & is_lei]
     lei.loc[contains_number & decreto_lei] = 'DL' + number.loc[contains_number & decreto_lei]
     lei.loc[contains_number & lei_complementar] = 'LC' + number.loc[contains_number & lei_complementar]
-    lei = lei.str.replace('/(19|20)([0-9]{2})', r'/\2') # L8666/93 instead of L8666/1993
+    lei = lei.str.replace('/(19|20)([0-9]{2})', r'/\2', regex=True) # L8666/93 instead of L8666/1993
     return lei
 
 

@@ -126,7 +126,7 @@ def clean_subsecao(df):
         'Jurisdição': 'municipio'
     }
     df = (df.rename(columns=cols).loc[:, cols.values()])
-    df['sede'] = df.sede.str.replace('Altamira\( exceto.*', 'Altamira')
+    df['sede'] = df.sede.str.replace('Altamira\( exceto.*', 'Altamira', regex=True)
     sede = df.drop(columns='municipio').drop_duplicates()
     sede['municipio'] = sede.sede
     df = pd.concat([df, sede])

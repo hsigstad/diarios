@@ -43,7 +43,7 @@ def get_proc(df):
     }
     for k, v in keys.items():
         df[v] = df.processo.str.extract(f'({k})(.*)')[1]
-    df['relator'] = df.relator.str.replace("(DESEMBARGADOR)A? FEDERAL ", "")
+    df['relator'] = df.relator.str.replace("(DESEMBARGADOR)A? FEDERAL ", "", regex=True)
     text_cols = ['relator', 'juiz', 'vara', 'orgao_julgador', 'assunto', 'localizacao', 'grupo']
     for col in text_cols:
         df[col] = clean_text(df[col])
@@ -52,7 +52,7 @@ def get_proc(df):
     df['distribuicao'] = df.distribuicao.str.extract(' - (.*?) - ')[0]
     for col in date_cols:
         df[col] = pd.to_datetime(df[col], dayfirst=True, errors='coerce')
-    df['relator'] = clean_text(df.relator.str.replace("(DESEMBARGADOR)A? FEDERAL ", ""))
+    df['relator'] = clean_text(df.relator.str.replace("(DESEMBARGADOR)A? FEDERAL ", "", regex=True))
     classes = {
         'Ação Penal': 'APN',
         'Ação Civil Pública': 'ACP',
@@ -87,12 +87,12 @@ def get_parte_adv(partes):
         level_name='parte_id',
         text_name='parte'
     )
-    parte['parte'] = parte.parte.str.replace('^[,0-9]+', '')
+    parte['parte'] = parte.parte.str.replace('^[,0-9]+', '', regex=True)
     parte['key'] = clean_text(parte.key)
     adv_regex = 'ADVOGAD[OA]|PROCURADORA?,|PROC/S/OAB|,'
     parte[['parte', 'adv']] = parte.parte.str.split(adv_regex, n=1, expand=True)
     adv = split_series(parte.adv, '\n', level_name='adv_id')
-    adv['adv'] = adv.adv.str.replace('(ADVOGAD[OA]|PROCURADORA?|PROC/S/OAB),*', '')
+    adv['adv'] = adv.adv.str.replace('(ADVOGAD[OA]|PROCURADORA?|PROC/S/OAB),*', '', regex=True)
     adv = adv.query('adv != ""')
     oab_regex = '([A-Z]{2}[0-9]+)'
     adv['oab'] = adv.adv.str.extract(oab_regex)[0]
@@ -139,7 +139,7 @@ def get_inteiro_teor(inteiro_teor):
     df = split_series(inteiro_teor, "\n", text_name='text')
     df.index = df.index.droplevel('group')
     df = df.reset_index()
-    df.loc[df.instancia==2, 'text'] = df.text.str.replace(' ', ',')
+    df.loc[df.instancia==2, 'text'] = df.text.str.replace(' ', ',', regex=False)
     df = df.set_index(['num_npu', 'instancia'])
     df[['n_inteiro_teor', 'tp_inteiro_teor', 'date']] = df.text.str.split(',', expand=True, n=2)
     df['n_inteiro_teor'] = pd.to_numeric(df.n_inteiro_teor, errors='coerce')
