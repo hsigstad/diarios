@@ -255,7 +255,7 @@ class DecisionParser:
             parte=None,
             tipo_parte=None,
             classes=["ProOrd", "ACIA", "APN", "ED", "Ap"],
-            remove_dots=[r'\barts?', r'\bfls?', '[0-9]', r'\bn'],
+            remove_dots=[r'\barts?', r'\bfls?', '[0-9]', r'\bn', r'\bc', r'\bcc'],
             remove_regexes=[
                 '(?s)(?i)conden[^.]{0,20}honor[^.]{0,10}adv',
                 '(?s)(?i)conden[^.]{0,20}custa[^.]{0,10}proc',
@@ -603,7 +603,7 @@ def intersect(list1, list2):
 
 
 def get_pena_regexes(classes=['APN', 'ACIA']):
-    n = get_cardinal_number_regex()
+    n = get_cardinal_number_regex().replace('(?i)(?s)', '')
     s = '[^.]{0,5}?'
     m = '[^.]{0,10}?'
     l = '[^.]{0,40}?'
