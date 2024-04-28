@@ -57,7 +57,7 @@ def _rank_candidates(df):
     df['votes_elected'] = (df.votes + df.electeddummy)
     df['rank'] = (df.groupby('group')['votes_elected'].rank(ascending=True,
                                                             method='first'))
-    df = df.drop('votes_elected', 1)
+    df = df.drop(columns='votes_elected')
     return df
 
 
@@ -67,7 +67,7 @@ def _center_rank(df):
     min_elected_rank = (df.groupby('group')['erank'].transform('min'))
     df['crank'] = (df['rank'] - min_elected_rank)
     df.loc[elected, 'crank'] += 1
-    df = df.drop('erank', 1)
+    df = df.drop(columns='erank')
     return df
 
 
