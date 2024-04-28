@@ -5,7 +5,7 @@ from diarios.clean import map_regex
 from diarios.clean import generate_id
 
 
-def parse_consulta_tjsp(infiles, instancia=2):
+def parse_consulta_tjsp(infiles, instancia=1):
     df = pd.DataFrame({'infile': infiles})
     df['text'] = df.infile.apply(read)
     df['num_npu'] = df.infile.str.extract('/([^/]+)\.md')
@@ -21,7 +21,8 @@ def parse_consulta_tjsp(infiles, instancia=2):
     df = clean(df, instancia)
     parte, adv = get_parte_adv(df.partes)
     mov = get_mov(df.movimentacoes)
-    return df, mov, parte, adv
+    proc = df.drop(columns=['movimentacoes', 'partes', 'text'])
+    return proc, mov, parte, adv
 
 
 def read(infile):
