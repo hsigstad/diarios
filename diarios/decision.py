@@ -9,7 +9,9 @@ from diarios.parse import extract_regexes
 
 # TODO: Differentiate between reclusao and detencao (sometimes 2 anos reclusao e 3 meses detencao)
 
-def _clean_text(text, remove_dots, remove_regexes):
+def _clean_text(text, replace_text, remove_dots, remove_regexes):
+    for k, v in replace_text.items():
+        text = text.str.replace(k, v, regex=True)
     for r in remove_dots:
         text = text.str.replace(f'({r})\.', r'\1', regex=True)
     for regex in remove_regexes:
@@ -256,6 +258,7 @@ class DecisionParser:
             parte=None,
             tipo_parte=None,
             classes=["ProOrd", "ACIA", "APN", "ED", "Ap"],
+            replace_text={r'\.([0-9]{2})\b': r',\1'},
             remove_dots=[r'\barts?', r'\bfls?', '[0-9]', r'\bn', r'\bc', r'\bcc'],
             remove_regexes=[
                 '(?s)(?i)conden[^.]{0,20}honor[^.]{0,10}adv',
@@ -274,7 +277,7 @@ class DecisionParser:
                 'subject': get_subject()
             }
     ):
-        self.text = _clean_text(text, remove_dots, remove_regexes)
+        self.text = _clean_text(text, replace_text, remove_dots, remove_regexes)
         self.main_sentence_regexes = main_sentence_regexes
         self.more_regexes = more_regexes
         self.all_partes_regexes = all_partes_regexes
@@ -356,6 +359,7 @@ class DecisionParser:
         for c in num_cols:
             if c in df.columns:
                 df[c] = extract_number(df[c])
+                
         for k, v in boolean_regexes.items():
             df[k] = df.text.str.contains(v) * 1
         df = self._clean_penas(df)

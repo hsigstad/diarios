@@ -17,6 +17,10 @@ def parse_consulta_trf1(infiles):
 
 def get_df(infiles):
     df = pd.concat(map(pd.read_csv, infiles))
+    cols = ['peticoes', 'incidentes']
+    for c in cols:
+        if c not in df.columns:
+            df[c] = ''
     df = df.query('error.isnull()')
     df['instancia'] = df.municipio.apply(lambda x: 2 if x == 'TRF 1A REGIAO' else 1)
     df = df.drop_duplicates(['num_npu', 'instancia']) # Drops 2
@@ -68,6 +72,7 @@ def get_proc(df):
         'relator', 'vara', 'juiz', 'classe', 'assunto', 'localizacao', 'observacao',
         'volumes', 'processo_originario', 'principal', 'data_distribuicao',
     ]
+    proc_cols = [c for c in proc_cols if c in df.columns]
     proc = df.loc[:, proc_cols]
     return proc
 
@@ -127,7 +132,11 @@ def get_pub(publicacao):
 
 def get_peticao(peticoes):
     df = split_series(peticoes, "\n", text_name='text')
-    df[['n_peticao', 'data_peticao1', 'data_peticao2', 'text_peticao', 'parte_peticao']] = df.text.str.split(',', expand=True, n=4)
+    try:
+        df[['n_peticao', 'data_peticao1', 'data_peticao2', 'text_peticao', 'parte_peticao']] = df.text.str.split(',', expand=True, n=4)
+    except ValueError:
+        print('Appears to be no peticoes')
+        return pd.DataFrame()
     df = df.drop(columns='text')
     df['data_peticao1'] = pd.to_datetime(df.data_peticao1, dayfirst=True, errors='coerce')
     df['data_peticao2'] = pd.to_datetime(df.data_peticao2, dayfirst=True, errors='coerce')

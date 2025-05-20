@@ -1201,6 +1201,10 @@ def clean_cpf(cpf, as_str=False):
 
 
 def extract_number(sr, cardinal=True, ordinal=True, numeric=True, decimal_sep=","):
+    if decimal_sep == ",":
+        # 250.100.00 -> 250.100,00 (fixing OCR error)
+        sr = sr.str.replace('\.([0-9]{2})$', r',\1', regex=True)
+        sr = sr.str.replace('\.([0-9]{4,5})$', r',\1', regex=True)
     sr = clean_text(sr, drop=f"^A-Za-z0-9{decimal_sep} ", upper=True)
     # Does not extract zero for now
     mapping = {}
