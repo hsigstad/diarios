@@ -2,12 +2,86 @@ import path
 import pandas as pd
 from diarios.clean import clean_text
 from diarios.clean import map_regex
-from diarios.clean import generate_id
+import zipfile
 
 
-def parse_consulta_tjsp(infiles, instancia=1):
+def parse_consulta_tjsp_from_zip(
+        zip_paths, case_numbers=None,
+        directory="1", instancia=1, **kwargs
+):
+    if isinstance(zip_paths, str):
+        zip_paths = [zip_paths]
+
+    zip_files = [zipfile.ZipFile(p, 'r') for p in zip_paths]
+
+    try:
+        # Map each .md file path to its corresponding zipfile
+        file_to_zip = {
+            name: z
+            for z in zip_files
+            for name in z.namelist()
+            if name.startswith(f"{directory}/") and name.endswith(".md")
+        }
+
+        # Filter for relevant files
+        if case_numbers is None:
+            selected_files = list(file_to_zip.keys())
+        else:
+            expected = {f"{directory}/{cn}.md" for cn in case_numbers}
+            selected_files = list(expected & file_to_zip.keys())
+
+        # Define reader function
+        def read_from_zip(path):
+            z = file_to_zip[path]
+            with z.open(path) as f:
+                return f.read().decode("utf-8")
+
+        return parse_consulta_tjsp_in_chunks(
+            selected_files,
+            instancia=instancia,
+            read_func=read_from_zip,
+            **kwargs
+        )
+
+    finally:
+        for z in zip_files:
+            z.close()
+
+
+def parse_consulta_tjsp_in_chunks(
+        infiles,
+        instancia=1,
+        chunk_size=100000,
+        mov=True,
+        **kwargs
+):
+    all_proc, all_mov, all_parte, all_adv = [], [], [], []
+
+    print("Parsing", len(infiles), "cases")
+    for i in range(0, len(infiles), chunk_size):
+        print("Parsed", i, "of", len(infiles))
+        chunk = infiles[i:i + chunk_size]
+        proc, mov, parte, adv = parse_consulta_tjsp(chunk, instancia=instancia, **kwargs)
+        all_proc.append(proc)
+        all_mov.append(mov)
+        all_parte.append(parte)
+        all_adv.append(adv)
+
+    proc = pd.concat(all_proc)
+    if mov:
+        mov = pd.concat(all_mov)
+    else:
+        mov = None
+    parte = pd.concat(all_parte)
+    adv = pd.concat(all_adv)
+    return proc, mov, parte, adv
+
+
+def parse_consulta_tjsp(infiles, instancia=1, read_func=None):
     df = pd.DataFrame({'infile': infiles})
-    df['text'] = df.infile.apply(read)
+    if read_func is None:
+        read_func = read
+    df['text'] = df.infile.apply(read_func)
     df['num_npu'] = df.infile.str.extract('/([^/]+)\.md')
     if len(df) != len(df.drop_duplicates('num_npu')):
         raise ValueError("Duplicate observations per case")
@@ -28,6 +102,11 @@ def parse_consulta_tjsp(infiles, instancia=1):
 def read(infile):
     with open(infile, 'r') as f:
         return f.read()
+
+
+def read(path):
+    with zipfile_obj.open(path) as f:
+        return f.read().decode('utf-8')
 
 
 def get_sections(instancia):
@@ -112,6 +191,7 @@ def get_parte_adv(partes):
     parte.index = parte.index.droplevel('match')    
     adv.index = adv.index.droplevel('match')    
     return parte, adv
+
 
 def gen_parte_id(parte):
     df = parte.copy()

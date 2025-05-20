@@ -878,7 +878,7 @@ def extract_info_from_case_numbers(number, types=["CNJ"]):
     for regex in regexes:
         df = number.str.extract(regex)
         new_cols = set(df.columns) - set(info.columns)
-        info = info.join(df.loc[:, new_cols])
+        info = info.join(df.loc[:, list(new_cols)])
         if info.isnull().any().any():
             info[info.isnull()] = df
     info = info.apply(pd.to_numeric, errors="coerce")

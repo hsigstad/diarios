@@ -198,6 +198,7 @@ def _get_desfecho_regexes(classe):
                     "APELO",
                     "APELOS",
                     "APELACOES",
+                    "RECURSO",
                     "REMESSA OFICIAL",
                     "REMESSA NECESSARIA"]:
             regexes = {
