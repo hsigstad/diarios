@@ -3,7 +3,7 @@ import pandas as pd
 from diarios.clean import clean_text
 from diarios.clean import map_regex
 import zipfile
-
+import gc
 
 def parse_consulta_tjsp_from_zip(
         zip_paths, case_numbers=None,
@@ -49,31 +49,39 @@ def parse_consulta_tjsp_from_zip(
 
 
 def parse_consulta_tjsp_in_chunks(
-        infiles,
-        instancia=1,
-        chunk_size=100000,
-        mov=True,
-        **kwargs
+    infiles,
+    instancia=1,
+    chunk_size=100_000,
+    save_mov=True,
+    **kwargs
 ):
-    all_proc, all_mov, all_parte, all_adv = [], [], [], []
-
     print("Parsing", len(infiles), "cases")
+
+    proc = pd.DataFrame()
+    parte = pd.DataFrame()
+    adv = pd.DataFrame()
+    mov = pd.DataFrame()
+
     for i in range(0, len(infiles), chunk_size):
         print("Parsed", i, "of", len(infiles))
         chunk = infiles[i:i + chunk_size]
-        proc, mov, parte, adv = parse_consulta_tjsp(chunk, instancia=instancia, **kwargs)
-        all_proc.append(proc)
-        all_mov.append(mov)
-        all_parte.append(parte)
-        all_adv.append(adv)
 
-    proc = pd.concat(all_proc)
-    if mov:
-        mov = pd.concat(all_mov)
-    else:
-        mov = None
-    parte = pd.concat(all_parte)
-    adv = pd.concat(all_adv)
+        # Parse the chunk
+        proc_chunk, mov_chunk, parte_chunk, adv_chunk = parse_consulta_tjsp(
+            chunk, instancia=instancia, **kwargs
+        )
+
+        # Incrementally concatenate results
+        proc = pd.concat([proc, proc_chunk])
+        parte = pd.concat([parte, parte_chunk])
+        adv = pd.concat([adv, adv_chunk])
+        if save_mov:
+            mov = pd.concat([mov, mov_chunk])
+
+        # Clean up memory
+        del proc_chunk, mov_chunk, parte_chunk, adv_chunk, chunk
+        gc.collect()
+
     return proc, mov, parte, adv
 
 
