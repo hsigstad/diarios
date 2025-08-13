@@ -439,7 +439,7 @@ class DecisionParser:
         pena_cols = set(df.columns).intersection(pena_cols)
         if numeric_only:
             pena_cols = pena_cols - set(self.text_pena_cols)
-        return pena_cols
+        return list(pena_cols)
     
     def _bfill_penas(self, df):
         # Backward fill penas in cases like:
