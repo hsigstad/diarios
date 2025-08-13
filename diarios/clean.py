@@ -650,8 +650,11 @@ def get_number_regexes():
         "TJSC": ("\d+\." "(?P<filingyear>\d{2})" "\.\d{6}-\d"),
         "TJSE": ("(?P<filingyear>(199|200|201)\d)" "\d{7}"),
         "TJSP": (
-            "\d+\.\d{2}\." "(?P<filingyear>(199|200|201)\d)" "\.\d{6}-\d"
+            "\d+\.\d{2}\." "(?P<filingyear>(199|200|201)\d)" "\.\d{6}(-\d)?"
         ),  # 625.01.1996.002168-3
+        "TJSP_2": (
+            "\d{3}." "(?P<filingyear>\d{2})" "\.\d{6}(-\d)?"
+        ),  # 050.06.071816-1
         "TJTO": ("(?P<filingyear>(199|200|201)\d)" "\.\d{4}\.\d{4}(-|–)\d"),
         "TRF1": ("(?P<filingyear>\d{4})" "\.\d{2}\.\d{2}\.\d{6}-\d"),
         "TRF2": ("(?P<filingyear>\d{4})" "\.\d{2}\.\d{2}\.\d{6}-\d"),
@@ -719,7 +722,9 @@ def is_number_antigo(number, tribunal):
     regexes = get_number_regexes()
     df["is_antigo"] = False
     for t, r in regexes.items():
-        df.loc[df.tribunal == t.replace("_2", ""), "is_antigo"] = df.number.str.match(r)
+        df.loc[df.tribunal == t.replace("_2", ""), "is_antigo"] = (
+            df.is_antigo | df.number.str.match(r)
+        )
     return df["is_antigo"]
 
 
@@ -771,7 +776,8 @@ def _get_aaaa(df):
     df["aaaa"] = pd.NA
     df.loc[df.tribunal == "TRF2", "aaaa"] = df["0"]
     df.loc[df.tribunal == "TJSP", "aaaa"] = df["2"]
-    df.loc[df.tribunal.isin(["TJMS", "TJSC"]), "aaaa"] = "20" + df["1"]
+    tjsp2 = (df.tribunal == "TJSP") & (df["2"].str.len() > 4) # 050.06.071816-1:
+    df.loc[df.tribunal.isin(["TJMS", "TJSC"]) | tjsp2, "aaaa"] = "20" + df["1"]
     return df.aaaa
 
 
@@ -789,7 +795,8 @@ def _get_n(df):
     df["n"] = pd.NA
     df.loc[df.tribunal == "TRF2", "n"] = df["3"]
     df.loc[df.tribunal == "TJSP", "n"] = df["3"]
-    df.loc[df.tribunal.isin(["TJMS", "TJSC"]), "n"] = df["2"]
+    tjsp2 = (df.tribunal == "TJSP") & (df["2"].str.len() > 4) # 050.06.071816-1:    
+    df.loc[df.tribunal.isin(["TJMS", "TJSC"]) | tjsp2, "n"] = df["2"]
     df["n"] = df["n"].fillna("").str.zfill(7)
     return df.n
 
