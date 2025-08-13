@@ -421,7 +421,7 @@ class DecisionParser:
         all_partes['no_pena'] = all_partes.no_pena.fillna(True)
         all_partes = all_partes.query('no_pena==True')
         if len(all_partes) > 0:
-            all_partes = all_partes.merge(parte, on='ix')
+            all_partes = all_partes.merge(parte, on=ix)
         df = pd.concat([
             df.loc[~has_all],
             all_partes
