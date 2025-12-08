@@ -660,11 +660,11 @@ def _get_split_keys(classe):
     if classe in ["ACIA", "APN"]:
         keys = {
             **keys,
-            'CONDENO': 'CONDENO',
+            'CONDENO(?!-)': 'CONDENO',
             'PARA CONDENAR': 'CONDENO',
-            'JULGO PROCEDENTE': 'CONDENO',
-            'JULGO IMPROCEDENTE': 'ABSOLVO',
-            'PARA JULGAR PROCEDENTE': 'CONDENO',
+            'JULGO PROCEDENTES?': 'CONDENO',
+            'JULGO IMPROCEDENTES?': 'ABSOLVO',
+            'PARA JULGAR PROCEDENTES?': 'CONDENO',
             'DEIXO.{0,10}CONDENAR': 'ABSOLVO',
             'CONDEN(?:AR|A-?L[AO])': 'CONDENO',
             'ABSOLV(?:O|ER)': 'ABSOLVO',

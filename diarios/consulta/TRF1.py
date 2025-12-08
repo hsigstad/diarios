@@ -125,7 +125,7 @@ def get_pub(publicacao):
     pub = split_series(publicacao, "\n")
     pub[['data_pub', 'tp_pub', 'text_pub']] = pub.publicacao.str.split(',', expand=True, n=2)
     pub = pub.drop(columns='publicacao')
-    pub['data_pub'] = pd.to_datetime(pub.data_pub, dayfirst=True)
+    pub['data_pub'] = pd.to_datetime(pub.data_pub, dayfirst=True, errors='coerce')
     pub.index = pub.index.droplevel('group')
     return pub
 
