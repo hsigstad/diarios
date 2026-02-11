@@ -1527,8 +1527,15 @@ def normalize_datajud(records):
                 "orgao_municipio_ibge": oj.get("codigoMunicipioIBGE"),
             }
 
-        # assuntos (1-to-many)
-        for assunto in src.get("assuntos", []):
+        # assuntos (1-to-many, may contain nested lists)
+        raw_assuntos = src.get("assuntos", [])
+        flat_assuntos = []
+        for item in raw_assuntos:
+            if isinstance(item, list):
+                flat_assuntos.extend(item)
+            else:
+                flat_assuntos.append(item)
+        for assunto in flat_assuntos:
             ac = assunto.get("codigo")
             if ac is not None:
                 bridge_rows.append({"processo_id": pid, "assunto_codigo": ac})
@@ -1559,9 +1566,12 @@ def normalize_datajud(records):
         [{"assunto_codigo": k, "assunto_nome": v} for k, v in assuntos_seen.items()]
     )
 
-    df_classes = df_classes.sort_values("classe_codigo").reset_index(drop=True)
-    df_orgaos = df_orgaos.sort_values("orgao_codigo").reset_index(drop=True)
-    df_assuntos = df_assuntos.sort_values("assunto_codigo").reset_index(drop=True)
+    if not df_classes.empty:
+        df_classes = df_classes.sort_values("classe_codigo").reset_index(drop=True)
+    if not df_orgaos.empty:
+        df_orgaos = df_orgaos.sort_values("orgao_codigo").reset_index(drop=True)
+    if not df_assuntos.empty:
+        df_assuntos = df_assuntos.sort_values("assunto_codigo").reset_index(drop=True)
 
     return {
         "processos": df_processos,
