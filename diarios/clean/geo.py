@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from typing import Any, Dict, List, Optional, Union
+from typing import Dict, List, Optional, Union
 
 import pandas as pd
 import numpy as np
@@ -11,6 +11,28 @@ from copy import copy
 
 from diarios.clean.text import clean_text, get_data, get_estado_mapping, title, transform
 from diarios.clean.numbers import extract_info_from_case_numbers
+
+__all__ = [
+    "TRT",
+    "TRF",
+    "get_trt_estados",
+    "get_trf_estados",
+    "get_trf_estados_mapping",
+    "clean_estado",
+    "get_capital",
+    "extract_municipio",
+    "clean_municipio",
+    "get_municipio_id",
+    "get_municipio_regex",
+    "clean_comarca",
+    "clean_vara",
+    "get_foro_id",
+    "get_foro",
+    "get_comarca_id",
+    "get_comarca",
+    "get_foro_info",
+    "get_caderno_id",
+]
 
 
 class TRT:

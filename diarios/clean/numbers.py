@@ -5,10 +5,33 @@ from __future__ import annotations
 from typing import Any, Dict, List, Optional, Union
 
 import pandas as pd
-import numpy as np
-import re
 
 from diarios.clean.text import get_data, get_estado_mapping, map_regex, transform, clean_text
+
+__all__ = [
+    "clean_number",
+    "is_cnj_number",
+    "clean_cnj_number",
+    "get_number_regex",
+    "get_number_regexes",
+    "get_verificador_cnj",
+    "clean_number_antigo",
+    "clean_number_antigo1",
+    "is_number_antigo",
+    "convert_number_antigo",
+    "get_old_format",
+    "get_tribunal",
+    "extract_info_from_case_numbers",
+    "get_filing_year",
+    "clean_reais",
+    "clean_integer",
+    "get_integer_mapping",
+    "clean_oab",
+    "clean_cpf",
+    "extract_number",
+    "get_ordinal_number_regex",
+    "get_cardinal_number_regex",
+]
 
 
 def clean_number(numbers: pd.Series, types: List[str] = ["CNJ"]) -> pd.Series:

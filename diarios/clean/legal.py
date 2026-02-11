@@ -5,11 +5,32 @@ from __future__ import annotations
 from typing import Any, Callable, Dict, List, Optional, Union
 
 import pandas as pd
-import numpy as np
 import re
 
 from diarios.clean.text import clean_text, get_data, map_regex, split_series, extract_from_list
 from diarios.clean.numbers import clean_number
+
+__all__ = [
+    "clean_parte",
+    "clean_parte_key",
+    "clean_tipo_parte",
+    "clean_classe",
+    "clean_decision",
+    "get_decision",
+    "get_procedencia",
+    "get_plaintiffwins",
+    "get_plaintiffwins_mapping",
+    "clean_valor",
+    "clean_date",
+    "clean_line",
+    "get_decisao_id",
+    "get_tipo_parte_id",
+    "clean_lei",
+    "extract_fundamentos",
+    "get_alinea_paragrafo",
+    "load_datajud_jsonl",
+    "normalize_datajud",
+]
 
 
 def clean_parte(
