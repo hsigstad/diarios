@@ -223,5 +223,6 @@ def get_wrong_rows() -> List[Tuple[str, str, str]]:
     ]
 
 
-df = main()
-print(df.sample().iloc[0])
+if __name__ == '__main__':
+    df = main()
+    print(df.sample().iloc[0])

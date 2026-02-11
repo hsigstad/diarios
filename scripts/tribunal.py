@@ -5,8 +5,6 @@ from typing import Optional
 
 import pandas as pd
 
-os.chdir('/home/henrik/Dropbox/brazil/diarios')
-os.chdir('/home/henrik/Dropbox/brazil/diarios/diarios')
 
 
 def main() -> pd.DataFrame:
@@ -113,4 +111,5 @@ def get_loc(indir: str, loc: int) -> Optional[str]:
         return lst[loc]
 
 
-df = main()
+if __name__ == '__main__':
+    df = main()

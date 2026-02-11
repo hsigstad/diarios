@@ -9,9 +9,6 @@ from diarios.clean import transform
 
 # TODO: Add trabalhista (use varas/vara_year_TRT)
 
-infiles = glob('{}/foro/foro*.csv'.format(path.db_dir))
-
-
 def read_csv(infile: str) -> pd.DataFrame:
     """Read a single foro CSV file with latin1 encoding.
 
@@ -44,16 +41,18 @@ def add_foro_raw(df: pd.DataFrame) -> pd.DataFrame:
     return df
 
 
-df = pd.concat(map(read_csv, infiles))
-df = df.loc[:, ('foro', 'ibge7', 'idnom_forum')]
-df['oooo'] = df.foro % 10000
-df['code_j'] = np.floor(df.foro/1000000)
-df['code_tr'] = np.floor(df.foro/10000) % 100
-df['municipio_id'] = transform(df.ibge7, 'ibge7', 'municipio_id', infile='diarios/data/municipio.csv')
-tribunal = pd.read_csv('diarios/data/tribunal.csv').loc[:, ['code_j', 'code_tr', 'tribunal']]
-df = df.merge(tribunal, on=['code_j', 'code_tr'], validate='m:1', how='left')
-df = df.drop(columns=['code_j', 'code_tr'])
-df = add_foro_raw(df)
-df.loc[df.foro_name.isnull(), 'foro_name'] = df.idnom_forum
-df = df.drop(columns='idnom_forum')
-df.to_csv('diarios/data/foro.csv', index=False)
+if __name__ == '__main__':
+    infiles = glob('{}/foro/foro*.csv'.format(path.db_dir))
+    df = pd.concat(map(read_csv, infiles))
+    df = df.loc[:, ('foro', 'ibge7', 'idnom_forum')]
+    df['oooo'] = df.foro % 10000
+    df['code_j'] = np.floor(df.foro/1000000)
+    df['code_tr'] = np.floor(df.foro/10000) % 100
+    df['municipio_id'] = transform(df.ibge7, 'ibge7', 'municipio_id', infile='diarios/data/municipio.csv')
+    tribunal = pd.read_csv('diarios/data/tribunal.csv').loc[:, ['code_j', 'code_tr', 'tribunal']]
+    df = df.merge(tribunal, on=['code_j', 'code_tr'], validate='m:1', how='left')
+    df = df.drop(columns=['code_j', 'code_tr'])
+    df = add_foro_raw(df)
+    df.loc[df.foro_name.isnull(), 'foro_name'] = df.idnom_forum
+    df = df.drop(columns='idnom_forum')
+    df.to_csv('diarios/data/foro.csv', index=False)

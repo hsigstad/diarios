@@ -6,8 +6,6 @@ from typing import Any, Dict, List
 import pandas as pd
 from diarios.clean import clean_text
 
-os.chdir('/home/henrik/Dropbox/brazil/diarios')
-os.chdir('/home/henrik/Dropbox/brazil/diarios/diarios')
 
 
 def read(infile: str) -> pd.DataFrame:
@@ -27,18 +25,13 @@ def read(infile: str) -> pd.DataFrame:
     return pd.read_csv(infile)
 
 
-assunto = read('assuntos.csv')
-item = (
-    read('itens.csv')
-    .query('tipo_item=="A"')
-)
-
-
-def create_tree(row: pd.Series) -> Dict[str, Any]:
+def create_tree(row: pd.Series, assunto: pd.DataFrame, item: pd.DataFrame) -> Dict[str, Any]:
     """Recursively build a tree node for a legal subject category.
 
     Args:
         row: A row from the itens DataFrame with cod_item and nome columns.
+        assunto: DataFrame of assunto records.
+        item: DataFrame of item records filtered to type "A".
 
     Returns:
         Dict with name, dispositivo, artigo, glossario, and children keys.
@@ -65,19 +58,11 @@ def create_tree(row: pd.Series) -> Dict[str, Any]:
         'artigo': info['artigo'],
         'glossario': info['glossario'],
         'children': [
-            create_tree(r)
+            create_tree(r, assunto, item)
             for _, r in
             children.iterrows()
         ]
     }
-
-
-roots = item.query('cod_item_pai.isnull()')
-tree = [
-    create_tree(root)
-    for _, root in
-    roots.iterrows()
-]
 
 
 def to_org(tree: Dict[str, Any], level: int = 1) -> str:
@@ -110,13 +95,26 @@ def to_org(tree: Dict[str, Any], level: int = 1) -> str:
     return txt
 
 
-org = '\n'.join([
-    to_org(node)
-    for node in tree
-])
+if __name__ == '__main__':
+    assunto = read('assuntos.csv')
+    item = (
+        read('itens.csv')
+        .query('tipo_item=="A"')
+    )
 
+    roots = item.query('cod_item_pai.isnull()')
+    tree = [
+        create_tree(root, assunto, item)
+        for _, root in
+        roots.iterrows()
+    ]
 
-outfile = 'data/assunto.org'
+    org = '\n'.join([
+        to_org(node)
+        for node in tree
+    ])
 
-with open(outfile, 'w') as f:
-    f.write(org)
+    outfile = 'data/assunto.org'
+
+    with open(outfile, 'w') as f:
+        f.write(org)

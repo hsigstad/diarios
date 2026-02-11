@@ -6,8 +6,6 @@ from typing import Dict, Tuple
 import pandas as pd
 from diarios.clean import clean_text
 
-os.chdir('/home/henrik/diarios')
-os.chdir('/home/henrik/Dropbox/brazil/diarios/diarios')
 
 
 def read(infile: str) -> pd.DataFrame:
@@ -135,7 +133,8 @@ def get_dipositivo(classe: pd.DataFrame) -> pd.DataFrame:
     return disp
 
 
-classe, disp = get_classe()
+if __name__ == '__main__':
+    classe, disp = get_classe()
 
-classe.to_csv('diarios/data/classe.csv', index=False)
-disp.to_csv('diarios/data/classe_dispositivo.csv', index=False)
+    classe.to_csv('diarios/data/classe.csv', index=False)
+    disp.to_csv('diarios/data/classe_dispositivo.csv', index=False)
