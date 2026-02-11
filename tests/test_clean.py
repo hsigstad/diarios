@@ -445,6 +445,327 @@ class TestExtractFromList(unittest.TestCase):
         self.assertTrue(pd.isna(result.iloc[0]))
 
 
+class TestCleanCnjNumber(unittest.TestCase):
+
+    def test_already_clean(self):
+        sr = pd.Series(["0002107-31.2010.8.26.0660"])
+        result = clean.clean_cnj_number(sr)
+        self.assertEqual(result.iloc[0], "0002107-31.2010.8.26.0660")
+
+    def test_pads_short_number(self):
+        sr = pd.Series(["2107-31.2010.8.26.0660"])
+        result = clean.clean_cnj_number(sr)
+        self.assertEqual(result.iloc[0], "0002107-31.2010.8.26.0660")
+
+    def test_coerce_invalid(self):
+        sr = pd.Series(["abc"])
+        result = clean.clean_cnj_number(sr, errors="coerce")
+        self.assertTrue(pd.isna(result.iloc[0]))
+
+    def test_ignore_invalid(self):
+        sr = pd.Series(["abc"])
+        result = clean.clean_cnj_number(sr, errors="ignore")
+        self.assertEqual(result.iloc[0], "abc")
+
+
+class TestExtractSeries(unittest.TestCase):
+
+    def test_named_groups(self):
+        text = pd.Series(["case 123 year 2020", "number 456 year 2019"])
+        regex = r"(?P<num>\d+) year (?P<year>\d+)"
+        result = clean.extract_series(text, regex)
+        self.assertEqual(result.columns.tolist(), ["num", "year"])
+        self.assertEqual(result["num"].tolist(), ["123", "456"])
+        self.assertEqual(result["year"].tolist(), ["2020", "2019"])
+
+    def test_per_row_regex(self):
+        text = pd.Series(["abc 123", "xyz 456"])
+        regex = pd.Series([r"(?P<val>\d+)", r"xyz (?P<val>\d+)"])
+        result = clean.extract_series(text, regex)
+        self.assertEqual(result["val"].tolist(), ["123", "456"])
+
+    def test_no_match(self):
+        text = pd.Series(["no match"])
+        regex = r"(?P<num>\d+)"
+        result = clean.extract_series(text, regex)
+        self.assertEqual(len(result), 1)
+
+
+class TestExtractallSeries(unittest.TestCase):
+
+    def test_multiple_matches(self):
+        text = pd.Series(["a1 b2 c3"], index=[10])
+        regex = r"(?P<letter>[a-z])(?P<digit>\d)"
+        result = clean.extractall_series(text, regex)
+        self.assertEqual(len(result), 3)
+        self.assertEqual(result["letter"].tolist(), ["a", "b", "c"])
+        self.assertEqual(result["digit"].tolist(), ["1", "2", "3"])
+
+    def test_index_names(self):
+        text = pd.Series(["a1 b2"])
+        result = clean.extractall_series(text, r"(?P<x>[a-z])(?P<y>\d)")
+        self.assertEqual(result.index.names[-1], "match")
+
+    def test_custom_level_name(self):
+        text = pd.Series(["a1"])
+        result = clean.extractall_series(text, r"(?P<x>\w+)", level_name="item")
+        self.assertEqual(result.index.names[-1], "item")
+
+
+class TestSplitSeries(unittest.TestCase):
+
+    def test_basic_split(self):
+        text = pd.Series(["A: hello B: world"], name="txt")
+        regex = r"(?P<key>[A-Z]):\s*"
+        result = clean.split_series(text, regex, text_pos="right", drop_end=True)
+        self.assertIn("key", result.columns)
+        self.assertIn("txt", result.columns)
+        self.assertEqual(result["key"].tolist(), ["A", "B"])
+
+    def test_raises_on_series_regex(self):
+        text = pd.Series(["hello"])
+        regex = pd.Series(["world"])
+        with self.assertRaises(TypeError):
+            clean.split_series(text, regex)
+
+
+class TestExtractNumber(unittest.TestCase):
+
+    def test_numeric(self):
+        result = clean.extract_number(pd.Series(["42"]))
+        self.assertEqual(result.iloc[0], 42)
+
+    def test_decimal(self):
+        result = clean.extract_number(pd.Series(["3,14"]))
+        self.assertAlmostEqual(result.iloc[0], 3.14)
+
+    def test_cardinal_word(self):
+        result = clean.extract_number(pd.Series(["CINCO"]))
+        self.assertEqual(result.iloc[0], 5)
+
+    def test_ordinal_word(self):
+        result = clean.extract_number(pd.Series(["TERCEIRA"]))
+        self.assertEqual(result.iloc[0], 3)
+
+    def test_no_match(self):
+        result = clean.extract_number(pd.Series(["nada"]))
+        self.assertTrue(pd.isna(result.iloc[0]))
+
+    def test_numeric_only(self):
+        result = clean.extract_number(pd.Series(["42"]), cardinal=False, ordinal=False)
+        self.assertEqual(result.iloc[0], 42)
+
+    def test_words_only(self):
+        result = clean.extract_number(pd.Series(["VINTE"]), numeric=False)
+        self.assertEqual(result.iloc[0], 20)
+
+
+class TestNormalizeDatajud(unittest.TestCase):
+
+    def _make_record(self, pid, numero, classe_codigo=7, assuntos=None):
+        return {
+            "_id": pid,
+            "_source": {
+                "numeroProcesso": numero,
+                "tribunal": "TJSP",
+                "grau": "G1",
+                "nivelSigilo": 0,
+                "classe": {"codigo": classe_codigo, "nome": "Procedimento Comum"},
+                "orgaoJulgador": {"codigo": 100, "nome": "Vara X"},
+                "assuntos": assuntos or [{"codigo": 10, "nome": "Assunto A"}],
+            },
+        }
+
+    def test_returns_expected_keys(self):
+        records = [self._make_record("p1", "0002107-31.2010.8.26.0660")]
+        result = clean.normalize_datajud(records)
+        self.assertEqual(
+            sorted(result.keys()),
+            ["assuntos", "classes", "orgaos_julgadores", "processo_assuntos", "processos"],
+        )
+
+    def test_processos_shape(self):
+        records = [
+            self._make_record("p1", "0002107-31.2010.8.26.0660"),
+            self._make_record("p2", "0001234-56.2015.8.26.0100"),
+        ]
+        result = clean.normalize_datajud(records)
+        self.assertEqual(len(result["processos"]), 2)
+        self.assertIn("numero_processo", result["processos"].columns)
+
+    def test_assuntos_bridge(self):
+        records = [
+            self._make_record("p1", "0002107-31.2010.8.26.0660", assuntos=[
+                {"codigo": 10, "nome": "A"},
+                {"codigo": 20, "nome": "B"},
+            ]),
+        ]
+        result = clean.normalize_datajud(records)
+        self.assertEqual(len(result["processo_assuntos"]), 2)
+        self.assertEqual(len(result["assuntos"]), 2)
+
+    def test_nested_assuntos(self):
+        records = [{
+            "_id": "p1",
+            "_source": {
+                "numeroProcesso": "0002107-31.2010.8.26.0660",
+                "classe": {"codigo": 1},
+                "orgaoJulgador": {},
+                "assuntos": [[{"codigo": 10, "nome": "A"}, {"codigo": 20, "nome": "B"}]],
+            },
+        }]
+        result = clean.normalize_datajud(records)
+        self.assertEqual(len(result["processo_assuntos"]), 2)
+
+    def test_classe_filter(self):
+        records = [
+            self._make_record("p1", "0002107-31.2010.8.26.0660", classe_codigo=7),
+            self._make_record("p2", "0001234-56.2015.8.26.0100", classe_codigo=99),
+        ]
+        result = clean.normalize_datajud(records, classe_codigos=[7])
+        self.assertEqual(len(result["processos"]), 1)
+
+    def test_empty_records(self):
+        result = clean.normalize_datajud([])
+        self.assertEqual(len(result["processos"]), 0)
+
+
+class TestGenerateId(unittest.TestCase):
+
+    def test_series(self):
+        sr = pd.Series(["a", "b", "a", "c"])
+        result = clean.generate_id(sr)
+        self.assertEqual(result.iloc[0], result.iloc[2])
+        self.assertNotEqual(result.iloc[0], result.iloc[1])
+
+    def test_with_suffix(self):
+        sr = pd.Series(["a", "b"])
+        result = clean.generate_id(sr, suffix=1)
+        self.assertTrue(all(r % 100 == 1 for r in result))
+
+    def test_dataframe(self):
+        df = pd.DataFrame({"x": ["a", "b", "a"], "y": ["1", "2", "1"]})
+        result = clean.generate_id(df, by=["x", "y"])
+        self.assertEqual(result.iloc[0], result.iloc[2])
+        self.assertNotEqual(result.iloc[0], result.iloc[1])
+
+
+class TestRemoveRegexes(unittest.TestCase):
+
+    def test_removes_patterns(self):
+        sr = pd.Series(["hello WORLD 123 foo"])
+        result = clean.remove_regexes(sr, ["WORLD", "123"])
+        self.assertEqual(result.iloc[0].strip(), "hello   foo")
+
+    def test_empty_list(self):
+        sr = pd.Series(["unchanged"])
+        result = clean.remove_regexes(sr, [])
+        self.assertEqual(result.iloc[0], "unchanged")
+
+
+class TestMapRegexEdgeCases(unittest.TestCase):
+
+    def test_string_match(self):
+        self.assertEqual(clean.map_regex("abc", {"ab": "X"}), "X")
+
+    def test_string_no_match_keep(self):
+        self.assertEqual(clean.map_regex("xyz", {"ab": "X"}), "xyz")
+
+    def test_string_no_match_drop(self):
+        result = clean.map_regex("xyz", {"ab": "X"}, keep_unmatched=False)
+        self.assertTrue(np.isnan(result))
+
+    def test_nan_input(self):
+        result = clean.map_regex(np.NaN, {"ab": "X"})
+        self.assertTrue(np.isnan(result))
+
+    def test_ndarray_input(self):
+        arr = np.array(["abc", "xyz"])
+        result = clean.map_regex(arr, {"ab": "Y"})
+        self.assertEqual(result.tolist(), ["Y", "xyz"])
+
+
+class TestCleanTextColumns(unittest.TestCase):
+
+    def test_cleans_object_columns(self):
+        df = pd.DataFrame({"a": ["São Paulo"], "b": [1], "c": ["café"]})
+        result = clean.clean_text_columns(df)
+        self.assertEqual(result["a"].iloc[0], "SAO PAULO")
+        self.assertEqual(result["c"].iloc[0], "CAFE")
+        self.assertEqual(result["b"].iloc[0], 1)
+
+    def test_exclude(self):
+        df = pd.DataFrame({"a": ["São Paulo"], "b": ["café"]})
+        result = clean.clean_text_columns(df, exclude=["b"])
+        self.assertEqual(result["a"].iloc[0], "SAO PAULO")
+        self.assertEqual(result["b"].iloc[0], "café")
+
+
+class TestGetData(unittest.TestCase):
+
+    def test_returns_dataframe(self):
+        df = clean.get_data("municipio_id.csv")
+        self.assertIsInstance(df, pd.DataFrame)
+        self.assertGreater(len(df), 0)
+
+
+class TestMoveColumnsFirst(unittest.TestCase):
+
+    def test_reorders(self):
+        df = pd.DataFrame({"a": [1], "b": [2], "c": [3]})
+        result = clean.move_columns_first(df, ["c", "b"])
+        self.assertEqual(result.columns.tolist(), ["c", "b", "a"])
+
+    def test_missing_column_ignored(self):
+        df = pd.DataFrame({"a": [1], "b": [2]})
+        result = clean.move_columns_first(df, ["z", "b"])
+        self.assertEqual(result.columns[0], "b")
+
+
+class TestGetVerificadorCnj(unittest.TestCase):
+
+    def test_known_value(self):
+        result = clean.get_verificador_cnj("0002107", "201082600660")
+        self.assertEqual(result, "79")
+
+    def test_invalid_returns_none(self):
+        result = clean.get_verificador_cnj("abc", "xyz")
+        self.assertIsNone(result)
+
+
+class TestAddLeadsAndLags(unittest.TestCase):
+
+    def test_creates_lag_and_lead_columns(self):
+        df = pd.DataFrame({
+            "id": [1, 1, 1],
+            "year": [2000, 2001, 2002],
+            "value": [10, 20, 30],
+        })
+        result = clean.add_leads_and_lags(df, ["value"], "id", "year", [1, -1])
+        self.assertIn("value1", result.columns)
+        self.assertIn("value-1", result.columns)
+
+    def test_lag_values(self):
+        df = pd.DataFrame({
+            "id": [1, 1, 1],
+            "year": [2000, 2001, 2002],
+            "value": [10, 20, 30],
+        })
+        result = clean.add_leads_and_lags(df, ["value"], "id", "year", [1])
+        mid = result[result.year == 2001]
+        self.assertEqual(mid["value1"].iloc[0], 30)
+
+    def test_boundary_nan(self):
+        df = pd.DataFrame({
+            "id": [1, 1],
+            "year": [2000, 2001],
+            "value": [10, 20],
+        })
+        result = clean.add_leads_and_lags(df, ["value"], "id", "year", [1])
+        last = result[result.year == 2001]
+        self.assertTrue(np.isnan(last["value1"].iloc[0]))
+
+
 def get_test_data(datafile):
     infile = get_test_data_file(datafile)
     return pd.read_csv(infile)
