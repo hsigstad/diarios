@@ -1487,11 +1487,13 @@ def load_datajud_jsonl(path):
     return rows
 
 
-def normalize_datajud(records):
+def normalize_datajud(records, classe_codigos=None):
     """Normalize DataJud JSONL records into relational DataFrames.
 
     Args:
         records: list of dicts, each a DataJud ES hit with '_id' and '_source' keys
+        classe_codigos: optional list of classe codes to keep; if provided,
+            records with other classes are dropped
 
     Returns:
         dict mapping table name to DataFrame:
@@ -1514,6 +1516,10 @@ def normalize_datajud(records):
         # classe (1-to-1)
         classe = src.get("classe", {})
         classe_codigo = classe.get("codigo")
+
+        if classe_codigos is not None and classe_codigo not in classe_codigos:
+            continue
+
         if classe_codigo is not None and classe_codigo not in classes_seen:
             classes_seen[classe_codigo] = classe.get("nome", "")
 
