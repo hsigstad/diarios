@@ -766,6 +766,341 @@ class TestAddLeadsAndLags(unittest.TestCase):
         self.assertTrue(np.isnan(last["value1"].iloc[0]))
 
 
+class TestCleanDiarioText(unittest.TestCase):
+
+    def test_preserves_accents_and_newlines(self):
+        result = clean.clean_diario_text(pd.Series(["São Paulo\ncafé 123!"]))
+        self.assertIn("São Paulo", result.iloc[0])
+        self.assertIn("\n", result.iloc[0])
+        self.assertIn("café", result.iloc[0])
+
+
+class TestGetNumberRegex(unittest.TestCase):
+
+    def test_cnj(self):
+        regex = clean.get_number_regex("CNJ")
+        self.assertIsInstance(regex, str)
+        self.assertIn("filingyear", regex)
+
+    def test_tjsp(self):
+        regex = clean.get_number_regex("TJSP")
+        self.assertIn("filingyear", regex)
+
+
+class TestGetNumberRegexes(unittest.TestCase):
+
+    def test_returns_dict(self):
+        regexes = clean.get_number_regexes()
+        self.assertIsInstance(regexes, dict)
+        self.assertIn("CNJ", regexes)
+        self.assertGreater(len(regexes), 10)
+
+
+class TestGetIntegerMapping(unittest.TestCase):
+
+    def test_returns_dict(self):
+        m = clean.get_integer_mapping()
+        self.assertEqual(m["UMA?"], "1")
+        self.assertEqual(m["DEZ"], "10")
+        self.assertEqual(m["CEM"], "100")
+
+
+class TestGetOrdinalNumberRegex(unittest.TestCase):
+
+    def test_returns_string(self):
+        regex = clean.get_ordinal_number_regex()
+        self.assertIsInstance(regex, str)
+        self.assertIn("PRIMEIR", regex)
+
+
+class TestGetCardinalNumberRegex(unittest.TestCase):
+
+    def test_returns_string(self):
+        regex = clean.get_cardinal_number_regex()
+        self.assertIsInstance(regex, str)
+        self.assertIn("[0-9]", regex)
+
+
+class TestTRT(unittest.TestCase):
+
+    def test_from_int(self):
+        trt = clean.TRT(5)
+        self.assertEqual(trt.name, "TRT5")
+        self.assertEqual(trt.n, 5)
+        self.assertIsInstance(trt.estados, list)
+
+    def test_from_str(self):
+        trt = clean.TRT("TRT5")
+        self.assertEqual(trt.name, "TRT5")
+        self.assertEqual(trt.n, 5)
+
+
+class TestTRF(unittest.TestCase):
+
+    def test_from_int(self):
+        trf = clean.TRF(1)
+        self.assertEqual(trf.name, "TRF1")
+        self.assertEqual(trf.n, 1)
+        self.assertIsInstance(trf.estados, list)
+        self.assertGreater(len(trf.estados), 0)
+
+    def test_from_str(self):
+        trf = clean.TRF("TRF1")
+        self.assertEqual(trf.name, "TRF1")
+        self.assertEqual(trf.n, 1)
+
+
+class TestGetTrtEstados(unittest.TestCase):
+
+    def test_returns_list(self):
+        result = clean.get_trt_estados("TRT1")
+        self.assertIsInstance(result, list)
+        self.assertGreater(len(result), 0)
+
+
+class TestGetTrfEstados(unittest.TestCase):
+
+    def test_returns_list(self):
+        result = clean.get_trf_estados("TRF1")
+        self.assertIsInstance(result, list)
+        self.assertIn("AC", result)
+
+
+class TestGetTrfEstadosMapping(unittest.TestCase):
+
+    def test_all_five_trfs(self):
+        m = clean.get_trf_estados_mapping()
+        self.assertEqual(len(m), 5)
+        for key in ["TRF1", "TRF2", "TRF3", "TRF4", "TRF5"]:
+            self.assertIn(key, m)
+            self.assertIsInstance(m[key], list)
+
+
+class TestGetPlaintiffwins(unittest.TestCase):
+
+    def test_maps_decisions(self):
+        sr = pd.Series(["PROCEDENTE", "IMPROCEDENTE", "PARCIALMENTE PROCEDENTE"])
+        result = clean.get_plaintiffwins(sr)
+        self.assertEqual(result.tolist(), [1, 0, 1])
+
+    def test_parcial_zero(self):
+        sr = pd.Series(["PARCIALMENTE PROCEDENTE"])
+        result = clean.get_plaintiffwins(sr, parcial=0)
+        self.assertEqual(result.tolist(), [0])
+
+
+class TestGetDecision(unittest.TestCase):
+
+    def test_grau_1(self):
+        sr = pd.Series(["JULGO PROCEDENTE a acao", "HOMOLOGO O ACORDO"])
+        result = clean.get_decision(sr)
+        self.assertIn("JULGO PROCEDENTE", result.iloc[0])
+        self.assertIn("HOMOLOGO", result.iloc[1])
+
+    def test_grau_2(self):
+        sr = pd.Series(["DERAM PROVIMENTO AO RECURSO V. U."])
+        result = clean.get_decision(sr, grau="2")
+        self.assertIn("DERAM", result.iloc[0])
+
+    def test_no_match(self):
+        sr = pd.Series(["nothing relevant"])
+        result = clean.get_decision(sr)
+        self.assertTrue(pd.isna(result.iloc[0]))
+
+
+class TestGetProcedencia(unittest.TestCase):
+
+    def test_procedente(self):
+        sr = pd.Series(["julgo procedente o pedido"])
+        result = clean.get_procedencia(sr)
+        self.assertEqual(result.iloc[0], "PROCEDENTE")
+
+    def test_parcialmente(self):
+        sr = pd.Series(["julgo parcialmente procedente"])
+        result = clean.get_procedencia(sr)
+        self.assertEqual(result.iloc[0], "PARCIALMENTE PROCEDENTE")
+
+
+class TestCleanLei(unittest.TestCase):
+
+    def test_lei(self):
+        result = clean.clean_lei(pd.Series(["lei 8666/1993"]))
+        self.assertEqual(result.iloc[0], "L8666/93")
+
+    def test_decreto_lei(self):
+        result = clean.clean_lei(pd.Series(["decreto-lei 1234/2001"]))
+        self.assertEqual(result.iloc[0], "DL1234/01")
+
+    def test_lei_complementar(self):
+        result = clean.clean_lei(pd.Series(["lei complementar 101/2000"]))
+        self.assertEqual(result.iloc[0], "LC101/00")
+
+    def test_no_number_unchanged(self):
+        result = clean.clean_lei(pd.Series(["CPC"]))
+        self.assertEqual(result.iloc[0], "CPC")
+
+
+class TestExtractInfoFromCaseNumbers(unittest.TestCase):
+
+    def test_cnj(self):
+        sr = pd.Series(["0002107-31.2010.8.26.0660"])
+        result = clean.extract_info_from_case_numbers(sr)
+        self.assertEqual(result["filingyear"].iloc[0], 2010)
+        self.assertEqual(result["code_j"].iloc[0], 8)
+        self.assertEqual(result["code_tr"].iloc[0], 26)
+        self.assertEqual(result["oooo"].iloc[0], 660)
+
+
+class TestGetTribunal(unittest.TestCase):
+
+    def test_from_number(self):
+        sr = pd.Series(["0002107-31.2010.8.26.0660"])
+        result = clean.get_tribunal(sr, input_type="number")
+        self.assertEqual(result.iloc[0], "TJSP")
+
+    def test_from_diario(self):
+        sr = pd.Series(["DJAC"])
+        result = clean.get_tribunal(sr, input_type="diario")
+        self.assertEqual(result.iloc[0], "TJAC")
+
+
+class TestIsNumberAntigo(unittest.TestCase):
+
+    def test_old_format_detected(self):
+        sr_num = pd.Series(["660.01.2010.002107-1"])
+        sr_trib = pd.Series(["TJSP"])
+        result = clean.is_number_antigo(sr_num, sr_trib)
+        self.assertTrue(result.iloc[0])
+
+    def test_cnj_not_detected(self):
+        sr_num = pd.Series(["0002107-31.2010.8.26.0660"])
+        sr_trib = pd.Series(["TJSP"])
+        result = clean.is_number_antigo(sr_num, sr_trib)
+        self.assertFalse(result.iloc[0])
+
+
+class TestCleanNumberAntigo(unittest.TestCase):
+
+    def test_trf2(self):
+        sr_num = pd.Series(["2016.51.01.164775-3"])
+        sr_trib = pd.Series(["TRF2"])
+        result = clean.clean_number_antigo(sr_num, sr_trib)
+        self.assertEqual(result.iloc[0], "2016.51.01.164775-3")
+
+
+class TestGetOldFormat(unittest.TestCase):
+
+    def test_filters_non_cnj(self):
+        df = pd.DataFrame({"num": [
+            "0002107-31.2010.8.26.0660",
+            "660.01.2010.002107-1",
+        ]})
+        result = clean.get_old_format(df, "num")
+        self.assertEqual(len(result), 1)
+
+
+class TestCleanMunicipio(unittest.TestCase):
+
+    def test_string(self):
+        result = clean.clean_municipio("SAO PAULO", "SP")
+        self.assertEqual(result, "SAO PAULO")
+
+    def test_series(self):
+        result = clean.clean_municipio(pd.Series(["SAO PAULO"]), "SP")
+        self.assertEqual(result.iloc[0], "SAO PAULO")
+
+
+class TestExtractMunicipio(unittest.TestCase):
+
+    def test_string(self):
+        result = clean.extract_municipio("mora em SAO PAULO capital", "SP")
+        self.assertEqual(result, "SAO PAULO")
+
+    def test_series(self):
+        sr = pd.Series(["mora em SAO PAULO capital"])
+        result = clean.extract_municipio(sr, "SP")
+        self.assertEqual(result.iloc[0], "SAO PAULO")
+
+
+class TestGetMunicipioId(unittest.TestCase):
+
+    def test_known_municipio(self):
+        sr_mun = pd.Series(["SAO PAULO"])
+        sr_est = pd.Series(["SP"])
+        result = clean.get_municipio_id(sr_mun, sr_est)
+        self.assertFalse(pd.isna(result.iloc[0]))
+
+
+class TestGetMunicipioRegex(unittest.TestCase):
+
+    def test_returns_regex_string(self):
+        regex = clean.get_municipio_regex("SP")
+        self.assertIsInstance(regex, str)
+        self.assertGreater(len(regex), 100)
+
+    def test_matches_known_city(self):
+        import re
+        regex = clean.get_municipio_regex("SP")
+        self.assertIsNotNone(re.search(regex, "SAO PAULO"))
+
+
+class TestGetFofoInfo(unittest.TestCase):
+
+    def test_returns_dataframe(self):
+        sr = pd.Series(["0002107-31.2010.8.26.0660"])
+        result = clean.get_foro_info(sr)
+        self.assertIsInstance(result, pd.DataFrame)
+        self.assertEqual(len(result), 1)
+        self.assertIn("tribunal", result.columns)
+
+
+class TestGetForo(unittest.TestCase):
+
+    def test_returns_value(self):
+        sr = pd.Series(["0002107-31.2010.8.26.0660"])
+        result = clean.get_foro(sr)
+        self.assertFalse(pd.isna(result.iloc[0]))
+
+
+class TestGetComarcaId(unittest.TestCase):
+
+    def test_from_comarca_tribunal(self):
+        result = clean.get_comarca_id(
+            comarca=pd.Series(["SAO PAULO"]),
+            tribunal=pd.Series(["TJSP"]),
+        )
+        self.assertFalse(pd.isna(result.iloc[0]))
+
+    def test_raises_without_args(self):
+        with self.assertRaises(Exception):
+            clean.get_comarca_id()
+
+
+class TestGetCadernoId(unittest.TestCase):
+
+    def test_known_caderno(self):
+        diario = pd.Series(["CNJ"])
+        caderno = pd.Series(["edicao extra"])
+        result = clean.get_caderno_id(diario, caderno)
+        self.assertEqual(result.iloc[0], 1)
+
+
+class TestLoadDatajudJsonl(unittest.TestCase):
+
+    def test_reads_jsonl(self):
+        import tempfile
+        import json
+        records = [{"_id": "1", "data": "test"}, {"_id": "2", "data": "test2"}]
+        with tempfile.NamedTemporaryFile(mode="w", suffix=".jsonl", delete=False) as f:
+            for r in records:
+                f.write(json.dumps(r) + "\n")
+            path = f.name
+        result = clean.load_datajud_jsonl(path)
+        os.unlink(path)
+        self.assertEqual(len(result), 2)
+        self.assertEqual(result[0]["_id"], "1")
+
+
 def get_test_data(datafile):
     infile = get_test_data_file(datafile)
     return pd.read_csv(infile)
