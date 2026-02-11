@@ -207,6 +207,244 @@ class TestCleanReais(unittest.TestCase):
         self.assertTrue(np.isnan(result.iloc[0]))
 
 
+class TestCleanText(unittest.TestCase):
+
+    def test_string_input(self):
+        result = clean.clean_text("  Hello, World!  São Paulo  ")
+        self.assertEqual(result, "HELLO WORLD SAO PAULO")
+
+    def test_series_input(self):
+        result = clean.clean_text(pd.Series(["café", None, "  hello  "]))
+        self.assertEqual(result.tolist(), ["CAFE", "", "HELLO"])
+
+    def test_returns_string_for_string_input(self):
+        result = clean.clean_text("test")
+        self.assertIsInstance(result, str)
+
+    def test_returns_series_for_series_input(self):
+        result = clean.clean_text(pd.Series(["test"]))
+        self.assertIsInstance(result, pd.Series)
+
+    def test_lower(self):
+        result = clean.clean_text("Hello World", lower=True, upper=False)
+        self.assertEqual(result, "hello world")
+
+    def test_keep_accents(self):
+        result = clean.clean_text("São Paulo", accents=True, drop=None)
+        self.assertEqual(result, "SÃO PAULO")
+
+    def test_custom_drop(self):
+        result = clean.clean_text("abc 123", drop="^a-z ", upper=False)
+        self.assertEqual(result, "abc")
+
+    def test_newline_removed_by_default(self):
+        result = clean.clean_text("hello\nworld")
+        self.assertEqual(result, "HELLO WORLD")
+
+    def test_newline_preserved(self):
+        result = clean.clean_text("hello\nworld", newline=True, drop=None)
+        self.assertIn("\n", result)
+
+    def test_multiple_spaces_collapsed(self):
+        result = clean.clean_text("hello    world")
+        self.assertEqual(result, "HELLO WORLD")
+
+    def test_multiple_spaces_preserved(self):
+        result = clean.clean_text("hello    world", multiple_spaces=True)
+        self.assertEqual(result, "HELLO    WORLD")
+
+    def test_strip(self):
+        result = clean.clean_text("  hello  ")
+        self.assertEqual(result, "HELLO")
+
+    def test_no_strip(self):
+        result = clean.clean_text("  hello  ", strip=False)
+        self.assertTrue(result.startswith(" "))
+
+
+class TestCleanNumber(unittest.TestCase):
+
+    def test_cnj_format(self):
+        sr = pd.Series(["0002107-31.2010.8.26.0660"])
+        result = clean.clean_number(sr)
+        self.assertEqual(result.tolist(), ["0002107-31.2010.8.26.0660"])
+
+    def test_strips_non_digits_around(self):
+        sr = pd.Series(["Proc. 0002107-31.2010.8.26.0660 end"])
+        result = clean.clean_number(sr)
+        self.assertEqual(result.tolist(), ["0002107-31.2010.8.26.0660"])
+
+    def test_no_digits(self):
+        sr = pd.Series(["abc"])
+        result = clean.clean_number(sr)
+        self.assertEqual(result.iloc[0], "")
+
+
+class TestIsCnjNumber(unittest.TestCase):
+
+    def test_valid(self):
+        result = clean.is_cnj_number(pd.Series(["0002107-31.2010.8.26.0660"]))
+        self.assertTrue(result.iloc[0])
+
+    def test_invalid(self):
+        result = clean.is_cnj_number(pd.Series(["abc", "123"]))
+        self.assertFalse(result.iloc[0])
+        self.assertFalse(result.iloc[1])
+
+
+class TestCleanEstado(unittest.TestCase):
+
+    def test_full_names(self):
+        result = clean.clean_estado(pd.Series(["São Paulo", "BAHIA"]))
+        self.assertEqual(result.tolist(), ["SP", "BA"])
+
+    def test_abbreviations_pass_through(self):
+        result = clean.clean_estado(pd.Series(["SP", "RJ"]))
+        self.assertEqual(result.tolist(), ["SP", "RJ"])
+
+    def test_unknown(self):
+        result = clean.clean_estado(pd.Series(["NEVERLAND"]))
+        self.assertTrue(pd.isna(result.iloc[0]))
+
+
+class TestCleanOab(unittest.TestCase):
+
+    def test_series(self):
+        result = clean.clean_oab(pd.Series(["OAB/SP 12345", "67890 RJ"]))
+        self.assertEqual(result.tolist(), ["12345/SP", "67890/RJ"])
+
+    def test_string_input(self):
+        result = clean.clean_oab("12345 SP")
+        self.assertEqual(result.tolist(), ["12345/SP"])
+
+
+class TestCleanParte(unittest.TestCase):
+
+    def test_removes_titles_and_suffixes(self):
+        result = clean.clean_parte(pd.Series(["DRS JOAO SILVA E OUTROS"]))
+        self.assertEqual(result.tolist(), ["JOAO SILVA"])
+
+    def test_maps_mp(self):
+        result = clean.clean_parte(pd.Series(["MINISTERIO PUBLICO"]))
+        self.assertEqual(result.tolist(), ["MP"])
+
+    def test_delete_pattern(self):
+        result = clean.clean_parte(
+            pd.Series(["JOAO", "SECRET INFO"]),
+            delete="SECRET",
+        )
+        self.assertEqual(result.iloc[0], "JOAO")
+        self.assertEqual(result.iloc[1], "")
+
+
+class TestCleanClasse(unittest.TestCase):
+
+    def test_known_classes(self):
+        result = clean.clean_classe(pd.Series([
+            "ACAO CIVIL PUBLICA",
+            "AGRAVO DE INSTRUMENTO",
+            "APELACAO",
+        ]))
+        self.assertEqual(result.tolist(), ["ACP", "AI", "Ap"])
+
+    def test_unmatched_kept(self):
+        result = clean.clean_classe(pd.Series(["xyz"]))
+        self.assertEqual(result.tolist(), ["XYZ"])
+
+
+class TestCleanTipoParte(unittest.TestCase):
+
+    def test_plaintiff_types(self):
+        result = clean.clean_tipo_parte(pd.Series(["AUTOR", "REQUERENT"]))
+        self.assertEqual(result.tolist(), ["PLAINTIFF", "PLAINTIFF"])
+
+    def test_defendant_types(self):
+        result = clean.clean_tipo_parte(pd.Series(["REU", "REQUERID"]))
+        self.assertEqual(result.tolist(), ["DEFENDANT", "DEFENDANT"])
+
+    def test_lawyer(self):
+        result = clean.clean_tipo_parte(pd.Series(["ADVOGADO"]))
+        self.assertEqual(result.tolist(), ["LAWYER"])
+
+
+class TestCleanDecision(unittest.TestCase):
+
+    def test_grau_1(self):
+        result = clean.clean_decision(pd.Series([
+            "JULGO PROCEDENTE",
+            "JULGO IMPROCEDENTE",
+            "JULGO PARCIALMENTE PROCEDENTE",
+            "HOMOLOGO O ACORDO",
+        ]))
+        self.assertEqual(result.tolist(), [
+            "PROCEDENTE",
+            "IMPROCEDENTE",
+            "PARCIALMENTE PROCEDENTE",
+            "HOMOLOGO ACORDO",
+        ])
+
+    def test_grau_2(self):
+        result = clean.clean_decision(
+            pd.Series(["DERAM PROVIMENTO", "NEGAR PROVIMENTO"]),
+            grau="2",
+        )
+        self.assertEqual(result.tolist(), ["DERAM", "NEGAR"])
+
+    def test_unmatched_kept(self):
+        result = clean.clean_decision(pd.Series(["random text"]))
+        self.assertEqual(result.tolist(), ["RANDOM TEXT"])
+
+
+class TestGetPlaintiffwinsMapping(unittest.TestCase):
+
+    def test_default(self):
+        m = clean.get_plaintiffwins_mapping()
+        self.assertEqual(m["PROCEDENTE"], 1)
+        self.assertEqual(m["IMPROCEDENTE"], 0)
+        self.assertEqual(m["PARCIALMENTE PROCEDENTE"], 1)
+
+    def test_parcial_zero(self):
+        m = clean.get_plaintiffwins_mapping(parcial=0)
+        self.assertEqual(m["PARCIALMENTE PROCEDENTE"], 0)
+
+
+class TestGetFilingYear(unittest.TestCase):
+
+    def test_cnj_number(self):
+        result = clean.get_filing_year(pd.Series(["0002107-31.2010.8.26.0660"]))
+        self.assertEqual(result.tolist(), [2010])
+
+
+class TestCleanInteger(unittest.TestCase):
+
+    def test_digit_string(self):
+        result = clean.clean_integer(pd.Series(["42"]))
+        self.assertEqual(result.tolist(), [42])
+
+    def test_number_words(self):
+        result = clean.clean_integer(pd.Series(["CINCO", "DEZ"]))
+        self.assertEqual(result.tolist(), [5, 10])
+
+    def test_invalid(self):
+        result = clean.clean_integer(pd.Series(["abc"]))
+        self.assertTrue(np.isnan(result.iloc[0]))
+
+
+class TestExtractFromList(unittest.TestCase):
+
+    def test_first_match_wins(self):
+        sr = pd.Series(["JULGO PROCEDENTE a acao", "HOMOLOGO ACORDO"])
+        regex_list = ["JULGO .{0,20}PROCEDENTE", "HOMOLOGO .{0,20}ACORDO"]
+        result = clean.extract_from_list(sr, regex_list)
+        self.assertEqual(result.iloc[0], "JULGO PROCEDENTE")
+        self.assertEqual(result.iloc[1], "HOMOLOGO ACORDO")
+
+    def test_no_match(self):
+        sr = pd.Series(["nothing here"])
+        result = clean.extract_from_list(sr, ["PATTERN"])
+        self.assertTrue(pd.isna(result.iloc[0]))
+
+
 def get_test_data(datafile):
     infile = get_test_data_file(datafile)
     return pd.read_csv(infile)
