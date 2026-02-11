@@ -32,9 +32,9 @@ class CaseParser:
 
     def __init__(
         self,
-        regexes: List[str] = [r"(?P<number>[0-9.\-]{19,30})"],
+        regexes: Optional[List[str]] = None,
         regexes_before_split: Optional[List[str]] = None,
-        cleaners: Dict[str, Callable[[pd.Series], pd.Series]] = {"number": clean.clean_number},
+        cleaners: Optional[Dict[str, Callable[[pd.Series], pd.Series]]] = None,
         parte: str = "AUTOR:|RÉU:",
         split_parte_on: str = ",|-|;",
         split_text_on: Optional[str] = None,
@@ -49,11 +49,11 @@ class CaseParser:
         last_name_length: int = 50,
         clean_proc: Callable[[pd.DataFrame], pd.DataFrame] = lambda x: x,
         clean_mov: Callable[[pd.DataFrame], pd.DataFrame] = lambda x: x,
-        df_proc_cols: List[str] = [],
-        df_mov_cols: List[str] = [],
-        df_parte_cols: List[str] = [],
+        df_proc_cols: Optional[List[str]] = None,
+        df_mov_cols: Optional[List[str]] = None,
+        df_parte_cols: Optional[List[str]] = None,
         drop_if_no_number: bool = True,
-        parte_levels: List[str] = ["mov_id", "proc_id"],
+        parte_levels: Optional[List[str]] = None,
         advogado: Optional[str] = None,
         split_adv: bool = False,
     ) -> None:
@@ -85,6 +85,18 @@ class CaseParser:
             advogado: Regex pattern for extracting lawyer information.
             split_adv: Whether to split lawyers into a separate DataFrame.
         """
+        if regexes is None:
+            regexes = [r"(?P<number>[0-9.\-]{19,30})"]
+        if cleaners is None:
+            cleaners = {"number": clean.clean_number}
+        if df_proc_cols is None:
+            df_proc_cols = []
+        if df_mov_cols is None:
+            df_mov_cols = []
+        if df_parte_cols is None:
+            df_parte_cols = []
+        if parte_levels is None:
+            parte_levels = ["mov_id", "proc_id"]
         self.parte = parte
         self.regexes_before_split = regexes_before_split
         self.regexes = regexes
@@ -231,7 +243,7 @@ class CaseParser:
         df["name_group"] = np.where(
             df.name_group == "", df.lastname_group, df.name_group
         )
-        return df.drop("lastname_group", 1)
+        return df.drop(columns="lastname_group")
 
     def _drop_partes(self, df: pd.DataFrame) -> pd.DataFrame:
         """Remove invalid or too-short party names."""
@@ -255,12 +267,10 @@ class CaseParser:
         cols = {"parte": "advogado"}
         adv = df.rename(columns=cols).reset_index()
         adv.loc[adv.tipo_parte_id == 4, "name_group"] = np.nan
-        adv["name_group"] = adv.groupby(self.parte_levels)["name_group"].fillna(
-            method="ffill"
-        )
+        adv["name_group"] = adv.groupby(self.parte_levels)["name_group"].ffill()
         df = df.loc[df.tipo_parte_id != 4].copy()
         adv = adv.loc[adv.tipo_parte_id == 4]
-        adv = adv.drop("parte_id", 1)
+        adv = adv.drop(columns="parte_id")
         df["parte_id"] = clean.generate_id(
             df,
             by=["tipo_parte_id", "parte"] + self.parte_levels,
@@ -272,7 +282,7 @@ class CaseParser:
         cols = ["parte_id", "advogado", "oab"]
         adv = adv.loc[:, cols]
         if "oab" in df.columns:
-            df = df.drop("oab", 1)
+            df = df.drop(columns="oab")
         df = df.drop_duplicates("parte_id")  # Just in case
         return df, adv
 
@@ -325,7 +335,7 @@ def _drop_duplicate_procs(df: pd.DataFrame) -> pd.DataFrame:
     # But probably quite slow
     df["nmissing"] = df.isnull().sum(axis=1)
     proc = df.sort_values("nmissing").drop_duplicates("proc_id", keep="first")
-    proc = proc.drop("nmissing", 1)
+    proc = proc.drop(columns="nmissing")
     return proc
 
 
@@ -368,8 +378,8 @@ class DiarioParser(CaseParser):
     def __init__(
         self,
         number_types: Union[str, List[str]] = "CNJ",
-        df_mov_cols: List[str] = ["tribunal", "number", "date", "caderno", "line"],
-        df_proc_cols: List[str] = ["tribunal", "number", "classe"],
+        df_mov_cols: Optional[List[str]] = None,
+        df_proc_cols: Optional[List[str]] = None,
         **kwargs: Any,
     ) -> None:
         """Initialize the diary parser with default columns and cleaners.
@@ -380,6 +390,10 @@ class DiarioParser(CaseParser):
             df_proc_cols: Columns to keep in the process DataFrame.
             **kwargs: Additional keyword arguments passed to ``CaseParser``.
         """
+        if df_mov_cols is None:
+            df_mov_cols = ["tribunal", "number", "date", "caderno", "line"]
+        if df_proc_cols is None:
+            df_proc_cols = ["tribunal", "number", "classe"]
         super(DiarioParser, self).__init__(
             df_proc_cols=df_proc_cols,
             df_mov_cols=df_mov_cols,

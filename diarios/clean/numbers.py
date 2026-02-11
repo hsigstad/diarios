@@ -34,7 +34,7 @@ __all__ = [
 ]
 
 
-def clean_number(numbers: pd.Series, types: List[str] = ["CNJ"]) -> pd.Series:
+def clean_number(numbers: pd.Series, types: Optional[List[str]] = None) -> pd.Series:
     """Clean case numbers, extracting digits and standardizing CNJ format.
 
     Args:
@@ -44,6 +44,8 @@ def clean_number(numbers: pd.Series, types: List[str] = ["CNJ"]) -> pd.Series:
     Returns:
         Series of cleaned case number strings.
     """
+    if types is None:
+        types = ["CNJ"]
     numbers = numbers.str.extract("([0-9].*[0-9])", expand=False).str.replace(" ", "", regex=False)
     if "CNJ" in types:
         numbers = clean_cnj_number(numbers, errors="ignore")
@@ -361,7 +363,7 @@ def get_tribunal(
 
 
 def extract_info_from_case_numbers(
-    number: pd.Series, types: List[str] = ["CNJ"]
+    number: pd.Series, types: Optional[List[str]] = None
 ) -> pd.DataFrame:
     """Extract structured info (year, court codes) from case numbers.
 
@@ -372,6 +374,8 @@ def extract_info_from_case_numbers(
     Returns:
         DataFrame with columns for each named capture group.
     """
+    if types is None:
+        types = ["CNJ"]
     regexes = map(get_number_regex, types)
     info = pd.DataFrame(index=number.index)
     for regex in regexes:
@@ -384,7 +388,7 @@ def extract_info_from_case_numbers(
     return info
 
 
-def get_filing_year(numbers: pd.Series, types: List[str] = ["CNJ"]) -> pd.Series:
+def get_filing_year(numbers: pd.Series, types: Optional[List[str]] = None) -> pd.Series:
     """Extract and normalize the filing year from case numbers.
 
     Args:
@@ -394,6 +398,8 @@ def get_filing_year(numbers: pd.Series, types: List[str] = ["CNJ"]) -> pd.Series
     Returns:
         Series of four-digit filing years.
     """
+    if types is None:
+        types = ["CNJ"]
     filingyear = extract_info_from_case_numbers(numbers, types).loc[:, "filingyear"]
     filingyear.loc[filingyear.between(0, 18)] = filingyear + 2000
     filingyear.loc[filingyear.between(80, 99)] = filingyear + 1900

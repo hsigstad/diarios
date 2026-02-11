@@ -349,7 +349,7 @@ def intersect(list1: List[Any], list2: List[Any]) -> bool:
     return len(set(list1).intersection(list2)) > 0
 
 
-def get_pena_regexes(classes: List[str] = ['APN', 'ACIA']) -> Tuple[List[str], Dict[str, str]]:
+def get_pena_regexes(classes: Optional[List[str]] = None) -> Tuple[List[str], Dict[str, str]]:
     """Return regex patterns for extracting penalty information.
 
     Args:
@@ -358,6 +358,8 @@ def get_pena_regexes(classes: List[str] = ['APN', 'ACIA']) -> Tuple[List[str], D
     Returns:
         Tuple of (named-group regexes, boolean regex dict).
     """
+    if classes is None:
+        classes = ['APN', 'ACIA']
     n = get_cardinal_number_regex().replace('(?i)(?s)', '')
     s = '[^.]{0,5}?'
     m = '[^.]{0,10}?'

@@ -74,25 +74,19 @@ class DecisionParser:
             text: pd.Series,
             parte: Optional[pd.Series] = None,
             tipo_parte: Optional[pd.Series] = None,
-            classes: List[str] = ["ProOrd", "ACIA", "APN", "ED", "Ap"],
-            replace_text: Dict[str, str] = {r'\.([0-9]{2})\b': r',\1'},
-            remove_dots: List[str] = [r'\barts?', r'\bfls?', '[0-9]', r'\bn', r'\bc', r'\bcc'],
-            remove_regexes: List[str] = [
-                '(?s)(?i)conden[^.]{0,20}honor[^.]{0,10}adv',
-                '(?s)(?i)conden[^.]{0,20}custa[^.]{0,10}proc',
-            ],
-            key_order: List[str] = ['ABSOLVO', 'PRESCRICAO', 'CONDENO'],
+            classes: Optional[List[str]] = None,
+            replace_text: Optional[Dict[str, str]] = None,
+            remove_dots: Optional[List[str]] = None,
+            remove_regexes: Optional[List[str]] = None,
+            key_order: Optional[List[str]] = None,
             name_match_single_parte: bool = False,
             split_desfecho: bool = True,
-            main_sentence_regexes: List[str] = get_main_sentence_regexes(),
+            main_sentence_regexes: Optional[List[str]] = None,
             get_desfecho_regexes: Callable[..., Dict[str, str]] = get_desfecho_regexes,
-            alternative_parte_regexes: Optional[Dict[str, str]] = {'MINISTERIO.*PUBLICO': 'MP|MPF|MINISTERIO PUBLICO'},
-            dispositivo_regexes: List[str] = get_dispositivo_regexes(),
-            all_partes_regexes: Optional[Union[List[str], Dict[Any, List[str]]]] = [r'\bOS REUS\b', r'\bOS REQUERIDOS\b', r'\bOS ACUSADOS'],
-            more_regexes: Dict[str, Dict[str, str]] = {
-                'mode': get_mode(),
-                'subject': get_subject()
-            }
+            alternative_parte_regexes: Optional[Dict[str, str]] = None,
+            dispositivo_regexes: Optional[List[str]] = None,
+            all_partes_regexes: Optional[Union[List[str], Dict[Any, List[str]]]] = None,
+            more_regexes: Optional[Dict[str, Dict[str, str]]] = None,
     ) -> None:
         """Initialize the decision parser.
 
@@ -114,6 +108,32 @@ class DecisionParser:
             all_partes_regexes: Patterns matching references to all parties.
             more_regexes: Additional regex mappings to extract.
         """
+        if classes is None:
+            classes = ["ProOrd", "ACIA", "APN", "ED", "Ap"]
+        if replace_text is None:
+            replace_text = {r'\.([0-9]{2})\b': r',\1'}
+        if remove_dots is None:
+            remove_dots = [r'\barts?', r'\bfls?', '[0-9]', r'\bn', r'\bc', r'\bcc']
+        if remove_regexes is None:
+            remove_regexes = [
+                '(?s)(?i)conden[^.]{0,20}honor[^.]{0,10}adv',
+                '(?s)(?i)conden[^.]{0,20}custa[^.]{0,10}proc',
+            ]
+        if key_order is None:
+            key_order = ['ABSOLVO', 'PRESCRICAO', 'CONDENO']
+        if main_sentence_regexes is None:
+            main_sentence_regexes = get_main_sentence_regexes()
+        if alternative_parte_regexes is None:
+            alternative_parte_regexes = {'MINISTERIO.*PUBLICO': 'MP|MPF|MINISTERIO PUBLICO'}
+        if dispositivo_regexes is None:
+            dispositivo_regexes = get_dispositivo_regexes()
+        if all_partes_regexes is None:
+            all_partes_regexes = [r'\bOS REUS\b', r'\bOS REQUERIDOS\b', r'\bOS ACUSADOS']
+        if more_regexes is None:
+            more_regexes = {
+                'mode': get_mode(),
+                'subject': get_subject()
+            }
         self.text = _clean_text(text, replace_text, remove_dots, remove_regexes)
         self.main_sentence_regexes = main_sentence_regexes
         self.more_regexes = more_regexes
@@ -367,7 +387,7 @@ class DecisionParser:
         pena_cols = self._get_pena_cols(df)
         df.loc[just_name & condeno, pena_cols] = pd.NA
         for col in pena_cols:
-            df[col] = df[col].fillna(method='bfill')
+            df[col] = df[col].bfill()
         return df
 
     def _add_parte_regex(self, splitted: pd.DataFrame) -> pd.DataFrame:
