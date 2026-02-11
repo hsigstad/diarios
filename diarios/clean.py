@@ -1557,6 +1557,8 @@ def normalize_datajud(records):
         })
 
     df_processos = pd.DataFrame(proc_rows)
+    if not df_processos.empty:
+        df_processos["numero_processo"] = clean_number(df_processos["numero_processo"])
     df_bridge = pd.DataFrame(bridge_rows)
     df_classes = pd.DataFrame(
         [{"classe_codigo": k, "classe_nome": v} for k, v in classes_seen.items()]
