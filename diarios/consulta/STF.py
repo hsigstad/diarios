@@ -112,7 +112,7 @@ def gen_parte_id(parte: pd.DataFrame) -> pd.Series:
     df['one'] = 1
     isadv = df.key.str.contains("ADV")
     df['parte_id'] = df.loc[~isadv].one.cumsum()
-    df['parte_id'] = df.parte_id.fillna(method='ffill')
+    df['parte_id'] = df.parte_id.ffill()
     return df.parte_id
 
 

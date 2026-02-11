@@ -120,15 +120,6 @@ def get_trf_estados_mapping() -> Dict[str, List[str]]:
     }
 
 
-def title(sr: pd.Series) -> pd.Series:
-    """Convert series to title case, lowering Portuguese prepositions."""
-    sr = sr.str.title()
-    tolower = {"De": "de", "Da": "da", "Do": "do", "Das": "das", "Dos": "dos", "E": "e"}
-    for key, val in tolower.items():
-        sr = sr.str.replace(r"\b{}\b".format(key), val, regex=True)
-    return sr
-
-
 def clean_estado(estado: Union[str, pd.Series]) -> pd.Series:
     """Clean and map state names to two-letter abbreviations.
 
@@ -489,20 +480,15 @@ def get_plaintiffwins(decision: pd.Series, parcial: int = 1) -> pd.Series:
 def get_plaintiffwins_mapping(parcial: int = 1) -> Dict[str, int]:
     """Return mapping from decision labels to plaintiff win indicators.
 
-    Note:
-        Uses ``PARCIAL`` (uppercase) which references a module-level name
-        rather than the ``parcial`` parameter. This is a known bug preserved
-        intentionally.
-
     Args:
-        parcial: Value for partially favorable outcomes (unused due to bug).
+        parcial: Value for partially favorable outcomes (0 or 1).
 
     Returns:
         Dict mapping decision label strings to numeric indicators.
     """
     return {
         "IMPROCEDENTE": 0,
-        "PARCIALMENTE PROCEDENTE": PARCIAL,
+        "PARCIALMENTE PROCEDENTE": parcial,
         "PROCEDENTE": 1,
         "RECEBO INICIAL": 1,
         "REJEITO INICIAL": 0,
@@ -1592,29 +1578,6 @@ def get_municipio_regex(
     regex = r"\b({})\b".format("|".join(df.municipio.values))
     regex = regex.replace(" ", r"\s+")
     return regex
-
-
-def clean_oab(sr: Union[str, pd.Series]) -> pd.Series:
-    """Clean OAB (Brazilian bar association) registration numbers.
-
-    Args:
-        sr: OAB number string or Series of strings.
-
-    Returns:
-        Series of cleaned OAB numbers in ``"N/UF"`` format.
-    """
-    if type(sr) == str:
-        sr = pd.Series([sr])
-    n = (
-        pd.to_numeric(sr.str.replace("[^0-9]", "", regex=True), errors="coerce")
-        .astype(str)
-        .str.replace("\.0", "", regex=True)
-    )
-    states = "|".join(get_estado_mapping().values())
-    state = sr.str.extract("({})".format(states), expand=False)
-    ab = sr.str.extract("\d(a|b|A|B)", expand=False).str.upper().fillna("")
-    cleaned = n + ab + "/" + state
-    return cleaned
 
 
 def clean_reais(sr: pd.Series) -> pd.Series:

@@ -168,19 +168,6 @@ def read(infile: str) -> str:
         return f.read()
 
 
-def read(path: str) -> str:
-    """Read a file from a ZIP archive.
-
-    Args:
-        path: Path within the ZIP file.
-
-    Returns:
-        Decoded file contents.
-    """
-    with zipfile_obj.open(path) as f:
-        return f.read().decode('utf-8')
-
-
 def get_sections(instancia: int) -> Dict[str, str]:
     """Return section markers for the given court instance.
 
@@ -311,7 +298,7 @@ def gen_parte_id(parte: pd.DataFrame) -> pd.Series:
     df['one'] = 1
     isadv = df.key.str.contains("ADV")
     df['parte_id'] = df.loc[~isadv].one.cumsum()
-    df['parte_id'] = df.parte_id.fillna(method='ffill')
+    df['parte_id'] = df.parte_id.ffill()
     return df.parte_id
 
 
