@@ -11,6 +11,15 @@ import os
 from re import sub
 from diarios.misc import get_user_config
 
+__all__ = [
+    "query",
+    "insert",
+    "create_index",
+    "connect",
+    "get_db_engine",
+    "get_postgresql_engine",
+]
+
 
 def query(
     database: Union[str, List[str]],

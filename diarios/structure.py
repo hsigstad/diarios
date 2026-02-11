@@ -10,6 +10,13 @@ import pandas as pd
 import os
 import copy
 
+__all__ = [
+    "Structure",
+    "bold",
+    "parse",
+    "parse_structure_string",
+]
+
 
 class Structure:
     """A tree node representing a section of hierarchically structured text.

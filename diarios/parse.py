@@ -9,6 +9,23 @@ import numpy as np
 import re
 import diarios.clean as clean
 
+__all__ = [
+    "CaseParser",
+    "DiarioParser",
+    "parse_diario_extract",
+    "extract_regexes",
+    "extract_keywords",
+    "get_keyword_regex",
+    "inspect",
+    "add_oab",
+    "split_name_oab",
+    "split_col",
+    "keep_cols",
+    "get_empty_parte",
+    "clean_diario_proc",
+    "clean_diario_mov",
+]
+
 
 class CaseParser:
     """Class to parse court cases"""

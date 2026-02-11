@@ -8,6 +8,10 @@ import subprocess
 import os
 from glob import glob
 
+__all__ = [
+    "Extractor",
+]
+
 
 class Extractor:
     """Extract text matching regex patterns from files using pcre2grep.

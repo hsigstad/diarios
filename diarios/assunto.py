@@ -73,7 +73,7 @@ def to_org(tree, level=1):
     children = '\n\n'.join(children)
     info = ''
     for v in ['dispositivo', 'artigo', 'glossario']:
-        if type(tree[v]) == str:
+        if isinstance(tree[v], str):
             info = '{}\n- {}'.format(
                 info, tree[v]
             )

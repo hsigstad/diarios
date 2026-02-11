@@ -15,6 +15,16 @@ import pypdf
 
 pytesseract.pytesseract.tesseract_cmd = "/usr/bin/tesseract"
 
+__all__ = [
+    "read_files",
+    "read_file",
+    "extract_pdf_text",
+    "extract_docx_text",
+    "extract_doc_text",
+    "ocr_file",
+    "ocr_image",
+]
+
 
 def read_files(
     infiles: List[str],

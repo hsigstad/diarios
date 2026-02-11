@@ -498,7 +498,7 @@ def get_alinea_paragrafo(
     ).inciso.size() > 0
     paragrafo['has_inciso'] = paragrafo.has_inciso.fillna(False)
     paragrafo.loc[
-        paragrafo.has_inciso==False,
+        ~paragrafo.has_inciso,
         'alinea_paragrafo'
     ] = paragrafo.incisos.str.extract(regex)[0]
     paragrafo = paragrafo.drop(columns='has_inciso')

@@ -13,6 +13,23 @@ from diarios.clean import get_cardinal_number_regex
 from diarios.clean import extract_number
 from diarios.parse import extract_regexes
 
+__all__ = [
+    "DecisionParser",
+    "clean_sentenca_text",
+    "get_main_sentence_regexes",
+    "get_dispositivo_regexes",
+    "get_desfecho_regexes",
+    "get_mode",
+    "get_key_order",
+    "get_subject",
+    "print_truncated",
+    "intersect",
+    "get_pena_regexes",
+    "get_split_keys",
+    "remove_pena_base",
+    "get_df",
+]
+
 # TODO: Differentiate between reclusao and detencao (sometimes 2 anos reclusao e 3 meses detencao)
 
 def _clean_text(
@@ -555,7 +572,7 @@ class DecisionParser:
         no_pena = (remaining.groupby(ix).no_pena.sum() > 0).reset_index()
         all_partes = all_partes.merge(no_pena, on=ix, how='left')
         all_partes['no_pena'] = all_partes.no_pena.fillna(True)
-        all_partes = all_partes.query('no_pena==True')
+        all_partes = all_partes.query('no_pena')
         if len(all_partes) > 0:
             all_partes = all_partes.merge(parte, on=ix)
         df = pd.concat([
@@ -1008,7 +1025,7 @@ def get_df() -> Tuple[pd.DataFrame, pd.DataFrame]:
     parte = parte.join(df2, lsuffix='1')
     parte['has_parte'] = 1
     df2['has_parte'] = parte.groupby('num_npu').has_parte.sum() > 0
-    df2 = df2.query('has_parte==True')
+    df2 = df2.query('has_parte')
     return df2, parte
 
 #Destarte, fixo a pena-base no mínimo legal em 01 (um) ano de reclusão, a qual
