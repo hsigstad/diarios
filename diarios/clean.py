@@ -1477,5 +1477,100 @@ def _drop_empty_paragrafo(df):
     return df
 
 
+def load_datajud_jsonl(path):
+    """Load a DataJud JSONL file into a list of dicts."""
+    import json
+    rows = []
+    with open(path, encoding="utf-8") as f:
+        for line in f:
+            rows.append(json.loads(line))
+    return rows
+
+
+def normalize_datajud(records):
+    """Normalize DataJud JSONL records into relational DataFrames.
+
+    Args:
+        records: list of dicts, each a DataJud ES hit with '_id' and '_source' keys
+
+    Returns:
+        dict mapping table name to DataFrame:
+        - 'processos': one row per case
+        - 'processo_assuntos': bridge table (processo_id -> assunto_codigo)
+        - 'assuntos': dimension table of unique assuntos
+        - 'classes': dimension table of unique classes
+        - 'orgaos_julgadores': dimension table of unique orgaos
+    """
+    proc_rows = []
+    bridge_rows = []
+    classes_seen = {}
+    orgaos_seen = {}
+    assuntos_seen = {}
+
+    for rec in records:
+        pid = rec["_id"]
+        src = rec.get("_source", {})
+
+        # classe (1-to-1)
+        classe = src.get("classe", {})
+        classe_codigo = classe.get("codigo")
+        if classe_codigo is not None and classe_codigo not in classes_seen:
+            classes_seen[classe_codigo] = classe.get("nome", "")
+
+        # orgaoJulgador (1-to-1)
+        oj = src.get("orgaoJulgador", {})
+        oj_codigo = oj.get("codigo")
+        if oj_codigo is not None and oj_codigo not in orgaos_seen:
+            orgaos_seen[oj_codigo] = {
+                "orgao_codigo": oj_codigo,
+                "orgao_nome": oj.get("nome", ""),
+                "orgao_municipio_ibge": oj.get("codigoMunicipioIBGE"),
+            }
+
+        # assuntos (1-to-many)
+        for assunto in src.get("assuntos", []):
+            ac = assunto.get("codigo")
+            if ac is not None:
+                bridge_rows.append({"processo_id": pid, "assunto_codigo": ac})
+                if ac not in assuntos_seen:
+                    assuntos_seen[ac] = assunto.get("nome", "")
+
+        # flat processo row
+        proc_rows.append({
+            "processo_id": pid,
+            "numero_processo": src.get("numeroProcesso"),
+            "tribunal": src.get("tribunal"),
+            "grau": src.get("grau"),
+            "nivel_sigilo": src.get("nivelSigilo"),
+            "data_ajuizamento": src.get("dataAjuizamento"),
+            "data_ultima_atualizacao": src.get("dataHoraUltimaAtualizacao"),
+            "timestamp": src.get("@timestamp"),
+            "classe_codigo": classe_codigo,
+            "orgao_codigo": oj_codigo,
+        })
+
+    df_processos = pd.DataFrame(proc_rows)
+    df_bridge = pd.DataFrame(bridge_rows)
+    df_classes = pd.DataFrame(
+        [{"classe_codigo": k, "classe_nome": v} for k, v in classes_seen.items()]
+    )
+    df_orgaos = pd.DataFrame(list(orgaos_seen.values()))
+    df_assuntos = pd.DataFrame(
+        [{"assunto_codigo": k, "assunto_nome": v} for k, v in assuntos_seen.items()]
+    )
+
+    df_classes = df_classes.sort_values("classe_codigo").reset_index(drop=True)
+    df_orgaos = df_orgaos.sort_values("orgao_codigo").reset_index(drop=True)
+    df_assuntos = df_assuntos.sort_values("assunto_codigo").reset_index(drop=True)
+
+    return {
+        "processos": df_processos,
+        "processo_assuntos": df_bridge,
+        "assuntos": df_assuntos,
+        "classes": df_classes,
+        "orgaos_julgadores": df_orgaos,
+    }
+
+
 letter = "a-zA-Z' çúáéíóàâêôãõÇÚÁÉÍÓÀÂÊÔÃÕ"
 estados = list(get_estado_mapping().values())
