@@ -312,14 +312,14 @@ def clean_line(lines: pd.Series) -> pd.Series:
 def get_decisao_id(decisoes: pd.Series) -> pd.Series:
     """Map decision labels to their numeric IDs from lookup table."""
     ids = get_data("decisao.csv")
-    mapping = dict(zip(ids.decisao, ids.id))
+    mapping = dict(zip(ids.decisao, ids.decisao_id))
     return decisoes.map(mapping)
 
 
 def get_tipo_parte_id(tipo_partes: pd.Series) -> pd.Series:
     """Map party type labels to their numeric IDs from lookup table."""
     ids = get_data("tipo_parte.csv")
-    mapping = dict(zip(ids.tipo_parte, ids.id))
+    mapping = dict(zip(ids.tipo_parte, ids.tipo_parte_id))
     return tipo_partes.map(mapping)
 
 

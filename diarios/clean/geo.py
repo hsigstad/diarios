@@ -306,7 +306,7 @@ def get_municipio_regex(
 def clean_comarca(comarca: pd.Series) -> pd.Series:
     """Clean comarca names by removing the 'comarca de' prefix."""
     comarca = clean_text(comarca)
-    comarca = comarca.str.replace("comarca de", "", regex=False).str.strip()
+    comarca = comarca.str.replace("COMARCA DE", "", regex=False).str.strip()
     return comarca
 
 
@@ -318,7 +318,7 @@ def clean_vara(vara: pd.Series) -> pd.Series:
 
 def get_foro_id(numbers: pd.Series) -> pd.Series:
     """Return foro (court branch) IDs extracted from case numbers."""
-    return get_foro_info(numbers).loc[:, "id"]
+    return get_foro_info(numbers).loc[:, "foro"]
 
 def get_foro(numbers: pd.Series) -> pd.Series:
     """Return foro (court branch) names extracted from case numbers."""
@@ -360,9 +360,9 @@ def get_comarca_id(
 
 def get_comarca(numbers: pd.Series) -> pd.Series:
     """Return comarca names derived from case numbers."""
-    ids = get_foro_info(numbers).loc[:, "comarca_id"].to_frame()
-    comarca = get_data("comarca.csv").set_index("id")
-    df = ids.join(comarca, on="comarca_id", how="left")
+    ids = get_foro_info(numbers).loc[:, "municipio_id"].to_frame()
+    comarca = get_data("comarca.csv").set_index("comarca_id")
+    df = ids.join(comarca, on="municipio_id", how="left")
     return df["comarca"]
 
 

@@ -133,6 +133,14 @@ class TestCleanComarca(unittest.TestCase):
         result = clean.clean_comarca(pd.Series(["recife"]))
         self.assertEqual(result.tolist(), ["RECIFE"])
 
+    def test_removes_comarca_de_prefix(self):
+        result = clean.clean_comarca(pd.Series(["comarca de recife"]))
+        self.assertEqual(result.tolist(), ["RECIFE"])
+
+    def test_removes_uppercase_comarca_de(self):
+        result = clean.clean_comarca(pd.Series(["COMARCA DE SALVADOR"]))
+        self.assertEqual(result.tolist(), ["SALVADOR"])
+
 
 class TestCleanVara(unittest.TestCase):
 
@@ -1099,6 +1107,49 @@ class TestLoadDatajudJsonl(unittest.TestCase):
         os.unlink(path)
         self.assertEqual(len(result), 2)
         self.assertEqual(result[0]["_id"], "1")
+
+
+class TestGetDecisaoId(unittest.TestCase):
+
+    def test_maps_known_decisions(self):
+        s = pd.Series(["PROCEDENTE", "IMPROCEDENTE"])
+        result = clean.get_decisao_id(s)
+        self.assertEqual(result.tolist(), [1, 2])
+
+    def test_unknown_returns_nan(self):
+        s = pd.Series(["NONEXISTENT"])
+        result = clean.get_decisao_id(s)
+        self.assertTrue(pd.isna(result.iloc[0]))
+
+
+class TestGetTipoParteId(unittest.TestCase):
+
+    def test_maps_known_types(self):
+        s = pd.Series(["PLAINTIFF", "DEFENDANT"])
+        result = clean.get_tipo_parte_id(s)
+        self.assertEqual(result.tolist(), [1, 2])
+
+    def test_unknown_returns_nan(self):
+        s = pd.Series(["UNKNOWN"])
+        result = clean.get_tipo_parte_id(s)
+        self.assertTrue(pd.isna(result.iloc[0]))
+
+
+class TestGetForoId(unittest.TestCase):
+
+    def test_returns_foro_column(self):
+        s = pd.Series(["0164775-04.2016.4.02.5101"])
+        result = clean.get_foro_id(s)
+        self.assertEqual(result.iloc[0], 4025101)
+
+
+class TestGetComarca(unittest.TestCase):
+
+    def test_returns_comarca_name(self):
+        s = pd.Series(["0164775-04.2016.4.02.5101"])
+        result = clean.get_comarca(s)
+        self.assertIsInstance(result.iloc[0], str)
+        self.assertGreater(len(result.iloc[0]), 0)
 
 
 def get_test_data(datafile):
