@@ -1,3 +1,9 @@
+"""Database connection and query utilities for SQLite, MySQL, and PostgreSQL."""
+
+from __future__ import annotations
+
+from typing import Any, Dict, List, Optional, Union
+
 import pandas as pd
 from time import time
 import sqlite3
@@ -6,7 +12,24 @@ from re import sub
 from diarios.misc import get_user_config
 
 
-def query(database, sql, flavor="sqlite3", echo=True):
+def query(
+    database: Union[str, List[str]],
+    sql: str,
+    flavor: str = "sqlite3",
+    echo: bool = True,
+) -> pd.DataFrame:
+    """Execute a SQL query and return results as a DataFrame.
+
+    Args:
+        database: Path to database file, or list of paths to attach multiple
+            SQLite databases.
+        sql: SQL query string to execute.
+        flavor: Database backend: ``"sqlite3"``, ``"mysql"``, or ``"postgresql"``.
+        echo: Whether to echo SQL statements (for SQLAlchemy engines).
+
+    Returns:
+        Query results as a DataFrame.
+    """
     if type(database) == str:
         conn = connect(database, flavor, echo=echo)
     if type(database) == list:
@@ -19,20 +42,37 @@ def query(database, sql, flavor="sqlite3", echo=True):
 
 
 def insert(
-    database,
-    table,
-    files,
-    columns=None,
-    primary=None,
-    echo=False,
-    index=False,
-    fts5=False,
-    flavor="sqlite3",
-    truncate=None,
-    chunksize=100000,
-    dtype_csv=None,
-    **kwargs
-):
+    database: str,
+    table: str,
+    files: List[str],
+    columns: Optional[List[str]] = None,
+    primary: Optional[str] = None,
+    echo: bool = False,
+    index: bool = False,
+    fts5: bool = False,
+    flavor: str = "sqlite3",
+    truncate: Optional[Dict[str, int]] = None,
+    chunksize: int = 100000,
+    dtype_csv: Optional[dict] = None,
+    **kwargs: Any,
+) -> None:
+    """Insert CSV files into a database table.
+
+    Args:
+        database: Path or name of the database.
+        table: Target table name.
+        files: List of CSV file paths to insert.
+        columns: Column names to keep; missing columns are filled with NA.
+        primary: Primary key column (unused, kept for API compat).
+        echo: Whether to echo SQL statements.
+        index: Whether to write the DataFrame index.
+        fts5: If True, create an FTS5 virtual table.
+        flavor: Database backend.
+        truncate: Dict mapping column names to max string lengths.
+        chunksize: Unused (kept for API compat).
+        dtype_csv: Dtype dict passed to ``pd.read_csv``.
+        **kwargs: Extra keyword arguments passed to ``DataFrame.to_sql``.
+    """
     conn = connect(database, flavor, echo=echo)
     if_exists = "replace"
     if fts5:
@@ -59,14 +99,25 @@ def insert(
 
 
 def create_index(
-    database,
-    table,
-    columns,
-    name,
-    unique=False,
-    flavor="sqlite3",
-    fulltext=False,
-):
+    database: str,
+    table: str,
+    columns: List[str],
+    name: str,
+    unique: bool = False,
+    flavor: str = "sqlite3",
+    fulltext: bool = False,
+) -> None:
+    """Create an index on a database table.
+
+    Args:
+        database: Path or name of the database.
+        table: Table to index.
+        columns: Columns to include in the index.
+        name: Name for the index.
+        unique: Whether to create a UNIQUE index.
+        flavor: Database backend.
+        fulltext: Whether to create a FULLTEXT index (MySQL/PostgreSQL).
+    """
     if unique:
         pre = "UNIQUE"
     elif fulltext:
@@ -89,7 +140,17 @@ def create_index(
     conn.execute(sql)
 
 
-def connect(database, flavor, **kwargs):
+def connect(database: str, flavor: str, **kwargs: Any) -> Any:
+    """Open a database connection.
+
+    Args:
+        database: Path or name of the database.
+        flavor: Database backend: ``"sqlite3"``, ``"mysql"``, or ``"postgresql"``.
+        **kwargs: Extra arguments forwarded to engine constructors.
+
+    Returns:
+        A database connection or SQLAlchemy engine.
+    """
     if flavor == "sqlite3":
         conn = sqlite3.connect(database)
     if flavor == "mysql":
@@ -99,7 +160,16 @@ def connect(database, flavor, **kwargs):
     return conn
 
 
-def get_db_engine(database, echo=True):
+def get_db_engine(database: str, echo: bool = True) -> Any:
+    """Create a SQLAlchemy engine for MySQL.
+
+    Args:
+        database: Database name.
+        echo: Whether to echo SQL statements.
+
+    Returns:
+        SQLAlchemy engine.
+    """
     from sqlalchemy import create_engine
     user = get_user_config("mysql_user")
     pw = get_user_config("mysql_pw")
@@ -112,7 +182,16 @@ def get_db_engine(database, echo=True):
     return engine
 
 
-def get_postgresql_engine(database, echo=True):
+def get_postgresql_engine(database: str, echo: bool = True) -> Any:
+    """Create a SQLAlchemy engine for PostgreSQL.
+
+    Args:
+        database: Database name.
+        echo: Whether to echo SQL statements.
+
+    Returns:
+        SQLAlchemy engine.
+    """
     from sqlalchemy import create_engine
     user = get_user_config("postgresql_user")
     pw = get_user_config("postgresql_pw")

@@ -1,3 +1,9 @@
+"""Close-election regression discontinuity design (RDD) utilities."""
+
+from __future__ import annotations
+
+from typing import Optional
+
 import pandas as pd
 import numpy as np
 import random
@@ -8,7 +14,21 @@ from copy import copy
 random.seed(42)
 
 
-def is_close(df, only_two=False):
+def is_close(df: pd.DataFrame, only_two: bool = False) -> pd.Series:
+    """Identify candidates in close elections for RDD analysis.
+
+    Ranks candidates within each election group, centers ranks around the
+    election threshold, and flags balanced close races.
+
+    Args:
+        df: DataFrame with columns ``year``, ``office``, ``round``, ``votes``,
+            ``margin``, ``municipio_id``, ``estado``, ``electeddummy``,
+            and ``coalition``.
+        only_two: If True, restrict to races with exactly two close candidates.
+
+    Returns:
+        Series indicating close-election status (1 = close, 0 = not close).
+    """
     cols = [
         'year',
         'office',
@@ -33,7 +53,16 @@ def is_close(df, only_two=False):
     return df_copy.close
 
 
-def _get_group(df):
+def _get_group(df: pd.DataFrame) -> pd.Series:
+    """Assign a group identifier to each election race.
+
+    Args:
+        df: DataFrame with office, year, round, municipio_id, estado,
+            and coalition columns.
+
+    Returns:
+        Series of integer group identifiers.
+    """
     # df must contain:
     # office, year, round,
     # municipio_id, estado
@@ -46,7 +75,15 @@ def _get_group(df):
     return group
 
 
-def _rank_candidates(df):
+def _rank_candidates(df: pd.DataFrame) -> pd.DataFrame:
+    """Rank candidates within each group by votes.
+
+    Args:
+        df: DataFrame with group, votes, and electeddummy columns.
+
+    Returns:
+        DataFrame with a ``rank`` column added.
+    """
     # to make sure to randomly
     # drop one in the case of ties
     # (need to be used with method='first'
@@ -61,7 +98,17 @@ def _rank_candidates(df):
     return df
 
 
-def _center_rank(df):
+def _center_rank(df: pd.DataFrame) -> pd.DataFrame:
+    """Center ranks around the election threshold.
+
+    Elected candidates get positive centered ranks; non-elected get negative.
+
+    Args:
+        df: DataFrame with group, rank, and electeddummy columns.
+
+    Returns:
+        DataFrame with a ``crank`` (centered rank) column added.
+    """
     elected = df.electeddummy == 1
     df.loc[elected, 'erank'] = df['rank']
     min_elected_rank = (df.groupby('group')['erank'].transform('min'))
@@ -71,7 +118,16 @@ def _center_rank(df):
     return df
 
 
-def _is_close(df, only_two=False):
+def _is_close(df: pd.DataFrame, only_two: bool = False) -> pd.Series:
+    """Flag candidates whose centered rank is within the close window.
+
+    Args:
+        df: DataFrame with group and crank columns.
+        only_two: If True, only keep candidates with crank in {-1, 1}.
+
+    Returns:
+        Series of 0/1 indicators.
+    """
     max_rank = (df.groupby('group')['crank'].transform('max'))
     min_rank = (df.groupby('group')['crank'].transform('min'))
     close = ((df.crank <= -min_rank) & (df.crank >= -max_rank)) * 1
@@ -80,7 +136,23 @@ def _is_close(df, only_two=False):
     return close
 
 
-def _balance_close(df, var, n=None):
+def _balance_close(
+    df: pd.DataFrame,
+    var: str,
+    n: Optional[int] = None,
+) -> pd.DataFrame:
+    """Ensure close-election groups are balanced between elected and not.
+
+    Sets unbalanced groups to zero and optionally enforces a fixed group size.
+
+    Args:
+        df: DataFrame with group, electeddummy, margin, and the close variable.
+        var: Column name of the close indicator to balance.
+        n: If given, require exactly ``n`` close candidates per group.
+
+    Returns:
+        DataFrame with unbalanced close indicators zeroed out.
+    """
     df['eclose'] = df[var] * df.electeddummy
     df['nclose'] = df[var] * (1 - df.electeddummy)
     out = (df.groupby('group')[['eclose', 'nclose']].transform('sum'))
@@ -111,7 +183,15 @@ def _balance_close(df, var, n=None):
     return df
 
 
-def _drop_duplicates(df):
+def _drop_duplicates(df: pd.DataFrame) -> pd.DataFrame:
+    """Remove duplicate candidate entries within the same race.
+
+    Args:
+        df: DataFrame with cpf, year, municipio_id, office, and round columns.
+
+    Returns:
+        De-duplicated DataFrame.
+    """
     # Not sure why the same candidate
     # sometimes appears more than one time
     # running for the same office

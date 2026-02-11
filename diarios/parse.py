@@ -1,3 +1,9 @@
+"""Court case and diary parsers for extracting structured data from text."""
+
+from __future__ import annotations
+
+from typing import Any, Callable, Dict, List, Optional, Tuple, Union
+
 import pandas as pd
 import numpy as np
 import re
@@ -9,31 +15,59 @@ class CaseParser:
 
     def __init__(
         self,
-        regexes=[r"(?P<number>[0-9.\-]{19,30})"],
-        regexes_before_split=None,
-        cleaners={"number": clean.clean_number},
-        parte="AUTOR:|RÉU:",
-        split_parte_on=",|-|;",
-        split_text_on=None,
-        id_suffix=None,
-        suffix_length=2,
-        clean_text=clean.clean_diario_text,
-        clean_parte=clean.clean_parte,
-        clean_last_parte=lambda x: x,
-        clean_parte_key=clean.clean_parte_key,
-        clean_tipo_parte=clean.clean_tipo_parte,
-        max_name_length=100,
-        last_name_length=50,
-        clean_proc=lambda x: x,
-        clean_mov=lambda x: x,
-        df_proc_cols=[],
-        df_mov_cols=[],
-        df_parte_cols=[],
-        drop_if_no_number=True,
-        parte_levels=["mov_id", "proc_id"],
-        advogado=None,
-        split_adv=False,
-    ):
+        regexes: List[str] = [r"(?P<number>[0-9.\-]{19,30})"],
+        regexes_before_split: Optional[List[str]] = None,
+        cleaners: Dict[str, Callable[[pd.Series], pd.Series]] = {"number": clean.clean_number},
+        parte: str = "AUTOR:|RÉU:",
+        split_parte_on: str = ",|-|;",
+        split_text_on: Optional[str] = None,
+        id_suffix: Optional[str] = None,
+        suffix_length: int = 2,
+        clean_text: Callable[[pd.Series], pd.Series] = clean.clean_diario_text,
+        clean_parte: Callable[[pd.Series], pd.Series] = clean.clean_parte,
+        clean_last_parte: Callable[[pd.Series], pd.Series] = lambda x: x,
+        clean_parte_key: Callable[[pd.Series], pd.Series] = clean.clean_parte_key,
+        clean_tipo_parte: Callable[[pd.Series], pd.Series] = clean.clean_tipo_parte,
+        max_name_length: int = 100,
+        last_name_length: int = 50,
+        clean_proc: Callable[[pd.DataFrame], pd.DataFrame] = lambda x: x,
+        clean_mov: Callable[[pd.DataFrame], pd.DataFrame] = lambda x: x,
+        df_proc_cols: List[str] = [],
+        df_mov_cols: List[str] = [],
+        df_parte_cols: List[str] = [],
+        drop_if_no_number: bool = True,
+        parte_levels: List[str] = ["mov_id", "proc_id"],
+        advogado: Optional[str] = None,
+        split_adv: bool = False,
+    ) -> None:
+        """Initialize the case parser with regex patterns and cleaning functions.
+
+        Args:
+            regexes: Regex patterns for extracting case number and other fields.
+            regexes_before_split: Regex patterns applied before splitting text.
+            cleaners: Mapping of column names to cleaning functions.
+            parte: Regex pattern for identifying party types.
+            split_parte_on: Delimiter pattern for splitting party names.
+            split_text_on: Delimiter pattern for splitting text entries.
+            id_suffix: Suffix appended to generated IDs.
+            suffix_length: Length of the ID suffix.
+            clean_text: Function to clean raw diary text.
+            clean_parte: Function to clean party names.
+            clean_last_parte: Function to clean the last part of party names.
+            clean_parte_key: Function to clean party type keys.
+            clean_tipo_parte: Function to clean party type labels.
+            max_name_length: Maximum character length for extracted names.
+            last_name_length: Maximum character length for last names.
+            clean_proc: Function to clean the process DataFrame.
+            clean_mov: Function to clean the movement DataFrame.
+            df_proc_cols: Extra columns to keep in the process DataFrame.
+            df_mov_cols: Extra columns to keep in the movement DataFrame.
+            df_parte_cols: Extra columns to keep in the party DataFrame.
+            drop_if_no_number: Whether to drop rows without a case number.
+            parte_levels: Index levels used for party deduplication.
+            advogado: Regex pattern for extracting lawyer information.
+            split_adv: Whether to split lawyers into a separate DataFrame.
+        """
         self.parte = parte
         self.regexes_before_split = regexes_before_split
         self.regexes = regexes
@@ -59,7 +93,18 @@ class CaseParser:
         self.parte_levels = parte_levels
         self.advogado = advogado
 
-    def parse(self, df):
+    def parse(
+        self, df: pd.DataFrame
+    ) -> Optional[Union[Tuple[pd.DataFrame, pd.DataFrame, pd.DataFrame], Tuple[pd.DataFrame, pd.DataFrame, pd.DataFrame, pd.DataFrame]]]:
+        """Parse a DataFrame of diary text into process, party, and movement tables.
+
+        Args:
+            df: DataFrame with a ``text`` column containing raw diary entries.
+
+        Returns:
+            Tuple of (proc, parte, mov) DataFrames, or (proc, parte, mov, adv)
+            if ``split_adv`` is True. Returns None if the input is empty.
+        """
         df = self._add_cols_before_split(df)
         df["text"] = self.clean_text(df.text)
         df = self._split_text(df)
@@ -78,18 +123,21 @@ class CaseParser:
             out = (proc, parte, mov, adv)
         return out
 
-    def _add_cols_before_split(self, df):
+    def _add_cols_before_split(self, df: pd.DataFrame) -> pd.DataFrame:
+        """Apply pre-split regexes and join extracted columns."""
         if self.regexes_before_split:
             cols = extract_regexes(df.text, self.regexes_before_split)
             df = df.join(cols)
         return df
 
-    def _split_text(self, df):
+    def _split_text(self, df: pd.DataFrame) -> pd.DataFrame:
+        """Split the text column if a split pattern is configured."""
         if self.split_text_on:
             df = split_col(df, "text", split_on=self.split_text_on).reset_index()
         return df
 
-    def _add_cols(self, df):
+    def _add_cols(self, df: pd.DataFrame) -> pd.DataFrame:
+        """Extract regex columns and generate process/movement IDs."""
         cols = extract_regexes(df.text, self.regexes)
         df = df.join(cols)
         if self.drop_if_no_number:
@@ -104,7 +152,8 @@ class CaseParser:
         )
         return df
 
-    def _get_parte(self, df):
+    def _get_parte(self, df: pd.DataFrame) -> pd.DataFrame:
+        """Extract and clean party information from parsed text."""
         df_id = keep_cols(df, self.parte_levels + self.df_parte_cols)
         text = df.text
         df = extract_keywords(
@@ -145,7 +194,8 @@ class CaseParser:
         df = df.drop_duplicates("parte_id")  # Just in case
         return df
 
-    def _add_advogado(self, df, text):
+    def _add_advogado(self, df: pd.DataFrame, text: pd.Series) -> pd.DataFrame:
+        """Add lawyer (advogado) and OAB information to the party DataFrame."""
         if not self.advogado:
             return add_oab(df)
         adv = text.str.extractall(self.advogado)
@@ -155,7 +205,8 @@ class CaseParser:
         df = pd.concat([df, adv])
         return df
 
-    def _split_parte(self, df):
+    def _split_parte(self, df: pd.DataFrame) -> pd.DataFrame:
+        """Split party name and lastname columns on the configured delimiter."""
         df = split_col(df, "name", split_on=self.split_parte_on, group_id="name_group")
         df = split_col(
             df, "lastname", split_on=self.split_parte_on, group_id="lastname_group"
@@ -165,7 +216,8 @@ class CaseParser:
         )
         return df.drop("lastname_group", 1)
 
-    def _drop_partes(self, df):
+    def _drop_partes(self, df: pd.DataFrame) -> pd.DataFrame:
+        """Remove invalid or too-short party names."""
         df = df.loc[df.parte != ""]
         df = df.loc[
             (df.parte.str.len() > 8)
@@ -174,7 +226,15 @@ class CaseParser:
         ]
         return df
 
-    def _split_adv(self, df):
+    def _split_adv(self, df: pd.DataFrame) -> Tuple[pd.DataFrame, pd.DataFrame]:
+        """Separate lawyer rows from the party DataFrame.
+
+        Args:
+            df: Party DataFrame containing both parties and lawyers.
+
+        Returns:
+            Tuple of (parties DataFrame, lawyers DataFrame).
+        """
         cols = {"parte": "advogado"}
         adv = df.rename(columns=cols).reset_index()
         adv.loc[adv.tipo_parte_id == 4, "name_group"] = np.nan
@@ -199,7 +259,8 @@ class CaseParser:
         df = df.drop_duplicates("parte_id")  # Just in case
         return df, adv
 
-    def _get_keywords(self):
+    def _get_keywords(self) -> List[str]:
+        """Build the list of keyword regex patterns from columns and party regex."""
         regex = [c.regex for c in self.keyword_cols]
         if type(self.parte_regex) == str:
             regex += [self.parte_regex]
@@ -207,7 +268,8 @@ class CaseParser:
             regex += self.parte_regex
         return regex
 
-    def _get_proc(self, df):
+    def _get_proc(self, df: pd.DataFrame) -> pd.DataFrame:
+        """Extract the process DataFrame and apply cleaning."""
         cols = ["proc_id"] + self.df_proc_cols
         df = keep_cols(df, cols)
         proc = _drop_duplicate_procs(df)
@@ -216,14 +278,16 @@ class CaseParser:
         proc = proc.reset_index()
         return proc
 
-    def _get_mov(self, df):
+    def _get_mov(self, df: pd.DataFrame) -> pd.DataFrame:
+        """Extract the movement DataFrame and apply cleaning."""
         cols = ["mov_id", "proc_id", "text"]
         mov = keep_cols(df, cols + self.df_mov_cols)
         mov = self.clean_mov(mov)
         return mov
 
 
-def get_empty_parte():
+def get_empty_parte() -> pd.DataFrame:
+    """Return an empty DataFrame with the standard party column schema."""
     df = pd.DataFrame(
         {
             "mov_id": [],
@@ -237,7 +301,8 @@ def get_empty_parte():
     return df
 
 
-def _drop_duplicate_procs(df):
+def _drop_duplicate_procs(df: pd.DataFrame) -> pd.DataFrame:
+    """Drop duplicate processes, keeping the row with fewest missing values."""
     # Could try
     # proc=df.groupby('proc_id').agg(lambda x: scipy.stats.mode(x)[0])
     # But probably quite slow
@@ -247,27 +312,57 @@ def _drop_duplicate_procs(df):
     return proc
 
 
-def clean_diario_proc(proc, number_types=["CNJ"]):
+def clean_diario_proc(
+    proc: pd.DataFrame, number_types: List[str] = ["CNJ"]
+) -> pd.DataFrame:
+    """Add tribunal ID, filing year, and comarca ID to the process DataFrame.
+
+    Args:
+        proc: Process DataFrame with ``tribunal`` and ``number`` columns.
+        number_types: Number format types used for filing year extraction.
+
+    Returns:
+        Process DataFrame with added identifier columns.
+    """
     proc["tribunal_id"] = clean.transform(proc["tribunal"], "tribunal", "tribunal_id")
     proc["filingyear"] = clean.get_filing_year(proc.number, types=number_types)
     proc["comarca_id"] = clean.get_comarca_id(proc.number)
     return proc
 
 
-def clean_diario_mov(mov):
+def clean_diario_mov(mov: pd.DataFrame) -> pd.DataFrame:
+    """Add caderno ID and line-end position to the movement DataFrame.
+
+    Args:
+        mov: Movement DataFrame with ``tribunal``, ``caderno``, ``line``,
+            and ``text`` columns.
+
+    Returns:
+        Movement DataFrame with ``caderno_id`` and ``line_end`` columns added.
+    """
     mov["caderno_id"] = clean.get_caderno_id(mov["tribunal"], mov["caderno"])
     mov["line_end"] = pd.to_numeric(mov["line"]) + mov.text.str.count("\n")
     return mov
 
 
 class DiarioParser(CaseParser):
+    """Parser specialized for official diary (Diario) court publications."""
+
     def __init__(
         self,
-        number_types="CNJ",
-        df_mov_cols=["tribunal", "number", "date", "caderno", "line"],
-        df_proc_cols=["tribunal", "number", "classe"],
-        **kwargs
-    ):
+        number_types: Union[str, List[str]] = "CNJ",
+        df_mov_cols: List[str] = ["tribunal", "number", "date", "caderno", "line"],
+        df_proc_cols: List[str] = ["tribunal", "number", "classe"],
+        **kwargs: Any,
+    ) -> None:
+        """Initialize the diary parser with default columns and cleaners.
+
+        Args:
+            number_types: Case number format types (e.g. ``"CNJ"``).
+            df_mov_cols: Columns to keep in the movement DataFrame.
+            df_proc_cols: Columns to keep in the process DataFrame.
+            **kwargs: Additional keyword arguments passed to ``CaseParser``.
+        """
         super(DiarioParser, self).__init__(
             df_proc_cols=df_proc_cols,
             df_mov_cols=df_mov_cols,
@@ -277,13 +372,22 @@ class DiarioParser(CaseParser):
         )
 
 
-def add_oab(df):
+def add_oab(df: pd.DataFrame) -> pd.DataFrame:
+    """Add an ``oab`` column by splitting OAB numbers from party names."""
     df["oab"] = ""
     df.loc[:, ("parte", "oab")] = split_name_oab(df.parte).values
     return df
 
 
-def split_name_oab(sr):
+def split_name_oab(sr: pd.Series) -> pd.DataFrame:
+    """Split a Series of names on the 'OAB' token into name and OAB number.
+
+    Args:
+        sr: Series of party name strings potentially containing OAB numbers.
+
+    Returns:
+        DataFrame with two columns: cleaned name (0) and OAB number (1).
+    """
     df = sr.str.split(r"(?i)\boab", expand=True, n=1)
     if not 1 in df.columns:
         df[1] = ""
@@ -292,7 +396,23 @@ def split_name_oab(sr):
     return df
 
 
-def split_col(df, name_col, split_on=",|-", group_id=None):
+def split_col(
+    df: pd.DataFrame,
+    name_col: str,
+    split_on: str = ",|-",
+    group_id: Optional[str] = None,
+) -> pd.DataFrame:
+    """Split a column into multiple rows on a regex delimiter.
+
+    Args:
+        df: Input DataFrame.
+        name_col: Name of the column to split.
+        split_on: Regex pattern used as the delimiter.
+        group_id: If provided, adds a column with the original row index.
+
+    Returns:
+        DataFrame with the split column expanded into separate rows.
+    """
     df = df.reset_index()
     df.index.name = "temp"
     names = df[name_col].fillna("").str.split(split_on, expand=True).stack()
@@ -304,7 +424,19 @@ def split_col(df, name_col, split_on=",|-", group_id=None):
     return df.set_index("index")
 
 
-def parse_diario_extract(infile, nchar=None):
+def parse_diario_extract(
+    infile: str, nchar: Optional[int] = None
+) -> pd.DataFrame:
+    """Parse a diary extract file into a structured DataFrame.
+
+    Args:
+        infile: Path to the diary extract text file.
+        nchar: If provided, truncate the file contents to this many characters.
+
+    Returns:
+        DataFrame with ``date``, ``caderno``, ``line``, ``text``, and
+        ``tribunal`` columns.
+    """
     with open(infile, "r") as f:
         text = f.read()
     if nchar:
@@ -328,11 +460,31 @@ def parse_diario_extract(infile, nchar=None):
 
 
 def extract_regexes(
-        text, regexes, flags=0,
-        extractall=False, axis=1,
-        match_index=False,
-        update=False
-):
+    text: pd.Series,
+    regexes: Union[str, List[str]],
+    flags: int = 0,
+    extractall: bool = False,
+    axis: int = 1,
+    match_index: bool = False,
+    update: bool = False,
+) -> pd.DataFrame:
+    """Apply one or more regex patterns to a text Series and return extracted groups.
+
+    Args:
+        text: Series of strings to extract from.
+        regexes: One or more regex patterns with named groups.
+        flags: Regex flags passed to ``str.extract`` / ``str.extractall``.
+        extractall: If True, use ``extractall`` instead of ``extract``.
+        axis: Concatenation axis when combining results from multiple regexes.
+        match_index: If True and ``extractall``, add a ``match`` level to the index.
+        update: If True, overlay results so earlier regexes take priority.
+
+    Returns:
+        DataFrame with columns corresponding to named groups in the regexes.
+
+    Raises:
+        ValueError: If ``update`` is True and ``axis`` is 0.
+    """
     if type(regexes) == str:
         regexes = [regexes]
     if extractall:
@@ -361,17 +513,43 @@ def extract_regexes(
     return df
 
 
-def extract_keywords(text, keywords, max_name_length=100, last_name_length=50):
+def extract_keywords(
+    text: pd.Series,
+    keywords: str,
+    max_name_length: int = 100,
+    last_name_length: int = 50,
+) -> pd.DataFrame:
+    """Extract keyword-delimited party names from text.
+
+    Args:
+        text: Series of strings to search.
+        keywords: Regex pattern matching party-type keywords.
+        max_name_length: Maximum characters for the name capture group.
+        last_name_length: Maximum characters for the lastname capture group.
+
+    Returns:
+        DataFrame with ``key``, ``name``, and ``lastname`` columns.
+    """
     regex = get_keyword_regex(keywords, max_name_length, last_name_length)
     df = text.str.extractall(regex)
     df.index = df.index.droplevel(1)
     return df
 
 
-def get_keyword_regex(keyword, max_name_length=100, last_name_length=50):
-    """
+def get_keyword_regex(
+    keyword: Union[str, List[str]],
+    max_name_length: int = 100,
+    last_name_length: int = 50,
+) -> str:
+    """Build a regex for extracting names around keyword delimiters.
+
     Args:
-       keywords: list of keywords or regex
+       keyword: Keyword pattern or list of keyword patterns.
+       max_name_length: Maximum characters for the name capture group.
+       last_name_length: Maximum characters for the lastname capture group.
+
+    Returns:
+        Compiled regex string with named groups ``key``, ``name``, and ``lastname``.
     """
     if type(keyword) == list:
         keyword = "|".join(keyword)
@@ -384,14 +562,35 @@ def get_keyword_regex(keyword, max_name_length=100, last_name_length=50):
     return regex
 
 
-def keep_cols(df, cols):
+def keep_cols(df: pd.DataFrame, cols: List[str]) -> pd.DataFrame:
+    """Subset a DataFrame to the intersection of requested and existing columns."""
     cols = set(cols).intersection(set(df.columns))
     return df.loc[:, cols]
 
 
 def inspect(
-    proc, parte, mov, adv=None, tp="parte", min_mov_length=100, parte_level="mov_id"
-):
+    proc: pd.DataFrame,
+    parte: pd.DataFrame,
+    mov: pd.DataFrame,
+    adv: Optional[pd.DataFrame] = None,
+    tp: str = "parte",
+    min_mov_length: int = 100,
+    parte_level: str = "mov_id",
+) -> Optional[pd.Series]:
+    """Sample a random movement and print associated parties or process info.
+
+    Args:
+        proc: Process DataFrame.
+        parte: Party DataFrame.
+        mov: Movement DataFrame.
+        adv: Optional lawyer DataFrame.
+        tp: Display mode; one of ``"parte"``, ``"proc"``, ``"mov"``, ``"all"``.
+        min_mov_length: Minimum text length (currently unused).
+        parte_level: Column used to join parties to movements.
+
+    Returns:
+        The sampled movement row as a Series, or None if ``mov`` is empty.
+    """
     if len(mov) == 0:
         return None
     # mov = (

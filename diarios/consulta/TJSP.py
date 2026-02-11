@@ -1,3 +1,9 @@
+"""Parser for TJSP (Tribunal de Justiça de São Paulo) scraped case data."""
+
+from __future__ import annotations
+
+from typing import Callable, Dict, List, Optional, Tuple, Union
+
 import path
 import pandas as pd
 from diarios.clean import clean_text
@@ -5,10 +11,26 @@ from diarios.clean import map_regex
 import zipfile
 import gc
 
+
 def parse_consulta_tjsp_from_zip(
-        zip_paths, case_numbers=None,
-        directory="1", instancia=1, **kwargs
-):
+    zip_paths: Union[str, List[str]],
+    case_numbers: Optional[List[str]] = None,
+    directory: str = "1",
+    instancia: int = 1,
+    **kwargs,
+) -> Tuple[pd.DataFrame, pd.DataFrame, pd.DataFrame, pd.DataFrame]:
+    """Parse TJSP case data directly from ZIP archives.
+
+    Args:
+        zip_paths: Path(s) to ZIP file(s) containing scraped case markdown.
+        case_numbers: If given, only parse these case numbers.
+        directory: Subdirectory within the ZIP (e.g., ``"1"`` or ``"2"``).
+        instancia: Court instance (1 or 2).
+        **kwargs: Extra arguments forwarded to ``parse_consulta_tjsp_in_chunks``.
+
+    Returns:
+        Tuple of (proc, mov, parte, adv) DataFrames.
+    """
     if isinstance(zip_paths, str):
         zip_paths = [zip_paths]
 
@@ -49,12 +71,24 @@ def parse_consulta_tjsp_from_zip(
 
 
 def parse_consulta_tjsp_in_chunks(
-    infiles,
-    instancia=1,
-    chunk_size=100_000,
-    save_mov=True,
-    **kwargs
-):
+    infiles: List[str],
+    instancia: int = 1,
+    chunk_size: int = 100_000,
+    save_mov: bool = True,
+    **kwargs,
+) -> Tuple[pd.DataFrame, pd.DataFrame, pd.DataFrame, pd.DataFrame]:
+    """Parse TJSP cases in chunks to manage memory.
+
+    Args:
+        infiles: List of file paths (or ZIP entry names) to parse.
+        instancia: Court instance (1 or 2).
+        chunk_size: Number of files to process per chunk.
+        save_mov: Whether to accumulate movements (can be large).
+        **kwargs: Extra arguments forwarded to ``parse_consulta_tjsp``.
+
+    Returns:
+        Tuple of (proc, mov, parte, adv) DataFrames.
+    """
     print("Parsing", len(infiles), "cases")
 
     proc = pd.DataFrame()
@@ -85,7 +119,21 @@ def parse_consulta_tjsp_in_chunks(
     return proc, mov, parte, adv
 
 
-def parse_consulta_tjsp(infiles, instancia=1, read_func=None):
+def parse_consulta_tjsp(
+    infiles: List[str],
+    instancia: int = 1,
+    read_func: Optional[Callable[[str], str]] = None,
+) -> Tuple[pd.DataFrame, pd.DataFrame, pd.DataFrame, pd.DataFrame]:
+    """Parse scraped TJSP case markdown files into relational DataFrames.
+
+    Args:
+        infiles: List of file paths (or ZIP entry names) to parse.
+        instancia: Court instance (1 or 2).
+        read_func: Custom function to read file content; defaults to local file read.
+
+    Returns:
+        Tuple of (proc, mov, parte, adv) DataFrames.
+    """
     df = pd.DataFrame({'infile': infiles})
     if read_func is None:
         read_func = read
@@ -107,17 +155,41 @@ def parse_consulta_tjsp(infiles, instancia=1, read_func=None):
     return proc, mov, parte, adv
 
 
-def read(infile):
+def read(infile: str) -> str:
+    """Read a local file and return its contents.
+
+    Args:
+        infile: Path to the file.
+
+    Returns:
+        File contents as a string.
+    """
     with open(infile, 'r') as f:
         return f.read()
 
 
-def read(path):
+def read(path: str) -> str:
+    """Read a file from a ZIP archive.
+
+    Args:
+        path: Path within the ZIP file.
+
+    Returns:
+        Decoded file contents.
+    """
     with zipfile_obj.open(path) as f:
         return f.read().decode('utf-8')
 
 
-def get_sections(instancia):
+def get_sections(instancia: int) -> Dict[str, str]:
+    """Return section markers for the given court instance.
+
+    Args:
+        instancia: Court instance (1 or 2).
+
+    Returns:
+        Dict mapping section names to their markdown header markers.
+    """
     if instancia==1:
         return {
             'partes': '## Partes',
@@ -138,7 +210,15 @@ def get_sections(instancia):
         }
 
 
-def get_regexes(instancia):
+def get_regexes(instancia: int) -> Dict[str, str]:
+    """Return extraction regexes for the given court instance.
+
+    Args:
+        instancia: Court instance (1 or 2).
+
+    Returns:
+        Dict mapping field names to regex patterns.
+    """
     if instancia==1:
         return {
             'status': '[0-9]{4} (.*)',
@@ -169,7 +249,16 @@ def get_regexes(instancia):
         }
 
 
-def clean(df, instancia):
+def clean(df: pd.DataFrame, instancia: int) -> pd.DataFrame:
+    """Clean extracted case data based on court instance.
+
+    Args:
+        df: DataFrame with extracted case fields.
+        instancia: Court instance (1 or 2).
+
+    Returns:
+        Cleaned DataFrame.
+    """
     if instancia==1:
         df['data_distribuicao'] = pd.to_datetime(
             df.distribuicao.str.extract('([0-9]{2}/[0-9]{2}/[0-9]{4})')[0],
@@ -181,8 +270,16 @@ def clean(df, instancia):
     if instancia==2:
         return df
 
-    
-def get_parte_adv(partes):    
+
+def get_parte_adv(partes: pd.Series) -> Tuple[pd.DataFrame, pd.DataFrame]:
+    """Extract parties and lawyers from the partes column.
+
+    Args:
+        partes: Series of raw party text.
+
+    Returns:
+        Tuple of (parte, adv) DataFrames.
+    """
     parte = partes.str.extractall('\n(?P<key>.*?)[|:](?P<parte>.*)')
     parte['parte'] = clean_text(parte.parte)
     parte['key'] = clean_text(parte.key)
@@ -190,18 +287,26 @@ def get_parte_adv(partes):
     mapping = {
         'JUSTICA PUBLICA': 'MP',
         'MINISTERIO PUBLICO': 'MP'
-    }    
+    }
     parte['parte'] = map_regex(parte.parte, mapping)
     parte['parte_id'] = gen_parte_id(parte)
     isadv = parte.key.str.contains("ADV")
     adv = parte.loc[isadv].rename(columns={'parte': 'advogado'})
     parte = parte.loc[~isadv]
-    parte.index = parte.index.droplevel('match')    
-    adv.index = adv.index.droplevel('match')    
+    parte.index = parte.index.droplevel('match')
+    adv.index = adv.index.droplevel('match')
     return parte, adv
 
 
-def gen_parte_id(parte):
+def gen_parte_id(parte: pd.DataFrame) -> pd.Series:
+    """Generate sequential party IDs, grouping lawyers with their party.
+
+    Args:
+        parte: DataFrame with a ``key`` column identifying party type.
+
+    Returns:
+        Series of cumulative party IDs.
+    """
     df = parte.copy()
     df['one'] = 1
     isadv = df.key.str.contains("ADV")
@@ -210,7 +315,15 @@ def gen_parte_id(parte):
     return df.parte_id
 
 
-def get_mov(movimentacoes):
+def get_mov(movimentacoes: pd.Series) -> pd.DataFrame:
+    """Extract case movements from the movimentacoes column.
+
+    Args:
+        movimentacoes: Series of raw movement text.
+
+    Returns:
+        DataFrame with ``date`` and ``text`` columns.
+    """
     mov = movimentacoes.str.extractall('(?s)\n(?P<date>[0-9]{2}/[0-9]{2}/[0-9]{4}).*?\|.*?\|(?P<text>.*?)(?=\n[0-9]{2}/[0-9]{2}/[0-9]{4})')
     mov['date'] = pd.to_datetime(mov.date, format='%d/%m/%Y', errors='coerce')
     mov['text'] = mov.text.str.strip()
@@ -218,7 +331,19 @@ def get_mov(movimentacoes):
     return mov
 
 
-def test_parte(proc, parte, adv):
+def test_parte(
+    proc: pd.DataFrame, parte: pd.DataFrame, adv: pd.DataFrame
+) -> str:
+    """Print a random case's party information for debugging.
+
+    Args:
+        proc: Process DataFrame with ``partes`` column.
+        parte: Parties DataFrame.
+        adv: Lawyers DataFrame.
+
+    Returns:
+        The sampled case number (num_npu).
+    """
     sm = proc.sample().iloc[0].name
     print(proc['partes'].loc[sm])
     try:
@@ -232,7 +357,16 @@ def test_parte(proc, parte, adv):
     return sm
 
 
-def test_mov(proc, mov):
+def test_mov(proc: pd.DataFrame, mov: pd.DataFrame) -> str:
+    """Print a random case's movements for debugging.
+
+    Args:
+        proc: Process DataFrame with ``movimentacoes`` column.
+        mov: Movements DataFrame.
+
+    Returns:
+        The sampled case number (num_npu).
+    """
     sm = proc.sample().iloc[0].name
     try:
         print(proc['movimentacoes'].loc[sm][0:1000])
@@ -244,7 +378,15 @@ def test_mov(proc, mov):
     return sm
 
 
-def test_proc(df):
+def test_proc(df: pd.DataFrame) -> pd.Series:
+    """Print a random case's full text for debugging.
+
+    Args:
+        df: DataFrame with a ``text`` column.
+
+    Returns:
+        The sampled row as a Series.
+    """
     sm = df.sample().iloc[0]
     print(sm.text[0:1000])
     print(sm)

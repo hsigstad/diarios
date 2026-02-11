@@ -1,10 +1,26 @@
+"""Parser for TRF1 (Tribunal Regional Federal da 1a Região) scraped case data."""
+
+from __future__ import annotations
+
+from typing import List, Tuple
+
 import pandas as pd
 from diarios.clean import clean_text
 from diarios.clean import map_regex
 from diarios.clean import split_series
 
 
-def parse_consulta_trf1(infiles):
+def parse_consulta_trf1(
+    infiles: List[str],
+) -> Tuple[pd.DataFrame, pd.DataFrame, pd.DataFrame, pd.DataFrame, pd.DataFrame, pd.DataFrame, pd.DataFrame, pd.DataFrame]:
+    """Parse scraped TRF1 case CSV files into relational DataFrames.
+
+    Args:
+        infiles: List of CSV file paths from the TRF1 scraper.
+
+    Returns:
+        Tuple of (df, proc, mov, parte, adv, pub, it, peticao).
+    """
     df = get_df(infiles)
     proc = get_proc(df)
     parte, adv = get_parte_adv(df.partes)
@@ -15,7 +31,15 @@ def parse_consulta_trf1(infiles):
     return df, proc, mov, parte, adv, pub, it, peticao
 
 
-def get_df(infiles):
+def get_df(infiles: List[str]) -> pd.DataFrame:
+    """Load and deduplicate scraped CSV files.
+
+    Args:
+        infiles: List of CSV file paths.
+
+    Returns:
+        DataFrame indexed by (num_npu, instancia).
+    """
     df = pd.concat(map(pd.read_csv, infiles))
     cols = ['peticoes', 'incidentes']
     for c in cols:
@@ -28,7 +52,15 @@ def get_df(infiles):
     return df
 
 
-def get_proc(df):
+def get_proc(df: pd.DataFrame) -> pd.DataFrame:
+    """Extract case metadata from the processo column.
+
+    Args:
+        df: DataFrame with a ``processo`` column of raw text.
+
+    Returns:
+        DataFrame with case metadata (classe, relator, vara, etc.).
+    """
     keys = {
         'Grupo:': 'grupo',
         'Data de Autuação:': 'data_autuacao',
@@ -77,7 +109,15 @@ def get_proc(df):
     return proc
 
 
-def get_parte_adv(partes):
+def get_parte_adv(partes: pd.Series) -> Tuple[pd.DataFrame, pd.DataFrame]:
+    """Extract parties and lawyers from the partes column.
+
+    Args:
+        partes: Series of raw party text.
+
+    Returns:
+        Tuple of (parte, adv) DataFrames.
+    """
     keys = [
         'Réu', 'Autor', 'LITISAT', 'Apelante', 'Apelado',
         'ASSIST.', 'ASSISTA', 'REQTE.', 'REQDO.',
@@ -111,17 +151,33 @@ def get_parte_adv(partes):
     return parte, adv
 
 
-def get_mov(movimentacao):
+def get_mov(movimentacao: pd.Series) -> pd.DataFrame:
+    """Extract case movements from the movimentacao column.
+
+    Args:
+        movimentacao: Series of raw movement text.
+
+    Returns:
+        DataFrame with movement details (date, time, text).
+    """
     mov = split_series(movimentacao, "\n")
     mov[['data_mov', 'time_mov', 'n_mov', 'text1_mov']] = mov.movimentacao.str.split('[ ,]', expand=True, n=3)
     mov[['text1_mov', 'text2_mov']] = mov.text1_mov.str.split(',', expand=True, n=1)
     mov = mov.drop(columns='movimentacao')
     mov['data_mov'] = pd.to_datetime(mov.data_mov, dayfirst=True)
-    mov.index = mov.index.droplevel('group')    
+    mov.index = mov.index.droplevel('group')
     return mov
 
 
-def get_pub(publicacao):
+def get_pub(publicacao: pd.Series) -> pd.DataFrame:
+    """Extract publication entries from the publicacao column.
+
+    Args:
+        publicacao: Series of raw publication text.
+
+    Returns:
+        DataFrame with publication details (date, type, text).
+    """
     pub = split_series(publicacao, "\n")
     pub[['data_pub', 'tp_pub', 'text_pub']] = pub.publicacao.str.split(',', expand=True, n=2)
     pub = pub.drop(columns='publicacao')
@@ -130,7 +186,15 @@ def get_pub(publicacao):
     return pub
 
 
-def get_peticao(peticoes):
+def get_peticao(peticoes: pd.Series) -> pd.DataFrame:
+    """Extract petition entries from the peticoes column.
+
+    Args:
+        peticoes: Series of raw petition text.
+
+    Returns:
+        DataFrame with petition details, or empty DataFrame if none found.
+    """
     df = split_series(peticoes, "\n", text_name='text')
     try:
         df[['n_peticao', 'data_peticao1', 'data_peticao2', 'text_peticao', 'parte_peticao']] = df.text.str.split(',', expand=True, n=4)
@@ -144,7 +208,15 @@ def get_peticao(peticoes):
     return df
 
 
-def get_inteiro_teor(inteiro_teor):
+def get_inteiro_teor(inteiro_teor: pd.Series) -> pd.DataFrame:
+    """Extract full-text document entries from the inteiro teor column.
+
+    Args:
+        inteiro_teor: Series of raw inteiro teor text.
+
+    Returns:
+        DataFrame with document details (number, type, date).
+    """
     df = split_series(inteiro_teor, "\n", text_name='text')
     df.index = df.index.droplevel('group')
     df = df.reset_index()
@@ -155,7 +227,7 @@ def get_inteiro_teor(inteiro_teor):
     df = df.drop(columns='text')
     df[['data_inteiro_teor', 'time_inteiro_teor', 'vis']] = df.date.str.split(
         ' ', n=2, expand=True
-    )    
+    )
     df = df.drop(columns=['vis'])
     df['data_inteiro_teor'] = pd.to_datetime(
         df.data_inteiro_teor,
@@ -165,7 +237,19 @@ def get_inteiro_teor(inteiro_teor):
     return df
 
 
-def test_parte(proc, parte, adv):
+def test_parte(
+    proc: pd.DataFrame, parte: pd.DataFrame, adv: pd.DataFrame
+) -> str:
+    """Print a random case's party information for debugging.
+
+    Args:
+        proc: Process DataFrame with ``partes`` column.
+        parte: Parties DataFrame.
+        adv: Lawyers DataFrame.
+
+    Returns:
+        The sampled case identifier.
+    """
     sm = proc.sample().iloc[0].name
     print(proc['partes'].loc[sm])
     try:
@@ -179,7 +263,16 @@ def test_parte(proc, parte, adv):
     return sm
 
 
-def test_mov(proc, mov):
+def test_mov(proc: pd.DataFrame, mov: pd.DataFrame) -> str:
+    """Print a random case's movements for debugging.
+
+    Args:
+        proc: Process DataFrame with ``movimentacao`` column.
+        mov: Movements DataFrame.
+
+    Returns:
+        The sampled case identifier.
+    """
     sm = proc.sample().iloc[0].name
     try:
         print(proc['movimentacao'].loc[sm][0:1000])
@@ -192,7 +285,16 @@ def test_mov(proc, mov):
     return sm
 
 
-def test_proc(df, proc):
+def test_proc(df: pd.DataFrame, proc: pd.DataFrame) -> pd.Series:
+    """Print a random case's process details for debugging.
+
+    Args:
+        df: Raw DataFrame with ``processo`` text column.
+        proc: Parsed process DataFrame.
+
+    Returns:
+        The sampled row as a Series.
+    """
     sm = df.sample().iloc[0]
     print(sm.processo[0:1000])
     print(proc.loc[sm.name])

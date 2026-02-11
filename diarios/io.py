@@ -1,3 +1,9 @@
+"""File reading and OCR utilities for PDF, DOCX, and DOC files."""
+
+from __future__ import annotations
+
+from typing import List, Optional, Union
+
 from pathlib import Path
 import pandas as pd
 import pytesseract
@@ -10,13 +16,48 @@ import pypdf
 pytesseract.pytesseract.tesseract_cmd = "/usr/bin/tesseract"
 
 
-def read_files(infiles, OCR=True, file_col="infile", text_col="text"):
+def read_files(
+    infiles: List[str],
+    OCR: bool = True,
+    file_col: str = "infile",
+    text_col: str = "text",
+) -> pd.DataFrame:
+    """Read multiple files and return a DataFrame with file paths and text.
+
+    Args:
+        infiles: List of file paths to read.
+        OCR: Whether to fall back to OCR for PDFs with little text.
+        file_col: Name of the column containing file paths.
+        text_col: Name of the column containing extracted text.
+
+    Returns:
+        DataFrame with one row per file, containing file path and text columns.
+    """
     df = pd.DataFrame({file_col: infiles})
     df[text_col] = df[file_col].apply(lambda f: read_file(f, OCR=OCR))
     return df
 
 
-def read_file(infile, OCR=True, min_length=100, check_for_txt=True):
+def read_file(
+    infile: Union[str, Path],
+    OCR: bool = True,
+    min_length: int = 100,
+    check_for_txt: bool = True,
+) -> str:
+    """Read text from a single file (PDF, DOCX, or DOC).
+
+    Attempts native text extraction first; falls back to OCR for PDFs
+    that yield fewer than ``min_length`` characters.
+
+    Args:
+        infile: Path to the file.
+        OCR: Whether to fall back to OCR for short PDF text.
+        min_length: Minimum character count before OCR is triggered.
+        check_for_txt: If True, look for a cached ``.txt`` file before OCR.
+
+    Returns:
+        Extracted text content.
+    """
     path = Path(infile)
     suffix = path.suffix.lower()
 
@@ -45,6 +86,14 @@ def read_file(infile, OCR=True, min_length=100, check_for_txt=True):
 
 
 def extract_pdf_text(pdf_path: Path) -> str:
+    """Extract text from a PDF using pypdf.
+
+    Args:
+        pdf_path: Path to the PDF file.
+
+    Returns:
+        Concatenated text from all pages, or empty string on error.
+    """
     try:
         reader = pypdf.PdfReader(str(pdf_path))
         return "\n".join(page.extract_text() or "" for page in reader.pages)
@@ -54,6 +103,14 @@ def extract_pdf_text(pdf_path: Path) -> str:
 
 
 def extract_docx_text(docx_path: Path) -> str:
+    """Extract text from a DOCX file using python-docx.
+
+    Args:
+        docx_path: Path to the DOCX file.
+
+    Returns:
+        Concatenated paragraph text, or empty string on error.
+    """
     try:
         import docx
         doc = docx.Document(str(docx_path))
@@ -64,6 +121,14 @@ def extract_docx_text(docx_path: Path) -> str:
 
 
 def extract_doc_text(doc_path: Path) -> str:
+    """Extract text from a legacy DOC file using catdoc.
+
+    Args:
+        doc_path: Path to the DOC file.
+
+    Returns:
+        Decoded text output from catdoc, or empty string on error.
+    """
     try:
         cd = run(["catdoc", str(doc_path)], capture_output=True, check=False)
         return cd.stdout.decode("utf-8", errors="ignore")
@@ -72,7 +137,16 @@ def extract_doc_text(doc_path: Path) -> str:
         return ""
 
 
-def ocr_file(pdf_path: Path, save_as_txt=True) -> str:
+def ocr_file(pdf_path: Path, save_as_txt: bool = True) -> str:
+    """OCR a PDF file by converting pages to images and running Tesseract.
+
+    Args:
+        pdf_path: Path to the PDF file.
+        save_as_txt: If True, save the OCR result as a ``.txt`` sibling file.
+
+    Returns:
+        OCR-extracted text from all pages.
+    """
     print("OCR:", pdf_path)
     image_file_list = []
     with TemporaryDirectory() as tempdir:
@@ -91,6 +165,14 @@ def ocr_file(pdf_path: Path, save_as_txt=True) -> str:
 
 
 def ocr_image(image_path: Path) -> str:
+    """OCR a single image using Tesseract with Portuguese language.
+
+    Args:
+        image_path: Path to the image file.
+
+    Returns:
+        Recognized text from the image.
+    """
     print(image_path)
     img = Image.open(image_path)
     return pytesseract.image_to_string(

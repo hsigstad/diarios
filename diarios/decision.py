@@ -1,3 +1,9 @@
+"""Decision parsing and sentence extraction for court rulings."""
+
+from __future__ import annotations
+
+from typing import Any, Callable, Dict, List, Optional, Tuple, Union
+
 import pandas as pd
 from diarios.clean import clean_text
 from diarios.clean import map_regex
@@ -9,7 +15,23 @@ from diarios.parse import extract_regexes
 
 # TODO: Differentiate between reclusao and detencao (sometimes 2 anos reclusao e 3 meses detencao)
 
-def _clean_text(text, replace_text, remove_dots, remove_regexes):
+def _clean_text(
+    text: pd.Series,
+    replace_text: Dict[str, str],
+    remove_dots: List[str],
+    remove_regexes: List[str],
+) -> pd.Series:
+    """Clean text by applying replacements, dot removals, and regex removals.
+
+    Args:
+        text: Series of text strings to clean.
+        replace_text: Mapping of regex patterns to replacement strings.
+        remove_dots: Patterns whose trailing dots should be removed.
+        remove_regexes: Regex patterns to remove from text.
+
+    Returns:
+        Cleaned text series with name set to ``'text'``.
+    """
     for k, v in replace_text.items():
         text = text.str.replace(k, v, regex=True)
     for r in remove_dots:
@@ -21,17 +43,19 @@ def _clean_text(text, replace_text, remove_dots, remove_regexes):
     return text
 
 
-def clean_sentenca_text(text):
+def clean_sentenca_text(text: pd.Series) -> pd.Series:
+    """Clean sentence text keeping only alphanumeric and basic punctuation."""
     return clean_text(text, drop="^A-Z0-9;:., \n\-")
 
 
-def get_main_sentence_regexes():
+def get_main_sentence_regexes() -> List[str]:
+    """Return regexes for extracting the main sentence from a ruling."""
     regexes = [
         r'julgo\b[^.]+',
         'decide.{0,15}turma[^.]+',
         'a turma.{0,10}(unanimidade|maioria)[^.]+',
         r'\.\s+(nego|dou)\b[^.]+',
-        r'(para.{0,7}(condenar|absolver)|condeno|absolvo)\b[^.]+',        
+        r'(para.{0,7}(condenar|absolver)|condeno|absolvo)\b[^.]+',
         'retirado\s+d[ae]\s+pauta[^.]+',
         '(pelo|diante|por\s+todo|ante|vista|em\s+face).{0,15}exposto[^.]+',
         'em\s+face.{0,15}considerações[^.]+',
@@ -44,9 +68,10 @@ def get_main_sentence_regexes():
     return regexes
 
 
-def get_dispositivo_regexes():
+def get_dispositivo_regexes() -> List[str]:
+    """Return regexes for extracting the dispositivo section of a ruling."""
     regexes = [
-        r'julgo\b.*',        
+        r'julgo\b.*',
         'decide.{0,15}turma.*',
         'a turma.{0,10}(?:unanimidade|maioria).*',
         'retirado\s+d[ae]\s+pauta.*',
@@ -62,7 +87,15 @@ def get_dispositivo_regexes():
     return regexes
 
 
-def get_desfecho_regexes(classes):
+def get_desfecho_regexes(classes: Union[str, List[str]]) -> Dict[str, str]:
+    """Return outcome regexes for the given case classes.
+
+    Args:
+        classes: A single class string or list of class strings.
+
+    Returns:
+        Dict mapping regex patterns to outcome labels.
+    """
     if type(classes) == str:
         classes = [classes]
     regexes = {}
@@ -71,21 +104,39 @@ def get_desfecho_regexes(classes):
     return regexes
 
 
-def get_mode():
+def get_mode() -> Dict[str, str]:
+    """Return regex mapping for decision mode (unanimity or majority)."""
     return {
         'UNANIMIDADE': 'UNANIMIDADE',
         'MAIORIA': 'MAIORIA',
     }
-    
 
-def get_key_order(key, order):
+
+def get_key_order(key: pd.Series, order: List[str]) -> pd.Series:
+    """Map decision keys to their sort order.
+
+    Args:
+        key: Series of decision key strings.
+        order: Ordered list defining the sort priority.
+
+    Returns:
+        Series with numeric sort positions.
+    """
     order = {k: i for i, k in enumerate(order)}
     return key.map(order)
 
 
 
 
-def _get_desfecho_regexes(classe):
+def _get_desfecho_regexes(classe: str) -> Dict[str, str]:
+    """Return outcome regexes for a single case class.
+
+    Args:
+        classe: Case class identifier (e.g. ``'APN'``, ``'HC'``, ``'Ap'``).
+
+    Returns:
+        Dict mapping regex patterns to outcome labels.
+    """
     regexes = {
         'HOMOLOG(O|ASE).*DESISTENCIA':
         'HOMOLOGAR-DESISTENCIA',
@@ -153,7 +204,7 @@ def _get_desfecho_regexes(classe):
             'IMPROVIMENTO-RECURSO',
             f'NAO (SE )?CONHEC.*{obj}':
             'NAO CONHECER-RECURSO',
-        }        
+        }
     if classe in ["HC"]:
         obj = '(ORDEM|HABEAS|WRIT|IMPETRACAO|PEDIDO)'
         regexes = {
@@ -183,7 +234,7 @@ def _get_desfecho_regexes(classe):
             'NAO CONHECER-PEDIDO',
             'JULGO.*EXTINT.*SEM.*MERITO':
             'S/MERITO-ORDEM',
-        }                
+        }
     if classe in ["APN"]:
         regexes = {
             **regexes,
@@ -204,7 +255,7 @@ def _get_desfecho_regexes(classe):
                     "REMESSA OFICIAL",
                     "REMESSA NECESSARIA"]:
             regexes = {
-                **regexes,            
+                **regexes,
                 f'D(OU|EU|AR) PROVIMENTO PARCIAL.*{obj}':
                 f'PARCIAL PROVIMENTO-{obj}',
                 f'D(OU|EU|AR) PARCIAL PROVIMENTO.*{obj}':
@@ -215,7 +266,7 @@ def _get_desfecho_regexes(classe):
             }
     if classe in ["ACIA"]:
         regexes = {
-            **regexes,            
+            **regexes,
             'RECEBO.*INICIAL': 'RECEBER-INICIAL',
             'REJEITO.*INICIAL': 'REJEITAR-INICIAL',
         }
@@ -242,7 +293,8 @@ def _get_desfecho_regexes(classe):
     return regexes
 
 
-def get_subject():
+def get_subject() -> Dict[str, str]:
+    """Return regex mapping for decision subject (turma or camara)."""
     return {
         'TURMA': 'TURMA',
         'CAMARA': 'CAMARA',
@@ -254,29 +306,49 @@ class DecisionParser:
 
     def __init__(
             self,
-            text,
-            parte=None,
-            tipo_parte=None,
-            classes=["ProOrd", "ACIA", "APN", "ED", "Ap"],
-            replace_text={r'\.([0-9]{2})\b': r',\1'},
-            remove_dots=[r'\barts?', r'\bfls?', '[0-9]', r'\bn', r'\bc', r'\bcc'],
-            remove_regexes=[
+            text: pd.Series,
+            parte: Optional[pd.Series] = None,
+            tipo_parte: Optional[pd.Series] = None,
+            classes: List[str] = ["ProOrd", "ACIA", "APN", "ED", "Ap"],
+            replace_text: Dict[str, str] = {r'\.([0-9]{2})\b': r',\1'},
+            remove_dots: List[str] = [r'\barts?', r'\bfls?', '[0-9]', r'\bn', r'\bc', r'\bcc'],
+            remove_regexes: List[str] = [
                 '(?s)(?i)conden[^.]{0,20}honor[^.]{0,10}adv',
                 '(?s)(?i)conden[^.]{0,20}custa[^.]{0,10}proc',
             ],
-            key_order=['ABSOLVO', 'PRESCRICAO', 'CONDENO'],
-            name_match_single_parte=False,
-            split_desfecho=True,
-            main_sentence_regexes=get_main_sentence_regexes(),
-            get_desfecho_regexes=get_desfecho_regexes,
-            alternative_parte_regexes={'MINISTERIO.*PUBLICO': 'MP|MPF|MINISTERIO PUBLICO'},
-            dispositivo_regexes=get_dispositivo_regexes(),
-            all_partes_regexes=[r'\bOS REUS\b', r'\bOS REQUERIDOS\b', r'\bOS ACUSADOS'],
-            more_regexes={
+            key_order: List[str] = ['ABSOLVO', 'PRESCRICAO', 'CONDENO'],
+            name_match_single_parte: bool = False,
+            split_desfecho: bool = True,
+            main_sentence_regexes: List[str] = get_main_sentence_regexes(),
+            get_desfecho_regexes: Callable[..., Dict[str, str]] = get_desfecho_regexes,
+            alternative_parte_regexes: Optional[Dict[str, str]] = {'MINISTERIO.*PUBLICO': 'MP|MPF|MINISTERIO PUBLICO'},
+            dispositivo_regexes: List[str] = get_dispositivo_regexes(),
+            all_partes_regexes: Optional[Union[List[str], Dict[Any, List[str]]]] = [r'\bOS REUS\b', r'\bOS REQUERIDOS\b', r'\bOS ACUSADOS'],
+            more_regexes: Dict[str, Dict[str, str]] = {
                 'mode': get_mode(),
                 'subject': get_subject()
             }
-    ):
+    ) -> None:
+        """Initialize the decision parser.
+
+        Args:
+            text: Series of ruling texts to parse.
+            parte: Series of party names, if available.
+            tipo_parte: Series of party types, if available.
+            classes: List of case class identifiers.
+            replace_text: Regex replacements to apply during cleaning.
+            remove_dots: Patterns whose trailing dots should be removed.
+            remove_regexes: Regex patterns to remove from text.
+            key_order: Priority order for decision keys when deduplicating.
+            name_match_single_parte: Whether to use name matching for single parties.
+            split_desfecho: Whether to split outcome into verb and object.
+            main_sentence_regexes: Regexes for extracting main sentences.
+            get_desfecho_regexes: Callable returning outcome regexes for classes.
+            alternative_parte_regexes: Alternate name patterns for parties.
+            dispositivo_regexes: Regexes for extracting the dispositivo.
+            all_partes_regexes: Patterns matching references to all parties.
+            more_regexes: Additional regex mappings to extract.
+        """
         self.text = _clean_text(text, replace_text, remove_dots, remove_regexes)
         self.main_sentence_regexes = main_sentence_regexes
         self.more_regexes = more_regexes
@@ -295,7 +367,12 @@ class DecisionParser:
         self.name_match_single_parte = name_match_single_parte
         self.get_desfecho_regexes = get_desfecho_regexes
 
-    def parse(self):
+    def parse(self) -> pd.DataFrame:
+        """Parse main sentences and extract outcomes.
+
+        Returns:
+            DataFrame with main sentence, outcome, and additional regex matches.
+        """
         df = pd.DataFrame(index=self.text.index)
         df['main_sentence'] = _extract_regexes(
             self.text,
@@ -320,7 +397,12 @@ class DecisionParser:
         self.parsed = df
         return df
 
-    def parse_parte(self):
+    def parse_parte(self) -> pd.DataFrame:
+        """Parse party-level outcomes from the dispositivo.
+
+        Returns:
+            DataFrame with per-party parsed outcomes and penalties.
+        """
         self.dispositivo = clean_sentenca_text(
             _extract_regexes(
                 self.text,
@@ -338,7 +420,15 @@ class DecisionParser:
         self.parsed_parte = parsed_parte
         return parsed_parte
 
-    def _parse_single_parte(self, text):
+    def _parse_single_parte(self, text: pd.Series) -> pd.DataFrame:
+        """Parse outcomes when there is a single party per case.
+
+        Args:
+            text: Dispositivo text for single-party cases.
+
+        Returns:
+            DataFrame with decision key, penalties, and party name.
+        """
         keys = get_split_keys(self.classes)
         df = pd.DataFrame({'text': text})
         df['key'] = map_regex(text, keys, keep_unmatched=False)
@@ -349,7 +439,15 @@ class DecisionParser:
         ]
         return df
 
-    def _add_penas(self, df):
+    def _add_penas(self, df: pd.DataFrame) -> pd.DataFrame:
+        """Extract penalty information and add columns to the DataFrame.
+
+        Args:
+            df: DataFrame with a ``'text'`` column containing dispositivo text.
+
+        Returns:
+            DataFrame enriched with penalty columns.
+        """
         regexes, boolean_regexes = get_pena_regexes(self.classes)
         if "APN" in self.classes:
             df['text'] = remove_pena_base(df.text)
@@ -359,13 +457,21 @@ class DecisionParser:
         for c in num_cols:
             if c in df.columns:
                 df[c] = extract_number(df[c])
-                
+
         for k, v in boolean_regexes.items():
             df[k] = df.text.str.contains(v) * 1
         df = self._clean_penas(df)
         return df
 
-    def _clean_penas(self, df):
+    def _clean_penas(self, df: pd.DataFrame) -> pd.DataFrame:
+        """Clean penalty columns by nullifying non-conviction rows and filling NAs.
+
+        Args:
+            df: DataFrame with penalty columns.
+
+        Returns:
+            Cleaned DataFrame.
+        """
         if intersect(["ACIA", "APN"], self.classes):
             pena_cols = self._get_pena_cols(df)
             for c in pena_cols:
@@ -377,7 +483,15 @@ class DecisionParser:
         df = _fill_na(df)
         return df
 
-    def _parse_multiple_partes(self, text):
+    def _parse_multiple_partes(self, text: pd.Series) -> pd.DataFrame:
+        """Parse outcomes when there are multiple parties per case.
+
+        Args:
+            text: Dispositivo text for multi-party cases.
+
+        Returns:
+            DataFrame with per-party decision keys and penalties.
+        """
         self.splitted = self._split_on_key(text)
         splitted = self._add_parte_regex(self.splitted)
         df = extractall_series(splitted.text, splitted.parte_regex)
@@ -388,7 +502,16 @@ class DecisionParser:
         df = df.reset_index(['group', 'match'], drop=True)
         return df
 
-    def _add_all_partes(self, df):
+    def _add_all_partes(self, df: pd.DataFrame) -> pd.DataFrame:
+        """Expand collective party references to individual parties.
+
+        Args:
+            df: DataFrame with a ``'parte'`` column that may contain collective
+                references (e.g. ``'OS REUS'``).
+
+        Returns:
+            DataFrame with collective references replaced by individual parties.
+        """
         # Changes OS REUS etc to all partes
         if self.all_partes_regexes is None:
             return df
@@ -401,7 +524,20 @@ class DecisionParser:
             func = lambda x: self._add_all_partes_sub(df, x)
             return pd.concat(map(func, tipos_parte))
 
-    def _add_all_partes_sub(self, df, tipo_parte=None):
+    def _add_all_partes_sub(
+        self,
+        df: pd.DataFrame,
+        tipo_parte: Optional[Any] = None,
+    ) -> pd.DataFrame:
+        """Replace collective party references for a specific party type.
+
+        Args:
+            df: DataFrame with party data.
+            tipo_parte: Party type to filter on, or ``None`` for all.
+
+        Returns:
+            DataFrame with expanded party rows.
+        """
         ix = df.index.names[0]
         df = df.reset_index()
         if tipo_parte is None:
@@ -430,7 +566,16 @@ class DecisionParser:
         df = df.set_index([ix, 'group', 'match'])
         return df
 
-    def _get_pena_cols(self, df, numeric_only=False):
+    def _get_pena_cols(self, df: pd.DataFrame, numeric_only: bool = False) -> List[str]:
+        """Get penalty column names present in the DataFrame.
+
+        Args:
+            df: DataFrame to inspect.
+            numeric_only: If ``True``, exclude text penalty columns.
+
+        Returns:
+            List of penalty column names.
+        """
         regexes, boolean_regexes = get_pena_regexes(self.classes)
         pena_cols = list(set(
             list(boolean_regexes.keys()) +
@@ -440,8 +585,16 @@ class DecisionParser:
         if numeric_only:
             pena_cols = pena_cols - set(self.text_pena_cols)
         return list(pena_cols)
-    
-    def _bfill_penas(self, df):
+
+    def _bfill_penas(self, df: pd.DataFrame) -> pd.DataFrame:
+        """Backward-fill penalty values for consecutive name-only rows.
+
+        Args:
+            df: DataFrame with penalty columns.
+
+        Returns:
+            DataFrame with backward-filled penalties.
+        """
         # Backward fill penas in cases like:
         # CONDENO FRANCISCO SOARES E PEDRO SOUZA ...
         just_name = df.text.str.len() - df.parte.str.len() < 5
@@ -452,7 +605,15 @@ class DecisionParser:
             df[col] = df[col].fillna(method='bfill')
         return df
 
-    def _add_parte_regex(self, splitted):
+    def _add_parte_regex(self, splitted: pd.DataFrame) -> pd.DataFrame:
+        """Attach party-matching regex to the splitted DataFrame.
+
+        Args:
+            splitted: DataFrame from ``_split_on_key``.
+
+        Returns:
+            DataFrame with a ``'parte_regex'`` column joined in.
+        """
         parte_regex = self._get_parte_regex()
         parte_regex = self._add_all_partes_regex(parte_regex)
         parte_regex = (
@@ -461,7 +622,15 @@ class DecisionParser:
         )
         return splitted.join(parte_regex, how='inner')
 
-    def _add_all_partes_regex(self, parte_regex):
+    def _add_all_partes_regex(self, parte_regex: pd.Series) -> pd.Series:
+        """Append collective party patterns to the party regex.
+
+        Args:
+            parte_regex: Series of party regex patterns.
+
+        Returns:
+            Updated series with collective patterns appended.
+        """
         apr = self.all_partes_regexes
         if apr is None:
             return parte_regex
@@ -470,7 +639,12 @@ class DecisionParser:
         all_partes = '|'.join(apr)
         return parte_regex + f'|{all_partes}'
 
-    def _get_parte_regex(self):
+    def _get_parte_regex(self) -> pd.Series:
+        """Build per-case regex patterns that match party names.
+
+        Returns:
+            Series of regex patterns indexed by case, named ``'parte_regex'``.
+        """
         parte = clean_text(self.parte) + '|'
         if self.alternative_parte_regexes is not None:
             mapping = {k: f'{v}|' for k, v in self.alternative_parte_regexes.items()}
@@ -481,16 +655,32 @@ class DecisionParser:
         regex = regex.str.replace(r"\|$", "", regex=True)
         regex.name = 'parte_regex'
         return regex
-    
-    def _split_on_key(self, text):
+
+    def _split_on_key(self, text: pd.Series) -> pd.DataFrame:
+        """Split dispositivo text on decision keywords.
+
+        Args:
+            text: Series of dispositivo text.
+
+        Returns:
+            DataFrame with ``'text'`` and ``'key'`` columns per split segment.
+        """
         # Splits on condeno, absolvo, etc
         keys = get_split_keys(self.classes)
         regex = r"(?i)\b(?P<key>{})\b".format('|'.join(keys.keys()))
         df = split_series(text, regex, drop_end=True)
         df['key'] = map_regex(df.key, keys)
         return df
-    
-    def _drop_duplicate_parte(self, df):
+
+    def _drop_duplicate_parte(self, df: pd.DataFrame) -> pd.DataFrame:
+        """Remove duplicate party rows, keeping the most informative one.
+
+        Args:
+            df: DataFrame with possible duplicate party entries.
+
+        Returns:
+            Deduplicated DataFrame.
+        """
         pena_cols = self._get_pena_cols(df, numeric_only=True)
         df['penas'] = df[pena_cols].sum(axis=1)
         df['key_order'] = get_key_order(df.key, self.key_order)
@@ -507,7 +697,22 @@ class DecisionParser:
         )
         return df
 
-    def test(self, regex=None, max_str=2000, max_str_sentence=1000):
+    def test(
+        self,
+        regex: Optional[str] = None,
+        max_str: int = 2000,
+        max_str_sentence: int = 1000,
+    ) -> Optional[Any]:
+        """Print a random parsed decision for manual inspection.
+
+        Args:
+            regex: Optional filter to select texts containing this pattern.
+            max_str: Maximum characters to print for full text.
+            max_str_sentence: Maximum characters to print for the main sentence.
+
+        Returns:
+            The sampled index value, or ``None`` if no text was found.
+        """
         if regex:
             text = self.text.loc[self.text.fillna('').str.contains(regex)]
         else:
@@ -518,7 +723,7 @@ class DecisionParser:
             print("TEXT:", self.text.loc[sm][-max_str:])
         except TypeError:
             print("No text")
-            return 
+            return
         print('')
         print("MAIN SENTENCE:", parsed.main_sentence[0:max_str_sentence])
         print('')
@@ -531,7 +736,26 @@ class DecisionParser:
         print("DESFECHO:", desfecho)
         return sm
 
-    def test_parte(self, ix=None, regex=None, max_str=2000, max_str_dispositivo=1000, max_str_pena=1000):
+    def test_parte(
+        self,
+        ix: Optional[Any] = None,
+        regex: Optional[str] = None,
+        max_str: int = 2000,
+        max_str_dispositivo: int = 1000,
+        max_str_pena: int = 1000,
+    ) -> Optional[Any]:
+        """Print a random party-level parsed decision for manual inspection.
+
+        Args:
+            ix: Specific index to inspect instead of sampling randomly.
+            regex: Optional filter to select texts containing this pattern.
+            max_str: Maximum characters to print for full text.
+            max_str_dispositivo: Maximum characters to print for the dispositivo.
+            max_str_pena: Maximum characters to print for penalty text.
+
+        Returns:
+            The sampled or provided index value, or ``None`` if no text was found.
+        """
         if regex:
             text = self.text.loc[self.text.fillna('').str.contains(regex)]
         else:
@@ -544,7 +768,7 @@ class DecisionParser:
             print("TEXT:", self.text.loc[sm][-max_str:])
         except TypeError:
             print("No text")
-            return 
+            return
         print('')
         print("DISPOSITIVO")
         print('')
@@ -579,22 +803,46 @@ class DecisionParser:
         return sm
 
 
-def _fill_na(df):
+def _fill_na(df: pd.DataFrame) -> pd.DataFrame:
+    """Fill NAs with 0 for numeric columns and empty string for object columns.
+
+    Args:
+        df: DataFrame to fill.
+
+    Returns:
+        DataFrame with NAs replaced.
+    """
     num_cols = df.select_dtypes(include='number').columns
     df[num_cols] = df[num_cols].fillna(0)
     obj_cols = df.select_dtypes(include='object').columns
     df[obj_cols] = df[obj_cols].fillna('')
     return df
 
-def _extract_regexes(text, regexes):
+def _extract_regexes(text: pd.Series, regexes: List[str]) -> pd.Series:
+    """Extract first matching regex from a list, applied per row.
+
+    Args:
+        text: Series of strings to search.
+        regexes: Ordered list of regex patterns to try.
+
+    Returns:
+        Series with the first match found for each row.
+    """
     out = pd.Series(index=text.index, dtype=object, name=text.name)
     for regex in regexes:
         empty = out.isnull()
         out.loc[empty] = text.loc[empty].str.extract(regex)[0]
     return out
-    
 
-def print_truncated(string, max_str, first_share=0.9):
+
+def print_truncated(string: str, max_str: int, first_share: float = 0.9) -> None:
+    """Print a string, truncating the middle if it exceeds the maximum length.
+
+    Args:
+        string: Text to print.
+        max_str: Maximum number of characters to display.
+        first_share: Fraction of ``max_str`` to show from the beginning.
+    """
     if len(string) > max_str:
         print(string[:round(max_str*first_share)])
         print('...')
@@ -603,11 +851,28 @@ def print_truncated(string, max_str, first_share=0.9):
         print(string)
 
 
-def intersect(list1, list2):
+def intersect(list1: List[Any], list2: List[Any]) -> bool:
+    """Check whether two lists share at least one common element.
+
+    Args:
+        list1: First list.
+        list2: Second list.
+
+    Returns:
+        ``True`` if the lists have at least one element in common.
+    """
     return len(set(list1).intersection(list2)) > 0
 
 
-def get_pena_regexes(classes=['APN', 'ACIA']):
+def get_pena_regexes(classes: List[str] = ['APN', 'ACIA']) -> Tuple[List[str], Dict[str, str]]:
+    """Return regex patterns for extracting penalty information.
+
+    Args:
+        classes: Case class identifiers determining which penalties to extract.
+
+    Returns:
+        Tuple of (named-group regexes, boolean regex dict).
+    """
     n = get_cardinal_number_regex().replace('(?i)(?s)', '')
     s = '[^.]{0,5}?'
     m = '[^.]{0,10}?'
@@ -641,21 +906,37 @@ def get_pena_regexes(classes=['APN', 'ACIA']):
         ]
         boolean_regexes = {
             **boolean_regexes,
-            'perda_funcao': f'PERDA.{l}FUNCAO',        
+            'perda_funcao': f'PERDA.{l}FUNCAO',
             'ressarcir': 'RESSARCI|RESTITUICAO|REPARACAO DO DANO',
         }
     return regexes, boolean_regexes
 
 
 
-def get_split_keys(classes):
+def get_split_keys(classes: List[str]) -> Dict[str, str]:
+    """Return combined split keys for the given case classes.
+
+    Args:
+        classes: List of case class identifiers.
+
+    Returns:
+        Dict mapping regex patterns to canonical decision key names.
+    """
     keys = {}
     for classe in classes:
         keys = {**keys, **_get_split_keys(classe)}
     return keys
 
 
-def _get_split_keys(classe):
+def _get_split_keys(classe: str) -> Dict[str, str]:
+    """Return split keys for a single case class.
+
+    Args:
+        classe: Case class identifier.
+
+    Returns:
+        Dict mapping regex patterns to canonical decision key names.
+    """
     keys = {}
     if classe in ["ACIA", "APN"]:
         keys = {
@@ -690,14 +971,27 @@ def _get_split_keys(classe):
     return keys
 
 
-def remove_pena_base(text):
+def remove_pena_base(text: pd.Series) -> pd.Series:
+    """Remove base penalty text (e.g. ``'FIXO PENA BASE DE 2 ANOS'``).
+
+    Args:
+        text: Series of dispositivo text strings.
+
+    Returns:
+        Series with base penalty sections removed.
+    """
     # Removing "FIXO PENA BASE DE 2 ANOS" etc
     # Important: Make sure \2 captures everything after (^.*)
     regex = '(?s)(^.*)(((TORN|FIX|FICA).{0,15}DEFINITIV[OA]|TOTALIZ(O|AM))[^.]+(DETENCAO|RECLUSAO))'
-    return text.str.replace(regex, r'\2', regex=True) 
+    return text.str.replace(regex, r'\2', regex=True)
 
 
-def get_df():
+def get_df() -> Tuple[pd.DataFrame, pd.DataFrame]:
+    """Load sample data for testing decision parsing.
+
+    Returns:
+        Tuple of (case DataFrame, party DataFrame).
+    """
     df = pd.read_csv('../audit/build/clean/TRF1_inteiro_teor_text.csv')
     it = pd.read_csv('../audit/build/clean/TRF1_inteiro_teor.csv')
     df = df.merge(it, on=['num_npu', 'instancia', 'n_inteiro_teor'])
@@ -757,7 +1051,7 @@ def get_df():
 
 if __name__ == '__main__':
     #df, parte = get_df()
-    parser = DecisionParser(df.inteiro_teor, parte.parte)        
+    parser = DecisionParser(df.inteiro_teor, parte.parte)
     out = parser.parse_parte()
     sm = parser.test_parte()
 

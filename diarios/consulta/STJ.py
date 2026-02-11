@@ -1,10 +1,26 @@
+"""Parser for STJ (Superior Tribunal de Justiça) scraped case data."""
+
+from __future__ import annotations
+
+from typing import List, Tuple
+
 import pandas as pd
 from diarios.clean import clean_text
 from diarios.clean import map_regex
 from diarios.io import read_files
 
 
-def parse_consulta_stj(infiles):
+def parse_consulta_stj(
+    infiles: List[str],
+) -> Tuple[pd.DataFrame, pd.DataFrame, pd.DataFrame, pd.DataFrame, pd.DataFrame, pd.DataFrame, pd.DataFrame, pd.DataFrame]:
+    """Parse scraped STJ case CSV files into relational DataFrames.
+
+    Args:
+        infiles: List of CSV file paths from the STJ scraper.
+
+    Returns:
+        Tuple of (df, proc, parte, mov, adv, decisao, peticao, pauta).
+    """
     df = pd.concat(map(pd.read_csv, infiles))
     df = df.query('status=="OK"')
     df = df.drop_duplicates()
@@ -21,7 +37,15 @@ def parse_consulta_stj(infiles):
     return df, proc, parte, mov, adv, decisao, peticao, pauta
 
 
-def get_proc(detalhes):
+def get_proc(detalhes: pd.Series) -> pd.DataFrame:
+    """Extract case metadata from the detalhes column.
+
+    Args:
+        detalhes: Series of raw case detail text.
+
+    Returns:
+        DataFrame with case metadata (classe, relator, assuntos, etc.).
+    """
     regexes = {
         'classe': 'PROCESSO:',
         'localizacao': 'LOCALIZAÇÃO:',
@@ -42,7 +66,15 @@ def get_proc(detalhes):
     return proc.loc[:, cols]
 
 
-def get_parte_adv(detalhes):
+def get_parte_adv(detalhes: pd.Series) -> Tuple[pd.DataFrame, pd.DataFrame]:
+    """Extract parties and lawyers from the detalhes column.
+
+    Args:
+        detalhes: Series of raw case detail text.
+
+    Returns:
+        Tuple of (parte, adv) DataFrames.
+    """
     parte = (
         detalhes
         .str.extract('(?s)PROCESSO.*?\n(.*?)LOCALIZAÇÃO', expand=False)
@@ -53,19 +85,27 @@ def get_parte_adv(detalhes):
     mapping = {
         'JUSTICA PUBLICA': 'MP',
         'MINISTERIO PUBLICO': 'MP'
-    }    
+    }
     parte['parte'] = map_regex(parte.parte, mapping)
     parte['parte_id'] = gen_parte_id(parte)
     isadv = parte.key.str.contains("ADV")
     adv = parte.loc[isadv].rename(columns={'parte': 'advogado'})
     parte = parte.loc[~isadv]
-    parte.index = parte.index.droplevel('match')    
+    parte.index = parte.index.droplevel('match')
     adv.index = adv.index.droplevel('match')
     adv[['advogado', 'oab']] = adv.advogado.str.split(' (?=[A-Z]{2}[0-9])', expand=True)
     return parte, adv
 
 
-def gen_parte_id(parte):
+def gen_parte_id(parte: pd.DataFrame) -> pd.Series:
+    """Generate sequential party IDs, grouping lawyers with their party.
+
+    Args:
+        parte: DataFrame with a ``key`` column identifying party type.
+
+    Returns:
+        Series of cumulative party IDs.
+    """
     df = parte.copy()
     df['one'] = 1
     isadv = df.key.str.contains("ADV")
@@ -74,7 +114,15 @@ def gen_parte_id(parte):
     return df.parte_id
 
 
-def get_decisao(decisoes):
+def get_decisao(decisoes: pd.Series) -> pd.DataFrame:
+    """Extract decisions from the decisoes column.
+
+    Args:
+        decisoes: Series of raw decision text.
+
+    Returns:
+        DataFrame with decision details (classe, ministro, date, etc.).
+    """
     classes = 'RtP|Ag|ARE |AREsp|RE |REsp|EDcl'
     decisao = decisoes.str.extractall(f'(?s)(?P<decisao>(?:{classes}).*?\n.*?)(?=(?:{classes}|$))')
     regexes = {
@@ -102,7 +150,15 @@ def get_decisao(decisoes):
     return decisao
 
 
-def get_peticao(peticoes):
+def get_peticao(peticoes: pd.Series) -> pd.DataFrame:
+    """Extract petitions from the peticoes column.
+
+    Args:
+        peticoes: Series of raw petition text.
+
+    Returns:
+        DataFrame with petition details (number, dates, petitioner).
+    """
     regex = '(?P<num_peticao>[0-9/]+)(?P<classe>\w+) *(?P<data_protocolo>[0-9]{2}/[0-9]{2}/[0-9]{4})(?P<data_processamento>[0-9]{2}/[0-9]{2}/[0-9]{4})(?P<peticionario>.*)'
     peticao = peticoes.str.extractall(regex)
     for c in ['data_protocolo', 'data_processamento']:
@@ -112,12 +168,20 @@ def get_peticao(peticoes):
         'JUSTICA PUBLICA': 'MP',
         'MPF': 'MP',
         'MINISTERIO PUBLICO': 'MP',
-    }    
+    }
     peticao['peticionario'] = map_regex(peticao.peticionario, mapping)
     return peticao
 
 
-def get_pauta(pautas):
+def get_pauta(pautas: pd.Series) -> pd.DataFrame:
+    """Extract hearing schedule entries from the pautas column.
+
+    Args:
+        pautas: Series of raw schedule text.
+
+    Returns:
+        DataFrame with ``data_pauta``, ``hora_pauta``, and ``turma`` columns.
+    """
     regex = '(?P<data_pauta>[0-9]{2}/[0-9]{2}/[0-9]{4})(?P<hora_pauta>[0-9]{2}:[0-9]{2})(?P<turma>.*)'
     pauta = pautas.str.extractall(regex)
     pauta['data_pauta'] = pd.to_datetime(pauta.data_pauta, dayfirst=True, errors='coerce')
@@ -125,7 +189,15 @@ def get_pauta(pautas):
     return pauta
 
 
-def get_mov(fases):
+def get_mov(fases: pd.Series) -> pd.DataFrame:
+    """Extract case movements from the fases column.
+
+    Args:
+        fases: Series of raw phase/movement text.
+
+    Returns:
+        DataFrame with ``data_mov``, ``hora_mov``, and ``text`` columns.
+    """
     regex = '(?P<data_mov>[0-9]{2}/[0-9]{2}/[0-9]{4})(?P<hora_mov>[0-9]{2}:[0-9]{2}) (?P<text>.*)'
     mov = fases.str.extractall(regex)
     mov['data_mov'] = pd.to_datetime(mov.data_mov, dayfirst=True, errors='coerce')
@@ -133,7 +205,19 @@ def get_mov(fases):
     return mov
 
 
-def test_parte(proc, parte, adv):
+def test_parte(
+    proc: pd.DataFrame, parte: pd.DataFrame, adv: pd.DataFrame
+) -> str:
+    """Print a random case's party information for debugging.
+
+    Args:
+        proc: Process DataFrame with ``detalhes`` column.
+        parte: Parties DataFrame.
+        adv: Lawyers DataFrame.
+
+    Returns:
+        The sampled case number (num_npu).
+    """
     sm = proc.sample().iloc[0].name
     print(proc['detalhes'].loc[sm])
     try:
@@ -147,7 +231,23 @@ def test_parte(proc, parte, adv):
     return sm
 
 
-def test(pautas, pauta, max_str=1000, max_rows=10):
+def test(
+    pautas: pd.Series,
+    pauta: pd.DataFrame,
+    max_str: int = 1000,
+    max_rows: int = 10,
+) -> pd.Series:
+    """Print a random schedule entry for debugging.
+
+    Args:
+        pautas: Raw pautas Series.
+        pauta: Parsed pauta DataFrame.
+        max_str: Maximum characters to print from raw text.
+        max_rows: Maximum rows to display.
+
+    Returns:
+        The sampled row as a Series.
+    """
     # Works for peticao etc also
     sm = pautas.sample()
     print(sm.iloc[0][0:max_str])
@@ -161,7 +261,18 @@ def test(pautas, pauta, max_str=1000, max_rows=10):
     return sm
 
 
-def add_decisao_text(decisao, infiles):
+def add_decisao_text(
+    decisao: pd.DataFrame, infiles: List[str]
+) -> pd.DataFrame:
+    """Join decision text from files to the decisao DataFrame.
+
+    Args:
+        decisao: Decisions DataFrame (from ``get_decisao``).
+        infiles: List of decision document file paths.
+
+    Returns:
+        Decisions DataFrame with a ``decisao`` text column added.
+    """
     df = read_files(infiles, text_col='decisao')
     df['num_npu'] = df.infile.str.extract(r'(\d{7}-\d{2}\.\d{4}\.\d{1}\.\d{2}\.\d{4})')
     df['n_decisao'] = pd.to_numeric(df.infile.str.extract(r'-(\d+)\.[a-z]{2,3}', expand=False))
