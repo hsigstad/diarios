@@ -254,11 +254,11 @@ def test_parte(
     print(proc['partes'].loc[sm])
     try:
         print(parte.loc[sm])
-    except:
+    except Exception:
         pass
     try:
         print(adv.loc[sm])
-    except:
+    except Exception:
         pass
     return sm
 
@@ -280,7 +280,7 @@ def test_mov(proc: pd.DataFrame, mov: pd.DataFrame) -> str:
         mov2['text1_mov'] = mov2.text1_mov.str[0:20]
         mov2['text2_mov'] = mov2.text2_mov.str[0:20]
         print(mov2)
-    except:
+    except Exception:
         pass
     return sm
 

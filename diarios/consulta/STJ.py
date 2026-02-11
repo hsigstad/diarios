@@ -222,11 +222,11 @@ def test_parte(
     print(proc['detalhes'].loc[sm])
     try:
         print(parte.loc[sm])
-    except:
+    except Exception:
         pass
     try:
         print(adv.loc[sm])
-    except:
+    except Exception:
         pass
     return sm
 
@@ -256,7 +256,7 @@ def test(
         if type(out) == pd.core.frame.DataFrame:
             out = out.head(max_rows).reset_index(drop=True)
         print(out)
-    except:
+    except Exception:
         print("Nothing extracted")
     return sm
 

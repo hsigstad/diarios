@@ -233,7 +233,7 @@ def extract_municipio(
     if type(text) == str:
         try:
             municipio = re.search(regex, text).group(1)
-        except:
+        except (AttributeError, TypeError):
             municipio = ''
     else:
         municipio = text.str.extract(regex, expand=False)

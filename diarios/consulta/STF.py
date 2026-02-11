@@ -233,11 +233,11 @@ def test_parte(
     print(proc['partes'].loc[sm])
     try:
         print(parte.loc[sm])
-    except:
+    except Exception:
         pass
     try:
         print(adv.loc[sm])
-    except:
+    except Exception:
         pass
     return sm
 
@@ -273,6 +273,6 @@ def test(
                     if out[c].dtype=="O":
                         out[c] = out[c].str[0:max_col_str]
         print(out)
-    except:
+    except Exception:
         print("Nothing extracted")
     return sm

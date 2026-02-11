@@ -335,11 +335,11 @@ def test_parte(
     print(proc['partes'].loc[sm])
     try:
         print(parte.loc[sm])
-    except:
+    except Exception:
         pass
     try:
         print(adv.loc[sm])
-    except:
+    except Exception:
         pass
     return sm
 
@@ -360,7 +360,7 @@ def test_mov(proc: pd.DataFrame, mov: pd.DataFrame) -> str:
         mov2 = mov.loc[sm].head().reset_index(drop=True)
         mov2['text'] = mov2.text.str[0:20]
         print(mov2)
-    except:
+    except Exception:
         pass
     return sm
 

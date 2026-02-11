@@ -129,7 +129,7 @@ def create_index(
     sql = "DROP INDEX {} ON {}".format(name, table)
     try:
         conn.execute(sql)
-    except:
+    except Exception:
         pass
     if flavor == "postgresql" and fulltext:
         sql = "CREATE INDEX {} ON {} USING GIN (to_tsvector('portuguese', {}))".format(
