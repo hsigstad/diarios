@@ -1,13 +1,25 @@
-import pandas as pd
-import numpy as np
+"""Generate assunto.org by building a tree of legal subject categories from CNJ data."""
+
 import os
-os.chdir('/home/henrik/Dropbox/brazil/diarios')
-from diarios.misc import get_user_config
+from typing import Any, Dict, List
+
+import pandas as pd
 from diarios.clean import clean_text
+from diarios.misc import get_user_config
+
+os.chdir('/home/henrik/Dropbox/brazil/diarios')
 os.chdir('/home/henrik/Dropbox/brazil/diarios/diarios')
 
 
-def read(infile):
+def read(infile: str) -> pd.DataFrame:
+    """Read a CSV from the tabelas_unificadas dump directory.
+
+    Args:
+        infile: Filename relative to the dump/CSV directory.
+
+    Returns:
+        DataFrame from the CSV file.
+    """
     indir = get_user_config(
         'external_dropbox_directory'
     )
@@ -25,7 +37,15 @@ item = (
 )
 
 
-def create_tree(row):
+def create_tree(row: pd.Series) -> Dict[str, Any]:
+    """Recursively build a tree node for a legal subject category.
+
+    Args:
+        row: A row from the itens DataFrame with cod_item and nome columns.
+
+    Returns:
+        Dict with name, dispositivo, artigo, glossario, and children keys.
+    """
     children = item.query(
         'cod_item_pai=={}'
         .format(row.cod_item)
@@ -45,7 +65,7 @@ def create_tree(row):
     return {
         'name': row.nome,
         'dispositivo': info['dispositivo_legal'],
-        'artigo': info['artigo'],        
+        'artigo': info['artigo'],
         'glossario': info['glossario'],
         'children': [
             create_tree(r)
@@ -63,9 +83,16 @@ tree = [
 ]
 
 
-outfile = 'assunto.org'
-    
-def to_org(tree, level=1):
+def to_org(tree: Dict[str, Any], level: int = 1) -> str:
+    """Convert a subject tree node to Org-mode formatted text.
+
+    Args:
+        tree: Tree node dict with name, dispositivo, artigo, glossario, children.
+        level: Current heading depth for Org-mode stars.
+
+    Returns:
+        Org-mode formatted string for this node and its children.
+    """
     children = [
         to_org(child, level=level+1)
         for child in tree['children']
@@ -96,6 +123,3 @@ outfile = 'data/assunto.org'
 
 with open(outfile, 'w') as f:
     f.write(org)
-    
-    
-    

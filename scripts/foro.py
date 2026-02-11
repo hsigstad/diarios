@@ -1,18 +1,38 @@
-import path
-import pandas as pd
-import numpy as np
-import os
-from diarios.clean import transform
+"""Generate foro.csv by combining foro data with tribunal and municipality info."""
+
 from glob import glob
+
+import numpy as np
+import pandas as pd
+import path
+from diarios.clean import transform
 
 # TODO: Add trabalhista (use varas/vara_year_TRT)
 
 infiles = glob('{}/foro/foro*.csv'.format(path.db_dir))
 
-def read_csv(infile):
+
+def read_csv(infile: str) -> pd.DataFrame:
+    """Read a single foro CSV file with latin1 encoding.
+
+    Args:
+        infile: Path to the CSV file.
+
+    Returns:
+        DataFrame from the file.
+    """
     return pd.read_csv(infile, encoding='latin1')
 
-def add_foro_raw(df):
+
+def add_foro_raw(df: pd.DataFrame) -> pd.DataFrame:
+    """Join foro_raw.csv to add foro names.
+
+    Args:
+        df: Foro DataFrame with ibge7 and oooo columns.
+
+    Returns:
+        DataFrame with foro_name column added.
+    """
     foro_raw = (
         pd.read_csv('diarios/data/foro_raw.csv')
         .loc[:, ['ibge7', 'foro', 'oooo']]
@@ -22,6 +42,7 @@ def add_foro_raw(df):
     )
     df = df.merge(foro_raw, on=['ibge7', 'oooo'], how='left', validate='m:1')
     return df
+
 
 df = pd.concat(map(read_csv, infiles))
 df = df.loc[:, ('foro', 'ibge7', 'idnom_forum')]

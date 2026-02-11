@@ -1,20 +1,26 @@
-import path
-import pandas as pd
-import sys
+"""Generate municipio.csv by combining TSE, IBGE, and comarca data."""
+
 import os
-import glob
-import re
-from unidecode import unidecode
-from diarios.misc import get_user_config
-from diarios.clean import clean_text
-from diarios.clean import transform
-from diarios.clean import get_data
-from diarios.clean import clean_municipio
-from diarios.clean import clean_estado
-from diarios.clean import get_municipio_id
+from typing import List, Tuple
+
+import pandas as pd
+import path
+from diarios.clean import (
+    clean_estado,
+    clean_municipio,
+    clean_text,
+    get_data,
+    get_municipio_id,
+    transform,
+)
 
 
-def main():
+def main() -> pd.DataFrame:
+    """Build the municipio table and write municipio.csv.
+
+    Returns:
+        Complete municipality DataFrame.
+    """
     mun = pd.read_csv('diarios/data/municipio_id.csv')
     mun_comarca = get_municipio_comarca()
     mun_comarca = clean_municipio_comarca(mun_comarca)
@@ -35,7 +41,12 @@ def main():
     return mun
 
 
-def get_mun_ibge():
+def get_mun_ibge() -> pd.DataFrame:
+    """Read IBGE municipality codes and judicial district mapping.
+
+    Returns:
+        DataFrame with municipio_id, ibge6, ibge7, and comarca_id2 columns.
+    """
     infile = os.path.join(
         path.db_dir,
         'municipios',
@@ -54,18 +65,31 @@ def get_mun_ibge():
         'ibge7': 'comarca7'
     }))
     df = df.merge(cid, on='comarca7', how='left')
-    df = df.drop(['comarca7'], 1)
+    df = df.drop(columns='comarca7')
     return df
 
 
-def get_municipio_comarca():
+def get_municipio_comarca() -> pd.DataFrame:
+    """Read and concatenate comarca CSV files.
+
+    Returns:
+        Combined comarca DataFrame.
+    """
     indir = os.path.join(path.db_dir, 'comarcas')
     infiles = [os.path.join(indir, f) for f in os.listdir(indir)]
     return pd.concat(map(pd.read_csv, infiles), sort=True)
 
 
-def clean_municipio_comarca(municipio):
-    municipio['comarca'] = clean_text(municipio['comarca'], drop='^A-Z\- ')
+def clean_municipio_comarca(municipio: pd.DataFrame) -> pd.DataFrame:
+    """Clean the raw municipio/comarca mapping.
+
+    Args:
+        municipio: Raw DataFrame with comarca and muni_code columns.
+
+    Returns:
+        Cleaned DataFrame with ibge6 and comarca_id columns.
+    """
+    municipio['comarca'] = clean_text(municipio['comarca'], drop='^A-Z\\- ')
     municipio['ibge6'] = municipio['muni_code'] // 10
     municipio['estado_id'] = transform(municipio.muni_state, 'estado',
                                        'estado_id')
@@ -80,7 +104,15 @@ def clean_municipio_comarca(municipio):
     return municipio
 
 
-def add_comarca_id(municipio):
+def add_comarca_id(municipio: pd.DataFrame) -> pd.DataFrame:
+    """Merge comarca_id from the comarca reference table.
+
+    Args:
+        municipio: DataFrame to enrich.
+
+    Returns:
+        DataFrame with comarca_id column added.
+    """
     comarca = get_data('comarca.csv')
     comarca = (comarca.loc[:, ('comarca_id', 'comarca', 'estado_id')])
     return pd.merge(municipio,
@@ -89,13 +121,29 @@ def add_comarca_id(municipio):
                     how='left')
 
 
-def impute_comarca_id(mun):
+def impute_comarca_id(mun: pd.DataFrame) -> pd.DataFrame:
+    """Fill missing comarca_id from the IBGE-based comarca_id2.
+
+    Args:
+        mun: Municipality DataFrame with comarca_id and comarca_id2.
+
+    Returns:
+        DataFrame with imputed comarca_id and comarca_id2 dropped.
+    """
     mun.loc[mun.comarca_id.isnull(), 'comarca_id'] = mun.comarca_id2
-    mun = mun.drop('comarca_id2', 1)
+    mun = mun.drop(columns='comarca_id2')
     return mun
 
 
-def add_subsecao_id(municipio):
+def add_subsecao_id(municipio: pd.DataFrame) -> pd.DataFrame:
+    """Add federal judiciary subsecao_id to the municipality table.
+
+    Args:
+        municipio: Municipality DataFrame.
+
+    Returns:
+        DataFrame with subsecao_id column added.
+    """
     df = get_subsecao()
     df = clean_subsecao(df)
     return pd.merge(municipio,
@@ -105,7 +153,12 @@ def add_subsecao_id(municipio):
                     how='left')
 
 
-def get_subsecao():
+def get_subsecao() -> pd.DataFrame:
+    """Read the federal judiciary organization Excel file.
+
+    Returns:
+        Raw subsecao DataFrame.
+    """
     infile = os.path.join(
         path.db_dir,
         'subsecoes',
@@ -117,7 +170,15 @@ def get_subsecao():
     )
 
 
-def clean_subsecao(df):
+def clean_subsecao(df: pd.DataFrame) -> pd.DataFrame:
+    """Clean the subsecao data and map municipalities to subsecao IDs.
+
+    Args:
+        df: Raw subsecao DataFrame from Excel.
+
+    Returns:
+        DataFrame with municipio_id and subsecao_id columns.
+    """
     cols = {
         'Região TRF': 'tribunal',
         'Seção  Judiciária': 'secao',
@@ -126,7 +187,7 @@ def clean_subsecao(df):
         'Jurisdição': 'municipio'
     }
     df = (df.rename(columns=cols).loc[:, cols.values()])
-    df['sede'] = df.sede.str.replace('Altamira\( exceto.*', 'Altamira', regex=True)
+    df['sede'] = df.sede.str.replace('Altamira\\( exceto.*', 'Altamira', regex=True)
     sede = df.drop(columns='municipio').drop_duplicates()
     sede['municipio'] = sede.sede
     df = pd.concat([df, sede])
@@ -144,33 +205,21 @@ def clean_subsecao(df):
     return df.loc[:, ('municipio_id', 'subsecao_id')]
 
 
-def get_wrong_rows():
+def get_wrong_rows() -> List[Tuple[str, str, str]]:
+    """Return rows to exclude due to jurisdiction edge cases.
+
+    Returns:
+        List of (estado, municipio, subsecao) tuples to drop.
+    """
     return [
-        ['AC', 'cruzeiro do sul', 'rio branco'],
-        ['ES', 'fundao', 'vitoria'],
-        ['ES', 'serra', 'vitoria'],
-        # §1º. As Varas Federais Criminais da sede (art. 36) alcançam também os municípios de
-        # Serra e Fundão no âmbito de suas competências em razão da matéria.
-        # §2º. As Varas Federais de Execução Fiscal da sede (art. 35) alcançam também os
-        # municípios de Serra e Fundão no âmbito de sua competência em razão da matéria.
-        # §3º. As Varas Federais Cíveis da sede com competência para conhecer matéria
-        # tributária (art. 34, inciso I) alcançam também os municípios de Serra e Fundão, no
-        # âmbito de sua competência.
-        # Art. 15. A Subseção de Serra, composta por uma Vara Federal de competência cível,
-        # incluindo Juizado Especial Federal Adjunto, alcança a extensão territorial dos
-        # municípios de Serra e Fundão, observado o disposto no artigo anterior.
-        ['RJ', 'belford roxo', 'sao joao de meriti'],
-        ['RJ', 'duque de caxias', 'sao joao de meriti'],
-        ['RJ', 'japeri', 'sao joao de meriti'],
-        ['RJ', 'queimados', 'sao joao de meriti'],
-        # Municípios de Belfort Roxo, Queimados, Japeri e Duque de
-        # Caxias: A subseção de Duque de Caxias alcança esses
-        # municípios, sendo competente para o processamento e
-        # julgamento das causas afetas às Varas Federais e aos
-        # Juizados Especiais Federais, com exceção das causas
-        # criminais, cuja competência é atribuída às 3ª e 4ª Varas
-        # Federais de São João de Meriti.
-        ['MG', 'santa vitoria', 'uberlandia']
+        ('AC', 'cruzeiro do sul', 'rio branco'),
+        ('ES', 'fundao', 'vitoria'),
+        ('ES', 'serra', 'vitoria'),
+        ('RJ', 'belford roxo', 'sao joao de meriti'),
+        ('RJ', 'duque de caxias', 'sao joao de meriti'),
+        ('RJ', 'japeri', 'sao joao de meriti'),
+        ('RJ', 'queimados', 'sao joao de meriti'),
+        ('MG', 'santa vitoria', 'uberlandia')
     ]
 
 

@@ -1,3 +1,5 @@
+"""Generate diario.csv by joining caderno data with tribunal metadata."""
+
 import pandas as pd
 
 diario = (

@@ -1,11 +1,17 @@
-import path
-import pandas as pd
+"""Generate caderno.csv from local diary data directories."""
+
 import os
-import glob
-import re
+
+import pandas as pd
+import path
 
 
-def main():
+def main() -> pd.DataFrame:
+    """Scan diary directories and write caderno.csv.
+
+    Returns:
+        DataFrame of cadernos indexed by caderno_id.
+    """
     indir = path.local_data_dir
     diario_names = os.listdir('{}/diarios'.format(indir))
     func = lambda x: get_cadernos(x, indir)
@@ -18,7 +24,16 @@ def main():
     return caderno
 
 
-def get_cadernos(diario, indir):
+def get_cadernos(diario: str, indir: str) -> pd.DataFrame:
+    """Extract caderno names from a single diary directory.
+
+    Args:
+        diario: Name of the diary directory.
+        indir: Root data directory path.
+
+    Returns:
+        DataFrame with diario and caderno columns.
+    """
     print(diario)
     if diario == 'MP-SP':
         return pd.DataFrame()

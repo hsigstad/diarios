@@ -1,17 +1,36 @@
-import pandas as pd
+"""Generate classe.csv and classe_dispositivo.csv from CNJ unified tables."""
+
 import os
-os.chdir('/home/henrik/diarios')
-from diarios.misc import get_user_config
+from typing import Dict, Tuple
+
+import pandas as pd
 from diarios.clean import clean_text
+from diarios.misc import get_user_config
+
+os.chdir('/home/henrik/diarios')
+os.chdir('/home/henrik/Dropbox/brazil/diarios/diarios')
 
 
-def read(infile):
+def read(infile: str) -> pd.DataFrame:
+    """Read a CSV from the tabelas_unificadas dump directory.
+
+    Args:
+        infile: Filename relative to the dump/CSV directory.
+
+    Returns:
+        DataFrame from the CSV file.
+    """
     indir = get_user_config('db_dir')
     infile = os.path.join(indir, 'tabelas_unificadas', 'dump', 'CSV', infile)
     return pd.read_csv(infile)
 
 
-def get_classe():
+def get_classe() -> Tuple[pd.DataFrame, pd.DataFrame]:
+    """Build classe and dispositivo DataFrames from CNJ data.
+
+    Returns:
+        Tuple of (classe DataFrame, dispositivo DataFrame).
+    """
     classe = read('classes.csv')
     item = read('itens.csv')
     classe = classe.merge(item,
@@ -27,7 +46,15 @@ def get_classe():
     return classe, disp
 
 
-def clean_classe(classe):
+def clean_classe(classe: pd.DataFrame) -> pd.DataFrame:
+    """Deduplicate and rename columns in the classe DataFrame.
+
+    Args:
+        classe: Raw classe DataFrame with nome and sigla columns.
+
+    Returns:
+        Cleaned classe DataFrame.
+    """
     classe = classe.loc[:, ('classe_id', 'classe', 'nome', 'sigla')]
     mapping = get_sigla_mapping()
     for key, val in mapping.items():
@@ -39,7 +66,15 @@ def clean_classe(classe):
     return classe
 
 
-def add_manually(classe):
+def add_manually(classe: pd.DataFrame) -> pd.DataFrame:
+    """Append manually defined classes not present in CNJ data.
+
+    Args:
+        classe: Existing classe DataFrame.
+
+    Returns:
+        DataFrame with additional rows appended.
+    """
     add = {'Ação de Impugnação de Registro de Candidatura': 'AIRC'}
     max_id = max(classe.classe_id)
     new = pd.DataFrame({
@@ -51,7 +86,12 @@ def add_manually(classe):
     return pd.concat([classe, new])
 
 
-def get_sigla_mapping():
+def get_sigla_mapping() -> Dict[str, str]:
+    """Return manual sigla overrides for specific classe names.
+
+    Returns:
+        Dict mapping classe name to sigla abbreviation.
+    """
     return {
         'Agravo de Instrumento': 'AI',
         'Apelação Cível': 'AC',
@@ -65,7 +105,15 @@ def get_sigla_mapping():
     }
 
 
-def get_dipositivo(classe):
+def get_dipositivo(classe: pd.DataFrame) -> pd.DataFrame:
+    """Melt the classe DataFrame into a long-form dispositivo table.
+
+    Args:
+        classe: Classe DataFrame with justice-type indicator columns.
+
+    Returns:
+        Long-form DataFrame of applicable justice types per classe.
+    """
     value_vars = [
         'just_es_1grau', 'just_es_2grau', 'just_es_juizado_es',
         'just_es_turmas', 'just_es_1grau_mil', 'just_es_2grau_mil',
@@ -83,7 +131,7 @@ def get_dipositivo(classe):
     ]
     disp = classe.melt(id_vars=id_vars, value_vars=value_vars)
     disp = disp.loc[disp.value == 'S']
-    disp = disp.drop('value', 1)
+    disp = disp.drop(columns='value')
     disp = disp.rename(columns={'variable': 'justica'})
     return disp
 

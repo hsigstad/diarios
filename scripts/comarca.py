@@ -1,18 +1,19 @@
-import path
-import pandas as pd
-from diarios.clean import clean_text
-from diarios.clean import transform
-from diarios.clean import clean_municipio
-from diarios.clean import get_municipio_id
-from diarios.misc import get_user_config
+"""Generate comarca.csv from judicial district data and comarca info."""
+
 import os
+from typing import Tuple
 
-# This is the code to generate data/foro.csv and data/comarca.csv
-# Should not be used, unless we want to regenerate those files
-# Need user-config.yaml with directory of Dropbox data folder
+import pandas as pd
+import path
+from diarios.clean import clean_municipio, clean_text, get_municipio_id, transform
 
 
-def main():
+def main() -> Tuple[pd.DataFrame, pd.DataFrame]:
+    """Build foro and comarca DataFrames and write comarca.csv.
+
+    Returns:
+        Tuple of (foro DataFrame, comarca DataFrame).
+    """
     foro_comarca = get_foro_comarca()
     foro_comarca = clean_foro_comarca(foro_comarca)
     foro = (foro_comarca.loc[:, ('foro_id', 'tribunal', 'oooo', 'estado',
@@ -28,17 +29,26 @@ def main():
     return foro, comarca
 
 
-def get_foro_comarca():
+def get_foro_comarca() -> pd.DataFrame:
+    """Read and concatenate all comarca CSV files from the database directory.
+
+    Returns:
+        Combined DataFrame of all comarca data.
+    """
     indir = os.path.join(path.db_dir, 'comarcas')
     infiles = [os.path.join(indir, f) for f in os.listdir(indir)]
     return pd.concat(map(pd.read_csv, infiles), sort=True)
 
 
-clean_text
-transform
+def clean_foro_comarca(foro: pd.DataFrame) -> pd.DataFrame:
+    """Clean and enrich the raw foro/comarca data.
 
+    Args:
+        foro: Raw foro/comarca DataFrame.
 
-def clean_foro_comarca(foro):
+    Returns:
+        Cleaned DataFrame with IDs and municipality counts.
+    """
     foro = foro.reset_index(drop=True)
     foro['comarca'] = clean_municipio(foro.comarca, foro.muni_state)
     foro['estado_id'] = transform(foro['muni_state'], 'estado', 'estado_id')
@@ -70,7 +80,15 @@ def clean_foro_comarca(foro):
     return foro
 
 
-def add_comarca_info(comarca):
+def add_comarca_info(comarca: pd.DataFrame) -> pd.DataFrame:
+    """Join comarca with entrancia and juizes info.
+
+    Args:
+        comarca: Comarca DataFrame to enrich.
+
+    Returns:
+        DataFrame with entrancia and juizes columns added.
+    """
     info_file = os.path.join(
         path.db_dir,
         'comarcas/comarca_info.csv',
