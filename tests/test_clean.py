@@ -53,6 +53,62 @@ class TestFunctions(unittest.TestCase):
         self.assertTrue(all(sr1.dropna() == sr2.dropna()))
 
 
+class TestTransform(unittest.TestCase):
+
+    def test_scalar_lookup(self):
+        result = clean.transform(175, "municipio_id", "municipio")
+        self.assertEqual(result, "OURO PRETO DO OESTE")
+
+    def test_series_lookup(self):
+        sr = pd.Series([701, 7935])
+        result = clean.transform(sr, "municipio_id", "municipio")
+        self.assertEqual(result.tolist(), ["PARECIS", "GRAJAU"])
+
+    def test_list_input(self):
+        result = clean.transform([701, 7935], "municipio_id", "municipio")
+        self.assertEqual(result.tolist(), ["PARECIS", "GRAJAU"])
+
+    def test_single_element_list_from_var(self):
+        result = clean.transform(175, ["municipio_id"], "municipio")
+        self.assertEqual(result, "OURO PRETO DO OESTE")
+
+    def test_dataframe_multikey(self):
+        df = pd.DataFrame({"x": [pd.NA, 1, 1, 1, pd.NA], "y": [4, 2, 2, 3, pd.NA]})
+        infile = get_test_data_file("test_transform.csv")
+        result = clean.transform(df, from_var=["a", "b"], to_var="c", infile=infile)
+        expected = pd.Series([pd.NA, 5, 5, 7, pd.NA])
+        self.assertTrue(all(result.dropna() == expected.dropna()))
+
+    def test_keep_unmatched_true(self):
+        sr = pd.Series(["SP", "NONEXISTENT"])
+        result = clean.transform(sr, "estado", "estado_id", keep_unmatched=True)
+        self.assertEqual(result.iloc[1], "NONEXISTENT")
+
+    def test_keep_unmatched_false(self):
+        sr = pd.Series(["SP", "NONEXISTENT"])
+        result = clean.transform(sr, "estado", "estado_id", keep_unmatched=False)
+        self.assertTrue(pd.isna(result.iloc[1]))
+
+    def test_keep_unmatched_dataframe_raises(self):
+        df = pd.DataFrame({"x": [1], "y": [2]})
+        infile = get_test_data_file("test_transform.csv")
+        with self.assertRaises(ValueError):
+            clean.transform(df, from_var=["a", "b"], to_var="c",
+                            infile=infile, keep_unmatched=True)
+
+    def test_nan_in_series_returns_nan(self):
+        sr = pd.Series([175, pd.NA])
+        result = clean.transform(sr, "municipio_id", "municipio")
+        self.assertEqual(result.iloc[0], "OURO PRETO DO OESTE")
+        self.assertTrue(pd.isna(result.iloc[1]))
+
+    def test_custom_infile(self):
+        infile = get_test_data_file("test_transform.csv")
+        sr = pd.Series([4])
+        result = clean.transform(sr, from_var="b", to_var="c", infile=infile)
+        self.assertEqual(result.iloc[0], 15)
+
+
 class TestCleanValor(unittest.TestCase):
 
     def test_basic(self):
