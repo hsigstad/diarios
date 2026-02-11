@@ -262,7 +262,7 @@ class CaseParser:
     def _get_keywords(self) -> List[str]:
         """Build the list of keyword regex patterns from columns and party regex."""
         regex = [c.regex for c in self.keyword_cols]
-        if type(self.parte_regex) == str:
+        if isinstance(self.parte_regex, str):
             regex += [self.parte_regex]
         else:
             regex += self.parte_regex
@@ -485,7 +485,7 @@ def extract_regexes(
     Raises:
         ValueError: If ``update`` is True and ``axis`` is 0.
     """
-    if type(regexes) == str:
+    if isinstance(regexes, str):
         regexes = [regexes]
     if extractall:
         func = lambda x: text.str.extractall(x, flags=flags)
@@ -551,7 +551,7 @@ def get_keyword_regex(
     Returns:
         Compiled regex string with named groups ``key``, ``name``, and ``lastname``.
     """
-    if type(keyword) == list:
+    if isinstance(keyword, list):
         keyword = "|".join(keyword)
     name = ".{{0,{0}}}?(?={1})".format(max_name_length, keyword)
     last_name = ".{{0,{0}}}".format(last_name_length)

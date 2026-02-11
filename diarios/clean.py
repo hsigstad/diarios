@@ -26,7 +26,7 @@ class TRT:
         Args:
             n: TRT number or string like ``'TRT5'``.
         """
-        if type(n) == str:
+        if isinstance(n, str):
             if re.match("TRT", n):
                 n = int(n[3])
         self.n = n
@@ -43,7 +43,7 @@ class TRF:
         Args:
             n: TRF number or string like ``'TRF1'``.
         """
-        if type(n) == str:
+        if isinstance(n, str):
             if re.match("TRF", n):
                 n = int(n[3])
         self.n = n
@@ -208,7 +208,7 @@ def get_capital(estado: Union[str, pd.Series]) -> Union[str, pd.Series]:
         "TO": "PALMAS",
         "DF": "BRASILIA",
     }
-    if type(estado) == str:
+    if isinstance(estado, str):
         return mapping[estado]
     else:
         return estado.map(mapping)
@@ -230,7 +230,7 @@ def extract_municipio(
         Extracted and cleaned municipality name(s).
     """
     regex = get_municipio_regex(estado, add=add)
-    if type(text) == str:
+    if isinstance(text, str):
         try:
             municipio = re.search(regex, text).group(1)
         except (AttributeError, TypeError):
@@ -253,7 +253,7 @@ def clean_municipio(
     Returns:
         Corrected municipality name(s).
     """
-    if type(municipio) == str:
+    if isinstance(municipio, str):
         correct = _clean_municipio_series(pd.Series([municipio]), estado)
         return correct[0]
     else:
@@ -354,11 +354,11 @@ def clean_parte(
     Returns:
         Cleaned party name series.
     """
-    if type(remove) == list:
+    if isinstance(remove, list):
         remove = "|".join(remove)
-    if type(remove_after) == list:
+    if isinstance(remove_after, list):
         remove_after = "|".join(remove_after)
-    if type(delete) == list:
+    if isinstance(delete, list):
         delete = "|".join(delete)
     partes = partes.str.replace(remove, "", regex=True)
     partes = clean_text(partes, **kwargs)
@@ -454,7 +454,7 @@ def get_procedencia(
     Returns:
         Series of standardized ruling outcome labels.
     """
-    if type(regex) == str:
+    if isinstance(regex, str):
         regex = [regex]
     decision = texts.str.extract(regex[0])[0]
     if len(regex) > 1:
@@ -633,7 +633,7 @@ def split_series(text: pd.Series, regex: str,
         DataFrame with columns for capture groups and the text to the
         left or right of the split. Splits on first regex match.
     """
-    if type(regex) == pd.Series:
+    if isinstance(regex, pd.Series):
         raise TypeError("Not implemented for series of regexes")
         text_df = pd.DataFrame({
             'text': text,
@@ -681,7 +681,7 @@ def map_regex(
     """
     if series is np.NaN:
         return np.NaN
-    if type(series) == str:
+    if isinstance(series, str):
         for key, val in mapping.items():
             if re.search(key, series):
                 return val
@@ -689,7 +689,7 @@ def map_regex(
             return series
         else:
             return np.NaN
-    if type(series) == np.ndarray:
+    if isinstance(series, np.ndarray):
         series = pd.Series(series)
     if sum(series.isnull()) == len(series):
         print("Empty Series")
@@ -1007,7 +1007,7 @@ def convert_number_antigo(
     # TJPB: 0342011000042-8 -> ???
     # TJSE: not transitioned to numeracao unica
     # TJGO: 200803065609 -> 306560-09.2008.8.09.0120 (how to get oooo?)
-    if type(number) == list:
+    if isinstance(number, list):
         number = pd.Series(number)
     antigo = clean_number_antigo(number, tribunal)
     antigo.loc[is_number_antigo(antigo, tribunal) == False] = pd.NA
@@ -1140,7 +1140,7 @@ def transform(
         return df.loc[x, to_var]
     df = x.join(df, on=from_var, how="left")
     if keep_unmatched:
-        if type(x) == pd.DataFrame and len(x.columns) > 1:
+        if isinstance(x, pd.DataFrame) and len(x.columns) > 1:
             raise ValueError("keep_unmatched not supported for dataframes")
         df[to_var] = df[to_var].fillna(df[from_var])
     return df[to_var]
@@ -1150,12 +1150,12 @@ def _transform_clean_x(
     x: Union[Any, list, pd.Series, pd.DataFrame], from_var: Union[str, List[str]]
 ) -> Union[Any, pd.DataFrame]:
     """Coerce input to DataFrame for transform lookup."""
-    if type(x) == list:
+    if isinstance(x, list):
         x = pd.Series(x)
-    if type(x) == pd.DataFrame:
+    if isinstance(x, pd.DataFrame):
         x = x.copy()
         x.columns = from_var
-    if type(x) == pd.Series:
+    if isinstance(x, pd.Series):
         x = x.copy()
         x = x.to_frame(name=from_var)
     return x
@@ -1163,14 +1163,14 @@ def _transform_clean_x(
 
 def _transform_clean_from_var(from_var: Union[str, List[str]]) -> Union[str, List[str]]:
     """Unwrap single-element list to plain string."""
-    if (type(from_var) == list) and (len(from_var) == 1):
+    if isinstance(from_var, list) and len(from_var) == 1:
         from_var = from_var[0]
     return from_var
 
 
 def _transform_dropna(df: pd.DataFrame, from_var: Union[str, List[str]]) -> pd.DataFrame:
     """Drop rows where the join key column(s) are null."""
-    if type(from_var) == list:
+    if isinstance(from_var, list):
         for v in from_var:
             df = df[df[v].notnull()]
     else:
@@ -1423,7 +1423,7 @@ def clean_text(
     Returns:
         Cleaned text string or Series.
     """
-    is_string = type(text) == str
+    is_string = isinstance(text, str)
     if is_string:
         text = pd.Series([text])
     text = text.fillna("").astype(str)
@@ -1514,9 +1514,9 @@ def generate_id(
     Returns:
         Series of integer IDs.
     """
-    if type(df) == pd.DataFrame:
+    if isinstance(df, pd.DataFrame):
         df = df.loc[:, by].astype(str)
-        if (type(by) == list) & (len(by) > 1):
+        if isinstance(by, list) and len(by) > 1:
             df = df.apply(lambda x: "_".join(x), axis=1)
     ids = (df.astype("category").cat.codes) + 1
     if suffix:
@@ -1572,7 +1572,7 @@ def get_municipio_regex(
     df3["municipio"] = df3.municipio.str.replace("'", "´", regex=False)
     df = pd.concat([df, df3]).drop_duplicates()
     if estados:
-        if not type(estados) == list:
+        if not isinstance(estados, list):
             estados = [estados]
         df = df.loc[df.estado.isin(estados)]
     regex = r"\b({})\b".format("|".join(df.municipio.values))
@@ -1675,7 +1675,7 @@ def clean_oab(sr: Union[str, pd.Series]) -> pd.Series:
     Returns:
         Series of cleaned OAB numbers in ``"N/UF"`` format.
     """
-    if type(sr) == str:
+    if isinstance(sr, str):
         sr = pd.Series([sr])
     n = (
         pd.to_numeric(sr.str.replace("[^0-9]", "", regex=True), errors="coerce")

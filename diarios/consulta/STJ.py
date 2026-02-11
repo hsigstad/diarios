@@ -253,7 +253,7 @@ def test(
     print(sm.iloc[0][0:max_str])
     try:
         out = pauta.loc[sm.index[0]]
-        if type(out) == pd.core.frame.DataFrame:
+        if isinstance(out, pd.DataFrame):
             out = out.head(max_rows).reset_index(drop=True)
         print(out)
     except Exception:

@@ -96,7 +96,7 @@ def get_desfecho_regexes(classes: Union[str, List[str]]) -> Dict[str, str]:
     Returns:
         Dict mapping regex patterns to outcome labels.
     """
-    if type(classes) == str:
+    if isinstance(classes, str):
         classes = [classes]
     regexes = {}
     for classe in classes:
@@ -515,9 +515,9 @@ class DecisionParser:
         # Changes OS REUS etc to all partes
         if self.all_partes_regexes is None:
             return df
-        if type(self.all_partes_regexes) == list:
+        if isinstance(self.all_partes_regexes, list):
             return self._add_all_partes_sub(df)
-        if type(self.all_partes_regexes) == dict:
+        if isinstance(self.all_partes_regexes, dict):
             if self.tipo_parte is None:
                 raise("Tipo parte must be specified")
             tipos_parte = self.tipo_parte.drop_duplicates().to_list()
@@ -634,7 +634,7 @@ class DecisionParser:
         apr = self.all_partes_regexes
         if apr is None:
             return parte_regex
-        if type(apr) == dict:
+        if isinstance(apr, dict):
             apr = [j for i in apr.values() for j in i]
         all_partes = '|'.join(apr)
         return parte_regex + f'|{all_partes}'
@@ -791,7 +791,7 @@ class DecisionParser:
         print('')
         try:
             penas = self.parsed_parte.loc[sm]
-            if type(penas) == pd.core.series.Series:
+            if isinstance(penas, pd.Series):
                 print_truncated(penas.text, max_str_pena)
                 print(penas)
             else:

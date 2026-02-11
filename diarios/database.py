@@ -30,9 +30,9 @@ def query(
     Returns:
         Query results as a DataFrame.
     """
-    if type(database) == str:
+    if isinstance(database, str):
         conn = connect(database, flavor, echo=echo)
-    if type(database) == list:
+    if isinstance(database, list):
         conn = sqlite3.connect(database[0])
         c = conn.cursor()
         for d in database[1:]:
