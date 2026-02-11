@@ -21,10 +21,10 @@ dependencies = [
     "pandas>=1.4",
     "numpy>=1.22",
     "Unidecode>=1.1",
-    "PyYAML>=5.4",
 ]
 
 [project.optional-dependencies]
+dotenv = ["python-dotenv"]
 ocr = [
     "pytesseract",
     "pdf2image",

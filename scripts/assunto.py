@@ -5,7 +5,6 @@ from typing import Any, Dict, List
 
 import pandas as pd
 from diarios.clean import clean_text
-from diarios.misc import get_user_config
 
 os.chdir('/home/henrik/Dropbox/brazil/diarios')
 os.chdir('/home/henrik/Dropbox/brazil/diarios/diarios')
@@ -20,9 +19,7 @@ def read(infile: str) -> pd.DataFrame:
     Returns:
         DataFrame from the CSV file.
     """
-    indir = get_user_config(
-        'external_dropbox_directory'
-    )
+    indir = os.environ["EXTERNAL_DROPBOX_DIR"]
     infile = os.path.join(
         indir, 'tabelas_unificadas',
         'dump', 'CSV', infile

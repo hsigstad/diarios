@@ -9,7 +9,6 @@ from time import time
 import sqlite3
 import os
 from re import sub
-from diarios.misc import get_user_config
 
 __all__ = [
     "query",
@@ -180,9 +179,9 @@ def get_db_engine(database: str, echo: bool = True) -> Any:
         SQLAlchemy engine.
     """
     from sqlalchemy import create_engine
-    user = get_user_config("mysql_user")
-    pw = get_user_config("mysql_pw")
-    host = get_user_config("mysql_host")
+    user = os.environ["MYSQL_USER"]
+    pw = os.environ["MYSQL_PASSWORD"]
+    host = os.environ["MYSQL_HOST"]
     engine = create_engine(
         "mysql+mysqlconnector://{0}:"
         "{1}@{2}/{3}?charset=utf8".format(user, pw, host, database),
@@ -202,9 +201,9 @@ def get_postgresql_engine(database: str, echo: bool = True) -> Any:
         SQLAlchemy engine.
     """
     from sqlalchemy import create_engine
-    user = get_user_config("postgresql_user")
-    pw = get_user_config("postgresql_pw")
-    host = get_user_config("postgresql_host")
+    user = os.environ["POSTGRESQL_USER"]
+    pw = os.environ["POSTGRESQL_PASSWORD"]
+    host = os.environ["POSTGRESQL_HOST"]
     engine = create_engine(
         "postgresql+psycopg2://{}:{}@{}/{}".format(user, pw, host, database),
         echo=echo,

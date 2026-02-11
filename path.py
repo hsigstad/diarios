@@ -1,8 +1,7 @@
-import sys
-import yaml
+import os
 
-with open('user-config.yaml', 'r') as stream:
-    data = yaml.load(stream, Loader=yaml.FullLoader)
+from dotenv import load_dotenv
 
-sys.path.append(data['diarios_dir'])
-db_dir = data['db_dir']
+load_dotenv()
+
+db_dir = os.environ["DB_DIR"]

@@ -5,7 +5,6 @@ from typing import Dict, Tuple
 
 import pandas as pd
 from diarios.clean import clean_text
-from diarios.misc import get_user_config
 
 os.chdir('/home/henrik/diarios')
 os.chdir('/home/henrik/Dropbox/brazil/diarios/diarios')
@@ -20,7 +19,7 @@ def read(infile: str) -> pd.DataFrame:
     Returns:
         DataFrame from the CSV file.
     """
-    indir = get_user_config('db_dir')
+    indir = os.environ["DB_DIR"]
     infile = os.path.join(indir, 'tabelas_unificadas', 'dump', 'CSV', infile)
     return pd.read_csv(infile)
 

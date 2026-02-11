@@ -4,7 +4,6 @@ import os
 from typing import Optional
 
 import pandas as pd
-from diarios.misc import get_user_config
 
 os.chdir('/home/henrik/Dropbox/brazil/diarios')
 os.chdir('/home/henrik/Dropbox/brazil/diarios/diarios')
@@ -67,9 +66,7 @@ def get_date(diario: str, loc: int) -> str:
     Returns:
         Date string in ``'YYYY-MM-DD'`` format, or empty string if not found.
     """
-    indir = get_user_config(
-        'external_local_directory'
-    )
+    indir = os.environ["EXTERNAL_LOCAL_DIR"]
     indir = os.path.join(
         indir, 'diarios', diario
     )
