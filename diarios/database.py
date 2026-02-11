@@ -4,7 +4,6 @@ import sqlite3
 import os
 from re import sub
 from diarios.misc import get_user_config
-from sqlalchemy import create_engine
 
 
 def query(database, sql, flavor="sqlite3", echo=True):
@@ -101,6 +100,7 @@ def connect(database, flavor, **kwargs):
 
 
 def get_db_engine(database, echo=True):
+    from sqlalchemy import create_engine
     user = get_user_config("mysql_user")
     pw = get_user_config("mysql_pw")
     host = get_user_config("mysql_host")
@@ -113,6 +113,7 @@ def get_db_engine(database, echo=True):
 
 
 def get_postgresql_engine(database, echo=True):
+    from sqlalchemy import create_engine
     user = get_user_config("postgresql_user")
     pw = get_user_config("postgresql_pw")
     host = get_user_config("postgresql_host")

@@ -1,4 +1,0 @@
-pandas==1.1.4
-PyYAML==5.3.1
-Unidecode==1.1.1
-numpy==1.17.4

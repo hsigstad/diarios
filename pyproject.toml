@@ -1,0 +1,49 @@
+[build-system]
+requires = ["setuptools>=64", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "diarios"
+version = "0.0.1"
+description = "Extract information from Brazilian official diaries"
+readme = "README.md"
+license = "MIT"
+requires-python = ">=3.9"
+authors = [
+    { name = "Guilherme Lambais" },
+    { name = "Henrik Sigstad", email = "h.sigstad@gmail.com" },
+]
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "Operating System :: OS Independent",
+]
+dependencies = [
+    "pandas>=1.4",
+    "numpy>=1.22",
+    "Unidecode>=1.1",
+    "PyYAML>=5.4",
+]
+
+[project.optional-dependencies]
+ocr = [
+    "pytesseract",
+    "pdf2image",
+    "Pillow",
+    "pypdf",
+    "python-docx",
+]
+db = [
+    "SQLAlchemy>=1.4",
+]
+
+[project.urls]
+Homepage = "https://github.com/hsigstad/diarios"
+
+[tool.setuptools.packages.find]
+include = ["diarios*"]
+
+[tool.setuptools.package-data]
+diarios = ["data/*.csv"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
