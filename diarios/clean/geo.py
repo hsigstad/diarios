@@ -259,12 +259,17 @@ def _clean_municipio_series(municipio: pd.Series, estado: Union[str, pd.Series])
     return df.correct
 
 
-def get_municipio_id(municipio: pd.Series, estado: pd.Series) -> pd.Series:
+def get_municipio_id(
+    municipio: pd.Series, estado: pd.Series, code: str = "tse"
+) -> pd.Series:
     """Return municipality IDs by joining on municipality name and state.
 
     Args:
         municipio: Municipality names.
         estado: State abbreviations.
+        code: ID system to return. ``"tse"`` (default) returns TSE
+            ``municipio_id``; ``"ibge7"`` or ``"ibge6"`` converts via
+            the municipio reference table.
 
     Returns:
         Series of municipality IDs.
@@ -275,7 +280,9 @@ def get_municipio_id(municipio: pd.Series, estado: pd.Series) -> pd.Series:
     ids = get_data("municipio_id.csv").dropna()
     ids = pd.merge(df, ids, on=["municipio", "estado"], validate="m:1", how="left")
     ids.index = ids["index"]
-    return ids.municipio_id
+    if code == "tse":
+        return ids.municipio_id
+    return transform(ids.municipio_id, "municipio_id", code)
 
 
 def get_municipio_regex(
