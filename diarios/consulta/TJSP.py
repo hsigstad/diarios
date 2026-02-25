@@ -4,7 +4,6 @@ from __future__ import annotations
 
 from typing import Callable, Dict, List, Optional, Tuple, Union
 
-import path
 import pandas as pd
 from diarios.clean import clean_text
 from diarios.clean import map_regex
@@ -219,6 +218,9 @@ def get_regexes(instancia: int) -> Dict[str, str]:
             'controle': 'Controle\s+(.*)',
             'area': 'Área\s+(.*)',
             'outros_numeros': 'Outros números\s+(.*)',
+            'valor_da_acao': '(?s)Valor da ação\s+(.*?)\n',
+            'outros_assuntos': '(?s)Outros assuntos\s+(.*?)\n\n',
+            'processo_principal': r'Processo principal\s+\[([^\]]+)\]',
         }
     if instancia==2:
         return {
@@ -233,6 +235,7 @@ def get_regexes(instancia: int) -> Dict[str, str]:
             'outros_numeros': 'Outros números\s+(.*)',
             'origem': '(?s)Origem\s+(.*?)\n\n',
             'volume': 'Volume / Apenso\s+(.*)',
+            'valor_da_acao': '(?s)Valor da ação\s+(.*?)\n',
         }
 
 
