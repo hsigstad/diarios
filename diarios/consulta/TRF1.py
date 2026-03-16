@@ -38,7 +38,7 @@ def get_df(infiles: List[str]) -> pd.DataFrame:
         infiles: List of CSV file paths.
 
     Returns:
-        DataFrame indexed by (num_npu, instancia).
+        DataFrame indexed by (npu, instancia).
     """
     df = pd.concat(map(pd.read_csv, infiles))
     cols = ['peticoes', 'incidentes']
@@ -47,8 +47,8 @@ def get_df(infiles: List[str]) -> pd.DataFrame:
             df[c] = ''
     df = df.query('error.isnull()')
     df['instancia'] = df.municipio.apply(lambda x: 2 if x == 'TRF 1A REGIAO' else 1)
-    df = df.drop_duplicates(['num_npu', 'instancia']) # Drops 2
-    df = df.set_index(['num_npu', 'instancia'])
+    df = df.drop_duplicates(['npu', 'instancia']) # Drops 2
+    df = df.set_index(['npu', 'instancia'])
     return df
 
 
@@ -221,7 +221,7 @@ def get_inteiro_teor(inteiro_teor: pd.Series) -> pd.DataFrame:
     df.index = df.index.droplevel('group')
     df = df.reset_index()
     df.loc[df.instancia==2, 'text'] = df.text.str.replace(' ', ',', regex=False)
-    df = df.set_index(['num_npu', 'instancia'])
+    df = df.set_index(['npu', 'instancia'])
     df[['n_inteiro_teor', 'tp_inteiro_teor', 'date']] = df.text.str.split(',', expand=True, n=2)
     df['n_inteiro_teor'] = pd.to_numeric(df.n_inteiro_teor, errors='coerce')
     df = df.drop(columns='text')

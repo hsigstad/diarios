@@ -438,20 +438,20 @@ def get_df() -> Tuple[pd.DataFrame, pd.DataFrame]:
     """
     df = pd.read_csv('../audit/build/clean/TRF1_inteiro_teor_text.csv')
     it = pd.read_csv('../audit/build/clean/TRF1_inteiro_teor.csv')
-    df = df.merge(it, on=['num_npu', 'instancia', 'n_inteiro_teor'])
+    df = df.merge(it, on=['npu', 'instancia', 'n_inteiro_teor'])
     #df = df.loc[df.inteiro_teor.fillna('').str.contains('(?i)condeno')]
     df = df.query('instancia==2')
     df = df.loc[df.inteiro_teor.fillna('').str.contains('(?i)apela..o')]
     #df = df.loc[df.inteiro_teor.fillna('').str.contains('(?i)deten[cç][aã]o|reclus[aã]o')]
-    df2 = df.drop_duplicates('num_npu').sample(100)
-    df2 = df2.set_index('num_npu')
+    df2 = df.drop_duplicates('npu').sample(100)
+    df2 = df2.set_index('npu')
     parte = pd.read_csv('../audit/build/clean/TRF1_parte.csv')
     parte = parte.loc[parte.key.isin(['REU', 'REQDO'])]
-    parte = parte.drop_duplicates(['num_npu', 'parte'])
-    parte = parte.set_index('num_npu')
+    parte = parte.drop_duplicates(['npu', 'parte'])
+    parte = parte.set_index('npu')
     parte = parte.join(df2, lsuffix='1')
     parte['has_parte'] = 1
-    df2['has_parte'] = parte.groupby('num_npu').has_parte.sum() > 0
+    df2['has_parte'] = parte.groupby('npu').has_parte.sum() > 0
     df2 = df2.query('has_parte')
     return df2, parte
 

@@ -137,10 +137,10 @@ def parse_consulta_tjsp(
     if read_func is None:
         read_func = read
     df['text'] = df.infile.apply(read_func)
-    df['num_npu'] = df.infile.str.extract('/([^/]+)\.md')
-    if len(df) != len(df.drop_duplicates('num_npu')):
+    df['npu'] = df.infile.str.extract('/([^/]+)\.md')
+    if len(df) != len(df.drop_duplicates('npu')):
         raise ValueError("Duplicate observations per case")
-    df = df.set_index('num_npu')
+    df = df.set_index('npu')
     sections = get_sections(instancia)
     for section, marker in sections.items():
         df[section] = df.text.str.extract(f'(?s){marker}(.*?)(?:##|$)')
@@ -332,7 +332,7 @@ def test_parte(
         adv: Lawyers DataFrame.
 
     Returns:
-        The sampled case number (num_npu).
+        The sampled case number (npu).
     """
     sm = proc.sample().iloc[0].name
     print(proc['partes'].loc[sm])
@@ -355,7 +355,7 @@ def test_mov(proc: pd.DataFrame, mov: pd.DataFrame) -> str:
         mov: Movements DataFrame.
 
     Returns:
-        The sampled case number (num_npu).
+        The sampled case number (npu).
     """
     sm = proc.sample().iloc[0].name
     try:

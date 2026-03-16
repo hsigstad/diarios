@@ -24,9 +24,9 @@ def parse_consulta_stj(
     df = pd.concat(map(pd.read_csv, infiles))
     df = df.query('status=="OK"')
     df = df.drop_duplicates()
-    if len(df) != len(df.drop_duplicates('num_npu')):
+    if len(df) != len(df.drop_duplicates('npu')):
         raise ValueError("Duplicate observations per case")
-    df = df.set_index("num_npu")
+    df = df.set_index("npu")
     proc = get_proc(df.detalhes)
     proc['date_scraped'] = df.date_scraped
     parte, adv = get_parte_adv(df.detalhes)
@@ -216,7 +216,7 @@ def test_parte(
         adv: Lawyers DataFrame.
 
     Returns:
-        The sampled case number (num_npu).
+        The sampled case number (npu).
     """
     sm = proc.sample().iloc[0].name
     print(proc['detalhes'].loc[sm])
@@ -274,14 +274,14 @@ def add_decisao_text(
         Decisions DataFrame with a ``decisao`` text column added.
     """
     df = read_files(infiles, text_col='decisao')
-    df['num_npu'] = df.infile.str.extract(r'(\d{7}-\d{2}\.\d{4}\.\d{1}\.\d{2}\.\d{4})')
+    df['npu'] = df.infile.str.extract(r'(\d{7}-\d{2}\.\d{4}\.\d{1}\.\d{2}\.\d{4})')
     df['n_decisao'] = pd.to_numeric(df.infile.str.extract(r'-(\d+)\.[a-z]{2,3}', expand=False))
-    df = df.drop_duplicates(['num_npu', 'n_decisao', 'decisao'])
-    df = df.drop_duplicates(['num_npu', 'n_decisao']) # Should not be necessary
+    df = df.drop_duplicates(['npu', 'n_decisao', 'decisao'])
+    df = df.drop_duplicates(['npu', 'n_decisao']) # Should not be necessary
     decisao = (
         decisao
         .reset_index()
-        .merge(df, on=['num_npu', 'n_decisao'], validate='1:1', how='left')
-        .set_index('num_npu')
+        .merge(df, on=['npu', 'n_decisao'], validate='1:1', how='left')
+        .set_index('npu')
     )
     return decisao

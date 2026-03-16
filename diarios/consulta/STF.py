@@ -25,9 +25,9 @@ def parse_consulta_stf(
     df = pd.concat(map(pd.read_csv, infiles))
     df = df.query('status=="OK"')
     df = df.drop_duplicates()
-    if len(df) != len(df.drop_duplicates('num_npu')):
+    if len(df) != len(df.drop_duplicates('npu')):
         raise ValueError("Duplicate observations per case")
-    df = df.set_index("num_npu")
+    df = df.set_index("npu")
     proc = get_proc(df)
     proc['date_scraped'] = df.date_scraped
     parte, adv = get_parte_adv(df.partes)
@@ -193,7 +193,7 @@ def get_doc(mov: pd.DataFrame, infiles: List[str]) -> pd.DataFrame:
         DataFrame with movements joined to document text.
     """
     df = read_files(infiles, text_col='inteiro_teor')
-    df['num_npu'] = df.infile.str.extract(r'(\d{7}-\d{2}\.\d{4}\.\d{1}\.\d{2}\.\d{4})')
+    df['npu'] = df.infile.str.extract(r'(\d{7}-\d{2}\.\d{4}\.\d{1}\.\d{2}\.\d{4})')
     df['n_doc'] = pd.to_numeric(df.infile.str.extract(r'-(\d+)\.[a-z]{2,3}', expand=False))
     doc_terms = [
         "Termo de baixa",
@@ -207,11 +207,11 @@ def get_doc(mov: pd.DataFrame, infiles: List[str]) -> pd.DataFrame:
     tp_mov2 = doc_mov.text.str.extract('\n(.*)', expand=False)
     doc_mov = doc_mov.loc[tp_mov2.isin(doc_terms)]
     doc_mov['one'] = 1
-    doc_mov['n_doc'] = doc_mov.groupby('num_npu').one.cumsum() + 1
+    doc_mov['n_doc'] = doc_mov.groupby('npu').one.cumsum() + 1
     doc = (
         doc_mov
-        .merge(df, on=['num_npu', 'n_doc'], validate='1:1', how='outer')
-        .set_index('num_npu')
+        .merge(df, on=['npu', 'n_doc'], validate='1:1', how='outer')
+        .set_index('npu')
     )
     return doc
 
@@ -227,7 +227,7 @@ def test_parte(
         adv: Lawyers DataFrame.
 
     Returns:
-        The sampled case number (num_npu).
+        The sampled case number (npu).
     """
     sm = proc.sample().iloc[0].name
     print(proc['partes'].loc[sm])
