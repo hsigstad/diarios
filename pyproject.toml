@@ -35,6 +35,11 @@ ocr = [
 db = [
     "SQLAlchemy>=1.4",
 ]
+anonymize = [
+    "gliner",
+    "transformers",
+    "nltk",
+]
 
 [project.urls]
 Homepage = "https://github.com/hsigstad/diarios"
