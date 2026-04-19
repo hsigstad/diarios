@@ -1,9 +1,10 @@
 # diarios
 
-A Python package to extract information from Brazilian official diaries
-(`diários da justiça`) and related court data sources. Provides parsers,
-text-cleaning utilities, anonymization, geographic / case-number lookups,
-and consulta clients for federal and state courts (STF, STJ, TJSP, TRF1).
+Toolkit for Brazilian court and administrative data — text cleaning,
+CNJ case-number parsing, OCR, anonymization, electoral utilities,
+hierarchical text parsing, and clients for court consulta APIs (STF,
+STJ, TJSP, TRF1). Name is historical (started with diários da
+justiça).
 
 ## Requirements
 
