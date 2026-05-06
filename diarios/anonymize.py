@@ -27,6 +27,24 @@ Set ``DIARIOS_HF_CACHE_DIR`` to point at a directory containing pre-downloaded
 HuggingFace models (subdirectories ``gliner_multi-v2.1`` and
 ``bert-base-multilingual-cased``). If unset or missing, the model is fetched
 from HuggingFace on first use.
+
+Alternatives considered (2026-05-04)
+------------------------------------
+- ``openai/privacy-filter`` (https://github.com/openai/privacy-filter): 1.5B
+  token classifier, 8 categories (names, addresses, emails, phones, URLs,
+  dates, account numbers, secrets), Apache 2.0. English-first; OpenAI flags
+  degraded performance on non-English text. Taxonomy collapses PERSON/JUDGE/
+  ORGANIZATION/LOCATION into one "persons" class — would break the role
+  distinction that ``sanitize_column`` relies on. Brazilian identifiers
+  (CPF/RG/CNPJ/OAB/CNJ) still require the regex layer. Not a replacement.
+- ``chiefautism/privacy-parser`` (https://github.com/chiefautism/privacy-parser):
+  wraps the same OpenAI weights with regex backstop and span merging; returns
+  extracted spans rather than masked text. Inherits the Portuguese weakness.
+  Not a replacement.
+
+Both could be useful as a complementary English-only second pass (secrets,
+account numbers in emails/code). Revisit if OpenAI releases a multilingual or
+Portuguese-tuned variant.
 """
 
 from __future__ import annotations
