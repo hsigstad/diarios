@@ -29,6 +29,8 @@ __all__ = [
     "extract_fundamentos",
     "get_alinea_paragrafo",
     "load_datajud_jsonl",
+    "load_cnj_table",
+    "cnj_label",
     "normalize_datajud",
 ]
 
@@ -512,6 +514,54 @@ def _drop_empty_paragrafo(df: pd.DataFrame) -> pd.DataFrame:
     df = df.loc[~(has_paragrafo & (df.paragrafo_id==-1))]
     df = df.drop(columns='has_paragrafo')
     return df
+
+
+_CNJ_TABLE_FILES = {
+    "mov": "cnj_movs.csv",
+    "classe": "cnj_classes.csv",
+    "assunto": "cnj_assuntos.csv",
+}
+
+
+def load_cnj_table(kind: str = "mov") -> pd.DataFrame:
+    """Load a CNJ SGT reference table (movs / classes / assuntos).
+
+    The tables are exported from CNJ's Sistema de Gestão de Tabelas
+    (https://www.cnj.jus.br/sgt/). Each row has::
+
+        cod_item            int   the canonical CNJ code
+        cod_item_pai        int   parent code (NaN at root)
+        nome                str   official name
+        situacao            str   'A' (active) or 'I' (inactive)
+        dat_versao          str   SGT version timestamp
+        dsc_caminho_completo str  full hierarchical path
+
+    Args:
+        kind: ``'mov'`` (964 rows), ``'classe'`` (849 rows), or
+            ``'assunto'`` (5601 rows). Default ``'mov'``.
+
+    Returns:
+        DataFrame of CNJ items of the requested kind.
+    """
+    from diarios.clean.text import get_data
+    if kind not in _CNJ_TABLE_FILES:
+        raise ValueError(f"kind must be one of {sorted(_CNJ_TABLE_FILES)}")
+    df = get_data(_CNJ_TABLE_FILES[kind])
+    df["cod_item"] = pd.to_numeric(df["cod_item"], errors="coerce").astype("Int64")
+    df["cod_item_pai"] = pd.to_numeric(df["cod_item_pai"], errors="coerce").astype("Int64")
+    return df
+
+
+def cnj_label(codigo: int, kind: str = "mov") -> Optional[str]:
+    """Return the official CNJ ``nome`` for a code, or None if unknown.
+
+    Args:
+        codigo: CNJ ``cod_item`` to look up.
+        kind: ``'mov'``, ``'classe'``, or ``'assunto'``.
+    """
+    df = load_cnj_table(kind)
+    row = df.loc[df["cod_item"] == codigo, "nome"]
+    return row.iloc[0] if len(row) else None
 
 
 def load_datajud_jsonl(path: str) -> List[Dict[str, Any]]:

@@ -731,6 +731,42 @@ class TestNormalizeDatajud(unittest.TestCase):
         self.assertEqual(len(result["processos"]), 0)
 
 
+class TestCnjTables(unittest.TestCase):
+
+    def test_movs_loaded(self):
+        df = clean.load_cnj_table("mov")
+        self.assertGreater(len(df), 900)
+        self.assertIn("cod_item", df.columns)
+        self.assertIn("nome", df.columns)
+
+    def test_classes_loaded(self):
+        df = clean.load_cnj_table("classe")
+        self.assertGreater(len(df), 500)
+
+    def test_assuntos_loaded(self):
+        df = clean.load_cnj_table("assunto")
+        self.assertGreater(len(df), 5000)
+
+    def test_unknown_kind_raises(self):
+        with self.assertRaises(ValueError):
+            clean.load_cnj_table("bogus")
+
+    def test_canonical_mov_labels(self):
+        self.assertEqual(clean.cnj_label(219), "Procedência")
+        self.assertEqual(clean.cnj_label(220), "Improcedência")
+        self.assertEqual(clean.cnj_label(221), "Procedência em Parte")
+        self.assertEqual(clean.cnj_label(11010), "Mero expediente")
+
+    def test_canonical_classe_labels(self):
+        self.assertEqual(clean.cnj_label(64, kind="classe"),
+                         "Ação Civil de Improbidade Administrativa")
+        self.assertEqual(clean.cnj_label(65, kind="classe"), "Ação Civil Pública")
+        self.assertEqual(clean.cnj_label(1116, kind="classe"), "Execução Fiscal")
+
+    def test_unknown_code_returns_none(self):
+        self.assertIsNone(clean.cnj_label(99999999))
+
+
 class TestGenerateId(unittest.TestCase):
 
     def test_series(self):
