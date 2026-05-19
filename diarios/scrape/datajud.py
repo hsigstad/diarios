@@ -206,6 +206,36 @@ def write_jsonl(path: os.PathLike | str, rows: Iterable[dict[str, Any]]) -> int:
     return n
 
 
+def count_datajud(
+    tribunal: str,
+    classes: Optional[list[int]],
+    *,
+    apikey: Optional[str] = None,
+    assunto_codigos: Optional[list[int]] = None,
+    session: Optional[requests.Session] = None,
+    timeout: int = 30,
+) -> int:
+    """Return the total number of hits for a (tribunal, classes[, assuntos]) query.
+
+    Issues a single ``size=0, track_total_hits=true`` request. Useful as a
+    cheap pre-flight: validates the endpoint URL (404 on bad alias) and
+    previews the pull size before committing to a full download.
+    """
+    if apikey is None:
+        apikey = require_apikey()
+    if session is None:
+        session = make_session()
+
+    query_body = build_classe_query(classes=classes, assunto_codigos=assunto_codigos)
+    body: dict[str, Any] = {
+        "size": 0,
+        "track_total_hits": True,
+        "query": query_body["query"],
+    }
+    data = post_search(session, apikey, body, search_url(tribunal), timeout=timeout)
+    return int(data.get("hits", {}).get("total", {}).get("value", 0))
+
+
 def download_datajud(
     tribunal: str,
     classes: Optional[list[int]],
@@ -277,6 +307,7 @@ def download_datajud(
 __all__ = [
     "API_BASE",
     "build_classe_query",
+    "count_datajud",
     "default_source_fields",
     "download_datajud",
     "ensure_outdir",
