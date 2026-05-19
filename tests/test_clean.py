@@ -767,6 +767,61 @@ class TestCnjTables(unittest.TestCase):
         self.assertIsNone(clean.cnj_label(99999999))
 
 
+class TestCaseDesfecho(unittest.TestCase):
+
+    def _movs(self):
+        return pd.DataFrame([
+            {"processo_id": "A", "codigo": 26,  "data_hora": "2018-01-01T00:00:00Z"},
+            {"processo_id": "A", "codigo": 220, "data_hora": "2020-06-15T12:00:00Z"},
+            {"processo_id": "A", "codigo": 848, "data_hora": "2021-01-10T00:00:00Z"},
+            {"processo_id": "B", "codigo": 221, "data_hora": "2020-12-01T00:00:00Z"},
+            {"processo_id": "C", "codigo": 466, "data_hora": "2019-09-15T00:00:00Z"},
+            {"processo_id": "D", "codigo": 85,  "data_hora": "2020-01-01T00:00:00Z"},
+        ])
+
+    def _event_codes(self):
+        return {
+            "procedente": {219},
+            "improcedente": {220},
+            "procedente_em_parte": {221},
+            "acordo": {466, 14099},
+            "transito_julgado": {848},
+        }
+
+    def _priority(self):
+        return [
+            ("PROCEDENTE", {"procedente"}),
+            ("PROCEDENTE_PARTE", {"procedente_em_parte"}),
+            ("IMPROCEDENTE", {"improcedente"}),
+            ("ACORDO", {"acordo"}),
+        ]
+
+    def test_desfecho_first_match_wins(self):
+        out = clean.case_desfecho(self._movs(), self._event_codes(), self._priority())
+        out = out.set_index("processo_id")
+        self.assertEqual(out.loc["A", "desfecho"], "IMPROCEDENTE")
+        self.assertEqual(out.loc["B", "desfecho"], "PROCEDENTE_PARTE")
+        self.assertEqual(out.loc["C", "desfecho"], "ACORDO")
+
+    def test_case_with_no_event_kept_with_nan(self):
+        out = clean.case_desfecho(self._movs(), self._event_codes(), self._priority())
+        out = out.set_index("processo_id")
+        self.assertIn("D", out.index)
+        self.assertTrue(pd.isna(out.loc["D", "desfecho"]))
+
+    def test_flag_and_date_columns(self):
+        out = clean.case_desfecho(self._movs(), self._event_codes(), self._priority())
+        out = out.set_index("processo_id")
+        self.assertTrue(out.loc["A", "transito_julgado_flag"])
+        self.assertFalse(out.loc["B", "transito_julgado_flag"])
+        self.assertEqual(pd.Timestamp(out.loc["A", "data_improcedente"]).year, 2020)
+
+    def test_duplicate_code_in_events_raises(self):
+        bad = {"x": {1}, "y": {1, 2}}  # code 1 appears in both
+        with self.assertRaises(ValueError):
+            clean.case_desfecho(self._movs(), bad, [("X", {"x"})])
+
+
 class TestGenerateId(unittest.TestCase):
 
     def test_series(self):

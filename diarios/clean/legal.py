@@ -31,6 +31,7 @@ __all__ = [
     "load_datajud_jsonl",
     "load_cnj_table",
     "cnj_label",
+    "case_desfecho",
     "normalize_datajud",
 ]
 
@@ -562,6 +563,100 @@ def cnj_label(codigo: int, kind: str = "mov") -> Optional[str]:
     df = load_cnj_table(kind)
     row = df.loc[df["cod_item"] == codigo, "nome"]
     return row.iloc[0] if len(row) else None
+
+
+def case_desfecho(
+    movs: pd.DataFrame,
+    event_codes: Dict[str, set],
+    desfecho_priority: List[tuple],
+    key: str = "processo_id",
+    code_col: str = "codigo",
+    date_col: str = "data_hora",
+) -> pd.DataFrame:
+    """Compute case-level desfecho from a movimentos table.
+
+    Aggregates a long-form mov table into one row per case ``key``, with:
+
+    - ``{event}_flag``: True iff ≥1 mov matches the codes in
+      ``event_codes[event]``.
+    - ``data_{event}``: earliest ``data_hora`` of any mov matching that
+      event class, or NaT.
+    - ``desfecho``: the first label in ``desfecho_priority`` whose
+      ``events`` set has any flag True for this case. NaN if no match.
+    - ``data_desfecho``: earliest mov date for the matching events of
+      the chosen desfecho bucket.
+
+    Args:
+        movs: long-form DataFrame; one row per (case, mov sequence).
+            Must contain ``key``, ``code_col``, ``date_col``.
+        event_codes: dict mapping event name -> set of CNJ codes.
+        desfecho_priority: list of ``(label, set_of_event_names)``
+            tuples. First match wins.
+        key: column to group by (default ``processo_id``).
+        code_col: column holding CNJ ``cod_item`` integers.
+        date_col: column holding ISO/parseable dates.
+
+    Returns:
+        DataFrame with one row per case and one column per event flag,
+        per event date, plus ``desfecho`` and ``data_desfecho``.
+    """
+    code_to_event = {c: e for e, codes in event_codes.items() for c in codes}
+    if len(code_to_event) < sum(len(c) for c in event_codes.values()):
+        dups: dict[int, list[str]] = {}
+        for e, codes in event_codes.items():
+            for c in codes:
+                dups.setdefault(c, []).append(e)
+        bad = {c: es for c, es in dups.items() if len(es) > 1}
+        raise ValueError(f"codes mapped to multiple events: {bad}")
+
+    df = movs[[key, code_col, date_col]].copy()
+    df[date_col] = pd.to_datetime(df[date_col], errors="coerce", utc=True)
+    all_cases = df[key].drop_duplicates()
+    df["_event"] = df[code_col].map(code_to_event)
+    df = df.dropna(subset=["_event"])
+
+    # earliest date per (case, event)
+    grouped = df.groupby([key, "_event"], dropna=False)[date_col].min().reset_index()
+    wide = grouped.pivot(index=key, columns="_event", values=date_col)
+    # include cases that had no matching events at all
+    wide = wide.reindex(all_cases)
+
+    # Ensure all event columns exist with a consistent tz-aware datetime
+    # dtype so downstream min(axis=1) doesn't mix object and datetime cols.
+    template_dtype = (
+        wide.dtypes.iloc[0] if len(wide.columns) else "datetime64[ns, UTC]"
+    )
+    for e in event_codes:
+        if e not in wide.columns:
+            wide[e] = pd.Series(pd.NaT, index=wide.index, dtype=template_dtype)
+
+    # Flags + date columns
+    out = pd.DataFrame(index=wide.index)
+    for e in event_codes:
+        out[f"{e}_flag"] = wide[e].notna()
+        out[f"data_{e}"] = wide[e]
+
+    # Desfecho assignment (first match in priority order)
+    desfecho = pd.Series(pd.NA, index=out.index, dtype="string")
+    # Pick any event-column dtype as template (all are tz-aware datetime64).
+    dt_dtype = next(
+        (wide[c].dtype for c in wide.columns if wide[c].dtype.kind == "M"),
+        "datetime64[ns, UTC]",
+    )
+    data_desfecho = pd.Series(pd.NaT, index=out.index, dtype=dt_dtype)
+    for label, events in desfecho_priority:
+        existing = [e for e in events if e in event_codes]
+        if not existing:
+            continue
+        mask = pd.concat([wide[e].notna() for e in existing], axis=1).any(axis=1)
+        unset = desfecho.isna() & mask
+        if unset.any():
+            desfecho.loc[unset] = label
+            data_desfecho.loc[unset] = wide.loc[unset, existing].min(axis=1)
+    out["desfecho"] = desfecho
+    out["data_desfecho"] = data_desfecho
+
+    return out.reset_index()
 
 
 def load_datajud_jsonl(path: str) -> List[Dict[str, Any]]:
