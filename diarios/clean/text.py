@@ -210,8 +210,8 @@ def map_regex(
     Returns:
         Series or string with values of first matching regex in dict.
     """
-    if series is np.NaN:
-        return np.NaN
+    if series is np.nan:
+        return np.nan
     if isinstance(series, str):
         for key, val in mapping.items():
             if re.search(key, series):
@@ -219,7 +219,7 @@ def map_regex(
         if keep_unmatched:
             return series
         else:
-            return np.NaN
+            return np.nan
     if isinstance(series, np.ndarray):
         series = pd.Series(series)
     if sum(series.isnull()) == len(series):

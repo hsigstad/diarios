@@ -777,7 +777,7 @@ class TestMapRegexEdgeCases(unittest.TestCase):
         self.assertTrue(np.isnan(result))
 
     def test_nan_input(self):
-        result = clean.map_regex(np.NaN, {"ab": "X"})
+        result = clean.map_regex(np.nan, {"ab": "X"})
         self.assertTrue(np.isnan(result))
 
     def test_ndarray_input(self):
