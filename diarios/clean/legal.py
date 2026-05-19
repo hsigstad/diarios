@@ -549,9 +549,16 @@ def normalize_datajud(
             - ``'assuntos'``: dimension table of unique assuntos
             - ``'classes'``: dimension table of unique classes
             - ``'orgaos_julgadores'``: dimension table of unique orgaos
+            - ``'movimentos'``: one row per (processo_id, seq) when
+              ``movimentos`` is present in ``_source``
+            - ``'mov_complementos'``: long table of
+              ``complementosTabelados`` entries, keyed by
+              (processo_id, mov_seq, comp_seq)
     """
     proc_rows = []
     bridge_rows = []
+    mov_rows = []
+    comp_rows = []
     classes_seen = {}
     orgaos_seen = {}
     assuntos_seen = {}
@@ -609,6 +616,30 @@ def normalize_datajud(
             "orgao_codigo": oj_codigo,
         })
 
+        # movimentos (1-to-many; each may carry complementosTabelados, 1-to-many)
+        for mseq, mov in enumerate(src.get("movimentos") or []):
+            if not isinstance(mov, dict):
+                continue
+            mov_rows.append({
+                "processo_id": pid,
+                "seq": mseq,
+                "codigo": mov.get("codigo"),
+                "nome": mov.get("nome"),
+                "data_hora": mov.get("dataHora"),
+            })
+            for cseq, comp in enumerate(mov.get("complementosTabelados") or []):
+                if not isinstance(comp, dict):
+                    continue
+                comp_rows.append({
+                    "processo_id": pid,
+                    "mov_seq": mseq,
+                    "comp_seq": cseq,
+                    "codigo": comp.get("codigo"),
+                    "valor": comp.get("valor"),
+                    "nome": comp.get("nome"),
+                    "descricao": comp.get("descricao"),
+                })
+
     df_processos = pd.DataFrame(proc_rows)
     if not df_processos.empty:
         df_processos["numero_processo"] = clean_number(df_processos["numero_processo"])
@@ -628,10 +659,21 @@ def normalize_datajud(
     if not df_assuntos.empty:
         df_assuntos = df_assuntos.sort_values("assunto_codigo").reset_index(drop=True)
 
+    df_movs = pd.DataFrame(
+        mov_rows,
+        columns=["processo_id", "seq", "codigo", "nome", "data_hora"],
+    )
+    df_comps = pd.DataFrame(
+        comp_rows,
+        columns=["processo_id", "mov_seq", "comp_seq", "codigo", "valor", "nome", "descricao"],
+    )
+
     return {
         "processos": df_processos,
         "processo_assuntos": df_bridge,
         "assuntos": df_assuntos,
         "classes": df_classes,
         "orgaos_julgadores": df_orgaos,
+        "movimentos": df_movs,
+        "mov_complementos": df_comps,
     }

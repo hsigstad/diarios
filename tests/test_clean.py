@@ -645,8 +645,45 @@ class TestNormalizeDatajud(unittest.TestCase):
         result = clean.normalize_datajud(records)
         self.assertEqual(
             sorted(result.keys()),
-            ["assuntos", "classes", "orgaos_julgadores", "processo_assuntos", "processos"],
+            [
+                "assuntos",
+                "classes",
+                "mov_complementos",
+                "movimentos",
+                "orgaos_julgadores",
+                "processo_assuntos",
+                "processos",
+            ],
         )
+
+    def test_movimentos_extracted(self):
+        record = self._make_record("p1", "0002107-31.2010.8.26.0660")
+        record["_source"]["movimentos"] = [
+            {"codigo": 26, "nome": "Distribuição", "dataHora": "2018-05-14T19:21:56.000Z",
+             "complementosTabelados": [
+                 {"codigo": 2, "valor": 2, "nome": "sorteio",
+                  "descricao": "tipo_de_distribuicao_redistribuicao"},
+             ]},
+            {"codigo": 12164, "nome": "Outras Decisões", "dataHora": "2018-05-15T15:33:06.000Z"},
+        ]
+        result = clean.normalize_datajud([record])
+        movs = result["movimentos"]
+        self.assertEqual(len(movs), 2)
+        self.assertEqual(list(movs["seq"]), [0, 1])
+        self.assertEqual(movs.iloc[0]["codigo"], 26)
+        comps = result["mov_complementos"]
+        self.assertEqual(len(comps), 1)
+        self.assertEqual(comps.iloc[0]["mov_seq"], 0)
+        self.assertEqual(comps.iloc[0]["descricao"], "tipo_de_distribuicao_redistribuicao")
+
+    def test_no_movimentos(self):
+        records = [self._make_record("p1", "0002107-31.2010.8.26.0660")]
+        result = clean.normalize_datajud(records)
+        self.assertEqual(len(result["movimentos"]), 0)
+        self.assertEqual(len(result["mov_complementos"]), 0)
+        # columns should still be defined on empty frames
+        self.assertIn("seq", result["movimentos"].columns)
+        self.assertIn("mov_seq", result["mov_complementos"].columns)
 
     def test_processos_shape(self):
         records = [

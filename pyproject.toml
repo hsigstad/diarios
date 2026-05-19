@@ -25,6 +25,7 @@ dependencies = [
 
 [project.optional-dependencies]
 dotenv = ["python-dotenv"]
+scrape = ["requests"]
 ocr = [
     "pytesseract",
     "pdf2image",
