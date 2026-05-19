@@ -54,6 +54,11 @@ def make_session() -> requests.Session:
     return session
 
 
+def ensure_outdir(path: os.PathLike | str) -> None:
+    """Create ``path`` (and parents) if it doesn't already exist."""
+    os.makedirs(path, exist_ok=True)
+
+
 def search_url(tribunal: str) -> str:
     """DataJud search URL for a court alias.
 
@@ -274,6 +279,7 @@ __all__ = [
     "build_classe_query",
     "default_source_fields",
     "download_datajud",
+    "ensure_outdir",
     "iter_search_after",
     "make_session",
     "post_search",
