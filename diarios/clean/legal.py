@@ -676,6 +676,30 @@ def load_datajud_jsonl(path: str) -> List[Dict[str, Any]]:
     return rows
 
 
+def _parse_datajud_date(s: pd.Series) -> pd.Series:
+    """Parse DataJud date strings into tz-aware datetime64, NaT-ing impossible years.
+
+    DataJud carries dataAjuizamento and related fields in two formats:
+    - ISO: ``'2019-02-01T12:00:06.000Z'``
+    - Compact 14-digit: ``'20140430165314'`` (YYYYMMDDHHmmss)
+
+    Many records have ill-formed values whose parsed year is far in the
+    past or future. We blanket NaT anything outside [1970, current_year+1]
+    so downstream filters by year don't pick up garbage.
+    """
+    import datetime
+    iso = pd.to_datetime(s, errors="coerce", utc=True, format="ISO8601")
+    # Where ISO failed (NaT), try the compact 14-digit format.
+    compact = pd.to_datetime(
+        s.where(iso.isna(), other=pd.NA),
+        errors="coerce", utc=True, format="%Y%m%d%H%M%S",
+    )
+    parsed = iso.fillna(compact)
+    year_now = datetime.datetime.now().year
+    valid = parsed.dt.year.between(1970, year_now + 1, inclusive="both")
+    return parsed.where(valid)
+
+
 def normalize_datajud(
     records: List[Dict[str, Any]], classe_codigos: Optional[List[int]] = None
 ) -> Dict[str, pd.DataFrame]:
@@ -788,6 +812,14 @@ def normalize_datajud(
     df_processos = pd.DataFrame(proc_rows)
     if not df_processos.empty:
         df_processos["numero_processo"] = clean_number(df_processos["numero_processo"])
+        # Parse raw dataAjuizamento (formats: 'YYYYMMDDHHmmss' or ISO) into a
+        # tz-aware datetime; values outside [1970, this_year+1] are NaT.
+        df_processos["data_ajuizamento"] = _parse_datajud_date(
+            df_processos["data_ajuizamento"]
+        )
+        df_processos["data_ultima_atualizacao"] = _parse_datajud_date(
+            df_processos["data_ultima_atualizacao"]
+        )
     df_bridge = pd.DataFrame(bridge_rows)
     df_classes = pd.DataFrame(
         [{"classe_codigo": k, "classe_nome": v} for k, v in classes_seen.items()]

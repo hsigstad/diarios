@@ -730,6 +730,28 @@ class TestNormalizeDatajud(unittest.TestCase):
         result = clean.normalize_datajud([])
         self.assertEqual(len(result["processos"]), 0)
 
+    def test_data_ajuizamento_parses_iso_and_compact(self):
+        records = [
+            {"_id":"a","_source":{"numeroProcesso":"x","classe":{"codigo":64},
+                                   "orgaoJulgador":{},"assuntos":[],
+                                   "dataAjuizamento":"20140430165314"}},
+            {"_id":"b","_source":{"numeroProcesso":"y","classe":{"codigo":64},
+                                   "orgaoJulgador":{},"assuntos":[],
+                                   "dataAjuizamento":"2019-02-01T12:00:06.000Z"}},
+            {"_id":"c","_source":{"numeroProcesso":"z","classe":{"codigo":64},
+                                   "orgaoJulgador":{},"assuntos":[],
+                                   "dataAjuizamento":"99999999999999"}},
+            {"_id":"d","_source":{"numeroProcesso":"w","classe":{"codigo":64},
+                                   "orgaoJulgador":{},"assuntos":[],
+                                   "dataAjuizamento":""}},
+        ]
+        proc = clean.normalize_datajud(records)["processos"]
+        proc = proc.set_index("processo_id")
+        self.assertEqual(pd.Timestamp(proc.loc["a","data_ajuizamento"]).year, 2014)
+        self.assertEqual(pd.Timestamp(proc.loc["b","data_ajuizamento"]).year, 2019)
+        self.assertTrue(pd.isna(proc.loc["c","data_ajuizamento"]))
+        self.assertTrue(pd.isna(proc.loc["d","data_ajuizamento"]))
+
 
 class TestCnjTables(unittest.TestCase):
 
