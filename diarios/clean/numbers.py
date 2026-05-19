@@ -492,17 +492,27 @@ def clean_oab(sr: Union[str, pd.Series]) -> pd.Series:
 def clean_cpf(cpf: pd.Series, as_str: bool = False) -> pd.Series:
     """Clean CPF (Brazilian individual taxpayer ID) numbers.
 
+    Returns nullable ``Int64`` by default — the workspace standard for
+    CPF storage (see ``research/rules/data_conventions.md``). Non-numeric
+    values, and the politica raw-data sentinels ``-1`` / ``-4`` / ``0``,
+    are normalized to ``pd.NA``.
+
     Args:
-        cpf: Series of CPF strings.
-        as_str: If True, return zero-padded 11-digit strings instead of numbers.
+        cpf: Series of CPF strings or numbers.
+        as_str: If True, return zero-padded 11-character strings (with
+            ``pd.NA`` for missing). Rarely needed — the canonical join
+            type is ``Int64``.
 
     Returns:
-        Cleaned CPF series.
+        ``Int64`` series (or ``string`` series if ``as_str=True``).
     """
-    cpf = pd.to_numeric(cpf, errors="coerce")
+    numeric = pd.to_numeric(cpf, errors="coerce")
+    # Treat politica's <=0 sentinels as missing. Real CPFs are strictly positive.
+    numeric = numeric.where(numeric > 0)
+    int_series = numeric.astype("Int64")
     if as_str:
-        cpf = cpf.astype(str).str.replace("\.0$", "", regex=True).str.zfill(11)
-    return cpf
+        return int_series.astype("string").str.zfill(11)
+    return int_series
 
 
 def extract_number(
