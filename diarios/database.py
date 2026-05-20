@@ -91,7 +91,10 @@ def insert(
         if_exists = "append"
     for infile in files:
         print(infile)
-        df = pd.read_csv(infile, dtype=dtype_csv, lineterminator="\n")
+        if str(infile).endswith(".parquet"):
+            df = pd.read_parquet(infile)
+        else:
+            df = pd.read_csv(infile, dtype=dtype_csv, lineterminator="\n")
         for c in columns:
             if c not in df.columns:
                 df[c] = pd.NA

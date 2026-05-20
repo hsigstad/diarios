@@ -49,6 +49,7 @@ Portuguese-tuned variant.
 
 from __future__ import annotations
 
+import gzip
 import os
 import re
 from pathlib import Path
@@ -403,6 +404,23 @@ def sanitize_parsed_csvs(parsed_dir, grau: int = None, verbose: bool = True):
 # File and directory anonymization
 # ---------------------------------------------------------------------
 
+def _read_text(path: Path) -> str:
+    """Read a UTF-8 text file, transparently decompressing a ``.gz`` suffix."""
+    if path.suffix == ".gz":
+        with gzip.open(path, "rt", encoding="utf-8") as fh:
+            return fh.read()
+    return path.read_text(encoding="utf-8")
+
+
+def _write_text(path: Path, text: str) -> None:
+    """Write a UTF-8 text file, gzip-compressing it if the path ends in ``.gz``."""
+    if path.suffix == ".gz":
+        with gzip.open(path, "wt", encoding="utf-8") as fh:
+            fh.write(text)
+    else:
+        path.write_text(text, encoding="utf-8")
+
+
 def anonymize_file(input_path, output_path, verbose: bool = True) -> bool:
     """Anonymize a single text file.
 
@@ -418,11 +436,11 @@ def anonymize_file(input_path, output_path, verbose: bool = True) -> bool:
     output_path = Path(output_path)
 
     try:
-        content = input_path.read_text(encoding="utf-8")
+        content = _read_text(input_path)
         anonymized = anonymize_text(content)
 
         output_path.parent.mkdir(parents=True, exist_ok=True)
-        output_path.write_text(anonymized, encoding="utf-8")
+        _write_text(output_path, anonymized)
 
         if verbose:
             print(f"  {input_path.name} -> {output_path.name}", flush=True)
@@ -462,6 +480,7 @@ def anonymize_directory(
     files = []
     for ext in extensions:
         files.extend(input_dir.rglob(f"*{ext}"))
+        files.extend(input_dir.rglob(f"*{ext}.gz"))  # gzip-compressed corpus
     files = sorted(files)
 
     if not files:

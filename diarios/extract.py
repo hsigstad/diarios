@@ -60,11 +60,14 @@ class Extractor:
             mode = 'a'
         else:
             mode = 'w'
+        # Match both the given pattern and its gzip-compressed variant, so a
+        # corpus stored as .md.gz is found without callers changing globs.
+        infiles_all = sorted(glob(infiles) + glob(infiles + '.gz'))
         with open(outfile, mode) as f:
             if header:
                 f.write(header)
                 f.flush()
-            for infile in glob(infiles):
+            for infile in infiles_all:
                 _run_cmd(cmd, post, infile, f)
         os.chdir(start_dir)
 
@@ -103,18 +106,30 @@ def _run_cmd(
 ) -> None:
     """Run a shell command pipeline, writing output to a file handle.
 
+    The input is streamed through ``zcat -f``, which decompresses ``.gz``
+    files and copies plain files through unchanged. This lets the raw diarios
+    corpus be stored gzip-compressed without changing any caller: a ``.gz``
+    suffix is stripped from the grep ``--label`` so the path seen by
+    downstream parsers still ends in ``.md`` / ``.txt``.
+
     Args:
-        cmd: Base command list.
+        cmd: Base command list, ending with the search pattern.
         post: Optional list of piped post-processing commands.
-        infile: Input file to append to the command.
+        infile: Input file (``.md``, ``.txt``, or their ``.gz`` form).
         f: Open file handle for writing output.
     """
-    cmd2 = cmd + [infile]
-    #ps = subprocess.Popen(cmd2, stdout=f)
+    label = infile[:-3] if infile.endswith(".gz") else infile
+    # --label must precede the pattern (cmd[-1]); '-' makes grep read stdin.
+    cmd2 = cmd[:-1] + ["--label=" + label, cmd[-1], "-"]
+    zcat = subprocess.Popen(["zcat", "-f", infile], stdout=subprocess.PIPE)
     if post:
-        ps = subprocess.Popen(cmd2, stdout=subprocess.PIPE)
+        ps = subprocess.Popen(cmd2, stdin=zcat.stdout, stdout=subprocess.PIPE)
+        zcat.stdout.close()
         for p in post[:-1]:
             ps = subprocess.Popen(p, stdin=ps.stdout, stdout=subprocess.PIPE)
         subprocess.call(post[-1], stdin=ps.stdout, stdout=f)
     else:
-        subprocess.call(cmd2, stdout=f)
+        ps = subprocess.Popen(cmd2, stdin=zcat.stdout, stdout=f)
+        zcat.stdout.close()
+        ps.wait()
+    zcat.wait()
