@@ -567,13 +567,23 @@ def extract_number(
             number = number.str[0:21]
         number = pd.to_numeric(number)
     if len(mapping) > 0:
-        number.loc[number.isnull()] = (
-            map_regex(sr, hundreds, keep_unmatched=False).fillna(0) +
-            map_regex(sr, tens, keep_unmatched=False).fillna(0) +
-            map_regex(sr, ones, keep_unmatched=False).fillna(0)
+        # map_regex returns an object Series; coerce each element to a
+        # plain numeric scalar (anything else -> NaN) before summing, so
+        # the fill is dtype-safe under pandas 2.x strict assignment.
+        def _scalar_num(s: pd.Series) -> pd.Series:
+            return pd.to_numeric(
+                s.map(lambda x: x if isinstance(x, (int, float))
+                      and not isinstance(x, bool) else None),
+                errors="coerce",
+            )
+        word_sum = (
+            _scalar_num(map_regex(sr, hundreds, keep_unmatched=False)).fillna(0)
+            + _scalar_num(map_regex(sr, tens, keep_unmatched=False)).fillna(0)
+            + _scalar_num(map_regex(sr, ones, keep_unmatched=False)).fillna(0)
         )
-    number.loc[number==0] = pd.NA
-    return number
+        number = pd.to_numeric(number, errors="coerce").fillna(word_sum)
+    number = pd.to_numeric(number, errors="coerce")
+    return number.mask(number == 0)
 
 def get_ordinal_number_regex(flags: str = '(?i)(?s)') -> str:
     """Return regex pattern matching Portuguese ordinal numbers.

@@ -198,9 +198,20 @@ class DecisionParser:
             parsed_parte = self._parse_multiple_partes(self.dispositivo)
         else:
             single_parte = self.parte.groupby(self.parte.index.names).size() == 1
-            parsed1 = self._parse_single_parte(self.dispositivo.loc[single_parte])
-            parsed2 = self._parse_multiple_partes(self.dispositivo.loc[~single_parte])
-            parsed_parte = pd.concat([parsed1, parsed2])
+            # Only invoke a sub-parser when it has rows: split_series and
+            # the pena extractors don't survive empty input under
+            # pandas 2.x (empty unstack -> KeyError).
+            parts = []
+            disp_single = self.dispositivo.loc[single_parte]
+            if not disp_single.empty:
+                parts.append(self._parse_single_parte(disp_single))
+            disp_multi = self.dispositivo.loc[~single_parte]
+            if not disp_multi.empty:
+                parts.append(self._parse_multiple_partes(disp_multi))
+            parsed_parte = pd.concat(parts) if parts else pd.DataFrame()
+        if parsed_parte.empty:
+            self.parsed_parte = parsed_parte
+            return parsed_parte
         parsed_parte = self._drop_duplicate_parte(parsed_parte)
         self.parsed_parte = parsed_parte
         return parsed_parte
