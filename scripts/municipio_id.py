@@ -45,6 +45,13 @@ def get_mun() -> pd.DataFrame:
     mun = (mun.groupby(cols).agg('sum').reset_index())
     mun = mun.loc[mun.municipio_id > 0]
     mun = mun.dropna()
+    # Drop duplicate TSE codes for municipalities that have both a birth-place
+    # code and an election-district code. We keep only the election-district
+    # code to preserve ibge7 uniqueness in the downstream municipio.csv.
+    # 91065: Boa Esperança do Norte (MT) birth-place code; 73709 is the
+    #         election-district code used in 2024+.
+    drop_ids = {91065}
+    mun = mun.loc[~mun.municipio_id.isin(drop_ids)]
     missing = pd.DataFrame({'municipio_id': [-1, -3]})
     mun = pd.concat([mun, missing], sort=True)
     return mun
