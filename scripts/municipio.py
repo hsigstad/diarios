@@ -33,11 +33,35 @@ def main() -> pd.DataFrame:
     mun = impute_comarca_id(mun)
     mun['estado'] = transform(mun.estado_id, 'estado_id', 'estado')
     mun = add_subsecao_id(mun)
+    mun = apply_overrides(mun)
     mun = (mun.loc[:, ('municipio_id', 'municipio', 'municipio_accents',
                        'ibge7', 'ibge6', 'estado', 'estado_id', 'comarca_id',
                        'subsecao_id')].query('municipio_id.notnull()').
            drop_duplicates('municipio_id').sort_values('municipio_id'))
     mun.to_csv('diarios/data/municipio.csv', index=False)
+    return mun
+
+
+def apply_overrides(mun: pd.DataFrame) -> pd.DataFrame:
+    """Apply manual overrides for new municipalities not yet in upstream IBGE data.
+
+    Reads diarios/data/municipio_overrides.csv and fills in missing values
+    for matched municipio_id rows.
+    """
+    overrides_file = os.path.join(
+        os.path.dirname(__file__), '..', 'diarios', 'data', 'municipio_overrides.csv')
+    if not os.path.exists(overrides_file):
+        return mun
+    overrides = pd.read_csv(overrides_file)
+    for _, row in overrides.iterrows():
+        mask = mun.municipio_id == row.municipio_id
+        if not mask.any():
+            continue
+        for col in overrides.columns:
+            if col == 'municipio_id':
+                continue
+            if col in mun.columns and row[col] == row[col]:  # skip NaN
+                mun.loc[mask & mun[col].isna(), col] = row[col]
     return mun
 
 
