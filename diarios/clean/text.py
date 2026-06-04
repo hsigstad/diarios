@@ -472,6 +472,10 @@ def generate_id(
         df = df.loc[:, by].astype(str)
         if isinstance(by, list) and len(by) > 1:
             df = df.apply(lambda x: "_".join(x), axis=1)
+        # pandas 3.0: empty-DataFrame .apply(axis=1) returns DataFrame, not
+        # Series — so .cat below would AttributeError. Squeeze to be safe.
+        if isinstance(df, pd.DataFrame):
+            df = df.iloc[:, 0] if df.shape[1] >= 1 else pd.Series(dtype=str)
     ids = (df.astype("category").cat.codes) + 1
     if suffix:
         ids = ids.apply(lambda x: x * 10 ** suffix_length + suffix)

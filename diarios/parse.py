@@ -140,7 +140,12 @@ class CaseParser:
         self.text = df.text
         df = self._add_cols(df)
         self.cleaners = {k: v for k, v in self.cleaners.items() if k in df.columns}
-        df.loc[:, self.cleaners.keys()] = df.transform(self.cleaners)
+        # Column-by-column replace (not df.loc[:, keys] = ...): pandas 3.0
+        # StringDtype refuses in-place assignment of values whose dtype
+        # differs from the column's (e.g. datetime64 into a str column).
+        transformed = df.transform(self.cleaners)
+        for k in self.cleaners.keys():
+            df[k] = transformed[k]
         if len(df) == 0:
             return
         proc = self._get_proc(df)
@@ -264,8 +269,21 @@ class CaseParser:
         Returns:
             Tuple of (parties DataFrame, lawyers DataFrame).
         """
+        # pandas 3.0 strict mode: several patterns below (.loc[bool, new_col],
+        # .loc[:, missing_col]) used to silently auto-create columns but now
+        # raise. Short-circuit on empty input so we return correctly-shaped
+        # empties without tripping any of them. Preserve df's index so the
+        # caller's `parte.reset_index()` still gets the expected columns.
+        if df.empty:
+            empty_adv = pd.DataFrame(columns=["parte_id", "advogado", "oab"])
+            df = df.copy()
+            if "oab" in df.columns:
+                df = df.drop(columns="oab")
+            return df, empty_adv
         cols = {"parte": "advogado"}
         adv = df.rename(columns=cols).reset_index()
+        if "name_group" not in adv.columns:
+            adv["name_group"] = np.nan
         adv.loc[adv.tipo_parte_id == 4, "name_group"] = np.nan
         adv["name_group"] = adv.groupby(self.parte_levels)["name_group"].ffill()
         df = df.loc[df.tipo_parte_id != 4].copy()
@@ -314,15 +332,25 @@ class CaseParser:
 
 
 def get_empty_parte() -> pd.DataFrame:
-    """Return an empty DataFrame with the standard party column schema."""
+    """Return an empty DataFrame with the standard party column schema.
+
+    Includes every column that the non-empty `_get_parte` path produces, so
+    that downstream code (caller's `parte.number` access, `_split_adv`'s
+    column slicing) works on the empty case without raising. Required under
+    pandas 3.0 where missing-column auto-creation no longer happens.
+    """
     df = pd.DataFrame(
         {
-            "mov_id": [],
-            "proc_id": [],
-            "parte_id": [],
-            "parte": [],
-            "key": [],
-            "tipo_parte_id": [],
+            "mov_id": pd.Series([], dtype="int64"),
+            "proc_id": pd.Series([], dtype="int64"),
+            "parte_id": pd.Series([], dtype="int64"),
+            "parte": pd.Series([], dtype="object"),
+            "key": pd.Series([], dtype="object"),
+            "tipo_parte_id": pd.Series([], dtype="float64"),
+            "number": pd.Series([], dtype="object"),
+            "oab": pd.Series([], dtype="object"),
+            "name_group": pd.Series([], dtype="float64"),
+            "tipo_parte": pd.Series([], dtype="object"),
         }
     )
     return df
@@ -595,7 +623,7 @@ def get_keyword_regex(
 
 def keep_cols(df: pd.DataFrame, cols: List[str]) -> pd.DataFrame:
     """Subset a DataFrame to the intersection of requested and existing columns."""
-    cols = set(cols).intersection(set(df.columns))
+    cols = sorted(set(cols).intersection(set(df.columns)))
     return df.loc[:, cols]
 
 
