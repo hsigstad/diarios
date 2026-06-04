@@ -31,6 +31,7 @@ class Extractor:
         infiles: str,
         outfile: str,
         cmd: Optional[List[str]] = None,
+        pre: Optional[List[List[str]]] = None,
         post: Optional[List[List[str]]] = None,
         header: Optional[str] = None,
         append: bool = False,
@@ -42,6 +43,8 @@ class Extractor:
             infiles: Glob pattern for input files (relative to ``inpath``).
             outfile: Output filename (written inside ``outpath``).
             cmd: Custom command list; defaults to pcre2grep with standard flags.
+            pre: Optional list of piped pre-processing commands (between
+                zcat and grep). Use to clean/transform text before matching.
             post: Optional list of piped post-processing commands.
             header: Optional header string written at the top of the output file.
             append: If True, append to the output file instead of overwriting.
@@ -68,7 +71,7 @@ class Extractor:
                 f.write(header)
                 f.flush()
             for infile in infiles_all:
-                _run_cmd(cmd, post, infile, f)
+                _run_cmd(cmd, pre, post, infile, f)
         os.chdir(start_dir)
 
     def extract_sections(
@@ -100,6 +103,7 @@ class Extractor:
 
 def _run_cmd(
     cmd: List[str],
+    pre: Optional[List[List[str]]],
     post: Optional[List[List[str]]],
     infile: str,
     f: Any,
@@ -112,8 +116,12 @@ def _run_cmd(
     suffix is stripped from the grep ``--label`` so the path seen by
     downstream parsers still ends in ``.md`` / ``.txt``.
 
+    Pipeline: zcat → [pre commands] → pcre2grep → [post commands] → file
+
     Args:
         cmd: Base command list, ending with the search pattern.
+        pre: Optional list of piped pre-processing commands (between
+            zcat and grep). Applied before the grep pattern match.
         post: Optional list of piped post-processing commands.
         infile: Input file (``.md``, ``.txt``, or their ``.gz`` form).
         f: Open file handle for writing output.
@@ -122,14 +130,23 @@ def _run_cmd(
     # --label must precede the pattern (cmd[-1]); '-' makes grep read stdin.
     cmd2 = cmd[:-1] + ["--label=" + label, cmd[-1], "-"]
     zcat = subprocess.Popen(["zcat", "-f", infile], stdout=subprocess.PIPE)
+
+    # Chain pre-processing commands between zcat and grep
+    prev = zcat
+    if pre:
+        for p in pre:
+            ps = subprocess.Popen(p, stdin=prev.stdout, stdout=subprocess.PIPE)
+            prev.stdout.close()
+            prev = ps
+
     if post:
-        ps = subprocess.Popen(cmd2, stdin=zcat.stdout, stdout=subprocess.PIPE)
-        zcat.stdout.close()
+        ps = subprocess.Popen(cmd2, stdin=prev.stdout, stdout=subprocess.PIPE)
+        prev.stdout.close()
         for p in post[:-1]:
             ps = subprocess.Popen(p, stdin=ps.stdout, stdout=subprocess.PIPE)
         subprocess.call(post[-1], stdin=ps.stdout, stdout=f)
     else:
-        ps = subprocess.Popen(cmd2, stdin=zcat.stdout, stdout=f)
-        zcat.stdout.close()
+        ps = subprocess.Popen(cmd2, stdin=prev.stdout, stdout=f)
+        prev.stdout.close()
         ps.wait()
     zcat.wait()
