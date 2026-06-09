@@ -40,6 +40,18 @@ def get_main_sentence_regexes() -> List[str]:
         '(diante|posto).{0,5}is[st]o[^.]+',
         'após o voto[^.]+',
         'proferido.{0,10}relatório[^.]+',
+        # PJe 1ª-instância stems — these introduce the dispositivo on
+        # TJMG / TJMA / TRF1 / TJPE / TRF5 sentences that the older list
+        # missed entirely (cf. PJe_sentenca_outcome diagnosis 2026-06-09).
+        'por\s+essas\s+raz[ãoõ]es[^.]+',
+        'por\s+tais\s+motivos[^.]+',
+        'nestes\s+termos[^.]+',
+        'dessa\s+forma[^.]+',
+        # Strong threshold-rejection verbs that appear mid-paragraph
+        # without any "diante/posto/exposto" stem in PJe sentences
+        # (CPC 330 indeferimento, Lei 8429 art 17 §8 rejeição liminar).
+        # Mirror the existing standalone treatment of nego/dou/condeno.
+        r'\b(indefiro|rejeito\s+liminarmente|n[ãa]o\s+recebo)\b[^.]+',
     ]
     regexes = [f'(?i)(?s)({regex})' for regex in regexes]
     return regexes
@@ -156,6 +168,14 @@ def _get_desfecho_regexes(classe: str) -> Dict[str, str]:
             'JULGO IMPROCEDENTE': 'IMPROCEDENTE-',
             'EXT.*SEM.*MERITO': 'S/MERITO-',
             'JULGO EXTINTO|EXTINGO': 'EXTINTO-',
+            # PJe 1ª-instância dispositivos that dismiss the case at the
+            # threshold stage — INDEFIRO A PETIÇÃO INICIAL (CPC 330) and
+            # REJEITO LIMINARMENTE (Lei 8429/92 art 17 §8º) extinguish
+            # the case without merit. NÃO RECEBO is the equivalent on
+            # initial-petition-screening sentences.
+            'INDEFIRO A PETICAO INICIAL|INDEFIRO A INICIAL': 'S/MERITO-',
+            'REJEITO LIMINARMENTE': 'S/MERITO-',
+            'NAO RECEBO A PETICAO INICIAL|NAO RECEBO A INICIAL': 'S/MERITO-',
         }
     if classe in ["ED"]:
         regexes = {
