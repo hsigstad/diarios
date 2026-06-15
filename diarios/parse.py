@@ -496,7 +496,7 @@ def parse_diario_extract(
         DataFrame with ``date``, ``caderno``, ``line``, ``text``, and
         ``tribunal`` columns.
     """
-    with open(infile, "r") as f:
+    with open(infile, "r", errors="replace") as f:
         text = f.read()
     if nchar:
         text = text[:nchar]
@@ -547,9 +547,9 @@ def extract_regexes(
     if isinstance(regexes, str):
         regexes = [regexes]
     if extractall:
-        func = lambda x: text.str.extractall(x, flags=flags)
+        func = lambda x: text.str.extractall(x, flags=flags) if flags else text.str.extractall(x)
     else:
-        func = lambda x: text.str.extract(x, flags=flags)
+        func = lambda x: text.str.extract(x, flags=flags) if flags else text.str.extract(x)
     if update:
         if axis==0:
             raise(ValueError("Update only implemented for axis=1"))

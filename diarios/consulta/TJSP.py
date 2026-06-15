@@ -221,6 +221,7 @@ def get_regexes(instancia: int) -> Dict[str, str]:
             'valor_da_acao': '(?s)Valor da ação\s+(.*?)\n',
             'outros_assuntos': '(?s)Outros assuntos\s+(.*?)\n\n',
             'processo_principal': r'Processo principal\s+\[([^\]]+)\]',
+            'apensado_ao': r'Apensado ao\s+\[([^\]]+)\]',
         }
     if instancia==2:
         return {
@@ -255,6 +256,9 @@ def clean(df: pd.DataFrame, instancia: int) -> pd.DataFrame:
             format='%d/%m/%Y',
             errors='coerce'
         )
+        df['dependencia_npu'] = df.distribuicao.str.extract(
+            r'Dependência\s+\(([^)]+)\)'
+        )[0]
         df['distribuicao'] = df.distribuicao.str.extract(' - (.*)')[0]
         return df
     if instancia==2:
