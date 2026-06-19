@@ -12,6 +12,7 @@ from diarios.decision import (
     intersect,
     print_truncated,
     remove_pena_base,
+    split_sentenca_sections,
 )
 
 
@@ -193,3 +194,107 @@ class TestRemovePenaBase(unittest.TestCase):
         text = pd.Series(["CONDENO O REU A 3 ANOS"])
         result = remove_pena_base(text)
         self.assertEqual(result.iloc[0], "CONDENO O REU A 3 ANOS")
+
+
+class TestSplitSentencaSections(unittest.TestCase):
+
+    def test_three_section_split(self):
+        text = (
+            "Trata-se de ação civil pública ajuizada pelo MPF em face de João da Silva. "
+            "É o relatório. "
+            "Os fatos restaram comprovados pelos documentos de fls. 20/45. "
+            "Diante do exposto, JULGO PROCEDENTE o pedido para condenar o réu."
+        )
+        result = split_sentenca_sections(text)
+        self.assertIn("Trata-se", result["relatorio"])
+        self.assertNotIn("Diante do exposto", result["relatorio"])
+        self.assertIn("É o relatório", result["fundamentacao"])
+        self.assertIn("documentos de fls", result["fundamentacao"])
+        self.assertNotIn("Diante do exposto", result["fundamentacao"])
+        self.assertIn("Diante do exposto", result["dispositivo"])
+        self.assertIn("JULGO PROCEDENTE", result["dispositivo"])
+
+    def test_fundamentacao_header_anchor(self):
+        text = (
+            "RELATÓRIO\nO autor narra que ...\n"
+            "FUNDAMENTAÇÃO\nA prova produzida demonstra que ...\n"
+            "Diante do exposto, julgo improcedente."
+        )
+        result = split_sentenca_sections(text)
+        self.assertIn("O autor narra", result["relatorio"])
+        self.assertTrue(result["fundamentacao"].startswith("FUNDAMENTAÇÃO"))
+        self.assertIn("A prova produzida", result["fundamentacao"])
+        self.assertIn("Diante do exposto", result["dispositivo"])
+
+    def test_missing_fundamentacao_anchor(self):
+        # No fundamentação marker — text up to dispositivo becomes relatório.
+        text = (
+            "Trata-se de ação proposta por A contra B. Os fatos estão demonstrados. "
+            "JULGO PROCEDENTE o pedido."
+        )
+        result = split_sentenca_sections(text)
+        self.assertIn("Trata-se", result["relatorio"])
+        self.assertIn("fatos estão demonstrados", result["relatorio"])
+        self.assertIsNone(result["fundamentacao"])
+        self.assertIn("JULGO PROCEDENTE", result["dispositivo"])
+
+    def test_missing_dispositivo_anchor(self):
+        text = (
+            "Relatório inicial do caso. "
+            "É o relatório. "
+            "Análise dos fatos e do direito aplicável, sem dispositivo identificável."
+        )
+        result = split_sentenca_sections(text)
+        self.assertIn("Relatório inicial", result["relatorio"])
+        self.assertIn("Análise dos fatos", result["fundamentacao"])
+        self.assertIsNone(result["dispositivo"])
+
+    def test_no_anchors_returns_all_none(self):
+        text = "Texto qualquer sem marcadores estruturais."
+        result = split_sentenca_sections(text)
+        self.assertIsNone(result["relatorio"])
+        self.assertIsNone(result["fundamentacao"])
+        self.assertIsNone(result["dispositivo"])
+
+    def test_dispositivo_keyword_inside_relatorio_not_picked(self):
+        # "declaro" appears inside a quoted passage in the relatório;
+        # the genuine dispositivo opens with "Diante do exposto" after
+        # the fundamentação header. The function should anchor on the
+        # fundamentação header and skip the false positive.
+        text = (
+            'O autor alegou que "declaro nulo o ato". '
+            "É o relatório. "
+            "A fundamentação segue. "
+            "Diante do exposto, julgo procedente."
+        )
+        result = split_sentenca_sections(text)
+        self.assertIn("autor alegou", result["relatorio"])
+        self.assertIn("É o relatório", result["fundamentacao"])
+        self.assertTrue(result["dispositivo"].startswith("Diante do exposto"))
+
+    def test_empty_and_non_string_inputs(self):
+        for value in ["", "   ", None, 123]:
+            result = split_sentenca_sections(value)
+            self.assertEqual(
+                result,
+                {"relatorio": None, "fundamentacao": None, "dispositivo": None},
+            )
+
+    def test_idempotent(self):
+        text = (
+            "Trata-se de ACP. É o relatório. Os fatos restaram comprovados. "
+            "Diante do exposto, julgo procedente."
+        )
+        first = split_sentenca_sections(text)
+        second = split_sentenca_sections(text)
+        self.assertEqual(first, second)
+
+    def test_applies_via_series(self):
+        s = pd.Series([
+            "Trata-se. É o relatório. Análise. Diante do exposto, condeno.",
+            "Texto sem anchors.",
+        ])
+        out = s.apply(split_sentenca_sections)
+        self.assertEqual(len(out), 2)
+        self.assertIn("Análise", out.iloc[0]["fundamentacao"])
+        self.assertIsNone(out.iloc[1]["relatorio"])

@@ -6,6 +6,7 @@ from diarios.decision.parser import *
 __all__ = [
     "DecisionParser",
     "clean_sentenca_text",
+    "split_sentenca_sections",
     "get_main_sentence_regexes",
     "get_dispositivo_regexes",
     "get_desfecho_regexes",

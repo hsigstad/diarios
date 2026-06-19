@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import re
 from typing import Any, Callable, Dict, List, Optional, Tuple, Union
 
 import pandas as pd
@@ -30,7 +31,112 @@ from diarios.decision.config import (
 __all__ = [
     "DecisionParser",
     "clean_sentenca_text",
+    "split_sentenca_sections",
 ]
+
+
+_FUNDAMENTACAO_ANCHOR_REGEXES = [
+    # End-of-relatório markers. Allow a short clause between "é" and
+    # "relat(ório|o)" to catch "É, pois, o relatório", "Esse é, em
+    # síntese, o relatório", "É o breve relato".
+    r'(?i)\b[ée]\b[^.\n]{0,40}?\brelat(?:[óo]rio|o)\b',
+    # "Relatados, decido.", "Relatei. Decido." — acórdão/sentença
+    # transitions in different verb forms.
+    r'(?i)\b(?:relatados?|relatei)\b[^.\n]{0,40}\bdecido\b',
+    # Common transitions into the fundamentação. Covers noun forms
+    # ("Passo à decisão / ao mérito / à análise") and the verb form
+    # ("Passo a decidir").
+    r'(?i)\bpass[ao](?:-se)?\s+[àao]\s+(?:decis[ãa]o|m[ée]rito|an[áa]lise|fundamenta[çc][ãa]o|julgamento)\b',
+    r'(?i)\bpass[ao](?:-se)?\s+a\s+decidir\b',
+    # Section headers introducing fundamentação ("FUNDAMENTAÇÃO",
+    # "DA FUNDAMENTAÇÃO", "II - FUNDAMENTAÇÃO", "Fundamentos").
+    r'(?i)\b(?:da\s+|ii\s*[-.\)]\s*)?fundament(?:a[çc][ãa]o|os?)\b',
+    # Acórdão-style "É o voto." / "VOTO." headers.
+    r'(?i)\b[ée]\s+o\s+voto\b',
+    r'(?i)\bvoto\s*[-.:\n]',
+]
+
+
+def split_sentenca_sections(text: str) -> Dict[str, Optional[str]]:
+    """Split sentence text into relatório / fundamentação / dispositivo.
+
+    Locates the fundamentação header (end of relatório, start of
+    fundamentação) and the dispositivo header (end of fundamentação,
+    start of dispositivo) — three anchors, two splits. Each value is
+    the substring matching that section in the original ``text``, or
+    ``None`` when the section's anchor was not found (common in older
+    or shorter sentenças). Operates on a single text string; apply
+    via ``.apply()`` for a Series. Idempotent.
+
+    The dispositivo anchors are the same ones used by
+    :func:`get_dispositivo_regexes`. When a fundamentação anchor is
+    found, the dispositivo search is restricted to text after it, so
+    a "declaro"/"diante do exposto" appearing inside the relatório
+    does not get misclassified as the dispositivo.
+
+    Args:
+        text: Raw sentence text.
+
+    Returns:
+        Dict with keys ``'relatorio'``, ``'fundamentacao'``,
+        ``'dispositivo'``; each value is a substring of ``text``
+        (whitespace-stripped) or ``None``.
+    """
+    none_result: Dict[str, Optional[str]] = {
+        "relatorio": None,
+        "fundamentacao": None,
+        "dispositivo": None,
+    }
+    if not isinstance(text, str) or not text.strip():
+        return none_result
+
+    fund_start = _find_first_match_start(text, _FUNDAMENTACAO_ANCHOR_REGEXES)
+    disp_search_from = fund_start + 1 if fund_start is not None else 0
+    disp_start = _find_first_match_start(
+        text, get_dispositivo_regexes(), start=disp_search_from
+    )
+
+    if fund_start is None and disp_start is None:
+        return none_result
+
+    def _slice(start: int, stop: Optional[int]) -> Optional[str]:
+        chunk = text[start:stop] if stop is not None else text[start:]
+        chunk = chunk.strip()
+        return chunk or None
+
+    if fund_start is None:
+        return {
+            "relatorio": _slice(0, disp_start),
+            "fundamentacao": None,
+            "dispositivo": _slice(disp_start, None),
+        }
+    if disp_start is None:
+        return {
+            "relatorio": _slice(0, fund_start),
+            "fundamentacao": _slice(fund_start, None),
+            "dispositivo": None,
+        }
+    return {
+        "relatorio": _slice(0, fund_start),
+        "fundamentacao": _slice(fund_start, disp_start),
+        "dispositivo": _slice(disp_start, None),
+    }
+
+
+def _find_first_match_start(
+    text: str,
+    patterns: List[str],
+    start: int = 0,
+) -> Optional[int]:
+    """Return the earliest start-position match across ``patterns`` at/after ``start``."""
+    best: Optional[int] = None
+    for pattern in patterns:
+        match = re.compile(pattern).search(text, pos=start)
+        if match is None:
+            continue
+        if best is None or match.start() < best:
+            best = match.start()
+    return best
 
 
 def _clean_text(
