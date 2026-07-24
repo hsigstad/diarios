@@ -381,7 +381,14 @@ class DecisionParser:
                     df.loc[df.key != "CONDENO", c] = pd.NA
         if "APN" in self.classes:
             df.loc[df.regime.fillna('').str.contains('SEMI'), 'regime'] = "SEMIABERTO"
-            df['prisao_dias'] = df.years.fillna(0)*365 + df.months.fillna(0)*30 + df.days.fillna(0)
+            # Coerce defensively: criminal dispositivos yield noisy captures
+            # ('DEZ', '1000,00', '807290,') and the CONDENO-nullify above can
+            # leave numeric pena columns object-typed, so arithmetic on the raw
+            # column would hit `float + str`.
+            years = pd.to_numeric(df.years, errors='coerce').fillna(0)
+            months = pd.to_numeric(df.months, errors='coerce').fillna(0)
+            days = pd.to_numeric(df.days, errors='coerce').fillna(0)
+            df['prisao_dias'] = years*365 + months*30 + days
         df = _fill_na(df)
         return df
 
@@ -453,7 +460,12 @@ class DecisionParser:
         pena_cols = self._get_pena_cols(df, numeric_only=True)
         all_partes = df.loc[has_all].drop(columns='parte')
         remaining = df.loc[~has_all]
-        remaining['no_pena'] = df[pena_cols].sum(axis=1) == 0
+        # numeric pena cols can carry un-coerced string captures on criminal
+        # (APN) dispositivos; coerce so the "any pena?" reduction can't hit
+        # `float + str`.
+        remaining['no_pena'] = (
+            df[pena_cols].apply(pd.to_numeric, errors='coerce').sum(axis=1) == 0
+        )
         no_pena = (remaining.groupby(ix).no_pena.sum() > 0).reset_index()
         all_partes = all_partes.merge(no_pena, on=ix, how='left')
         all_partes['no_pena'] = all_partes.no_pena.fillna(True)
@@ -584,7 +596,7 @@ class DecisionParser:
             Deduplicated DataFrame.
         """
         pena_cols = self._get_pena_cols(df, numeric_only=True)
-        df['penas'] = df[pena_cols].sum(axis=1)
+        df['penas'] = df[pena_cols].apply(pd.to_numeric, errors='coerce').sum(axis=1)
         df['key_order'] = get_key_order(df.key, self.key_order)
         df['has_key'] = df.key.notnull() # Should not be necessary
         sort_cols = ['has_key', 'penas', 'key_order']

@@ -298,3 +298,45 @@ class TestSplitSentencaSections(unittest.TestCase):
         self.assertEqual(len(out), 2)
         self.assertIn("Análise", out.iloc[0]["fundamentacao"])
         self.assertIsNone(out.iloc[1]["relatorio"])
+
+
+class TestParsePartePenaCriminal(unittest.TestCase):
+    """Regression: parse_parte() on criminal (APN) dispositivos must not crash
+    on `float + str` when numeric pena captures come back object-typed
+    (noisy captures like 'DEZ'/'1000,00', or the CONDENO-nullify leaving NA).
+    See diarios.decision.parser._clean_penas / _add_all_partes_sub coercions."""
+
+    def _multi_party_apn(self):
+        from diarios.decision import DecisionParser
+        # collective "OS REUS" reference forces the _add_all_partes sum path
+        text = pd.Series(
+            ["CONDENO OS REUS JOAO DA SILVA E PEDRO SOUZA A 5 ANOS DE RECLUSAO "
+             "EM REGIME SEMIABERTO E 10 DIAS MULTA"],
+            index=pd.Index(["0001"], name="npu"),
+        )
+        parte = pd.Series(["JOAO DA SILVA", "PEDRO SOUZA"],
+                          index=pd.Index(["0001", "0001"], name="npu"))
+        tipo = pd.Series(["DEFENDANT", "DEFENDANT"], index=parte.index)
+        return DecisionParser(text, parte=parte, tipo_parte=tipo, classes=["APN"])
+
+    def test_parse_parte_apn_no_crash(self):
+        out = self._multi_party_apn().parse_parte()
+        self.assertIn("prisao_dias", out.columns)
+        self.assertTrue(pd.api.types.is_numeric_dtype(out["prisao_dias"]))
+
+    def test_clean_penas_coerces_object_numeric_captures(self):
+        # a numeric pena column arriving object-typed with noisy strings must
+        # not blow up the prisao_dias arithmetic
+        dp = self._multi_party_apn()
+        df = pd.DataFrame({
+            "key": ["CONDENO", "CONDENO"],
+            "regime": ["SEMIABERTO", None],
+            "years": pd.Series(["08", "DEZ"], dtype=object),
+            "months": pd.Series(["6", None], dtype=object),
+            "days": pd.Series(["15", "1000,00"], dtype=object),
+        })
+        out = dp._clean_penas(df)
+        self.assertTrue(pd.api.types.is_numeric_dtype(out["prisao_dias"]))
+        # 8y -> 2920, +6m -> 180, +15d -> 15 = 3115 ; 'DEZ'->10y? extract_number
+        # handles it, but object arithmetic must at least be finite & numeric
+        self.assertTrue(out["prisao_dias"].notna().all())
