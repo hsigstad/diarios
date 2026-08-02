@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import re
 from typing import Any, Dict, List, Optional, Union
 
 import pandas as pd
@@ -232,6 +233,60 @@ def is_number_antigo(number: pd.Series, tribunal: pd.Series) -> pd.Series:
     return df["is_antigo"]
 
 
+# Réu-verified regex conversion rules (see the improbidade pipeline harness
+# `source/figure/verify_number_antigo.py`). Each rule maps an old-format string
+# to the CNJ components (NNNNNNN, AAAA, OOOO) via a pure formula; J and TR come
+# from tribunal.csv. Only tribunals whose old sequential maps DETERMINISTICALLY
+# to the CNJ number are listed — tribunals that re-sequenced their cases at the
+# CNJ migration (TJCE, TJPA, TJPE, TJPI, TJRR, ...) have no such formula and are
+# deliberately absent; forcing a rule for them fails réu verification (~50% or
+# worse) and would emit confident-but-wrong NPUs.
+#
+# Exact-match rates against réu-matched (old, CNJ) gold pairs, 2026-08-02:
+#   TJRO  94.0%  (8.2k parsed / 8.6k gold);  NNNNNNN = seq6 + trailing digit
+#   TJPB  90.8%  (4.6k gold);                NNNNNNN = seq6, OOOO = comarca*10+1
+# The residual is genuine re-filing / sub-foro reassignment, not rule error.
+_ANTIGO_REGEX_SPECS: Dict[str, Any] = {
+    # 001.2007.000825-5 -> 0008255-14.2007.8.22.0001
+    "TJRO": (
+        re.compile(r"^(\d{3})\.((?:19|20)\d{2})\.(\d{6})-?(\d)$"),
+        lambda m: (m.group(3) + m.group(4), m.group(2), "0" + m.group(1)),
+    ),
+    # 0011979000259-4 -> 0000259-09.1979.8.15.0011
+    "TJPB": (
+        re.compile(r"^(\d{3})((?:19|20)\d{2})(\d{6})-?\d$"),
+        lambda m: (m.group(3).zfill(7), m.group(2), str(int(m.group(1)) * 10 + 1).zfill(4)),
+    ),
+}
+
+
+def _convert_antigo_regex(number: pd.Series, tribunal: pd.Series) -> pd.Series:
+    """Convert old numbers to CNJ via the réu-verified per-tribunal formulas.
+
+    Returns a Series aligned to ``number`` with a CNJ string where a rule for
+    that tribunal matched the old format, else ``pd.NA``. The check digit is
+    recomputed from scratch (the old trailing digit is not the CNJ verificador).
+    """
+    out = pd.Series(pd.NA, index=number.index, dtype="object")
+    for trib, (rx, fn) in _ANTIGO_REGEX_SPECS.items():
+        mask = (tribunal == trib).fillna(False)
+        if not mask.any():
+            continue
+        j = str(transform(pd.Series([trib]), "tribunal", "code_j").iloc[0])
+        tr = str(transform(pd.Series([trib]), "tribunal", "code_tr").iloc[0]).zfill(2)
+        for idx in number.index[mask.values]:
+            s = str(number[idx]).replace(" ", "")
+            m = rx.match(s)
+            if not m:
+                continue
+            n, aaaa, oooo = fn(m)
+            dd = get_verificador_cnj(n, aaaa + j + tr + oooo)
+            if dd is None:
+                continue
+            out.loc[idx] = f"{n}-{dd}.{aaaa}.{j}.{tr}.{oooo}"
+    return out
+
+
 def convert_number_antigo(
     number: Union[List[str], pd.Series],
     tribunal: pd.Series,
@@ -253,24 +308,46 @@ def convert_number_antigo(
     # TJSP: 660.01.2010.002107-1 -> 0002107-31.2010.8.26.0660
     # TJSC: 011.11.008037-9 -> 0008037-57.2011.8.24.0011
     # TJMS: 018.07.001979-4 -> 0001979-89.2007.8.12.0018
-    # TJTO: 2008.0003.0041-8 -> 5000033-46.2008.827.2733 (no pattern?)
-    # TJPB: 0342011000042-8 -> ???
+    # TJRO: 001.2007.000825-5 -> 0008255-14.2007.8.22.0001  (regex path)
+    # TJPB: 0011979000259-4 -> 0000259-09.1979.8.15.0011    (regex path)
     # TJSE: not transitioned to numeracao unica
     # TJGO: 200803065609 -> 306560-09.2008.8.09.0120 (how to get oooo?)
     if isinstance(number, list):
         number = pd.Series(number)
+    if not isinstance(tribunal, pd.Series):
+        tribunal = pd.Series(list(tribunal), index=number.index)
+    # Réu-verified regex tribunals (TJRO, TJPB, ...) take precedence; the
+    # legacy positional-split path below handles TRF2/TJSP/TJMS/TJSC.
+    regex_cnj = _convert_antigo_regex(number, tribunal)
     antigo = clean_number_antigo(number, tribunal)
     antigo.loc[is_number_antigo(antigo, tribunal) == False] = pd.NA
     df = antigo.str.split(r"[.\-]", expand=True)
     df.columns = df.columns.map(str)
-    df["j"] = transform(tribunal, "tribunal", "code_j").astype(str)
-    df["tr"] = transform(tribunal, "tribunal", "code_tr").astype(str).str.zfill(2)
+    # Guarantee the columns the legacy _get_* helpers index into exist, so an
+    # all-NA split (an unsupported tribunal) yields NA instead of a KeyError.
+    for _c in ("0", "1", "2", "3"):
+        if _c not in df.columns:
+            df[_c] = pd.NA
+    # via Int64 so an unknown tribunal (NaN code, which floats the column) does
+    # not render as "8.0"/"24.0" and corrupt the check-digit input.
+    df["j"] = transform(tribunal, "tribunal", "code_j").astype("Int64").astype("string")
+    df["tr"] = (
+        transform(tribunal, "tribunal", "code_tr")
+        .astype("Int64").astype("string").str.zfill(2)
+    )
     df["tribunal"] = tribunal
     df["aaaa"] = _get_aaaa(df)
     df["oooo"] = _get_oooo(df)
     df["n"] = _get_n(df)
+    # Normalize the CNJ components to a single string dtype so concatenation is
+    # NA-propagating and does not mix arrow-string with object/null columns
+    # (a legacy tribunal absent from this batch leaves aaaa/oooo all-NA).
+    for _c in ("n", "aaaa", "j", "tr", "oooo"):
+        df[_c] = df[_c].astype("string")
     df["remainder"] = df["aaaa"] + df["j"] + df["tr"] + df["oooo"]
-    df["dd"] = df.apply(lambda x: get_verificador_cnj(x.n, x.remainder), axis=1)
+    df["dd"] = df.apply(
+        lambda x: get_verificador_cnj(x.n, x.remainder), axis=1
+    ).astype("string")
     cnj = (
         df["n"]
         + "-"
@@ -284,19 +361,43 @@ def convert_number_antigo(
         + "."
         + df["oooo"]
     )
+    # Regex-path conversions (TJRO, TJPB, ...) win where present.
+    cnj = regex_cnj.combine_first(cnj)
     if errors == "ignore":
         cnj.loc[cnj.isnull()] = number
     return cnj
 
 
+def _scol(df: pd.DataFrame, mask: pd.Series, col: str) -> pd.Series:
+    """Masked split-column as ``string`` dtype (null-safe under arrow strings)."""
+    return df.loc[mask, col].astype("string")
+
+
+def _tjsp2_mask(df: pd.DataFrame) -> pd.Series:
+    """TJSP rows written in the shorter 050.06.071816-1 form (year in col 1)."""
+    return (df.tribunal == "TJSP") & (df["2"].astype("string").str.len() > 4)
+
+
 def _get_aaaa(df: pd.DataFrame) -> pd.Series:
-    """Extract the four-digit year component from old-format case numbers."""
+    """Extract the four-digit year component from old-format case numbers.
+
+    Each per-tribunal rule is applied on its masked subset only, so an all-NA
+    split (an unsupported / regex-path tribunal) leaves ``aaaa`` as NA instead
+    of raising on arithmetic over null columns.
+    """
     df = df.copy()
     df["aaaa"] = pd.NA
-    df.loc[df.tribunal == "TRF2", "aaaa"] = df["0"]
-    df.loc[df.tribunal == "TJSP", "aaaa"] = df["2"]
-    tjsp2 = (df.tribunal == "TJSP") & (df["2"].str.len() > 4) # 050.06.071816-1:
-    df.loc[df.tribunal.isin(["TJMS", "TJSC"]) | tjsp2, "aaaa"] = "20" + df["1"]
+    for m, col in ((df.tribunal == "TRF2", "0"), (df.tribunal == "TJSP", "2")):
+        if m.any():
+            df.loc[m, "aaaa"] = _scol(df, m, col)
+    mask = df.tribunal.isin(["TJMS", "TJSC"]) | _tjsp2_mask(df)
+    if mask.any():
+        # Two-digit year -> four-digit, pivoting at 30 so pre-2000 cases (YY
+        # 31-99) become 19xx rather than a nonsensical 20xx (96 -> 1996).
+        yy = _scol(df, mask, "1")
+        prefix = pd.Series("20", index=yy.index, dtype="string")
+        prefix[pd.to_numeric(yy, errors="coerce") > 30] = "19"
+        df.loc[mask, "aaaa"] = prefix.str.cat(yy)
     return df.aaaa
 
 
@@ -304,9 +405,12 @@ def _get_oooo(df: pd.DataFrame) -> pd.Series:
     """Extract the four-digit origin court code from old-format case numbers."""
     df = df.copy()
     df["oooo"] = pd.NA
-    df.loc[df.tribunal == "TRF2", "oooo"] = df["1"] + df["2"]
-    df.loc[df.tribunal == "TJSP", "oooo"] = "0" + df["0"]
-    df.loc[df.tribunal.isin(["TJMS", "TJSC"]), "oooo"] = "0" + df["0"]
+    trf2 = df.tribunal == "TRF2"
+    if trf2.any():
+        df.loc[trf2, "oooo"] = _scol(df, trf2, "1").str.cat(_scol(df, trf2, "2"))
+    origin0 = df.tribunal.isin(["TJSP", "TJMS", "TJSC"])
+    if origin0.any():
+        df.loc[origin0, "oooo"] = "0" + _scol(df, origin0, "0")
     return df.oooo
 
 
@@ -314,11 +418,13 @@ def _get_n(df: pd.DataFrame) -> pd.Series:
     """Extract the seven-digit sequential number from old-format case numbers."""
     df = df.copy()
     df["n"] = pd.NA
-    df.loc[df.tribunal == "TRF2", "n"] = df["3"]
-    df.loc[df.tribunal == "TJSP", "n"] = df["3"]
-    tjsp2 = (df.tribunal == "TJSP") & (df["2"].str.len() > 4) # 050.06.071816-1:
-    df.loc[df.tribunal.isin(["TJMS", "TJSC"]) | tjsp2, "n"] = df["2"]
-    df["n"] = df["n"].fillna("").str.zfill(7)
+    for m, col in ((df.tribunal == "TRF2", "3"), (df.tribunal == "TJSP", "3")):
+        if m.any():
+            df.loc[m, "n"] = _scol(df, m, col)
+    mask = df.tribunal.isin(["TJMS", "TJSC"]) | _tjsp2_mask(df)
+    if mask.any():
+        df.loc[mask, "n"] = _scol(df, mask, "2")
+    df["n"] = df["n"].fillna("").astype("string").str.zfill(7)
     return df.n
 
 
