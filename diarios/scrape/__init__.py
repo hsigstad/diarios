@@ -2,6 +2,6 @@
 
 from __future__ import annotations
 
-from . import datajud
+from . import datajud, proxy
 
-__all__ = ["datajud"]
+__all__ = ["datajud", "proxy"]
