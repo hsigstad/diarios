@@ -248,7 +248,10 @@ def is_number_antigo(number: pd.Series, tribunal: pd.Series) -> pd.Series:
 # Exact-match rates against réu-matched (old, CNJ) gold pairs, 2026-08-02:
 #   TJRO  94.0%  (8.2k parsed / 8.6k gold);  NNNNNNN = seq6 + trailing digit
 #   TJPB  90.8%  (4.6k gold);                NNNNNNN = seq6, OOOO = comarca*10+1
-# The residual is genuine re-filing / sub-foro reassignment, not rule error.
+#   TRF4  90.5%  (325 parsed / 408 gold);    OOOO = seção·100+vara, NNNNNNN = seq
+# The residual is genuine re-filing / sub-foro reassignment, not rule error
+# (TRF4 residual clusters at the 2008-2009 migration boundary and preserves the
+# correct OOOO, so even a mismatched NPU lands in the right vara/municipality).
 _ANTIGO_REGEX_SPECS: Dict[str, Any] = {
     # 001.2007.000825-5 -> 0008255-14.2007.8.22.0001
     "TJRO": (
@@ -259,6 +262,17 @@ _ANTIGO_REGEX_SPECS: Dict[str, Any] = {
     "TJPB": (
         re.compile(r"^(\d{3})((?:19|20)\d{2})(\d{6})-?\d$"),
         lambda m: (m.group(3).zfill(7), m.group(2), str(int(m.group(1)) * 10 + 1).zfill(4)),
+    ),
+    # [4]1999.70.05.003713-2 -> 0003713-05.1999.4.04.7005 (réu-verified 2026-08-14).
+    # Old federal format YYYY.SS.VV.NNNNNN-D: OOOO = SS·100+VV (seção+vara),
+    # NNNNNNN = sequential preserved. The optional leading "4" is the justiça
+    # segment the diário prepends. The tribunal HQ / 2nd-instance stratum
+    # (VV == 00, e.g. 1999.71.00.*) RE-SEQUENCED at migration — the old seq has
+    # no CNJ relation there — so it is excluded (negative lookahead) rather than
+    # converted to a confident-wrong NPU. Same arithmetic as the TRF2 legacy path.
+    "TRF4": (
+        re.compile(r"^4?((?:19|20)\d{2})\.(\d{2})\.(?!00)(\d{2})\.(\d{6})-?\d?$"),
+        lambda m: (m.group(4).zfill(7), m.group(1), m.group(2) + m.group(3)),
     ),
 }
 
