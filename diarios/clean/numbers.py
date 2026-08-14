@@ -238,9 +238,12 @@ def is_number_antigo(number: pd.Series, tribunal: pd.Series) -> pd.Series:
 # to the CNJ components (NNNNNNN, AAAA, OOOO) via a pure formula; J and TR come
 # from tribunal.csv. Only tribunals whose old sequential maps DETERMINISTICALLY
 # to the CNJ number are listed — tribunals that re-sequenced their cases at the
-# CNJ migration (TJCE, TJPA, TJPE, TJPI, TJRR, ...) have no such formula and are
+# CNJ migration (TJCE, TJPE, TJPI, TJRR, ...) have no such formula and are
 # deliberately absent; forcing a rule for them fails réu verification (~50% or
 # worse) and would emit confident-but-wrong NPUs.
+#
+# TJPA does NOT re-sequence; its old numbers dk-match the CNJ sequential
+# directly for ~half the cases, so no formula is added and none is needed.
 #
 # Exact-match rates against réu-matched (old, CNJ) gold pairs, 2026-08-02:
 #   TJRO  94.0%  (8.2k parsed / 8.6k gold);  NNNNNNN = seq6 + trailing digit
