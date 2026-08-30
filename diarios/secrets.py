@@ -12,12 +12,17 @@ REASONING (the candidate order is not arbitrary)
     at the SAME home-relative path under both sandbox runtimes (docker binds host ~/secrets into
     /home/henrik/secrets; apptainer keeps host $HOME), so it needs no env var. The in-tree
     <workspace-root>/.secrets/research.env candidates stay BELOW it as a fallback for a checkout
-    that still carries that file, resolved three ways for the places a scraper runs:
+    that still carries that file, and they cover two of the three places a scraper runs:
       - host session, cwd inside the tree        -> module-relative root, or the CWD walk-up
       - sandbox jailed at the workspace root     -> /workspace/.secrets/research.env
-      - sandbox jailed at a project dir          -> the workspace root is NOT /workspace, but
-        apptainer auto-binds /projects, so the module-relative root still resolves whenever
-        diarios is imported from the tree (editable install / PYTHONPATH).
+      - sandbox jailed at a project dir          -> NOTHING in-tree resolves, which is exactly
+        why HOME_STORE is ranked first. Apptainer auto-mounts two things, $HOME (at its host
+        path) and the cwd; it does NOT bind /projects. The parent dirs it synthesises to carry
+        the cwd mount are empty stubs — with cwd=projects/procure the container's
+        /projects/ec113/henrik/research/ holds only projects/, while packages/, .secrets/ and
+        research-kit/ are absent. So both in-tree candidates miss, and diarios cannot even be
+        imported from the tree unless it is bound in (or PYTHONPATH'd to a mounted copy).
+        Verified 2026-08-30 against claude-sandbox.sif; also in research/rules/secrets.md.
     $RESEARCH_SECRETS wins outright so a test or a one-off can point elsewhere; the legacy
     ~/.config/research/secrets.env stays last so a machine still holding the old file works.
     NOTE ~/research is NOT a candidate: on educloud that path exists but is an unrelated
