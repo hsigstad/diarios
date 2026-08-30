@@ -1,15 +1,18 @@
 """diarios.secrets — the one resolver for the shared cross-cutting secrets file.
 
 INTENT
-    Cross-repo API keys (TWOCAPTCHA_API_KEY, DECODO_*) live in ONE file outside every git
-    repo: <workspace-root>/.secrets/research.env (see research/rules/secrets.md). Consumers
-    used to hardcode `Path.home() / ".config/research/secrets.env"`, and the relocation on
-    2026-08-25 showed why that doesn't scale: every hardcoded copy has to be found and
-    edited. This module is the single place that knows where the file is — import it rather
-    than re-deriving the path, the same reason research-kit/tools/workspace_root.py exists.
+    Cross-repo API keys (TWOCAPTCHA_API_KEY, DECODO_*, OPENAI_API_KEY, ...) live in ONE
+    canonical store outside every project git repo: ~/secrets/secrets.env, an age-managed
+    secrets repo (2026-08-28). Consumers used to hardcode the path; this module is the single
+    place that knows where the file is — import it rather than re-deriving, the same reason
+    research-kit/tools/workspace_root.py exists.
 
 REASONING (the candidate order is not arbitrary)
-    A scraper runs in three places, and each needs a different candidate to win:
+    ~/secrets/secrets.env is preferred: it is the full, actively-maintained store and resolves
+    at the SAME home-relative path under both sandbox runtimes (docker binds host ~/secrets into
+    /home/henrik/secrets; apptainer keeps host $HOME), so it needs no env var. The in-tree
+    <workspace-root>/.secrets/research.env candidates stay BELOW it as a fallback for a checkout
+    that still carries that file, resolved three ways for the places a scraper runs:
       - host session, cwd inside the tree        -> module-relative root, or the CWD walk-up
       - sandbox jailed at the workspace root     -> /workspace/.secrets/research.env
       - sandbox jailed at a project dir          -> the workspace root is NOT /workspace, but
@@ -30,6 +33,7 @@ import os
 from pathlib import Path
 
 REL = ".secrets/research.env"
+HOME_STORE = Path.home() / "secrets/secrets.env"        # canonical age-managed store (2026-08-28+)
 LEGACY = Path.home() / ".config/research/secrets.env"   # pre-2026-08-25 location
 
 
@@ -38,6 +42,10 @@ def secret_files() -> list[Path]:
     cands: list[Path] = []
     if env := os.environ.get("RESEARCH_SECRETS"):
         cands.append(Path(env).expanduser())
+    # ~/secrets/secrets.env is the canonical store: a superset of the in-tree file and reachable
+    # at the same home-relative path under both sandbox runtimes (docker binds host ~/secrets into
+    # /home/henrik/secrets; apptainer keeps host $HOME). Path.home()-relative, so CWD-independent.
+    cands.append(HOME_STORE)
     if ws := os.environ.get("RESEARCH_WORKSPACE"):
         cands.append(Path(ws).expanduser() / REL)
     # <root>/packages/diarios/diarios/secrets.py -> <root>  (holds when imported from the tree)
