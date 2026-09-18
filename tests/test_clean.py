@@ -1289,6 +1289,38 @@ class TestGetComarcaId(unittest.TestCase):
         with self.assertRaises(Exception):
             clean.get_comarca_id()
 
+    def test_geo_route_default_year_matches_frozen(self):
+        # default-year geo lookup reproduces the legacy frozen municipio.csv value
+        m = clean.get_data("municipio.csv")
+        m = m.dropna(subset=["comarca_id"]).head(200).reset_index(drop=True)
+        got = clean.get_comarca_id(municipio_id=m.municipio_id)
+        pd.testing.assert_series_equal(
+            got.reset_index(drop=True), m.comarca_id, check_names=False
+        )
+
+    def test_year_rejected_on_case_route(self):
+        with self.assertRaises(ValueError):
+            clean.get_comarca_id(pd.Series(["0002107-31.2010.8.26.0660"]), year=2018)
+
+    def test_multiple_keys_raise(self):
+        with self.assertRaises(ValueError):
+            clean.get_comarca_id(pd.Series(["x"]), municipio_id=pd.Series([1.0]))
+
+
+class TestGetSubsecaoId(unittest.TestCase):
+
+    def test_geo_route_default_year_matches_frozen(self):
+        m = clean.get_data("municipio.csv")
+        m = m.dropna(subset=["subsecao_id"]).head(200).reset_index(drop=True)
+        got = clean.get_subsecao_id(municipio_id=m.municipio_id)
+        pd.testing.assert_series_equal(
+            got.reset_index(drop=True), m.subsecao_id, check_names=False
+        )
+
+    def test_requires_exactly_one_key(self):
+        with self.assertRaises(ValueError):
+            clean.get_subsecao_id()
+
 
 class TestGetCadernoId(unittest.TestCase):
 

@@ -29,6 +29,7 @@ __all__ = [
     "get_foro_id",
     "get_foro",
     "get_comarca_id",
+    "get_subsecao_id",
     "get_comarca",
     "get_foro_info",
     "get_caderno_id",
@@ -354,37 +355,146 @@ def get_foro(numbers: pd.Series) -> pd.Series:
     return get_foro_info(numbers).loc[:, "foro"]
 
 
+# The municipio_year__comarca / __subsecao panels are frozen at the 2018 snapshot
+# vintage, and that cross-section is value-identical to the legacy single-value
+# comarca_id/subsecao_id columns that used to live in municipio.csv. So an
+# unspecified-year lookup (year=DEFAULT_JURISDICTION_YEAR) reproduces the old
+# frozen behaviour exactly, while callers with a real event year opt into the
+# time-varying answer by passing it.
+DEFAULT_JURISDICTION_YEAR = 2018
+
+
+def _jurisdiction_asof(
+    municipio_id: pd.Series, year: int, panel_file: str, id_col: str
+) -> pd.Series:
+    """As-of lookup against a municipio_year panel (``id_col | municipio_id | year``).
+
+    Returns, per município, the ``id_col`` from the latest dated layer whose year
+    is <= ``year`` (NaN if the requested year precedes every layer). Index and
+    order follow ``municipio_id``.
+    """
+    panel = get_data(panel_file)
+    eligible = panel[panel["year"] <= year]
+    if eligible.empty:
+        return pd.Series(pd.NA, index=municipio_id.index, name=id_col)
+    seat = (
+        eligible.sort_values("year")
+        .drop_duplicates("municipio_id", keep="last")
+        .set_index("municipio_id")[id_col]
+    )
+    out = municipio_id.map(seat)
+    out.name = id_col
+    return out
+
+
 def get_comarca_id(
     number: Optional[pd.Series] = None,
     comarca: Optional[pd.Series] = None,
     tribunal: Optional[pd.Series] = None,
+    *,
+    num_cnj: Optional[pd.Series] = None,
+    foro: Optional[pd.Series] = None,
+    municipio_id: Optional[pd.Series] = None,
+    ibge7: Optional[pd.Series] = None,
+    year: Optional[int] = None,
 ) -> pd.Series:
-    """Return comarca IDs from case numbers or comarca/tribunal pair.
+    """Resolve comarca_id (= the comarca-seat município_id) by one of three routes.
+
+    Exactly one primary key must be given; new keys are keyword-only.
+
+    Case route — decode the court location from the case itself (``year`` rejected):
+        ``number=`` / ``num_cnj=``  CNJ case-number series (``num_cnj`` aliases ``number``)
+        ``foro=``                   foro-id series
+      Returns the município where the case's foro sits.
+
+    Name route — look up by comarca + tribunal name (``year`` rejected):
+        ``comarca=`` with ``tribunal=``
+
+    Geo route — the time-varying município→comarca jurisdiction (the panel):
+        ``municipio_id=`` or ``ibge7=`` , optional ``year=`` (default
+        ``DEFAULT_JURISDICTION_YEAR`` = 2018). Returns the comarca the município
+        belonged to as of ``year`` (the latest dated layer with year <= ``year``).
 
     Args:
-        number: Case number series (used if provided).
-        comarca: Comarca name series (used with ``tribunal``).
-        tribunal: Tribunal name series (used with ``comarca``).
+        number/num_cnj: CNJ case-number series (case route).
+        comarca, tribunal: comarca + tribunal name series (name route).
+        foro: foro-id series (case route).
+        municipio_id, ibge7: município key series (geo route).
+        year: jurisdiction year; geo route only, defaults to 2018.
 
     Returns:
-        Series of comarca IDs.
+        Series of comarca IDs, aligned to the input.
 
     Raises:
-        Exception: If neither ``number`` nor both ``comarca`` and ``tribunal`` are provided.
+        ValueError: on zero or multiple primary keys, a missing ``tribunal``, or
+            ``year`` supplied to a non-geo route.
     """
-    if number is not None:
-        comarca_id = get_foro_info(number).loc[:, "municipio_id"]
-    elif comarca is not None and tribunal is not None:
+    number = number if number is not None else num_cnj
+    routes = {
+        "number": number is not None,
+        "foro": foro is not None,
+        "comarca": comarca is not None,
+        "municipio_id": municipio_id is not None,
+        "ibge7": ibge7 is not None,
+    }
+    active = [k for k, on in routes.items() if on]
+    if len(active) != 1:
+        raise ValueError(
+            "get_comarca_id: specify exactly one of number/num_cnj, foro, "
+            f"comarca(+tribunal), municipio_id, ibge7 (got {active or 'none'})."
+        )
+    route = active[0]
+    if year is not None and route not in ("municipio_id", "ibge7"):
+        raise ValueError(
+            "get_comarca_id: `year` applies only to the municipio_id/ibge7 (geo) route."
+        )
+
+    if route == "number":
+        return get_foro_info(number).loc[:, "municipio_id"]
+    if route == "foro":
+        return transform(foro, "foro", "municipio_id")  # foro -> seat município_id
+    if route == "comarca":
+        if tribunal is None:
+            raise ValueError("get_comarca_id: `comarca` requires `tribunal`.")
         df = pd.DataFrame(
             {"comarca": comarca, "tribunal": tribunal, "index": comarca.index}
         )
-        comarca = get_data("comarca.csv")
-        df = df.merge(comarca, on=["tribunal", "comarca"], how="left", validate="m:1")
+        cdf = get_data("comarca.csv")
+        df = df.merge(cdf, on=["tribunal", "comarca"], how="left", validate="m:1")
         df.index = df["index"]
-        comarca_id = df["comarca_id"]
-    else:
-        raise Exception("Either number or comarca and" " tribunal must be specified")
-    return comarca_id
+        return df["comarca_id"]
+    # geo route
+    mid = municipio_id if municipio_id is not None else transform(ibge7, "ibge7", "municipio_id")
+    if not isinstance(mid, pd.Series):
+        mid = pd.Series(mid)
+    y = DEFAULT_JURISDICTION_YEAR if year is None else int(year)
+    return _jurisdiction_asof(mid, y, "municipio_year__comarca.csv", "comarca_id")
+
+
+def get_subsecao_id(
+    *,
+    municipio_id: Optional[pd.Series] = None,
+    ibge7: Optional[pd.Series] = None,
+    year: Optional[int] = None,
+) -> pd.Series:
+    """Resolve subsecao_id (= the subseção-seat município_id) for a município.
+
+    Geo route only: ``municipio_id=`` or ``ibge7=`` with optional ``year=``
+    (default ``DEFAULT_JURISDICTION_YEAR`` = 2018), as-of the latest dated layer
+    with year <= ``year``, from the municipio_year__subsecao panel. There is no
+    federal case-number route (the foro table is comarca-level); see
+    ``get_comarca_id`` for the routing rationale.
+
+    Raises:
+        ValueError: unless exactly one of ``municipio_id`` / ``ibge7`` is given.
+    """
+    if (municipio_id is None) == (ibge7 is None):
+        raise ValueError("get_subsecao_id: specify exactly one of municipio_id, ibge7.")
+    mid = municipio_id if municipio_id is not None else transform(ibge7, "ibge7", "municipio_id")
+    if not isinstance(mid, pd.Series):
+        mid = pd.Series(mid)
+    y = DEFAULT_JURISDICTION_YEAR if year is None else int(year)
+    return _jurisdiction_asof(mid, y, "municipio_year__subsecao.csv", "subsecao_id")
 
 
 def get_comarca(numbers: pd.Series) -> pd.Series:
