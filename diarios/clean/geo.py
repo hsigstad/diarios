@@ -364,6 +364,20 @@ def get_foro(numbers: pd.Series) -> pd.Series:
 DEFAULT_JURISDICTION_YEAR = 2018
 
 
+def _seat_from_case(
+    number: Optional[pd.Series], foro: Optional[pd.Series]
+) -> pd.Series:
+    """The seat município of a case's foro, from a CNJ number or a foro id.
+
+    Works for both state (code_j=8) and federal (code_j=4) foros — foro.csv
+    carries all five TRFs, whose seat município is the subseção seat. So this is
+    the shared case route for get_comarca_id (state) and get_subsecao_id (federal).
+    """
+    if number is not None:
+        return get_foro_info(number).loc[:, "municipio_id"]
+    return transform(foro, "foro", "municipio_id")
+
+
 def _jurisdiction_asof(
     municipio_id: pd.Series, year: int, panel_file: str, id_col: str
 ) -> pd.Series:
@@ -449,10 +463,8 @@ def get_comarca_id(
             "get_comarca_id: `year` applies only to the municipio_id/ibge7 (geo) route."
         )
 
-    if route == "number":
-        return get_foro_info(number).loc[:, "municipio_id"]
-    if route == "foro":
-        return transform(foro, "foro", "municipio_id")  # foro -> seat município_id
+    if route in ("number", "foro"):
+        return _seat_from_case(number, foro)
     if route == "comarca":
         if tribunal is None:
             raise ValueError("get_comarca_id: `comarca` requires `tribunal`.")
@@ -473,23 +485,49 @@ def get_comarca_id(
 
 def get_subsecao_id(
     *,
+    number: Optional[pd.Series] = None,
+    num_cnj: Optional[pd.Series] = None,
+    foro: Optional[pd.Series] = None,
     municipio_id: Optional[pd.Series] = None,
     ibge7: Optional[pd.Series] = None,
     year: Optional[int] = None,
 ) -> pd.Series:
-    """Resolve subsecao_id (= the subseção-seat município_id) for a município.
+    """Resolve subsecao_id (= the subseção-seat município_id). Federal twin of
+    get_comarca_id; exactly one primary key, all keyword-only.
 
-    Geo route only: ``municipio_id=`` or ``ibge7=`` with optional ``year=``
-    (default ``DEFAULT_JURISDICTION_YEAR`` = 2018), as-of the latest dated layer
-    with year <= ``year``, from the municipio_year__subsecao panel. There is no
-    federal case-number route (the foro table is comarca-level); see
-    ``get_comarca_id`` for the routing rationale.
+    Case route — decode the subseção from the (federal) case itself (``year``
+    rejected): ``number=`` / ``num_cnj=`` CNJ series, or ``foro=`` foro-id series.
+    foro.csv carries all five TRFs, so a federal case's foro seat is its subseção
+    seat.
+
+    Geo route — the time-varying município→subseção jurisdiction:
+        ``municipio_id=`` or ``ibge7=`` , optional ``year=`` (default 2018), as-of
+        the latest dated layer with year <= ``year``, from the
+        municipio_year__subsecao panel.
 
     Raises:
-        ValueError: unless exactly one of ``municipio_id`` / ``ibge7`` is given.
+        ValueError: on zero or multiple primary keys, or ``year`` on the case route.
     """
-    if (municipio_id is None) == (ibge7 is None):
-        raise ValueError("get_subsecao_id: specify exactly one of municipio_id, ibge7.")
+    number = number if number is not None else num_cnj
+    routes = {
+        "number": number is not None,
+        "foro": foro is not None,
+        "municipio_id": municipio_id is not None,
+        "ibge7": ibge7 is not None,
+    }
+    active = [k for k, on in routes.items() if on]
+    if len(active) != 1:
+        raise ValueError(
+            "get_subsecao_id: specify exactly one of number/num_cnj, foro, "
+            f"municipio_id, ibge7 (got {active or 'none'})."
+        )
+    route = active[0]
+    if year is not None and route not in ("municipio_id", "ibge7"):
+        raise ValueError(
+            "get_subsecao_id: `year` applies only to the municipio_id/ibge7 (geo) route."
+        )
+    if route in ("number", "foro"):
+        return _seat_from_case(number, foro)
     mid = municipio_id if municipio_id is not None else transform(ibge7, "ibge7", "municipio_id")
     if not isinstance(mid, pd.Series):
         mid = pd.Series(mid)

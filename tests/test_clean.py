@@ -1321,6 +1321,11 @@ class TestGetSubsecaoId(unittest.TestCase):
         with self.assertRaises(ValueError):
             clean.get_subsecao_id()
 
+    def test_federal_case_route(self):
+        # a federal (code_j=4) CNJ number resolves to its subseção seat
+        result = clean.get_subsecao_id(num_cnj=pd.Series(["0000001-11.2015.4.02.5101"]))
+        self.assertFalse(pd.isna(result.iloc[0]))
+
 
 class TestGetCadernoId(unittest.TestCase):
 
