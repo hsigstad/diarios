@@ -9,7 +9,7 @@ import numpy as np
 import re
 from copy import copy
 
-from diarios.clean.text import clean_text, get_data, get_estado_mapping, title, transform
+from diarios.clean.text import clean_text, get_data, get_data_file, get_estado_mapping, title, transform
 from diarios.clean.numbers import extract_info_from_case_numbers
 
 __all__ = [
@@ -481,7 +481,8 @@ def get_comarca_id(
         df.index = df["index"]
         return df["comarca_id"]
     # geo route
-    mid = municipio_id if municipio_id is not None else transform(ibge7, "ibge7", "municipio_id")
+    mid = municipio_id if municipio_id is not None else transform(
+        ibge7, "ibge7", "municipio_id", infile=get_data_file("municipio.csv"))
     if not isinstance(mid, pd.Series):
         mid = pd.Series(mid)
     y = DEFAULT_JURISDICTION_YEAR if year is None else int(year)
@@ -533,7 +534,8 @@ def get_subsecao_id(
         )
     if route in ("number", "foro"):
         return _seat_from_case(number, foro)
-    mid = municipio_id if municipio_id is not None else transform(ibge7, "ibge7", "municipio_id")
+    mid = municipio_id if municipio_id is not None else transform(
+        ibge7, "ibge7", "municipio_id", infile=get_data_file("municipio.csv"))
     if not isinstance(mid, pd.Series):
         mid = pd.Series(mid)
     y = DEFAULT_JURISDICTION_YEAR if year is None else int(year)
