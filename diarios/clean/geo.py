@@ -396,7 +396,12 @@ def _jurisdiction_asof(
         .drop_duplicates("municipio_id", keep="last")
         .set_index("municipio_id")[id_col]
     )
-    out = municipio_id.map(seat)
+    seat.index = seat.index.astype("float64")
+    # coerce the lookup key to float so Int64/object municipio_id still matches
+    # the float-keyed panel (mirrors what transform()'s join does)
+    keys = pd.to_numeric(municipio_id, errors="coerce").astype("float64")
+    out = keys.map(seat)
+    out.index = municipio_id.index
     out.name = id_col
     return out
 
