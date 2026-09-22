@@ -1289,14 +1289,22 @@ class TestGetComarcaId(unittest.TestCase):
         with self.assertRaises(Exception):
             clean.get_comarca_id()
 
-    def test_geo_route_default_year_matches_frozen(self):
-        # default-year geo lookup reproduces the legacy frozen municipio.csv value
-        m = clean.get_data("municipio.csv")
-        m = m.dropna(subset=["comarca_id"]).head(200).reset_index(drop=True)
-        got = clean.get_comarca_id(municipio_id=m.municipio_id)
-        pd.testing.assert_series_equal(
-            got.reset_index(drop=True), m.comarca_id, check_names=False
-        )
+    def test_geo_route_asof_matches_panel(self):
+        # the geo route now as-of-joins the municipio_year__comarca panel (NOT the
+        # frozen municipio.csv column, which the case-flow layer supersedes). Verify
+        # the as-of logic against the panel on a município that changed comarca
+        # (a merger): the early year gets the old comarca, a later year the new one.
+        panel = clean.get_data("municipio_year__comarca.csv")
+        nun = panel.groupby("municipio_id").comarca_id.nunique()
+        changed = nun[nun > 1].index
+        self.assertTrue(len(changed) > 0)  # the panel is year-aware
+        mid = changed[0]
+        sub = panel[panel.municipio_id == mid].sort_values("year")
+        y0, c0 = int(sub.year.iloc[0]), sub.comarca_id.iloc[0]
+        y1, c1 = int(sub.year.iloc[-1]), sub.comarca_id.iloc[-1]
+        self.assertNotEqual(c0, c1)
+        self.assertEqual(clean.get_comarca_id(municipio_id=pd.Series([mid]), year=y0).iloc[0], c0)
+        self.assertEqual(clean.get_comarca_id(municipio_id=pd.Series([mid]), year=y1).iloc[0], c1)
 
     def test_year_rejected_on_case_route(self):
         with self.assertRaises(ValueError):
