@@ -355,12 +355,16 @@ def get_foro(numbers: pd.Series) -> pd.Series:
     return get_foro_info(numbers).loc[:, "foro"]
 
 
-# The municipio_year__comarca / __subsecao panels are frozen at the 2018 snapshot
-# vintage, and that cross-section is value-identical to the legacy single-value
-# comarca_id/subsecao_id columns that used to live in municipio.csv. So an
-# unspecified-year lookup (year=DEFAULT_JURISDICTION_YEAR) reproduces the old
-# frozen behaviour exactly, while callers with a real event year opt into the
-# time-varying answer by passing it.
+# Geo-route default semantics (revised 2026-09-22). An UNSPECIFIED year returns
+# the curated cross-section straight from municipio.csv (via _snapshot_jurisdiction),
+# NOT a panel as-of lookup. This used to be equivalent — the panel was frozen at the
+# 2018 snapshot, value-identical to municipio.csv — but once a higher-priority
+# time-varying layer (caseparty) entered the panel, an as-of-2018 default silently
+# diverged from the audited snapshot for ~327 municípios (the capital-sink
+# regression; see territorio docs/reference/comarca_ipea.md). Reading municipio.csv
+# for the default restores the invariant: default = audited cross-section; callers
+# opt into the time-varying panel only by passing an explicit year=. The constant
+# below documents the snapshot vintage municipio.csv carries.
 DEFAULT_JURISDICTION_YEAR = 2018
 
 
@@ -406,6 +410,19 @@ def _jurisdiction_asof(
     return out
 
 
+def _snapshot_jurisdiction(mid: pd.Series, id_col: str) -> pd.Series:
+    """The stable cross-section value from the curated municipio.csv.
+
+    ``id_col`` is ``comarca_id`` or ``subsecao_id``. This is the authoritative,
+    audited snapshot; the geo route returns it for an UNSPECIFIED year so a
+    time-varying overlay in the panel (e.g. the caseparty layer, which can sink a
+    município into its capital on a noisy year) can never silently displace an
+    audited value. Callers opt into the time-varying panel by passing ``year=``.
+    """
+    return transform(mid, "municipio_id", id_col,
+                     infile=get_data_file("municipio.csv"))
+
+
 def get_comarca_id(
     number: Optional[pd.Series] = None,
     comarca: Optional[pd.Series] = None,
@@ -429,17 +446,21 @@ def get_comarca_id(
     Name route — look up by comarca + tribunal name (``year`` rejected):
         ``comarca=`` with ``tribunal=``
 
-    Geo route — the time-varying município→comarca jurisdiction (the panel):
-        ``municipio_id=`` or ``ibge7=`` , optional ``year=`` (default
-        ``DEFAULT_JURISDICTION_YEAR`` = 2018). Returns the comarca the município
-        belonged to as of ``year`` (the latest dated layer with year <= ``year``).
+    Geo route — the município→comarca jurisdiction:
+        ``municipio_id=`` or ``ibge7=`` , optional ``year=``. With NO ``year`` the
+        curated cross-section from municipio.csv is returned (the audited snapshot).
+        With an explicit ``year`` it returns the comarca the município belonged to
+        as of that year — the latest dated layer with year <= ``year`` from the
+        time-varying panel. (Passing a year opts into the panel; the default never
+        does, so a noisy panel layer can't displace the audited value.)
 
     Args:
         number/num_cnj: CNJ case-number series (case route).
         comarca, tribunal: comarca + tribunal name series (name route).
         foro: foro-id series (case route).
         municipio_id, ibge7: município key series (geo route).
-        year: jurisdiction year; geo route only, defaults to 2018.
+        year: jurisdiction year; geo route only. Omit for the curated snapshot
+            cross-section; pass a year for the time-varying panel as-of lookup.
 
     Returns:
         Series of comarca IDs, aligned to the input.
@@ -485,8 +506,9 @@ def get_comarca_id(
         ibge7, "ibge7", "municipio_id", infile=get_data_file("municipio.csv"))
     if not isinstance(mid, pd.Series):
         mid = pd.Series(mid)
-    y = DEFAULT_JURISDICTION_YEAR if year is None else int(year)
-    return _jurisdiction_asof(mid, y, "municipio_year__comarca.csv", "comarca_id")
+    if year is None:
+        return _snapshot_jurisdiction(mid, "comarca_id")
+    return _jurisdiction_asof(mid, int(year), "municipio_year__comarca.csv", "comarca_id")
 
 
 def get_subsecao_id(
@@ -506,10 +528,11 @@ def get_subsecao_id(
     foro.csv carries all five TRFs, so a federal case's foro seat is its subseção
     seat.
 
-    Geo route — the time-varying município→subseção jurisdiction:
-        ``municipio_id=`` or ``ibge7=`` , optional ``year=`` (default 2018), as-of
-        the latest dated layer with year <= ``year``, from the
-        municipio_year__subsecao panel.
+    Geo route — the município→subseção jurisdiction:
+        ``municipio_id=`` or ``ibge7=`` , optional ``year=``. With NO ``year`` the
+        curated cross-section from municipio.csv is returned; with an explicit
+        ``year`` it is the as-of lookup (latest dated layer with year <= ``year``)
+        from the municipio_year__subsecao panel.
 
     Raises:
         ValueError: on zero or multiple primary keys, or ``year`` on the case route.
@@ -538,8 +561,9 @@ def get_subsecao_id(
         ibge7, "ibge7", "municipio_id", infile=get_data_file("municipio.csv"))
     if not isinstance(mid, pd.Series):
         mid = pd.Series(mid)
-    y = DEFAULT_JURISDICTION_YEAR if year is None else int(year)
-    return _jurisdiction_asof(mid, y, "municipio_year__subsecao.csv", "subsecao_id")
+    if year is None:
+        return _snapshot_jurisdiction(mid, "subsecao_id")
+    return _jurisdiction_asof(mid, int(year), "municipio_year__subsecao.csv", "subsecao_id")
 
 
 def get_comarca(numbers: pd.Series) -> pd.Series:

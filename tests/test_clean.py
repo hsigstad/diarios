@@ -1306,6 +1306,38 @@ class TestGetComarcaId(unittest.TestCase):
         self.assertEqual(clean.get_comarca_id(municipio_id=pd.Series([mid]), year=y0).iloc[0], c0)
         self.assertEqual(clean.get_comarca_id(municipio_id=pd.Series([mid]), year=y1).iloc[0], c1)
 
+    def test_default_year_returns_curated_snapshot(self):
+        # Regression check for the 2026-09-22 capital-sink incident: with NO year
+        # the geo route must return the audited municipio.csv cross-section, never
+        # the panel as-of (whose caseparty layer can sink a município into its
+        # capital). Verify default == municipio.csv comarca_id for every município.
+        m = clean.get_data("municipio.csv").dropna(subset=["comarca_id"])
+        got = clean.get_comarca_id(municipio_id=m.municipio_id.reset_index(drop=True))
+        pd.testing.assert_series_equal(
+            got.reset_index(drop=True),
+            m.comarca_id.reset_index(drop=True),
+            check_names=False,
+        )
+
+    def test_default_differs_from_panel_where_caseparty_overrides(self):
+        # The default must be INSULATED from the panel: on a município the panel
+        # overrides at 2018, the default (snapshot) and the explicit year=2018
+        # (panel) must diverge — proving the default does not read the panel.
+        panel = clean.get_data("municipio_year__comarca.csv")
+        m = clean.get_data("municipio.csv").dropna(subset=["comarca_id"])
+        snap = dict(zip(m.municipio_id, m.comarca_id))
+        p2018 = (panel[panel.year <= 2018].sort_values("year")
+                 .drop_duplicates("municipio_id", keep="last"))
+        overridden = [mid for mid, c in zip(p2018.municipio_id, p2018.comarca_id)
+                      if mid in snap and c != snap[mid]]
+        if not overridden:  # nothing to test if the panel matches the snapshot
+            self.skipTest("no panel/snapshot divergence in this build")
+        mid = overridden[0]
+        default = clean.get_comarca_id(municipio_id=pd.Series([mid])).iloc[0]
+        asof = clean.get_comarca_id(municipio_id=pd.Series([mid]), year=2018).iloc[0]
+        self.assertEqual(default, snap[mid])   # default = audited snapshot
+        self.assertNotEqual(default, asof)     # panel is a different, opt-in answer
+
     def test_year_rejected_on_case_route(self):
         with self.assertRaises(ValueError):
             clean.get_comarca_id(pd.Series(["0002107-31.2010.8.26.0660"]), year=2018)
