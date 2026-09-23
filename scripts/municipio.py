@@ -11,9 +11,12 @@ USAGE (run where the territorio build exists):
     # override the source path:
     TERRITORIO_MUNICIPIO=/path/to/municipio.parquet python scripts/municipio.py
 
-After running, verify `git diff diarios/data/municipio.csv` is EMPTY before
-committing — a non-empty diff means the territorio port diverged from the old
-builder and must be reconciled, not committed.
+After running, review `git diff diarios/data/municipio.csv` before committing. It
+should show ONLY intended changes: as of 2026-09-23 that is the 169 `comarca_id`
+rows where territorio adopted the reconciled resolution ledger (see
+pipelines/territorio docs/reference/comarca_ipea.md). Any change to another column,
+or to more rows, means the territorio port diverged and must be reconciled, not
+committed.
 """
 import os
 
