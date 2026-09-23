@@ -1290,11 +1290,11 @@ class TestGetComarcaId(unittest.TestCase):
             clean.get_comarca_id()
 
     def test_geo_route_asof_matches_panel(self):
-        # the geo route now as-of-joins the municipio_year__comarca panel (NOT the
+        # the geo route now as-of-joins the municipio_year panel (NOT the
         # frozen municipio.csv column, which the case-flow layer supersedes). Verify
         # the as-of logic against the panel on a município that changed comarca
         # (a merger): the early year gets the old comarca, a later year the new one.
-        panel = clean.get_data("municipio_year__comarca.csv")
+        panel = clean.get_data("municipio_year.csv")
         nun = panel.groupby("municipio_id").comarca_id.nunique()
         changed = nun[nun > 1].index
         self.assertTrue(len(changed) > 0)  # the panel is year-aware
@@ -1331,7 +1331,7 @@ class TestGetComarcaId(unittest.TestCase):
         # The default must be INSULATED from the panel: on a município the panel
         # overrides at 2018, the default (snapshot) and the explicit year=2018
         # (panel) must diverge — proving the default does not read the panel.
-        panel = clean.get_data("municipio_year__comarca.csv")
+        panel = clean.get_data("municipio_year.csv")
         m = clean.get_data("municipio__comarca.csv").dropna(subset=["comarca_id"])
         snap = dict(zip(m.municipio_id, m.comarca_id))
         p2018 = (panel[panel.year <= 2018].sort_values("year")

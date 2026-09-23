@@ -385,14 +385,16 @@ def _seat_from_case(
 def _jurisdiction_asof(
     municipio_id: pd.Series, year: int, panel_file: str, id_col: str
 ) -> pd.Series:
-    """As-of lookup against a municipio_year panel (``id_col | municipio_id | year``).
+    """As-of lookup against the municipio_year panel for one attribute column.
 
-    Returns, per município, the ``id_col`` from the latest dated layer whose year
-    is <= ``year`` (NaN if the requested year precedes every layer). Index and
-    order follow ``municipio_id``.
+    Returns, per município, the latest NON-NULL ``id_col`` whose year is <= ``year``
+    (NaN if none). The panel is one merged table (comarca_id + subsecao_id) with
+    differing coverage per column, so we drop rows null in ``id_col`` BEFORE taking
+    the latest year — otherwise a recent comarca-only row would shadow an older
+    subseção value (and vice versa). Index/order follow ``municipio_id``.
     """
     panel = get_data(panel_file)
-    eligible = panel[panel["year"] <= year]
+    eligible = panel[(panel["year"] <= year) & panel[id_col].notna()]
     if eligible.empty:
         return pd.Series(pd.NA, index=municipio_id.index, name=id_col)
     seat = (
@@ -511,7 +513,7 @@ def get_comarca_id(
         mid = pd.Series(mid)
     if year is None:
         return _snapshot_jurisdiction(mid, "comarca_id")
-    return _jurisdiction_asof(mid, int(year), "municipio_year__comarca.csv", "comarca_id")
+    return _jurisdiction_asof(mid, int(year), "municipio_year.csv", "comarca_id")
 
 
 def get_subsecao_id(
@@ -535,7 +537,7 @@ def get_subsecao_id(
         ``municipio_id=`` or ``ibge7=`` , optional ``year=``. With NO ``year`` the
         curated cross-section from municipio.csv is returned; with an explicit
         ``year`` it is the as-of lookup (latest dated layer with year <= ``year``)
-        from the municipio_year__subsecao panel.
+        from the municipio_year panel (subsecao_id column).
 
     Raises:
         ValueError: on zero or multiple primary keys, or ``year`` on the case route.
@@ -566,7 +568,7 @@ def get_subsecao_id(
         mid = pd.Series(mid)
     if year is None:
         return _snapshot_jurisdiction(mid, "subsecao_id")
-    return _jurisdiction_asof(mid, int(year), "municipio_year__subsecao.csv", "subsecao_id")
+    return _jurisdiction_asof(mid, int(year), "municipio_year.csv", "subsecao_id")
 
 
 def get_comarca(numbers: pd.Series) -> pd.Series:
