@@ -1298,10 +1298,18 @@ class TestGetComarcaId(unittest.TestCase):
         nun = panel.groupby("municipio_id").comarca_id.nunique()
         changed = nun[nun > 1].index
         self.assertTrue(len(changed) > 0)  # the panel is year-aware
-        mid = changed[0]
-        sub = panel[panel.municipio_id == mid].sort_values("year")
-        y0, c0 = int(sub.year.iloc[0]), sub.comarca_id.iloc[0]
-        y1, c1 = int(sub.year.iloc[-1]), sub.comarca_id.iloc[-1]
+        # Pick a município whose EARLIEST and LATEST panel comarca genuinely differ
+        # (a real merger), not just any município with >1 distinct value — some
+        # flicker (A->B->A) and would have equal endpoints.
+        mid = y0 = c0 = y1 = c1 = None
+        for m in changed:
+            sub = panel[panel.municipio_id == m].sort_values("year")
+            if sub.comarca_id.iloc[0] != sub.comarca_id.iloc[-1]:
+                y0, c0 = int(sub.year.iloc[0]), sub.comarca_id.iloc[0]
+                y1, c1 = int(sub.year.iloc[-1]), sub.comarca_id.iloc[-1]
+                mid = m
+                break
+        self.assertIsNotNone(mid, "no município with differing endpoint comarcas")
         self.assertNotEqual(c0, c1)
         self.assertEqual(clean.get_comarca_id(municipio_id=pd.Series([mid]), year=y0).iloc[0], c0)
         self.assertEqual(clean.get_comarca_id(municipio_id=pd.Series([mid]), year=y1).iloc[0], c1)

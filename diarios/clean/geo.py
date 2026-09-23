@@ -411,16 +411,19 @@ def _jurisdiction_asof(
 
 
 def _snapshot_jurisdiction(mid: pd.Series, id_col: str) -> pd.Series:
-    """The stable cross-section value from the curated municipio.csv.
+    """The stable cross-section value from the reconciled município→comarca table.
 
     ``id_col`` is ``comarca_id`` or ``subsecao_id``. This is the authoritative,
-    audited snapshot; the geo route returns it for an UNSPECIFIED year so a
-    time-varying overlay in the panel (e.g. the caseparty layer, which can sink a
-    município into its capital on a noisy year) can never silently displace an
-    audited value. Callers opt into the time-varying panel by passing ``year=``.
+    audited cross-section, read from ``municipio__comarca.csv`` — justica's own
+    reconciled table (comarca/subseção are judiciary organization, owned in justica,
+    no longer columns on territorio's ``municipio.csv``; migration 2026-09-23). The
+    geo route returns it for an UNSPECIFIED year so a time-varying overlay in the
+    panel (e.g. the caseparty layer, which can sink a município into its capital on
+    a noisy year) can never silently displace an audited value. Callers opt into the
+    time-varying panel by passing ``year=``.
     """
     return transform(mid, "municipio_id", id_col,
-                     infile=get_data_file("municipio.csv"))
+                     infile=get_data_file("municipio__comarca.csv"))
 
 
 def get_comarca_id(
