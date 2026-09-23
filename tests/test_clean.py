@@ -1316,10 +1316,10 @@ class TestGetComarcaId(unittest.TestCase):
 
     def test_default_year_returns_curated_snapshot(self):
         # Regression check for the 2026-09-22 capital-sink incident: with NO year
-        # the geo route must return the audited municipio.csv cross-section, never
-        # the panel as-of (whose caseparty layer can sink a município into its
-        # capital). Verify default == municipio.csv comarca_id for every município.
-        m = clean.get_data("municipio.csv").dropna(subset=["comarca_id"])
+        # the geo route must return the audited cross-section (municipio__comarca.csv),
+        # never the panel as-of (whose caseparty layer can sink a município into its
+        # capital). Verify default == municipio__comarca comarca_id for every município.
+        m = clean.get_data("municipio__comarca.csv").dropna(subset=["comarca_id"])
         got = clean.get_comarca_id(municipio_id=m.municipio_id.reset_index(drop=True))
         pd.testing.assert_series_equal(
             got.reset_index(drop=True),
@@ -1332,7 +1332,7 @@ class TestGetComarcaId(unittest.TestCase):
         # overrides at 2018, the default (snapshot) and the explicit year=2018
         # (panel) must diverge — proving the default does not read the panel.
         panel = clean.get_data("municipio_year__comarca.csv")
-        m = clean.get_data("municipio.csv").dropna(subset=["comarca_id"])
+        m = clean.get_data("municipio__comarca.csv").dropna(subset=["comarca_id"])
         snap = dict(zip(m.municipio_id, m.comarca_id))
         p2018 = (panel[panel.year <= 2018].sort_values("year")
                  .drop_duplicates("municipio_id", keep="last"))
@@ -1358,7 +1358,7 @@ class TestGetComarcaId(unittest.TestCase):
 class TestGetSubsecaoId(unittest.TestCase):
 
     def test_geo_route_default_year_matches_frozen(self):
-        m = clean.get_data("municipio.csv")
+        m = clean.get_data("municipio__comarca.csv")
         m = m.dropna(subset=["subsecao_id"]).head(200).reset_index(drop=True)
         got = clean.get_subsecao_id(municipio_id=m.municipio_id)
         pd.testing.assert_series_equal(

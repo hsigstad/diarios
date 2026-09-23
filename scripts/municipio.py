@@ -22,10 +22,12 @@ import os
 
 import pandas as pd
 
-# Column order must stay identical to the historical municipio.csv.
+# Column order — identity only. comarca_id/subsecao_id were dropped 2026-09-23
+# (judiciary org moved to justica; resolve via diarios get_comarca_id/get_subsecao_id,
+# which read justica's municipio__comarca.csv / the year-aware panel).
 COLS = [
     "municipio_id", "municipio", "municipio_accents", "ibge7", "ibge6",
-    "estado", "estado_id", "comarca_id", "subsecao_id",
+    "estado", "estado_id",
 ]
 
 _HERE = os.path.dirname(os.path.abspath(__file__))
