@@ -178,8 +178,18 @@ def replace_identity_numbers(text: str) -> str:
 
     Handles: CPF, RG, CNPJ, PIS, CTPS, CIRG, OAB, CNJ process numbers,
     and generic "número" references.
+
+    The keyword-anchored patterns below only fire when the label ("CPF", "RG",
+    …) sits within 15 non-digit chars of the number, so a *bare* formatted
+    CPF/CNPJ leaks — e.g. "a mulher pergunta seu CPF e ele informa:
+    318.845.388-43" puts 16 chars between the two. The two unanchored patterns
+    catch the canonical punctuated forms on their own; they are tight enough
+    (exact digit-group shapes) not to swallow money amounts or dates.
     """
     patterns = [
+        # bare, unanchored: CPF ###.###.###-## and CNPJ ##.###.###/####-##
+        r'(?<![\d.])\d{3}\.\d{3}\.\d{3}-\d{2}(?![\d-])',
+        r'(?<![\d.])\d{2}\.\d{3}\.\d{3}/\d{4}-\d{2}(?![\d-])',
         r'\b(?:CPF|C\.P\.F\.?)[^\d]{0,15}[\d./-]{8,20}',
         r'\b(?:RG|R\.G\.?|CIRG)[^\d]{0,15}[\d./-]{5,20}',
         r'\b(?:CNPJ|C\.N\.P\.J\.?)[^\d]{0,15}[\d./-]{10,25}',
