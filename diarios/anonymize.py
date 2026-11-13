@@ -325,9 +325,20 @@ def replace_vehicle_and_contact(text: str) -> str:
     # chassi / VIN: 17 chars, excludes I/O/Q, keyword-anchored. The label is often
     # followed by filler before the number ("chassi nº", "chassis ostentando n."),
     # and a char-class gap cannot cross the letter in "nº"/"n.", so use a short
-    # lazy any-char window instead.
-    text = re.sub(r'(?i)\bchassis?\b.{0,25}?[A-HJ-NPR-Z0-9]{17}\b',
+    # lazy any-char window instead. Label set includes "VIN" ("serial latente VIN").
+    text = re.sub(r'(?i)\b(?:chassis?|vin)\b.{0,25}?[A-HJ-NPR-Z0-9]{17}\b',
                   '[VehicleID]', text)
+    # bare VIN by SHAPE — catches enumerated siblings ("chassi X e n. Y") and
+    # non-adjacent labels that proximity anchoring cannot reach. 17 chars, no
+    # I/O/Q, first char a Mercosul/South-America WMI digit (8 or 9), and at least
+    # one letter — excludes all-digit docket numbers and acordão codes (other
+    # leading digits), verified against the corpus. Case-sensitive (real VINs are
+    # uppercase). Does not reach imported VINs with non-8/9 WMIs — those still rely
+    # on the keyword anchor above.
+    text = re.sub(
+        r'\b[89](?=[0-9A-HJ-NPR-Z]{16}\b)(?=[0-9A-HJ-NPR-Z]*[A-HJ-NPR-Z])'
+        r'[0-9A-HJ-NPR-Z]{16}\b',
+        '[VehicleID]', text)
     # RENAVAM: 9-11 digits, keyword-anchored
     text = re.sub(r'(?i)\brenavam[^0-9]{0,12}\d{9,11}\b', '[VehicleID]', text)
     # IMEI (device identifier, reads like PII for a portal): 15 digits, often

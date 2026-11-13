@@ -130,6 +130,21 @@ class TestVehicleAndContact(unittest.TestCase):
             self.mask("dois chassis ostentando n. 9C2KC2200NR214569 apreendidos"),
             "dois [VehicleID] apreendidos")
 
+    def test_masks_bare_and_enumerated_vins_but_not_dockets(self):
+        # enumerated sibling (keyword too far left) still masked by the shape rule
+        self.assertNotIn("9C2KC2200PR007291",
+                         self.mask("chassi [VehicleID] e n. 9C2KC2200PR007291"))
+        # a "VIN"-labelled serial (keyword pass consumes the label too)
+        self.assertEqual(self.mask("serial latente VIN 93Y4SRD6EGJ351332"),
+                         "serial latente [VehicleID]")
+        # shape rule masks each real VIN
+        for vin in ("93Y4SRD6EGJ351332", "9C2JC250VVR185986",
+                    "9C2KC2200PR007291", "9C6RH1150R0030178"):
+            self.assertEqual(self.mask(vin), "[VehicleID]", msg=vin)
+        # false positives must survive: all-digit docket, acordão code (lead != 8/9)
+        for keep in ("10525200042592001", "20100112165299APR"):
+            self.assertEqual(self.mask(keep), keep, msg=keep)
+
     def test_masks_imei(self):
         self.assertEqual(self.mask("IMEI 354.472.082.513.260 do aparelho"),
                          "[IdentityNumber] do aparelho")
