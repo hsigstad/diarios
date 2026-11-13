@@ -291,6 +291,57 @@ def replace_identity_numbers(text: str) -> str:
     return text
 
 
+def replace_vehicle_and_contact(text: str) -> str:
+    """Replace vehicle identifiers and contact data with typed placeholders.
+
+    Covers a re-identification gap left by both GLiNER (whose labels are only
+    person/judge/organization/location) and `replace_identity_numbers` (CPF, RG,
+    CNPJ, …): a licence plate or chassi resolves to exactly one DETRAN-registered
+    owner, so it is arguably a stronger identifier than a name. Masks:
+
+      - licence plates        -> [VehicleID]   (old LLL-NNNN and Mercosul LLLNLNN)
+      - chassi/VIN, RENAVAM   -> [VehicleID]   (keyword-anchored)
+      - e-mail                -> [Email]
+      - IPv4                  -> [IPAddress]
+      - Brazilian phone       -> [Phone]
+
+    These run on EVERY project that calls `anonymize_text`, so the patterns are
+    deliberately conservative: chassi, RENAVAM and the keyword form of the phone
+    are anchored on their label; the bare plate matches only the two canonical
+    plate shapes, uppercase, digit-guarded on both ends. The bare plate was
+    measured false-positive-free on the TJSP sentença corpus (~175 distinct
+    plates); diarios' domain is Brazilian court/gazette text, where bare
+    three-letter+NNNN/NLNN tokens are overwhelmingly plates (law citations carry a
+    separator — "RE 635659", "ADI 4277" — so they do not match). Re-measure if
+    diarios is ever applied outside that domain.
+
+    Order matters: e-mail and IPv4 are masked before the phone pass so their
+    digits are not eaten; plates before phones for the same reason.
+    """
+    # e-mail
+    text = re.sub(r'(?i)\b[\w.+-]+@[\w-]+(?:\.[\w-]+)+', '[Email]', text)
+    # IPv4
+    text = re.sub(r'(?<![\d.])(?:\d{1,3}\.){3}\d{1,3}(?![\d.])', '[IPAddress]', text)
+    # chassi / VIN: 17 chars, excludes I/O/Q, keyword-anchored
+    text = re.sub(r'(?i)\bchassi[^A-Za-z0-9]{0,8}[A-HJ-NPR-Z0-9]{17}\b',
+                  '[VehicleID]', text)
+    # RENAVAM: 9-11 digits, keyword-anchored
+    text = re.sub(r'(?i)\brenavam[^0-9]{0,12}\d{9,11}\b', '[VehicleID]', text)
+    # plate, keyword-anchored (catches "Placa: SST8H55", "placas EDU6A13")
+    text = re.sub(r'(?i)\b(?:placas?|emplacamento)[^A-Za-z0-9]{0,8}'
+                  r'[A-Z]{3}-?\d[A-Z0-9]\d{2}\b', '[VehicleID]', text)
+    # plate, bare — both canonical formats, uppercase, digit-guarded (see docstring)
+    text = re.sub(r'(?<![A-Z0-9])[A-Z]{3}-?\d[A-Z0-9]\d{2}(?![A-Z0-9])',
+                  '[VehicleID]', text)
+    # Brazilian phone: parenthesized DDD form, then keyword-anchored form
+    text = re.sub(r'(?<![\d(])\(\d{2}\)\s?9?\d{4}[-.\s]?\d{4}(?![\d])',
+                  '[Phone]', text)
+    text = re.sub(r'(?i)\b(?:tel(?:efone)?|celular|fone|whats?app|contato)'
+                  r'[^\d]{0,10}(?:\+?55\s?)?\(?\d{2}\)?\s?9?\d{4}[-.\s]?\d{4}(?![\d])',
+                  '[Phone]', text)
+    return text
+
+
 def anonymize_text(text: str, verbose: bool = False) -> str:
     """Anonymize a single text string.
 
@@ -305,6 +356,7 @@ def anonymize_text(text: str, verbose: bool = False) -> str:
         return text
 
     text = replace_identity_numbers(text)
+    text = replace_vehicle_and_contact(text)
     chunks = _chunk_text(text)
     anonymized_chunks = [_anonymize_chunk(chunk) for chunk in chunks]
     return " ".join(anonymized_chunks)
@@ -359,12 +411,14 @@ def anonymize_dataframe(
 
 # Values that are already anonymized (exact match)
 _ANON_TOKEN_RE = re.compile(
-    r'^\[(?:PERSON|JUDGE|ORGANIZATION|LOCATION|IdentityNumber)\]$'
+    r'^\[(?:PERSON|JUDGE|ORGANIZATION|LOCATION|IdentityNumber'
+    r'|VehicleID|Phone|Email|IPAddress)\]$'
 )
 
 # Values that contain an anonymization token (partially anonymized)
 _CONTAINS_ANON_RE = re.compile(
-    r'\[(?:PERSON|JUDGE|ORGANIZATION|LOCATION|IdentityNumber)\]'
+    r'\[(?:PERSON|JUDGE|ORGANIZATION|LOCATION|IdentityNumber'
+    r'|VehicleID|Phone|Email|IPAddress)\]'
 )
 
 # Patterns for public/institutional entities — should NOT be anonymized in parte column

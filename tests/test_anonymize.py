@@ -101,5 +101,50 @@ class TestChunkText(unittest.TestCase):
         self.assertEqual(len(anonymize._chunk_text(text, max_tokens=50)), 1)
 
 
+class TestVehicleAndContact(unittest.TestCase):
+    """`replace_vehicle_and_contact` masks plates/chassi/renavam/phone/email/IP
+    without swallowing money, dates, statute citations or process numbers."""
+
+    def mask(self, text):
+        return anonymize.replace_vehicle_and_contact(text)
+
+    def test_masks_both_plate_formats(self):
+        # old LLL-NNNN and Mercosul LLLNLNN, bare
+        self.assertEqual(self.mask("veiculo FWE-9850 apreendido"),
+                         "veiculo [VehicleID] apreendido")
+        self.assertEqual(self.mask("a moto FWE9G85 estava"),
+                         "a moto [VehicleID] estava")
+
+    def test_masks_keyword_anchored_plate_chassi_renavam(self):
+        out = self.mask("Placa: SST8H55, Chassi: 9BWZZZ377VT004251, "
+                        "Renavam 11884567890.")
+        self.assertNotIn("SST8H55", out)
+        self.assertNotIn("9BWZZZ377VT004251", out)
+        self.assertNotIn("11884567890", out)
+        self.assertEqual(out.count("[VehicleID]"), 3)
+
+    def test_masks_email_ip_phone(self):
+        self.assertEqual(self.mask("fulano@dominio.com.br"), "[Email]")
+        self.assertEqual(self.mask("de 192.168.0.1 acessou"),
+                         "de [IPAddress] acessou")
+        self.assertEqual(self.mask("Tel: (11) 98765-4321 para"),
+                         "Tel: [Phone] para")
+        # the keyword-anchored form consumes the label too, as the CPF/RG
+        # patterns in replace_identity_numbers already do
+        self.assertEqual(self.mask("celular 11 98765-4321."), "[Phone].")
+
+    def test_does_not_mask_money_dates_citations(self):
+        # currency, dates, statute citations (separator), process numbers must survive
+        for keep in ("R$ 12.850,00", "em 05/05/2025", "art. 2o da Lei 12.850",
+                     "RE 635659", "ADI 4277",
+                     "0001234-56.2025.8.26.0100", "o valor de 1.012.850"):
+            self.assertEqual(self.mask(keep), keep, msg=keep)
+
+    def test_does_not_mask_lowercase_words(self):
+        # bare plate pattern is uppercase-only, so prose words are safe
+        self.assertEqual(self.mask("ele dirigia o carro dele"),
+                         "ele dirigia o carro dele")
+
+
 if __name__ == "__main__":
     unittest.main()
