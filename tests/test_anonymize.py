@@ -123,6 +123,17 @@ class TestVehicleAndContact(unittest.TestCase):
         self.assertNotIn("11884567890", out)
         self.assertEqual(out.count("[VehicleID]"), 3)
 
+    def test_masks_chassi_with_label_filler(self):
+        # a char-class gap cannot cross the letter in "nº"/"n."; the window must
+        self.assertEqual(self.mask("chassi nº 9BWGF07X87P001517"), "[VehicleID]")
+        self.assertEqual(
+            self.mask("dois chassis ostentando n. 9C2KC2200NR214569 apreendidos"),
+            "dois [VehicleID] apreendidos")
+
+    def test_masks_imei(self):
+        self.assertEqual(self.mask("IMEI 354.472.082.513.260 do aparelho"),
+                         "[IdentityNumber] do aparelho")
+
     def test_masks_email_ip_phone(self):
         self.assertEqual(self.mask("fulano@dominio.com.br"), "[Email]")
         self.assertEqual(self.mask("de 192.168.0.1 acessou"),

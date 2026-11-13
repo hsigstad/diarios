@@ -322,11 +322,17 @@ def replace_vehicle_and_contact(text: str) -> str:
     text = re.sub(r'(?i)\b[\w.+-]+@[\w-]+(?:\.[\w-]+)+', '[Email]', text)
     # IPv4
     text = re.sub(r'(?<![\d.])(?:\d{1,3}\.){3}\d{1,3}(?![\d.])', '[IPAddress]', text)
-    # chassi / VIN: 17 chars, excludes I/O/Q, keyword-anchored
-    text = re.sub(r'(?i)\bchassi[^A-Za-z0-9]{0,8}[A-HJ-NPR-Z0-9]{17}\b',
+    # chassi / VIN: 17 chars, excludes I/O/Q, keyword-anchored. The label is often
+    # followed by filler before the number ("chassi nº", "chassis ostentando n."),
+    # and a char-class gap cannot cross the letter in "nº"/"n.", so use a short
+    # lazy any-char window instead.
+    text = re.sub(r'(?i)\bchassis?\b.{0,25}?[A-HJ-NPR-Z0-9]{17}\b',
                   '[VehicleID]', text)
     # RENAVAM: 9-11 digits, keyword-anchored
     text = re.sub(r'(?i)\brenavam[^0-9]{0,12}\d{9,11}\b', '[VehicleID]', text)
+    # IMEI (device identifier, reads like PII for a portal): 15 digits, often
+    # dotted, keyword-anchored
+    text = re.sub(r'(?i)\bimei\b[^0-9]{0,8}\d[\d.\s]{13,22}\d', '[IdentityNumber]', text)
     # plate, keyword-anchored (catches "Placa: SST8H55", "placas EDU6A13")
     text = re.sub(r'(?i)\b(?:placas?|emplacamento)[^A-Za-z0-9]{0,8}'
                   r'[A-Z]{3}-?\d[A-Z0-9]\d{2}\b', '[VehicleID]', text)
