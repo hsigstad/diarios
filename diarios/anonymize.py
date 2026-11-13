@@ -120,10 +120,84 @@ def _load_model():
     return _model, _tokenizer
 
 
+def _token_len(tokenizer, text: str) -> int:
+    """Token count under the NER model's tokenizer."""
+    return len(tokenizer.tokenize(text))
+
+
+def _split_dense_fragment(fragment: str, tokenizer, max_tokens: int) -> List[str]:
+    """Last-resort split of a fragment with no usable whitespace boundary.
+
+    Binary-searches the longest character prefix that fits the token limit, then
+    repeats on the remainder. Always consumes at least one character, so it
+    terminates, and it concatenates back to the input — nothing is dropped.
+    """
+    pieces: List[str] = []
+    rest = fragment
+    while rest:
+        lo, hi, best = 1, len(rest), 1
+        while lo <= hi:
+            mid = (lo + hi) // 2
+            if _token_len(tokenizer, rest[:mid]) <= max_tokens:
+                best, lo = mid, mid + 1
+            else:
+                hi = mid - 1
+        pieces.append(rest[:best])
+        rest = rest[best:]
+    return pieces
+
+
+def _split_long_sentence(sentence: str, tokenizer, max_tokens: int) -> List[str]:
+    """Break one over-long sentence into chunks of <= max_tokens, losing nothing.
+
+    Greedy over whitespace-separated words. WordPiece pre-tokenizes on
+    whitespace, so per-word token counts sum to the joined count; the re-measure
+    pass at the end guards tokenizers where that does not hold exactly.
+    """
+    words = sentence.split()
+    if not words:
+        return []
+
+    chunks: List[str] = []
+    buf: List[str] = []
+    buf_tokens = 0
+
+    for word in words:
+        word_tokens = _token_len(tokenizer, word)
+        if word_tokens > max_tokens:            # single word blows the budget
+            if buf:
+                chunks.append(" ".join(buf))
+                buf, buf_tokens = [], 0
+            chunks.extend(_split_dense_fragment(word, tokenizer, max_tokens))
+            continue
+        if buf and buf_tokens + word_tokens > max_tokens:
+            chunks.append(" ".join(buf))
+            buf, buf_tokens = [], 0
+        buf.append(word)
+        buf_tokens += word_tokens
+
+    if buf:
+        chunks.append(" ".join(buf))
+
+    bounded: List[str] = []
+    for chunk in chunks:
+        if _token_len(tokenizer, chunk) <= max_tokens:
+            bounded.append(chunk)
+        else:
+            bounded.extend(_split_dense_fragment(chunk, tokenizer, max_tokens))
+    return bounded
+
+
 def _chunk_text(text: str, max_tokens: int = MAX_TOKENS) -> List[str]:
     """Split text into chunks that fit within the token limit.
 
     Uses sentence tokenization to preserve sentence boundaries.
+
+    INVARIANT: every returned chunk is <= max_tokens tokens, and the chunks
+    together cover the whole input. Both matter for anonymization —
+    `_anonymize_chunk` emits the chunk it was handed whether or not the model
+    managed to scan all of it, so an oversized chunk means text leaving this
+    module UNSCANNED for names.
     """
     from nltk.tokenize import sent_tokenize
 
@@ -139,22 +213,32 @@ def _chunk_text(text: str, max_tokens: int = MAX_TOKENS) -> List[str]:
 
     for sentence in sentences:
         test_chunk = current_chunk + " " + sentence if current_chunk else sentence
-        tokens = tokenizer.tokenize(test_chunk)
 
-        if len(tokens) <= max_tokens:
+        if _token_len(tokenizer, test_chunk) <= max_tokens:
             current_chunk = test_chunk
+            continue
+
+        if current_chunk:
+            chunks.append(current_chunk.strip())
+            # Reset: previously this was left set, so the flushed text was
+            # re-appended to a later chunk and surfaced twice in the output.
+            current_chunk = ""
+
+        if _token_len(tokenizer, sentence) > max_tokens:
+            # Previously `sentence[: max_tokens * 4]` — a character proxy for a
+            # token budget. It both overshot (1536 chars of Portuguese legal
+            # prose runs 400-550 tokens, and the overflow was emitted unscanned)
+            # and dropped everything past 1536 chars.
+            chunks.extend(_split_long_sentence(sentence, tokenizer, max_tokens))
         else:
-            if current_chunk:
-                chunks.append(current_chunk.strip())
-            if len(tokenizer.tokenize(sentence)) > max_tokens:
-                chunks.append(sentence[: max_tokens * 4])
-            else:
-                current_chunk = sentence
+            current_chunk = sentence
 
     if current_chunk:
         chunks.append(current_chunk.strip())
 
-    return chunks if chunks else [text]
+    if chunks:
+        return chunks
+    return _split_long_sentence(text, tokenizer, max_tokens) or [text]
 
 
 def _anonymize_chunk(chunk: str) -> str:
